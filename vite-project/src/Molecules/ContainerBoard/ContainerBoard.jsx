@@ -8,9 +8,8 @@ import React from "react";
 const ContainerBoard = () => {
   const navigate = useNavigate();
   const [loginType, setLoginType] = React.useState(true);
-  const [responseMessage, setResponseMessage] = React.useState(''); // Para exibir a mensagem de erro
-  const [responseSucess, setResponseSucess] = React.useState(''); // Para exibir a mensagem de sucesso
-
+  const [responseMessage, setResponseMessage] = React.useState('');
+  const [responseSucess, setResponseSucess] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [emailLogin, setEmailLogin] = React.useState("");
   const [senhaLogin, setSenhaLogin] = React.useState("");
@@ -21,26 +20,14 @@ const ContainerBoard = () => {
 
   return (
     <LoginBack>
-      {/* Snackbar para Mensagem de Erro */}
       <Snackbar open={Boolean(responseMessage)}>
-        <Alert
-          severity="error"
-          variant="filled"
-          autoHideDuration={3000} // Mensagem desaparece após 3 segundos
-          sx={{ width: '100%' }}
-        >
+        <Alert severity="error" variant="filled" autoHideDuration={3000} sx={{ width: '100%' }}>
           {responseMessage}
         </Alert>
       </Snackbar>
 
-      {/* Snackbar para Mensagem de Sucesso */}
       <Snackbar open={Boolean(responseSucess)}>
-        <Alert
-          severity="success"
-          variant="filled"
-          autoHideDuration={3000} // Mensagem desaparece após 3 segundos
-          sx={{ width: '100%' }}
-        >
+        <Alert severity="success" variant="filled" autoHideDuration={3000} sx={{ width: '100%' }}>
           {responseSucess}
         </Alert>
       </Snackbar>

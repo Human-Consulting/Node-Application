@@ -1,32 +1,31 @@
 import axios from 'axios';
+import { normalizeUserData } from './LowerCase';
 
 export const handleSubmitCadastro = async (nomeCadastro, emailCadastro, senhaCadastro, confirmarSenhaCadastro, setLoading, setResponseMessage, setResponseSucess) => {
-  // Verifica se todos os campos foram preenchidos
   if (nomeCadastro && emailCadastro && senhaCadastro && confirmarSenhaCadastro) {
-    // Verifica se o e-mail contém o símbolo '@'
     if (!emailCadastro.includes("@")) {
       setResponseMessage('O e-mail precisa conter @.');
       setTimeout(() => {
         setResponseMessage('');
       }, 3000);
     } else {
-      // Verifica se as senhas coincidem
       if (senhaCadastro === confirmarSenhaCadastro) {
+        const { normalizedNome, normalizedEmail } = normalizeUserData(nomeCadastro, emailCadastro);
+
+        console.log(nomeCadastro, normalizedNome)
+
         const userData = {
-          nomeCadastro,
-          emailCadastro,
+          nomeCadastro: normalizedNome,
+          emailCadastro: normalizedEmail,
           senhaCadastro,
         };
 
-        setLoading(true); // Inicia o carregamento
+        setLoading(true);
 
         try {
           const response = await axios.post('http://localhost:3000/usuario', userData);
-          if (response.status === 200) {
-            // Exibe a mensagem de sucesso
+          if (response.status === 201) {
             setResponseSucess('Usuário registrado com sucesso!');
-            
-            // Limpa a mensagem de sucesso após 3 segundos
             setTimeout(() => {
               setResponseSucess('');
             }, 3000);
