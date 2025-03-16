@@ -1,5 +1,5 @@
 # FrontEnd
-antes de tudo, dê um npm install para configurar o package.json
+antes de tudo, dê um npm install --force para configurar o package.json
 Para rodar o front - npm run dev na pasta vit-project
 
 Para rodar o json server
