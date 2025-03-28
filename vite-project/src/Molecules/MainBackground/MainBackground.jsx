@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { BackgroundMain } from './MainBackground.styles'
 
 const MainBackground = () => {

@@ -5,11 +5,28 @@ import App from './Pages/Home/App.jsx'
 
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import Login from './Pages/Login/Login.jsx'
+import Task from './Molecules/Task/Task.jsx'
+import NextStep from './Molecules/NextStep/NextStep.jsx'
+import CentralTask from './Molecules/CentralTask/CentralTask.jsx'
 
 const router = createBrowserRouter([
   {
     path: "/home",
-    element: <App/>
+    element: <App/>,
+    children: [
+      {
+        path: "task",
+        element: <Task />, 
+      },
+      {
+        path: "next-step",
+        element: <NextStep />, 
+      },
+      {
+        path: "central-task/:tarefaId", 
+        element: <CentralTask />,
+      },
+    ],
   },
   {
     path: "/",
