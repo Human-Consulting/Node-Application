@@ -7,7 +7,7 @@ const Task = () => {
   return (
     <TaskBody>
        {MockSprint.map((item, index) => (
-      <TaskCard index={index} titulo={item.titulo} key={item.numero_sprint} progresso={item.porcentagem} tarefas={item.tarefas} totalEntregas={item.total_entregas} descricaoSprint={item.descricao} tarefas={item.tarefas} dataFim={item.data_fim} dataInicio={item.data_inicio} numeroSprint={item.numero_sprint} />
+      <TaskCard maximo={item.tarefas.length} index={index} titulo={item.titulo} key={item.numero_sprint} progresso={item.porcentagem}totalEntregas={item.total_entregas} descricaoSprint={item.descricao} tarefas={item.tarefas} dataFim={item.data_fim} dataInicio={item.data_inicio} numeroSprint={item.numero_sprint} />
     ))}
 
     </TaskBody>

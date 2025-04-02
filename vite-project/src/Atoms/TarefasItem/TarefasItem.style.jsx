@@ -11,6 +11,7 @@ export const TarefaBody = styled(Box)({
     background: '#000',
     paddingTop: '0.5rem',
     scrollSnapAlign: 'center',
+    position: 'relative',
 
     '&::-webkit-scrollbar': {
         width: '0px',

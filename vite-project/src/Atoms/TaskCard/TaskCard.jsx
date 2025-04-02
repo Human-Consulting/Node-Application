@@ -3,12 +3,16 @@ import { Button, Grid2, Stack } from '@mui/material'
 import TarefasItem from '../TarefasItem/TarefasItem'
 import { useNavigate } from 'react-router'
 
-const TaskCard = ({numeroSprint, descricaoSprint, dataInicio, dataFim, tarefas, totalEntregas, progresso, titulo, index }) => {
+const TaskCard = ({numeroSprint, descricaoSprint, dataInicio, dataFim, tarefas, totalEntregas, progresso, titulo, index, maximo }) => {
 const navigate = useNavigate()
 
 
 
 const handleOpenProject = () => {
+  navigate(`/home/central-task/${index}`);
+  console.log('estou')
+}
+const handleOpenModal = () => {
   navigate(`/home/central-task/${index}`);
   console.log('estou')
 }
@@ -36,11 +40,16 @@ const handleOpenProject = () => {
         </Grid2>
 
         <BodyTarefa>
-        {tarefas.map((item) => (
-          <TarefasItem progresso={item.progresso} impedido={item.impedido} finalizado={item.finalizado} dataInicio={item.data_inicio} dataFim={item.data_fim} responsavel={item.responsavel} descricao={item.descricao} key={item.index}>{item.descricao}</TarefasItem>
+        {tarefas.map((item, index) => (
+          <TarefasItem maximo={maximo} indice={index + 1} progresso={item.progresso} impedido={item.impedido} finalizado={item.finalizado} dataInicio={item.data_inicio} dataFim={item.data_fim} responsavel={item.responsavel} descricao={item.descricao} key={item.index}>{item.descricao}</TarefasItem>
         ))}
         </BodyTarefa>
-        <Button onClick={handleOpenProject} size='small'>Ver todas tarefas</Button>
+        <Stack sx={{flexDirection: 'row', width: '100%', gap: '1rem', justifyContent: 'center', alignItems: 'center'}}>
+        <Button size ='medium' onClick={handleOpenModal} variant='outlined'>Criar nova tarefa</Button>
+        <Button size ='medium' onClick={handleOpenProject} variant='outlined'>Ver todas tarefas</Button>
+        </Stack>
+  
+
 
       
       
