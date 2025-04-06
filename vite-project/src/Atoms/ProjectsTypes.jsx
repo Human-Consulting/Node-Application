@@ -11,7 +11,7 @@ const ProjectsTypes = ({urlImage, title, subtitle, progresso}) => {
                 {title}
             </Title>
             <SubTitle>
-               {subtitle} - este projeto está {progresso}% completo
+               {subtitle} Este projeto está {progresso}% completo
             </SubTitle>
         </Stack>
     </ProjectsTypesBox>

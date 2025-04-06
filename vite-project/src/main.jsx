@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     element: <App/>,
     children: [
       {
-        path: "task",
+        path: "task/:idProjeto",
         element: <Task />, 
       },
       {

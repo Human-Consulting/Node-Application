@@ -4,20 +4,20 @@ import { Stack } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
 
-function ProjectsCard({ status, title, subtitle, image, progress }) {
+function ProjectsCard({ idProjeto, status, title, subtitle, image, progress }) {
   const navigate = useNavigate(); 
 
   let statusColor = '#08D13D';
-  if (status === 'ok') {
+  if (status == 0) {
     statusColor = '#08D13D';
-  } else if (status === 'attention') {
+  } else if (status == 1 && progress > 50) {
     statusColor = '#CED108';
   } else {
     statusColor = '#FF0707';
   }
 
   const handleOpenProject = () => {
-    navigate('/home/task');
+    navigate(`/Home/task/${Number(idProjeto)}`);
     console.log('estou')
   }
 
@@ -46,6 +46,7 @@ function ProjectsCard({ status, title, subtitle, image, progress }) {
 }
 
 ProjectsCard.propTypes = {
+  idProjeto: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,

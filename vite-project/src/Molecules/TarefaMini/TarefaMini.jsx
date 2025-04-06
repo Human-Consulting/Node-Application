@@ -2,7 +2,7 @@ import { BodyCard, BoxBody, Progress, ProgressBar, Subtitle, Title } from './Tar
 import PropTypes from 'prop-types'
 import { Button, Stack } from '@mui/material'
 
-function TarefaMini({indice, title, subtitle, progress, impedimento, finalizado}) {
+function TarefaMini({ indice, title, subtitle, progress, impedimento, finalizado }) {
 
 
   return (
