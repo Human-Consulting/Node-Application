@@ -36,20 +36,20 @@ const LateralBar = () => {
     return (
         <LateralNavBar>
             <DivisorOne>
-                <Stack sx={{ padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }}>
+                <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }} onClick={handleOpenHome}>
                     <HomeIcon sx={{ color: '#ffff' }} />
-                    <Title onClick={handleOpenHome}>
+                    <Title>
                         Home
                     </Title>
                 </Stack>
-                <Stack sx={{ padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }}>
+                <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }}>
                     <InsightsIcon sx={{ color: '#ffff' }} />
                     <Title>
                         Dashboard Geral
                     </Title>
 
                 </Stack>
-                <Stack sx={{ padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }}>
+                <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }}>
                     <GroupIcon sx={{ color: '#ffff' }} />
                     <Title>
                         Gerenciamento de Usuários

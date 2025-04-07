@@ -15,13 +15,11 @@ function MiniProjectsCard({ status, title, subtitle, image, progress }) {
 
   return (
     <>
-
       <BoxBody>
         <HeaderCard sx={{ backgroundImage: `URL(${image})` }} />
         <BodyCard>
           <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Title>{title}</Title>
-            <MoreVertIcon sx={{ color: '#fff' }} />
           </Stack>
           <Subtitle>{subtitle}</Subtitle>
           <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>

@@ -18,13 +18,19 @@ const PrincipalContainer = ({ toogleLateralBar }) => {
 
   const atualizarProjetos = async () => {
     const projetos = await getProjetos();
-    setProjetos(projetos);
+    setProjetos(projetos)
   };
-
+  
   const buscarUsuarios = async () => {
     const usuarios = await getUsuarios();
     setUsuarios(usuarios);
   };
+  
+  const filtrarProjetos = (texto) => {
+    const projetosFiltrados = projetos.filter(projeto => projeto.descricao.contains(texto));
+    console.log(projetosFiltrados);
+    
+  }
 
   useEffect(() => {
     atualizarProjetos();
@@ -58,15 +64,15 @@ const PrincipalContainer = ({ toogleLateralBar }) => {
         </ShaderGradientCanvas>
         <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6' }}>
           <Avatar sx={{ background: 'none', border: '1px solid gray' }}>OP</Avatar>
-          <ButtonFilter><FilterAltIcon />Filtrar</ButtonFilter>
-          <InputSearch sx={{ background: 'none' }} type='text' placeholder='Pesquise um projeto...' />
+          <InputSearch sx={{ background: 'none', fontSize: '18px' }} type='text' placeholder='Pesquise um projeto...' onChange={filtrarProjetos} />
         </Stack>
-        <TituloHeader>Seus projetos</TituloHeader>
+        <TituloHeader>Meus projetos</TituloHeader>
       </HeaderContent>
       <MidleCarrousel>
         {projetos.map(projeto => (
           <ProjectsCard projeto={projeto} toogleProjetoModal={toogleModal} ></ProjectsCard>
         ))}
+        <ProjectsCard toogleProjetoModal={toogleModal} ></ProjectsCard>
       </MidleCarrousel>
       <Modal
         showModal={showModal}

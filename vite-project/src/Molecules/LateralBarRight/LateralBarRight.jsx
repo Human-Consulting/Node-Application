@@ -16,6 +16,7 @@ const LateralBarRight = ({ showLateralBar }) => {
   const carrousel = useRef(null)
   const carrouselTwo = useRef(null)
   const caosList = projetos.filter(item => item.com_impedimento == 1)
+  const noneList = projetos.filter(item => item.progresso != 100)
   const finalizadosList = projetos.filter(item => item.progresso == 100)
 
   const handleRightSkip = () => {
@@ -55,42 +56,36 @@ const LateralBarRight = ({ showLateralBar }) => {
     atualizarProjetos();
   }, []);
 
-  const toogleModal = (task, newId) => {
-    setId(newId)
-    setTask(task);
-    setShowModal(!showModal);
-  };
-
   return (
     <LateralNavBar>
       <Stack>
         <MiniCarrousel>
-          <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)' }}>impedimentos</Title>
-          <SkipLeft onClick={handleLeftSkip}><ArrowLeftIcon sx={{ color: '#1d1d1d' }} /></SkipLeft>
+          <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)', textAlign: 'center', width: '100%' }}>Com Impedimentos</Title>
+          <SkipLeft onClick={handleLeftSkip} ><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft>
           <Slide ref={carrousel}>
             {caosList.map(Card => (
               <MiniProjectsCard image={Card.image} subtitle={Card.subtitle} title={Card.descricao} key={Card.idProjeto} numberId={Card.idProjeto} progress={Card.progresso} status={Card.com_impedimento} />
             ))}
           </Slide>
-          <SkipRigth onClick={handleRightSkip}><ArrowRightIcon sx={{ color: '#1d1d1d' }} /></SkipRigth>
+          <SkipRigth onClick={handleRightSkip}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth>
         </MiniCarrousel>
       </Stack>
 
       <Stack sx={{ gap: '8px' }}>
-        <Title sx={{ width: '100%', textAlign: 'center' }}>Não finalizados</Title>
-        <KpiFinalizados><TituloHeader sx={{ color: '#FF0707', height: '72px' }}>{caosList.length}</TituloHeader></KpiFinalizados>
+        <Title sx={{ width: '100%', textAlign: 'center' }}>Não Finalizados</Title>
+        <KpiFinalizados><TituloHeader sx={{ color: '#FF0707', height: '72px' }}>{noneList.length}</TituloHeader></KpiFinalizados>
       </Stack>
 
       <Stack>
         <MiniCarrousel>
           <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)' }}>Finalizados</Title>
-          <SkipLeft onClick={handleLeftSkipTwo}><ArrowLeftIcon sx={{ color: '#1d1d1d' }} /></SkipLeft>
+          <SkipLeft onClick={handleLeftSkipTwo}><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft>
           <Slide ref={carrouselTwo}>
             {finalizadosList.map(Card => (
               <MiniProjectsCard image={Card.image} subtitle={Card.subtitle} title={Card.descricao} key={Card.idProjeto} numberId={Card.idProjeto} progress={Card.progresso} status={Card.com_impedimento} />
             ))}
           </Slide>
-          <SkipRigth onClick={handleRightSkipTwo}><ArrowRightIcon sx={{ color: '#1d1d1d' }} /></SkipRigth>
+          <SkipRigth onClick={handleRightSkipTwo}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth>
         </MiniCarrousel>
       </Stack>
 

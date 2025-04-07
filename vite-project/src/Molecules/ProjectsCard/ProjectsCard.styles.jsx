@@ -11,7 +11,8 @@ export const BoxBody = styled('div')({
     borderRadius: '10px',
     flexShrink: 0,
     position: 'relative',
-    marginTop: '2rem'
+    marginTop: '2rem',
+    cursor: 'pointer'
 });
 
 export const StatusCircle = styled('div')({
