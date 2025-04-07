@@ -12,7 +12,7 @@ export const LateralNavBar = styled(Box)({
 });
 export const DivisorOne = styled(Box)({
     width: '100%',
-    height: '20%',
+    height: '30%',
     backgroundColor: '#000',
     display: 'flex',
     flexDirection: 'column',

@@ -1,8 +1,9 @@
 import React from 'react'
 import { TarefaBody } from './TarefasItem.style'
 import { Button, Grid2, Stack } from '@mui/material'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteTask } from './../../Utils/cruds/CrudsTask.jsx';
 const TarefasItem = ({ idTask, descricao, dataInicio, dataFim, responsavel, impedido, finalizado, progresso, indice, maximo, toogleModal }) => {
 
   const handleToogleModal = () => {
@@ -15,14 +16,18 @@ const TarefasItem = ({ idTask, descricao, dataInicio, dataFim, responsavel, impe
       progresso
     }
     toogleModal(task);
-    
+  }
+
+  const handleDeleteTask = () => {
+    deleteTask(idTask, toogleModal);
   }
 
   return (
     <TarefaBody>
       <Stack sx={{ height: '20%', width: '100%', position: 'relative', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
         {descricao}
-        <MoreVertIcon sx={{ color: '#fff', position: 'absolute', right: '8%', cursor: 'pointer' }} onClick={handleToogleModal} />
+        <DeleteIcon sx={{ color: '#fff', position: 'absolute', right: '40px', cursor: 'pointer' }} onClick={handleDeleteTask} />
+        <EditIcon sx={{ color: '#fff', position: 'absolute', right: '8px', cursor: 'pointer' }} onClick={handleToogleModal} />
       </Stack>
       <Grid2 sx={{ alignItems: 'center', justifyContent: 'center', alignContent: 'center' }} container spacing={2}>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '0.5px solid #fff', gap: '4px', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>

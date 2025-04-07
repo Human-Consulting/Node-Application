@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 import TarefaMini from '../TarefaMini/TarefaMini'
 import { BackCentral, MidleCarrousel, TituloHeader } from './CentralTask.styles'
 import { useEffect, useState } from 'react'
-import { getUsuarios } from '../../utils/cruds/CrudsUsuario'
+import { getUsuarios } from '../../Utils/cruds/CrudsUsuario'
 import { getSprints } from '../../Utils/cruds/CrudsSprint'
 import { getTasks } from '../../Utils/cruds/CrudsTask'
 
@@ -57,7 +57,7 @@ const CentralTask = ({ toogleLateralBar }) => {
       </TituloHeader>
         <MidleCarrousel>
         {tasks.filter(task => task.fkSprint == sprintId).map((task, index) => (
-      <TarefaMini indice={task.idSprint} finalizado={task.finalizado} impedimento={task.impedido} title={task.descricao} progress={task.progresso} subtitle={usuarios.filter(usuario => usuario.idUsuario = task.fkResponsavel)[0].nome} status={task.finalizado ? 'ok' : 'other'} key={task.index}/>
+      <TarefaMini idSprint={task.idSprint} indice={index + 1} finalizado={task.finalizado} impedimento={task.impedido} title={task.descricao} progress={task.progresso} subtitle={usuarios.filter(usuario => usuario.idUsuario === task.fkResponsavel)[0].nome} status={task.finalizado ? 'ok' : 'other'} key={task.index}/>
     ))}
         </MidleCarrousel>
       

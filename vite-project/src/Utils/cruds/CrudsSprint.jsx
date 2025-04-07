@@ -63,7 +63,7 @@ export const postSprint = async (newSprint, toogleModal) => {
 };
 
 export const getSprints = async (idProjeto) => {
-    // TODO: Criar Endpoint para filtrar sprints sobre projetos
+    // TODO: Criar Endpoint para filtrar sprints sobre projetos.
     try {
         const res = await fetch("http://localhost:8081/sprints");
         const data = await res.json();

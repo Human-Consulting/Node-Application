@@ -1,41 +1,56 @@
 import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './ProjectsCard.styles';
-import PropTypes from 'prop-types';
 import { Stack } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteProjeto } from './../../Utils/cruds/CrudsProjeto.jsx';
 
-function ProjectsCard({ idProjeto, status, title, subtitle, image, progress }) {
-  const navigate = useNavigate(); 
+function ProjectsCard({ projeto, toogleProjetoModal }) {
+  const navigate = useNavigate();
 
   let statusColor = '#08D13D';
-  if (status == 0) {
+  if (projeto.com_impedimento == 0) {
     statusColor = '#08D13D';
-  } else if (status == 1 && progress > 50) {
+  } else if (projeto.com_impedimento == 1 && projeto.progresso > 50) {
     statusColor = '#CED108';
   } else {
     statusColor = '#FF0707';
   }
 
   const handleOpenProject = () => {
-    navigate(`/Home/task/${Number(idProjeto)}`);
-    console.log('estou')
+    navigate(`/Home/task/${Number(projeto.idProjeto)}`);
+  }
+
+  const handleOpenModalPutProjeto = () => {
+    toogleProjetoModal(projeto, 'card');
+  }
+
+  const handleDeleteProjeto = () => {
+    deleteProjeto(projeto.idProjeto, toogleProjetoModal);
   }
 
   return (
     <>
       <BoxBody onClick={handleOpenProject}>
-        <HeaderCard sx={{ backgroundImage: `URL(${image})` }} />
+        <HeaderCard sx={{ backgroundImage: `URL(${projeto.image})` }} />
         <BodyCard>
           <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Title>{title}</Title>
-            <MoreVertIcon sx={{ color: '#fff' }} />
+            <Title>Orçamento: R${projeto.orcamento}</Title>
+            <DeleteIcon sx={{ color: '#fff', position: 'absolute', right: '40px', cursor: 'pointer' }} onClick={(e) => {
+              e.stopPropagation();
+              handleDeleteProjeto();
+            }} />
+            <EditIcon sx={{ color: '#fff', position: 'absolute', right: '8px', cursor: 'pointer' }} onClick={(e) => {
+              e.stopPropagation();
+              handleOpenModalPutProjeto();
+            }} />
           </Stack>
-          <Subtitle>{subtitle}</Subtitle>
+          <Subtitle>{projeto.descricao}</Subtitle>
           <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <ProgressBar>
-              <Progress sx={{ width: `${progress}%` }} />
+              <Progress sx={{ width: `${projeto.progresso}%` }} />
             </ProgressBar>
-            <Subtitle>{progress}%</Subtitle>
+            <Subtitle>{projeto.progresso}%</Subtitle>
           </Stack>
         </BodyCard>
         <StatusCircle sx={{ border: `5px solid ${statusColor}` }}>
@@ -43,15 +58,6 @@ function ProjectsCard({ idProjeto, status, title, subtitle, image, progress }) {
       </BoxBody>
     </>
   );
-}
-
-ProjectsCard.propTypes = {
-  idProjeto: PropTypes.number.isRequired,
-  status: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  progress: PropTypes.number.isRequired
 }
 
 export default ProjectsCard;

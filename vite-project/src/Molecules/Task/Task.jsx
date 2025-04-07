@@ -3,7 +3,7 @@ import { TaskBody } from './Task.styles'
 import TaskCard from '../../Atoms/TaskCard/TaskCard'
 import Modal from '../Modal/Modal'
 import FormsTask from '../Forms/FormsTask'
-import { getUsuarios } from '../../utils/cruds/CrudsUsuario'
+import { getUsuarios } from '../../Utils/cruds/CrudsUsuario'
 import { getTasks } from '../../Utils/cruds/CrudsTask'
 import { getSprints } from '../../Utils/cruds/CrudsSprint'
 import { useParams } from 'react-router'
@@ -23,6 +23,7 @@ const Task = ({ toogleLateralBar }) => {
   const buscarUsuarios = async () => {
     const usuarios = await getUsuarios();
     setUsuariosList(usuarios);
+    
   };
 
   const atualizarSprints = async () => {
@@ -48,15 +49,14 @@ const Task = ({ toogleLateralBar }) => {
   const toogleModal = (entidade, post) => {
     setAcao(post);
     setEntidade(entidade);
-    
     setShowModal(!showModal);
   };
 
   return (
     <>
       <TaskBody>
-        {sprintsList.map((sprint) => (
-          <TaskCard toogleTaskModal={toogleModal} sprint={sprint} tarefas={tasksList} usuarios={usuariosList} />
+        {sprintsList.map((sprint, index) => (
+          <TaskCard toogleTaskModal={toogleModal} sprint={sprint} index={index + 1} tarefas={tasksList} usuarios={usuariosList} />
         ))}
         <TaskCard toogleTaskModal={toogleModal} />
       </TaskBody>

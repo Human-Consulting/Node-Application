@@ -5,26 +5,35 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient';
 import { useEffect, useState } from 'react';
 import { getProjetos } from '../../Utils/cruds/CrudsProjeto'
+import { getUsuarios } from '../../Utils/cruds/CrudsUsuario'
+import Modal from '../Modal/Modal'
+import FormsProjeto from './../Forms/FormsProjeto.jsx';
 
 const PrincipalContainer = ({ toogleLateralBar }) => {
 
   const [showModal, setShowModal] = useState(false);
-  const [id, setId] = useState(null);
+  const [projeto, setProjeto] = useState(null);
   const [projetos, setProjetos] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
 
   const atualizarProjetos = async () => {
     const projetos = await getProjetos();
     setProjetos(projetos);
   };
 
+  const buscarUsuarios = async () => {
+    const usuarios = await getUsuarios();
+    setUsuarios(usuarios);
+  };
+
   useEffect(() => {
     atualizarProjetos();
+    buscarUsuarios();
     toogleLateralBar();
   }, []);
 
-  const toogleModal = (task, newId) => {
-    setId(newId)
-    setTask(task);
+  const toogleModal = (projeto) => {
+    setProjeto(projeto);
     setShowModal(!showModal);
   };
 
@@ -55,11 +64,18 @@ const PrincipalContainer = ({ toogleLateralBar }) => {
         <TituloHeader>Seus projetos</TituloHeader>
       </HeaderContent>
       <MidleCarrousel>
-        {projetos.map(Card => (
-          <ProjectsCard idProjeto={Card.idProjeto} image={Card.image} subtitle={Card.descricao} title={"Orçamento: " + Card.orcamento} key={Card.idProjeto} numberId={Card.idProjeto} status={Card.com_impedimento} progress={Card.progresso}></ProjectsCard>
+        {projetos.map(projeto => (
+          <ProjectsCard projeto={projeto} toogleProjetoModal={toogleModal} ></ProjectsCard>
         ))}
       </MidleCarrousel>
+      <Modal
+        showModal={showModal}
+        fechar={toogleModal}
+        form={<FormsProjeto projeto={projeto} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />}
+        >
+      </Modal>
     </PrincipalContainerStyled>
+
   )
 }
 
