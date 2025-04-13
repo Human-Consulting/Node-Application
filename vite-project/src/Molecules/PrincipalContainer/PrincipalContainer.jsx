@@ -3,34 +3,18 @@ import { Avatar, Stack } from '@mui/material'
 import ProjectsCard from '../ProjectsCard/ProjectsCard'
 import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient';
 import { useEffect, useState } from 'react';
-import { getProjetos } from '../../Utils/cruds/CrudsProjeto'
-import { getUsuarios } from '../../Utils/cruds/CrudsUsuario'
 import Modal from '../Modal/Modal'
 import FormsProjeto from './../Forms/FormsProjeto.jsx';
 
-const PrincipalContainer = ({ toogleLateralBar, idEmpresa }) => {
+const PrincipalContainer = ({ toogleLateralBar, idEmpresa, atualizarProjetos, projetos, usuarios }) => {
   const [showModal, setShowModal] = useState(false);
   const [projeto, setProjeto] = useState(null);
-  const [projetos, setProjetos] = useState([]);
-  const [usuarios, setUsuarios] = useState([]);
-
-  const atualizarProjetos = async () => {
-    const projetos = await getProjetos(idEmpresa);
-    setProjetos(projetos)
-  };
-  
-  const buscarUsuarios = async () => {
-    const usuarios = await getUsuarios(idEmpresa);
-    setUsuarios(usuarios);
-  };
   
   const filtrarProjetos = (texto) => {
     const projetosFiltrados = projetos.filter(projeto => projeto.descricao.contains(texto));
   }
 
   useEffect(() => {
-    atualizarProjetos();
-    buscarUsuarios();
     toogleLateralBar();
   }, []);
 
@@ -66,7 +50,7 @@ const PrincipalContainer = ({ toogleLateralBar, idEmpresa }) => {
       </HeaderContent>
       <MidleCarrousel>
         {projetos.map(projeto => (
-          <ProjectsCard idEmpresa={idEmpresa} projeto={projeto} toogleProjetoModal={toogleModal} ></ProjectsCard>
+          <ProjectsCard idEmpresa={idEmpresa} projeto={projeto} toogleProjetoModal={toogleModal} atualizarProjetos={atualizarProjetos} ></ProjectsCard>
         ))}
         <ProjectsCard toogleProjetoModal={toogleModal} ></ProjectsCard>
       </MidleCarrousel>

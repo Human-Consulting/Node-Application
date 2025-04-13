@@ -25,7 +25,7 @@ const Task = ({ toogleLateralBar, idEmpresa }) => {
     
   };
 
-  const atualizarSprints = async () => {
+  const atualizarProjeto = async () => {
     const sprints = await getSprints(idProjeto);
     setSprintsList(sprints);
 
@@ -33,7 +33,7 @@ const Task = ({ toogleLateralBar, idEmpresa }) => {
 
   useEffect(() => {
     buscarUsuarios();
-    atualizarSprints();
+    atualizarProjeto();
     toogleLateralBar();
   }, []);
 
@@ -48,14 +48,14 @@ const Task = ({ toogleLateralBar, idEmpresa }) => {
     <>
       <TaskBody>
         {sprintsList.map((sprint, index) => (
-          <TaskCard toogleTaskModal={toogleModal} sprint={sprint} index={index + 1} />
+          <TaskCard toogleTaskModal={toogleModal} sprint={sprint} index={index + 1} atualizarProjeto={atualizarProjeto} />
         ))}
         <TaskCard toogleTaskModal={toogleModal} />
       </TaskBody>
 
       <Modal showModal={showModal} fechar={toogleModal}
-        form={ acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuariosList} idSprint={id} />
-      : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} />}
+        form={ acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuariosList} idSprint={id} atualizarProjeto={atualizarProjeto} />
+      : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarProjeto={atualizarProjeto} />}
       >
       </Modal>
     </>

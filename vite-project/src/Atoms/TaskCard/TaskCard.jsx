@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteSprint } from './../../Utils/cruds/CrudsSprint.jsx';
 
-const TaskCard = ({ toogleTaskModal, sprint, index }) => {
+const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjeto }) => {
 
   const navigate = useNavigate()
 
@@ -33,8 +33,9 @@ const TaskCard = ({ toogleTaskModal, sprint, index }) => {
     toogleTaskModal(null, 'sprint', null);
   }
 
-  const handleDeleteSprint = () => {
-    deleteSprint(sprint.idSprint);
+  const handleDeleteSprint = async () => {
+    await deleteSprint(sprint.idSprint);
+    await atualizarProjeto();
   }
 
   return (
@@ -65,7 +66,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index }) => {
 
           <BodyTarefa>
             {sprint.entregas.map((entrega) => (
-              <TarefasItem entrega={entrega} toogleModal={handleOpenModalPutTask} ></TarefasItem>
+              <TarefasItem entrega={entrega} toogleModal={handleOpenModalPutTask} atualizarProjeto={atualizarProjeto} ></TarefasItem>
             ))}
           </BodyTarefa>
           <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', justifyContent: 'center', alignItems: 'center' }}>

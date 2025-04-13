@@ -6,12 +6,16 @@ import PrincipalContainer from '../PrincipalContainer';
 import CentralTask from '../CentralTask/CentralTask';
 import NextStep from '../NextStep/NextStep';
 import { Routes, Route, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getProjetos } from '../../Utils/cruds/CrudsProjeto';
+import { getUsuarios } from '../../Utils/cruds/CrudsUsuario';
 
 const MainContent = () => {
   const { idEmpresa } = useParams();
 
   const [showLateralBar, setShowLateralBar] = useState(true);
+  const [projetos, setProjetos] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
 
   const hideShowLateralBar = () => {
     setShowLateralBar(false);
@@ -21,19 +25,34 @@ const MainContent = () => {
     setShowLateralBar(true);
   }
 
+  const atualizarProjetos = async () => {
+    const projetos = await getProjetos(idEmpresa);
+    setProjetos(projetos);
+  };
+
+  const buscarUsuarios = async () => {
+    const usuarios = await getUsuarios(idEmpresa);
+    setUsuarios(usuarios);
+  };
+
+  useEffect(() => {
+    atualizarProjetos();
+    buscarUsuarios();
+  }, [])
+
   return (
     <BoxAltertive>
 
-      <LateralBar idEmpresa={idEmpresa} />
+      <LateralBar projetos={projetos} idEmpresa={idEmpresa} />
 
       <Routes>
         <Route path="/task/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} idEmpresa={idEmpresa} />} />
         <Route path="/next-step" element={<NextStep />} />
-        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} idEmpresa={idEmpresa} />} />
+        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} projetos={projetos} usuarios={usuarios} />} />
         <Route path="/central-task/:idSprint" element={<CentralTask toogleLateralBar={hideShowLateralBar} />} />
       </Routes>
 
-      <LateralBarRight showLateralBar={showLateralBar} idEmpresa={idEmpresa} />
+      <LateralBarRight showLateralBar={showLateralBar} projetos={projetos} />
     </BoxAltertive>
   );
 };

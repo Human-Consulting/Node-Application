@@ -4,7 +4,7 @@ import { Button, Grid2, Stack } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteTask, putImpedimento } from './../../Utils/cruds/CrudsTask.jsx';
-const TarefasItem = ({ entrega, toogleModal, atualizarTasks }) => {
+const TarefasItem = ({ entrega, toogleModal, atualizarProjeto }) => {
 
   const handleToogleModal = () => {
     const task = {
@@ -18,19 +18,19 @@ const TarefasItem = ({ entrega, toogleModal, atualizarTasks }) => {
     toogleModal(task);
   }
 
-  const handleDeleteTask = () => {
-    deleteTask(entrega.idEntrega);
-    atualizarTasks();
+  const handleDeleteTask = async () => {
+    await deleteTask(entrega.idEntrega);
+    await atualizarProjeto();
   }
 
-  const handleImpedimentoTask = () => {
-    putImpedimento(entrega.idEntrega);
-    atualizarTasks();
+  const handleImpedimentoTask = async () => {
+    await putImpedimento(entrega.idEntrega);
+    await atualizarProjeto();
   }
 
-  const handleFinalizadoTask = () => {
-    putFinalizado(entrega.idEntrega);
-    atualizarTasks();
+  const handleFinalizadoTask = async () => {
+    await putFinalizado(entrega.idEntrega);
+    await atualizarProjeto();
   }
 
   return (

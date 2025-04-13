@@ -171,7 +171,6 @@ export const deleteProjeto = async (idProjeto) => {
                         popup: "swalAlerta",
                     }
                 });
-                toogleModal && toogleModal();
             } else {
                 Swal.fire({
                     icon: "error",

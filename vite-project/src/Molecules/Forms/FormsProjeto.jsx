@@ -7,9 +7,25 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
     const [descricao, setDescricao] = useState(projeto?.descricao || "");
     const [orcamento, setOrcamento] = useState(projeto?.orcamento || 0.0);
     const [fkResponsavel, setResponsavel] = useState(projeto?.idResponsavel || '0');
+    const [urlImagem, setUrlImagem] = useState('');
+
+    const handleFileUpload = (file) => {
+        const reader = new FileReader();
+
+        console.log(file);
+        reader.onloadend = () => {
+            const base64String = reader.result.split(',')[1];
+            console.log(base64String);
+            setUrlImagem(base64String);
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
 
     const handlePostProjeto = async () => {
-        const newProjeto = { fkEmpresa, descricao, orcamento, fkResponsavel };
+        const newProjeto = { fkEmpresa, descricao, orcamento, fkResponsavel, urlImagem };
         await postProjeto(newProjeto, toogleModal);
         atualizarProjetos();
     };
@@ -17,7 +33,7 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
     const handlePutProjeto = async () => {
         const modifiedProjeto = { descricao, orcamento, fkResponsavel }
         await putProjeto(modifiedProjeto, projeto.idProjeto, toogleModal);
-        atualizarProjetos();
+        await atualizarProjetos();
     }
 
     return (
@@ -28,10 +44,13 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                     Descrição:
                     <textarea autoComplete="off" type="text" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
                 </label>
+
                 <label>
                     Orçamento:
                     <input autoComplete="off" type="number" value={orcamento} onChange={(e) => setOrcamento(e.target.value)} />
                 </label>
+
+
                 <label>
                     Responsável:
                     <select value={fkResponsavel} onChange={(e) => setResponsavel(e.target.value)}>
@@ -40,6 +59,11 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                             <option key={usuario.idUsuario} value={usuario.idUsuario}>{usuario.nome}</option>
                         ))}
                     </select>
+                </label>
+                
+                <label>
+                    Imagem:
+                    <input type="file" onChange={(e) => handleFileUpload(e.target.files[0])} />
                 </label>
 
                 {projeto == null ? (

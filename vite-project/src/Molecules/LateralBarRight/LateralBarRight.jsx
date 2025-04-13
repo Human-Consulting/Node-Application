@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { KpiFinalizados, LateralNavBar, MiniCarrousel, SkipLeft, SkipRigth, Slide } from './LateralBarRight.styles'
 import MiniProjectsCard from '../MiniProjectsCard/MiniProjectsCard'
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
@@ -6,12 +6,9 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { Title } from '../ProjectsCard/ProjectsCard.styles';
 import { Stack } from '@mui/material';
 import { TituloHeader } from '../PrincipalContainer/PrincipalContainer.styles';
-import { getProjetos } from '../../Utils/cruds/CrudsProjeto'
 
-const LateralBarRight = ({ showLateralBar, idEmpresa }) => {
+const LateralBarRight = ({ showLateralBar, projetos }) => {
   if (!showLateralBar) return null;
-  
-  const [projetos, setProjetos] = useState([]);
 
   let idx = 0
   let idxTwo = 0
@@ -49,27 +46,18 @@ const LateralBarRight = ({ showLateralBar, idEmpresa }) => {
     }
   };
 
-  const atualizarProjetos = async () => {
-    const projetos = await getProjetos(idEmpresa);
-    setProjetos(projetos);
-  };
-
-  useEffect(() => {
-    atualizarProjetos();
-  }, []);
-
   return (
     <LateralNavBar>
       <Stack>
         <MiniCarrousel>
           <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)', textAlign: 'center', width: '100%' }}>Com Impedimentos</Title>
-          <SkipLeft onClick={handleLeftSkip} ><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft>
+          {caosList.length > 0 ? <SkipLeft onClick={handleLeftSkip} ><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft> : null}
           <Slide ref={carrousel}>
-            {caosList ? caosList.map(projeto => (
+            {caosList.length > 0 ? caosList.map(projeto => (
               <MiniProjectsCard projeto={projeto} />
             )) : <MiniProjectsCard projeto={null} />}
           </Slide>
-          <SkipRigth onClick={handleRightSkip}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth>
+          {caosList.length > 0 ? <SkipRigth onClick={handleRightSkip}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth> : null}
         </MiniCarrousel>
       </Stack>
 
@@ -81,13 +69,13 @@ const LateralBarRight = ({ showLateralBar, idEmpresa }) => {
       <Stack>
         <MiniCarrousel>
           <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)' }}>Finalizados</Title>
-          <SkipLeft onClick={handleLeftSkipTwo}><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft>
+          {finalizadosList.length > 0 ? <SkipLeft onClick={handleLeftSkipTwo}><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft> : null}
           <Slide ref={carrouselTwo}>
-            {finalizadosList.map(Card => (
-              <MiniProjectsCard image={Card.urlImagem} subtitle={Card.subtitle} title={Card.descricao} key={Card.idProjeto} numberId={Card.idProjeto} progress={Card.progresso} status={Card.comImpedimento} card={Card} />
-            ))}
+            {finalizadosList.length > 0 ? finalizadosList.map(projeto => (
+              <MiniProjectsCard projeto={projeto} />
+            )) : <MiniProjectsCard projeto={null} />}
           </Slide>
-          <SkipRigth onClick={handleRightSkipTwo}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth>
+          {finalizadosList.length > 0 ? <SkipRigth onClick={handleRightSkipTwo}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth> : null}
         </MiniCarrousel>
       </Stack>
 

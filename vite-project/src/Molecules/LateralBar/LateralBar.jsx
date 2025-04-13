@@ -5,28 +5,15 @@ import InsightsIcon from '@mui/icons-material/Insights';
 import GroupIcon from '@mui/icons-material/Group';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import ProjectsTypes from '../../Atoms/ProjectsTypes';
-import { useEffect, useState } from 'react';
-import { getProjetos } from '../../Utils/cruds/CrudsProjeto'
 import { useNavigate } from 'react-router';
 
-const LateralBar = ({ idEmpresa }) => {
+const LateralBar = ({ projetos, idEmpresa }) => {
     const navigate = useNavigate()
-
-    const [projetos, setProjetos] = useState([]);
-
-    const atualizarProjetos = async () => {
-        const projetos = await getProjetos(idEmpresa);
-        setProjetos(projetos);
-    };
 
     const handleOpenHome = () => {
         navigate(`/Home/${idEmpresa}`);
         console.log('estou')
     }
-
-    useEffect(() => {
-        atualizarProjetos();
-    }, []);
 
     const handleClick = () => {
         console.log('0i')

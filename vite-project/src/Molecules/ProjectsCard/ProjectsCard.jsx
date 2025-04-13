@@ -5,7 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteProjeto } from './../../Utils/cruds/CrudsProjeto.jsx';
 
-function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal }) {
+function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjetos }) {
   const navigate = useNavigate();
 
   let statusColor = '#08D13D';
@@ -31,8 +31,9 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal }) {
     toogleProjetoModal(projeto);
   }
 
-  const handleDeleteProjeto = () => {
-    deleteProjeto(projeto.idProjeto);
+  const handleDeleteProjeto = async () => {
+    await deleteProjeto(projeto.idProjeto);
+    await atualizarProjetos();
   }
 
   return (
@@ -69,11 +70,13 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal }) {
           </StatusCircle>
         </BoxBody>
         :
-        <BoxBody onClick={handleOpenModalPostProjeto} sx={{ justifyContent: 'center', padding: '32px' }}>
-          <Button
-            variant="contained">
-            CRIAR NOVO PROJETO
-          </Button>
+        <BoxBody onClick={handleOpenModalPostProjeto} sx={{height: '224px', justifyContent: 'center', alignItems: 'center'}}>
+          <BodyCard sx={{top: '25%', justifyContent: 'center', alignItems: 'center'}}>
+            <Button
+              variant="contained">
+              CRIAR NOVO PROJETO
+            </Button>
+          </BodyCard>
         </BoxBody>}
     </>
   );
