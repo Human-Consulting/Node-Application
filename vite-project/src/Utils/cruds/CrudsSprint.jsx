@@ -63,9 +63,8 @@ export const postSprint = async (newSprint, toogleModal) => {
 };
 
 export const getSprints = async (idProjeto) => {
-    // TODO: Criar Endpoint para filtrar sprints sobre projetos.
     try {
-        const res = await fetch("http://localhost:8081/sprints");
+        const res = await fetch(`http://localhost:8081/sprints/buscarPorProjeto/${idProjeto}`);
         const data = await res.json();
         return data;
     } catch (error) {
@@ -136,7 +135,7 @@ export const putSprint = async (modifiedSprint, idSprint, toogleModal) => {
     }
 };
 
-export const deleteSprint = async (idSprint, toogleModal) => {
+export const deleteSprint = async (idSprint) => {
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -158,8 +157,6 @@ export const deleteSprint = async (idSprint, toogleModal) => {
                 method: 'DELETE'
             });
 
-            const data = await res.json();
-
             if (res.ok) {
                 Swal.fire({
                     icon: "success",
@@ -169,12 +166,11 @@ export const deleteSprint = async (idSprint, toogleModal) => {
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: data.message || "Sprint removida com sucesso!",
+                    text: "Sprint removida com sucesso!",
                     customClass: {
                         popup: "swalAlerta",
                     }
                 });
-                toogleModal && toogleModal();
             } else {
                 Swal.fire({
                     icon: "error",
@@ -184,7 +180,7 @@ export const deleteSprint = async (idSprint, toogleModal) => {
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: data.message || "Sprint não encontrada!",
+                    text: "Sprint não encontrada!",
                     customClass: {
                         popup: "swalAlerta",
                     }

@@ -1,13 +1,12 @@
 import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './MiniProjectsCard.styles'
-import PropTypes from 'prop-types'
 import { Stack } from '@mui/material'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-function MiniProjectsCard({ status, title, subtitle, image, progress }) {
+function MiniProjectsCard({ projeto }) {
+  console.log("ouuuuu");
   let statusColor = '#08D13D';
-  if (status == 0) {
+  if (projeto.comImpedimento == false) {
     statusColor = '#08D13D';
-  } else if (status == 1 && progress > 50) {
+  } else if (projeto.comImpedimento == true && projeto.progresso > 50) {
     statusColor = '#CED108';
   } else {
     statusColor = '#FF0707';
@@ -16,15 +15,15 @@ function MiniProjectsCard({ status, title, subtitle, image, progress }) {
   return (
     <>
       <BoxBody>
-        <HeaderCard sx={{ backgroundImage: `URL(${image})` }} />
+        <HeaderCard sx={{ backgroundImage: `URL(${projeto.urlImagem})` }} />
         <BodyCard>
           <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Title>{title}</Title>
+            <Title>{projeto.nomeResponsavel}</Title>
           </Stack>
-          <Subtitle>{subtitle}</Subtitle>
+          <Subtitle>{projeto.descricao}</Subtitle>
           <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <ProgressBar>
-              <Progress sx={{ width: `${progress}%` }} />
+              <Progress sx={{ width: `${projeto.progresso}%` }} />
             </ProgressBar>
           </Stack>
         </BodyCard>
@@ -35,15 +34,5 @@ function MiniProjectsCard({ status, title, subtitle, image, progress }) {
     </>
   )
 }
-MiniProjectsCard.propTypes = {
-  status: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  progress: PropTypes.number.isRequired
 
-
-
-
-}
 export default MiniProjectsCard

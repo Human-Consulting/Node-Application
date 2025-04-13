@@ -5,10 +5,12 @@ import Task from '../Task/Task';
 import PrincipalContainer from '../PrincipalContainer';
 import CentralTask from '../CentralTask/CentralTask';
 import NextStep from '../NextStep/NextStep';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 import { useState } from 'react';
 
 const MainContent = () => {
+  const { idEmpresa } = useParams();
+
   const [showLateralBar, setShowLateralBar] = useState(true);
 
   const hideShowLateralBar = () => {
@@ -22,16 +24,16 @@ const MainContent = () => {
   return (
     <BoxAltertive>
 
-      <LateralBar />
+      <LateralBar idEmpresa={idEmpresa} />
 
       <Routes>
-        <Route path="/task/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} />} />
+        <Route path="/task/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} idEmpresa={idEmpresa} />} />
         <Route path="/next-step" element={<NextStep />} />
-        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} />} />
-        <Route path="/central-task/:sprintId" element={<CentralTask toogleLateralBar={hideShowLateralBar} />} />
+        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} idEmpresa={idEmpresa} />} />
+        <Route path="/central-task/:idSprint" element={<CentralTask toogleLateralBar={hideShowLateralBar} />} />
       </Routes>
 
-      <LateralBarRight showLateralBar={showLateralBar} />
+      <LateralBarRight showLateralBar={showLateralBar} idEmpresa={idEmpresa} />
     </BoxAltertive>
   );
 };

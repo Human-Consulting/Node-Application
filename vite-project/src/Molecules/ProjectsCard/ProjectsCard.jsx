@@ -5,14 +5,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteProjeto } from './../../Utils/cruds/CrudsProjeto.jsx';
 
-function ProjectsCard({ projeto, toogleProjetoModal }) {
+function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal }) {
   const navigate = useNavigate();
 
   let statusColor = '#08D13D';
   if (projeto) {
-    if (projeto.com_impedimento == 0) {
+    if (projeto.comImpedimento == 0) {
       statusColor = '#08D13D';
-    } else if (projeto.com_impedimento == 1 && projeto.progresso > 50) {
+    } else if (projeto.comImpedimento == 1 && projeto.progresso > 50) {
       statusColor = '#CED108';
     } else {
       statusColor = '#FF0707';
@@ -20,7 +20,7 @@ function ProjectsCard({ projeto, toogleProjetoModal }) {
   }
 
   const handleOpenProject = () => {
-    navigate(`/Home/task/${Number(projeto.idProjeto)}`);
+    navigate(`/Home/${idEmpresa}/task/${Number(projeto.idProjeto)}`);
   }
 
   const handleOpenModalPostProjeto = () => {
@@ -32,17 +32,22 @@ function ProjectsCard({ projeto, toogleProjetoModal }) {
   }
 
   const handleDeleteProjeto = () => {
-    deleteProjeto(projeto.idProjeto, toogleProjetoModal);
+    deleteProjeto(projeto.idProjeto);
   }
 
   return (
     <>
       {projeto ?
         <BoxBody onClick={handleOpenProject}>
-          <HeaderCard sx={{ backgroundImage: `URL(${projeto.image})` }} />
+          <HeaderCard sx={{
+            backgroundImage: `url(data:image/png;base64,${projeto.urlImagem})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }} />
           <BodyCard>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Title>Orçamento: R${projeto.orcamento}</Title>
+              <Title>{projeto.nomeResponsavel}</Title>
               <DeleteIcon sx={{ color: '#fff', position: 'absolute', right: '40px', cursor: 'pointer', transition: '1s' }} onClick={(e) => {
                 e.stopPropagation();
                 handleDeleteProjeto();
@@ -65,10 +70,10 @@ function ProjectsCard({ projeto, toogleProjetoModal }) {
         </BoxBody>
         :
         <BoxBody onClick={handleOpenModalPostProjeto} sx={{ justifyContent: 'center', padding: '32px' }}>
-            <Button
-              variant="contained">
-              CRIAR NOVO PROJETO
-            </Button>
+          <Button
+            variant="contained">
+            CRIAR NOVO PROJETO
+          </Button>
         </BoxBody>}
     </>
   );

@@ -9,18 +9,18 @@ import { useEffect, useState } from 'react';
 import { getProjetos } from '../../Utils/cruds/CrudsProjeto'
 import { useNavigate } from 'react-router';
 
-const LateralBar = () => {
+const LateralBar = ({ idEmpresa }) => {
     const navigate = useNavigate()
 
     const [projetos, setProjetos] = useState([]);
 
     const atualizarProjetos = async () => {
-        const projetos = await getProjetos();
+        const projetos = await getProjetos(idEmpresa);
         setProjetos(projetos);
     };
 
     const handleOpenHome = () => {
-        navigate(`/Home`);
+        navigate(`/Home/${idEmpresa}`);
         console.log('estou')
     }
 
@@ -73,7 +73,7 @@ const LateralBar = () => {
                 </ChipZone>
                 <CardZone>
                     {projetos.map(projeto => (
-                        <ProjectsTypes projeto={projeto} />
+                        <ProjectsTypes idEmpresa={idEmpresa} projeto={projeto} />
                     ))}
                 </CardZone>
             </DivisorTwo>

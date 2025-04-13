@@ -11,7 +11,7 @@ import CentralTask from './Molecules/CentralTask/CentralTask.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/home",
+    path: "/home/:idEmpresa",
     element: <App/>,
     children: [
       {
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         element: <NextStep />, 
       },
       {
-        path: "central-task/:tarefaId", 
+        path: "central-task/:idSprint", 
         element: <CentralTask />,
       },
     ],

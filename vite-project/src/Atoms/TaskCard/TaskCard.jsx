@@ -1,12 +1,12 @@
-import { BodyTarefa, NavTask, TaskCardBody, TItleTarefa } from './TaskCard.styles'
+import { BodyTarefa, NavTask, TaskCardBody } from './TaskCard.styles'
 import { Button, Grid2, Stack } from '@mui/material'
 import TarefasItem from '../TarefasItem/TarefasItem'
 import { useNavigate } from 'react-router'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteTask } from './../../Utils/cruds/CrudsTask.jsx';
+import { deleteSprint } from './../../Utils/cruds/CrudsSprint.jsx';
 
-const TaskCard = ({ toogleTaskModal, sprint, index, tarefas, usuarios }) => {
+const TaskCard = ({ toogleTaskModal, sprint, index }) => {
 
   const navigate = useNavigate()
 
@@ -16,23 +16,25 @@ const TaskCard = ({ toogleTaskModal, sprint, index, tarefas, usuarios }) => {
   }
 
   const handleOpenModalPutTask = (task) => {
-    toogleTaskModal(task, 'task');
+    toogleTaskModal(task, 'task', null);
   }
 
   const handleOpenModalPutSprint = () => {
-    toogleTaskModal(sprint, 'sprint');
+    toogleTaskModal(sprint, 'sprint', null);
   }
 
   const handleOpenModalPostTask = () => {
-    toogleTaskModal(null, 'task');
+    console.log(sprint);
+    toogleTaskModal(null, 'task', sprint.idSprint);
+    
   }
 
   const handleOpenModalPostSprint = () => {
-    toogleTaskModal(null, 'sprint');
+    toogleTaskModal(null, 'sprint', null);
   }
 
-  const handleDeleteTask = () => {
-    deleteTask(sprint.idSprint, toogleTaskModal);
+  const handleDeleteSprint = () => {
+    deleteSprint(sprint.idSprint);
   }
 
   return (
@@ -40,7 +42,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, tarefas, usuarios }) => {
       {sprint ?
         <>
           <NavTask>Sprint {index}
-            <DeleteIcon sx={{ color: '#fff', position: 'absolute', right: '40px', cursor: 'pointer' }} onClick={handleDeleteTask} />
+            <DeleteIcon sx={{ color: '#fff', position: 'absolute', right: '40px', cursor: 'pointer' }} onClick={handleDeleteSprint} />
             <EditIcon sx={{ color: '#fff', position: 'absolute', right: '8px', cursor: 'pointer' }} onClick={handleOpenModalPutSprint} />
           </NavTask>
           <Stack sx={{ height: '20%', width: '70%', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
@@ -54,7 +56,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, tarefas, usuarios }) => {
               Fim: {sprint.dtFim}
             </Grid2>
             <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
-              Total entregas: {tarefas.filter(tarefa => tarefa.fkSprint == sprint.idSprint).length}
+              Total entregas: {sprint.entregas.length}
             </Grid2>
             <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
               Progresso: {sprint.progresso}%
@@ -62,8 +64,8 @@ const TaskCard = ({ toogleTaskModal, sprint, index, tarefas, usuarios }) => {
           </Grid2>
 
           <BodyTarefa>
-            {tarefas.filter(tarefa => tarefa.fkSprint == sprint.idSprint).map((item) => (
-              <TarefasItem idTask={item.idSprint} progresso={item.progresso} impedido={item.impedido} finalizado={item.finalizado} dataInicio={item.dtInicio} dataFim={item.dtFim} responsavel={usuarios.filter(usuario => usuario.idUsuario === item.fkResponsavel)[0]} descricao={item.descricao} key={item.index} toogleModal={handleOpenModalPutTask}>{item.descricao}</TarefasItem>
+            {sprint.entregas.map((entrega) => (
+              <TarefasItem entrega={entrega} toogleModal={handleOpenModalPutTask} ></TarefasItem>
             ))}
           </BodyTarefa>
           <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', justifyContent: 'center', alignItems: 'center' }}>

@@ -4,7 +4,7 @@ export const postTask = async (newTask, toogleModal) => {
     try {
         const formattedTask = JSON.stringify(newTask);
 
-        const res = await fetch("http://localhost:8081/tasks", {
+        const res = await fetch("http://localhost:8081/entregas", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -62,9 +62,9 @@ export const postTask = async (newTask, toogleModal) => {
     }
 };
 
-export const getTasks = async () => {
+export const getTasks = async (idProjeto) => {
     try {
-        const res = await fetch("http://localhost:8081/tasks");
+        const res = await fetch(`http://localhost:8081/entregas/buscarPorProjeto/${idProjeto}`);
         const data = await res.json();
         return data;
     } catch (error) {
@@ -77,7 +77,7 @@ export const putTask = async (modifiedTask, idTask, toogleModal) => {
     try {
         const formattedTask = JSON.stringify(modifiedTask);
 
-        const res = await fetch(`http://localhost:8081/tasks/${idTask}`, {
+        const res = await fetch(`http://localhost:8081/entregas/${idTask}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -111,7 +111,7 @@ export const putTask = async (modifiedTask, idTask, toogleModal) => {
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Número de série em conflito!",
+                text: data.message || "Erro ao enviar modificação!",
                 customClass: {
                     popup: "swalAlerta",
                 }
@@ -135,7 +135,7 @@ export const putTask = async (modifiedTask, idTask, toogleModal) => {
     }
 };
 
-export const deleteTask = async (idTask, toogleModal) => {
+export const deleteTask = async (idTask) => {
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -153,11 +153,9 @@ export const deleteTask = async (idTask, toogleModal) => {
         });
 
         if (confirm.isConfirmed) {
-            const res = await fetch(`http://localhost:8081/tasks/${idTask}`, {
+            const res = await fetch(`http://localhost:8081/entregas/${idTask}`, {
                 method: 'DELETE'
             });
-
-            const data = await res.json();
 
             if (res.ok) {
                 Swal.fire({
@@ -168,12 +166,11 @@ export const deleteTask = async (idTask, toogleModal) => {
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: data.message || "Task removida com sucesso!",
+                    text: "Task removida com sucesso!",
                     customClass: {
                         popup: "swalAlerta",
                     }
                 });
-                toogleModal && toogleModal();
             } else {
                 Swal.fire({
                     icon: "error",
@@ -183,7 +180,7 @@ export const deleteTask = async (idTask, toogleModal) => {
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: data.message || "Task não encontrada!",
+                    text: "Task não encontrada!",
                     customClass: {
                         popup: "swalAlerta",
                     }
@@ -195,6 +192,126 @@ export const deleteTask = async (idTask, toogleModal) => {
         Swal.fire({
             icon: "error",
             title: "Oops...",
+            position: "center",
+            backdrop: false,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            text: error.message || "Algo deu errado!",
+            customClass: {
+                popup: "swalAlerta",
+            }
+        });
+    }
+};
+
+export const putImpedimento = async (idTask) => {
+    try {
+
+        const res = await fetch(`http://localhost:8081/entregas/impedimento/${idTask}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            Swal.fire({
+                icon: "success",
+                title: res.status,
+                position: "center",
+                backdrop: false,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                text: data.message || "Impedimento atualizado com sucesso!",
+                customClass: {
+                    popup: "swalAlerta",
+                }
+            });
+            toogleModal && toogleModal();
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: res.status,
+                position: "center",
+                backdrop: false,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                text: data.message || "Erro ao enviar modificação!",
+                customClass: {
+                    popup: "swalAlerta",
+                }
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        Swal.fire({
+            icon: "error",
+            title: "Erro",
+            position: "center",
+            backdrop: false,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            text: error.message || "Algo deu errado!",
+            customClass: {
+                popup: "swalAlerta",
+            }
+        });
+    }
+};
+
+export const putFinalizado = async (idTask) => {
+    try {
+
+        const res = await fetch(`http://localhost:8081/entregas/finalizada/${idTask}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            Swal.fire({
+                icon: "success",
+                title: res.status,
+                position: "center",
+                backdrop: false,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                text: data.message || "Status de finalização atualizado com sucesso!",
+                customClass: {
+                    popup: "swalAlerta",
+                }
+            });
+            toogleModal && toogleModal();
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: res.status,
+                position: "center",
+                backdrop: false,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                text: data.message || "Erro ao enviar modificação!",
+                customClass: {
+                    popup: "swalAlerta",
+                }
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        Swal.fire({
+            icon: "error",
+            title: "Erro",
             position: "center",
             backdrop: false,
             timer: 2000,

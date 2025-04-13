@@ -62,9 +62,9 @@ export const postProjeto = async (newProjeto, toogleModal) => {
     }
 };
 
-export const getProjetos = async () => {
+export const getProjetos = async (idEmpresa) => {
     try {
-        const res = await fetch("http://localhost:8081/projetos");
+        const res = await fetch(`http://localhost:8081/projetos/buscarPorEmpresa/${idEmpresa}`);
         const data = await res.json();
         return data;
     } catch (error) {
@@ -111,7 +111,7 @@ export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Número de série em conflito!",
+                text: data.message,
                 customClass: {
                     popup: "swalAlerta",
                 }
@@ -135,7 +135,7 @@ export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
     }
 };
 
-export const deleteProjeto = async (idProjeto, toogleModal) => {
+export const deleteProjeto = async (idProjeto) => {
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -157,8 +157,6 @@ export const deleteProjeto = async (idProjeto, toogleModal) => {
                 method: 'DELETE'
             });
 
-            const data = await res.json();
-
             if (res.ok) {
                 Swal.fire({
                     icon: "success",
@@ -168,7 +166,7 @@ export const deleteProjeto = async (idProjeto, toogleModal) => {
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: data.message || "Projeto removida com sucesso!",
+                    text: "Projeto removida com sucesso!",
                     customClass: {
                         popup: "swalAlerta",
                     }
@@ -183,7 +181,7 @@ export const deleteProjeto = async (idProjeto, toogleModal) => {
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: data.message || "Projeto não encontrada!",
+                    text: "Projeto não encontrada!",
                     customClass: {
                         popup: "swalAlerta",
                     }

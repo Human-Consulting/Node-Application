@@ -2,17 +2,17 @@ import { ImageBox, ProjectsTypesBox, SubTitle, Title } from './ProjectTypes.styl
 import { Stack } from '@mui/material'
 import { useNavigate } from 'react-router'
 
-const ProjectsTypes = ({ projeto }) => {
+const ProjectsTypes = ({ idEmpresa, projeto }) => {
 
   const navigate = useNavigate()
 
   const handleOpenProject = () => {
-    navigate(`/Home/task/${Number(projeto.idProjeto)}`);
+    navigate(`/Home/${idEmpresa}/task/${Number(projeto.idProjeto)}`);
   }
 
   return (
     <ProjectsTypesBox onClick={handleOpenProject}>
-      <ImageBox src={projeto.urlImage} />
+      <ImageBox src={`data:image/png;base64,${projeto.urlImagem}`} />
       <Stack sx={{ justifyContent: 'space-between' }}>
         <Title>
           {projeto.descricao}

@@ -1,20 +1,21 @@
 import { useState } from "react";
 import { postProjeto, putProjeto } from '../../Utils/cruds/CrudsProjeto.jsx';
 
-const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios }) => {
-
+const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmpresa }) => {
+    console.log(projeto);
+    
     const [descricao, setDescricao] = useState(projeto?.descricao || "");
     const [orcamento, setOrcamento] = useState(projeto?.orcamento || 0.0);
-    const [responsavel, setResponsavel] = useState(projeto?.responsavel || '#');
+    const [fkResponsavel, setResponsavel] = useState(projeto?.idResponsavel || '0');
 
     const handlePostProjeto = async () => {
-        const newProjeto = { descricao, orcamento, responsavel };
+        const newProjeto = { fkEmpresa, descricao, orcamento, fkResponsavel };
         await postProjeto(newProjeto, toogleModal);
         atualizarProjetos();
     };
 
     const handlePutProjeto = async () => {
-        const modifiedProjeto = { descricao, orcamento, responsavel }
+        const modifiedProjeto = { descricao, orcamento, fkResponsavel }
         await putProjeto(modifiedProjeto, projeto.idProjeto, toogleModal);
         atualizarProjetos();
     }
@@ -33,7 +34,7 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios }) => 
                 </label>
                 <label>
                     Responsável:
-                    <select value={responsavel} onChange={(e) => setResponsavel(e.target.value)}>
+                    <select value={fkResponsavel} onChange={(e) => setResponsavel(e.target.value)}>
                         <option value="#">Selecione o responsável</option>
                         {usuarios.map((usuario) => (
                             <option key={usuario.idUsuario} value={usuario.idUsuario}>{usuario.nome}</option>
