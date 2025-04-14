@@ -8,15 +8,16 @@ import Login from './Pages/Login/Login.jsx'
 import Task from './Molecules/Task/Task.jsx'
 import NextStep from './Molecules/NextStep/NextStep.jsx'
 import CentralTask from './Molecules/CentralTask/CentralTask.jsx'
+import Usuarios from './Molecules/Usuarios/Usuarios.jsx'
 import Dashboard from './Molecules/Dashboard/Dashboard.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/home",
+    path: "/home/:idEmpresa",
     element: <App/>,
     children: [
       {
-        path: "task",
+        path: "task/:idProjeto",
         element: <Task />, 
       },
       {
@@ -29,8 +30,12 @@ const router = createBrowserRouter([
         element: <NextStep />, 
       },
       {
-        path: "central-task/:tarefaId", 
+        path: "central-task/:idSprint", 
         element: <CentralTask />,
+      },
+      {
+        path: "Usuarios/:idEmpresa", 
+        element: <Usuarios />,
       },
     ],
   },

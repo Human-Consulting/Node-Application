@@ -3,18 +3,20 @@ import { KpiFinalizados, LateralNavBar, MiniCarrousel, SkipLeft, SkipRigth, Slid
 import MiniProjectsCard from '../MiniProjectsCard/MiniProjectsCard'
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import MockList from '../../Mock/MockList/MockList';
 import { Title } from '../ProjectsCard/ProjectsCard.styles';
 import { Stack } from '@mui/material';
 import { TituloHeader } from '../PrincipalContainer/PrincipalContainer.styles';
 
-const LateralBarRight = () => {
+const LateralBarRight = ({ showLateralBar, projetos }) => {
+  if (!showLateralBar) return null;
+
   let idx = 0
   let idxTwo = 0
   const carrousel = useRef(null)
   const carrouselTwo = useRef(null)
-  const caosList = MockList.filter(item => item.status.toLowerCase().includes('caos'))
-  const finalizadosList = MockList.filter(item => item.status.toLowerCase().includes('ok'))
+  const caosList = projetos.filter(item => item.comImpedimento == true);
+  const noneList = projetos.filter(item => item.progresso != 100);
+  const finalizadosList = projetos.filter(item => item.progresso == 100);
 
   const handleRightSkip = () => {
     if (idx < caosList.length - 1) {
@@ -48,32 +50,32 @@ const LateralBarRight = () => {
     <LateralNavBar>
       <Stack>
         <MiniCarrousel>
-          <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)' }}>impedimentos</Title>
-          <SkipLeft onClick={handleLeftSkip}><ArrowLeftIcon sx={{ color: '#1d1d1d' }} /></SkipLeft>
+          <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)', textAlign: 'center', width: '100%' }}>Com Impedimentos</Title>
+          {caosList.length > 0 ? <SkipLeft onClick={handleLeftSkip} ><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft> : null}
           <Slide ref={carrousel}>
-            {caosList.map(Card => (
-              <MiniProjectsCard image={Card.image} subtitle={Card.subtitle} title={Card.title} key={Card.id} numberId={Card.id}  progress={Card.progresso} status={Card.status} />
-            ))}
+            {caosList.length > 0 ? caosList.map(projeto => (
+              <MiniProjectsCard projeto={projeto} />
+            )) : <MiniProjectsCard projeto={null} />}
           </Slide>
-          <SkipRigth onClick={handleRightSkip}><ArrowRightIcon sx={{ color: '#1d1d1d' }} /></SkipRigth>
+          {caosList.length > 0 ? <SkipRigth onClick={handleRightSkip}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth> : null}
         </MiniCarrousel>
       </Stack>
 
-      <Stack sx={{gap: '8px'}}>
-      <Title sx={{width: '100%', textAlign: 'center'}}>Não finalizados</Title>
-        <KpiFinalizados><TituloHeader sx={{color: '#FF0707', height: '72px'}}>{caosList.length}</TituloHeader></KpiFinalizados>
+      <Stack sx={{ gap: '8px' }}>
+        <Title sx={{ width: '100%', textAlign: 'center' }}>Não Finalizados</Title>
+        <KpiFinalizados><TituloHeader sx={{ color: '#FF0707', height: '72px' }}>{noneList.length}</TituloHeader></KpiFinalizados>
       </Stack>
 
       <Stack>
         <MiniCarrousel>
-          <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)' }}>finalizados</Title>
-          <SkipLeft onClick={handleLeftSkipTwo}><ArrowLeftIcon sx={{ color: '#1d1d1d' }} /></SkipLeft>
+          <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)' }}>Finalizados</Title>
+          {finalizadosList.length > 0 ? <SkipLeft onClick={handleLeftSkipTwo}><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft> : null}
           <Slide ref={carrouselTwo}>
-            {finalizadosList.map(Card => (
-              <MiniProjectsCard image={Card.image} subtitle={Card.subtitle} title={Card.title} key={Card.id} numberId={Card.id} progress={Card.progresso} status={Card.status} />
-            ))}
+            {finalizadosList.length > 0 ? finalizadosList.map(projeto => (
+              <MiniProjectsCard projeto={projeto} />
+            )) : <MiniProjectsCard projeto={null} />}
           </Slide>
-          <SkipRigth onClick={handleRightSkipTwo}><ArrowRightIcon sx={{ color: '#1d1d1d' }} /></SkipRigth>
+          {finalizadosList.length > 0 ? <SkipRigth onClick={handleRightSkipTwo}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth> : null}
         </MiniCarrousel>
       </Stack>
 
