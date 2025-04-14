@@ -14,14 +14,22 @@ const FormsSprint = ({ sprint, toogleModal, atualizarProjeto, fkProjeto }) => {
     };
 
     const handlePutSprint = async () => {
-        const modifiedSprint = { descricao, dtInicio, dtFim }
+        const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
+        const modifiedSprint = {
+            idEditor: usuarioLogado.idUsuario,
+            permissaoEditor: usuarioLogado.permissao,
+            descricao,
+            dtInicio,
+            dtFim
+        }
         await putSprint(modifiedSprint, Sprint.idSprint, toogleModal);
         atualizarProjeto();
     }
 
     return (
         <>
-            <h2>{sprint == null ? "Adicionar Sprint" : `Editar Sprint ${sprint.idSprint}`}</h2>
+            <h2>{sprint == null ? "Adicionar Sprint" : `Editar Sprint`}</h2>
             <form onSubmit={(e) => e.preventDefault()}>
                 <label>
                     Descrição:

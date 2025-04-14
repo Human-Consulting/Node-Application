@@ -14,9 +14,16 @@ function MiniProjectsCard({ projeto }) {
 
   return (
     <>
-      { projeto != null ?
+      {projeto != null ?
         <BoxBody>
-          <HeaderCard sx={{ backgroundImage: `URL(${projeto.urlImagem})` }} />
+          <HeaderCard
+            sx={{
+              backgroundImage: `url("data:image/png;base64,${projeto.urlImagem}")`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          />
           <BodyCard>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <Title>{projeto.nomeResponsavel}</Title>
@@ -32,10 +39,10 @@ function MiniProjectsCard({ projeto }) {
           </StatusCircle>
 
         </BoxBody>
-        : 
+        :
         <BoxBody>
-          <BodyCard sx={{top: '25%', justifyContent: 'center', alignItems: 'center'}}>
-              <Title>Sem dados.</Title>
+          <BodyCard sx={{ top: '25%', justifyContent: 'center', alignItems: 'center' }}>
+            <Title>Sem dados.</Title>
           </BodyCard>
 
         </BoxBody>

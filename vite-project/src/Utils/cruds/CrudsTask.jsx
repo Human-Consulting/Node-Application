@@ -205,14 +205,17 @@ export const deleteTask = async (idTask) => {
     }
 };
 
-export const putImpedimento = async (idTask) => {
+export const putImpedimento = async (idEntrega, body) => {
     try {
+        const formattedBody = JSON.stringify(body);
 
-        const res = await fetch(`http://localhost:8081/entregas/impedimento/${idTask}`, {
+        const res = await fetch(`http://localhost:8081/entregas/impedimento/${idEntrega}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: formattedBody
+            
         });
 
         const data = await res.json();
@@ -231,7 +234,6 @@ export const putImpedimento = async (idTask) => {
                     popup: "swalAlerta",
                 }
             });
-            toogleModal && toogleModal();
         } else {
             Swal.fire({
                 icon: "error",
@@ -265,13 +267,16 @@ export const putImpedimento = async (idTask) => {
     }
 };
 
-export const putFinalizado = async (idTask) => {
+export const putFinalizado = async (idTask, body) => {
     try {
-
+        const formattedBody = JSON.stringify(body);
         const res = await fetch(`http://localhost:8081/entregas/finalizada/${idTask}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
+            },
+            body: {
+                formattedBody
             }
         });
 

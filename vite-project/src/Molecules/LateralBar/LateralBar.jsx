@@ -6,17 +6,25 @@ import GroupIcon from '@mui/icons-material/Group';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import ProjectsTypes from '../../Atoms/ProjectsTypes';
 import { useNavigate } from 'react-router';
+import { Button } from '@mui/material';
 
 const LateralBar = ({ projetos, idEmpresa }) => {
     const navigate = useNavigate()
 
     const handleOpenHome = () => {
         navigate(`/Home/${idEmpresa}`);
-        console.log('estou')
+    }
+
+    const handleOpenUsuarios = () => {
+        navigate(`/Home/${idEmpresa}/Usuarios/${idEmpresa}`);
+    }
+
+    const handleExit = () => {
+        localStorage.clear();
+        navigate('/');
     }
 
     const handleClick = () => {
-        console.log('0i')
     }
 
 
@@ -36,7 +44,7 @@ const LateralBar = ({ projetos, idEmpresa }) => {
                     </Title>
 
                 </Stack>
-                <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }}>
+                <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }} onClick={handleOpenUsuarios}>
                     <GroupIcon sx={{ color: '#ffff' }} />
                     <Title>
                         Gerenciamento de Usuários
@@ -63,6 +71,7 @@ const LateralBar = ({ projetos, idEmpresa }) => {
                         <ProjectsTypes idEmpresa={idEmpresa} projeto={projeto} />
                     ))}
                 </CardZone>
+                <Button variant='outlined' sx={{ position: 'absolute', bottom: '5%', left: '1rem' }} onClick={handleExit}>Sair</Button>
             </DivisorTwo>
         </LateralNavBar>
     )

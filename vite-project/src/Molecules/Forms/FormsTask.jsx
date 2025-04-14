@@ -7,7 +7,9 @@ const FormsTask = ({ task, toogleModal, atualizarProjeto, usuarios, idSprint }) 
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
     const [dtFim, setDtFim] = useState(task?.dtFim || "");
     const [responsavel, setResponsavel] = useState(task?.fkResponsavel || '#');
-    const [progresso, setProgresso] = useState(task?.progresso || '0');
+    const [progresso, setProgresso] = useState(task?.progresso || '');
+
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handlePostTask = async () => {
         const newTask = { "fkSprint": idSprint, descricao, dtInicio, dtFim, "fkResponsavel": responsavel, progresso };
@@ -16,37 +18,51 @@ const FormsTask = ({ task, toogleModal, atualizarProjeto, usuarios, idSprint }) 
     };
 
     const handlePutTask = async () => {
-        const modifiedTask = { descricao, dtInicio, dtFim, responsavel, progresso }
+        const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
+        const modifiedTask = {
+            idEditor: usuarioLogado.idUsuario,
+            permissaoEditor: usuarioLogado.permissao,
+            descricao,
+            dtInicio,
+            dtFim,
+            responsavel,
+            progresso
+        }
         await putTask(modifiedTask, task.idEntrega, toogleModal);
         atualizarProjeto();
     }
 
     return (
         <>
-            <h2>{task == null ? "Adicionar Task" : `Editar Task ${task.idEntrega}`}</h2>
+            <h2>{task == null ? "Adicionar Entrega" : usuarioLogado.permissao != 'FUNC' ? `Editar Entrega` : 'Editar Progresso'}</h2>
             <form onSubmit={(e) => e.preventDefault()}>
-                <label>
-                    Descrição:
-                    <textarea autoComplete="off" type="text" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
-                </label>
-                <label>
-                    Data de Início:
-                    <input autoComplete="off" type="date" value={dtInicio} onChange={(e) => setDtInicio(e.target.value)} />
-                </label>
-                <label>
-                    Date Final:
-                    <input autoComplete="off" type="date" value={dtFim} onChange={(e) => setDtFim(e.target.value)} />
-                </label>
+                {usuarioLogado.permissao != 'FUNC' ?
+                    <>
+                        <label>
+                            Descrição:
+                            <textarea autoComplete="off" type="text" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
+                        </label>
+                        <label>
+                            Data de Início:
+                            <input autoComplete="off" type="date" value={dtInicio} onChange={(e) => setDtInicio(e.target.value)} />
+                        </label>
+                        <label>
+                            Date Final:
+                            <input autoComplete="off" type="date" value={dtFim} onChange={(e) => setDtFim(e.target.value)} />
+                        </label>
 
-                <label>
-                    Responsável:
-                    <select value={responsavel} onChange={(e) => setResponsavel(e.target.value)}>
-                        <option value="#">Selecione o responsável</option>
-                        {usuarios.map((usuario) => (
-                            <option key={usuario.idUsuario} value={usuario.idUsuario}>{usuario.nome}</option>
-                        ))}
-                    </select>
-                </label>
+                        <label>
+                            Responsável:
+                            <select value={responsavel} onChange={(e) => setResponsavel(e.target.value)}>
+                                <option value="#">Selecione o responsável</option>
+                                {usuarios.map((usuario) => (
+                                    <option key={usuario.idUsuario} value={usuario.idUsuario}>{usuario.nome}</option>
+                                ))}
+                            </select>
+                        </label>
+                    </>
+                    : null}
 
                 {task == null ? (
                     <>

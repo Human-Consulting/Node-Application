@@ -8,11 +8,12 @@ import { deleteSprint } from './../../Utils/cruds/CrudsSprint.jsx';
 
 const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjeto }) => {
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const handleOpenProject = () => {
     navigate(`/Home/central-task/${sprint.idSprint}`);
-    console.log('estou')
   }
 
   const handleOpenModalPutTask = (task) => {
@@ -24,9 +25,8 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjeto }) => {
   }
 
   const handleOpenModalPostTask = () => {
-    console.log(sprint);
     toogleTaskModal(null, 'task', sprint.idSprint);
-    
+
   }
 
   const handleOpenModalPostSprint = () => {
@@ -38,13 +38,68 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjeto }) => {
     await atualizarProjeto();
   }
 
+  const validarPermissaoPut = () => {
+    if (usuarioLogado.permissao === 'DIRETOR' ||
+      usuarioLogado.permissao.includes('CONSULTOR') ||
+      usuarioLogado.permissao === 'GESTOR') return true;
+    return false;
+  };
+
+  const validarPermissaoDelete = () => {
+    if (usuarioLogado.permissao.includes('CONSULTOR')) return true;
+    return false;
+  };
+
+  const temPermissaoPut = validarPermissaoPut();
+  const temPermissaoDelete = validarPermissaoDelete();
+
   return (
     <TaskCardBody sx={{ position: 'relative' }}>
       {sprint ?
         <>
           <NavTask>Sprint {index}
-            <DeleteIcon sx={{ color: '#fff', position: 'absolute', right: '40px', cursor: 'pointer' }} onClick={handleDeleteSprint} />
-            <EditIcon sx={{ color: '#fff', position: 'absolute', right: '8px', cursor: 'pointer' }} onClick={handleOpenModalPutSprint} />
+            <DeleteIcon
+              onClick={(e) => {
+                e.stopPropagation();
+                if (temPermissaoDelete) handleDeleteSprint();
+              }}
+              title={temPermissaoDelete ? "Excluir sprint" : "Você não tem permissão"}
+              sx={{
+                color: temPermissaoDelete ? '#fff' : '#aaa',
+                position: 'absolute',
+                right: '40px',
+                cursor: temPermissaoDelete ? 'pointer' : 'not-allowed',
+                transition: '0.3s',
+                opacity: temPermissaoDelete ? 1 : 0.5,
+                border: '1px solid transparent',
+                borderRadius: '4px',
+
+                '&:hover': {
+                  border: temPermissaoDelete ? '1px solid #f0f0f0' : '1px solid transparent'
+                }
+              }}
+            />
+            <EditIcon
+              onClick={(e) => {
+                e.stopPropagation();
+                if (temPermissaoPut) handleOpenModalPutSprint();
+              }}
+              title={temPermissaoPut ? "Excluir sprint" : "Você não tem permissão"}
+              sx={{
+                color: temPermissaoPut ? '#fff' : '#aaa',
+                position: 'absolute',
+                right: '10px',
+                cursor: temPermissaoPut ? 'pointer' : 'not-allowed',
+                transition: '0.3s',
+                opacity: temPermissaoPut ? 1 : 0.5,
+                border: '1px solid transparent',
+                borderRadius: '4px',
+
+                '&:hover': {
+                  border: temPermissaoPut ? '1px solid #f0f0f0' : '1px solid transparent'
+                }
+              }}
+            />
           </NavTask>
           <Stack sx={{ height: '20%', width: '70%', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
             {sprint.descricao}
@@ -70,7 +125,9 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjeto }) => {
             ))}
           </BodyTarefa>
           <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', justifyContent: 'center', alignItems: 'center' }}>
-            <Button size='medium' onClick={handleOpenModalPostTask} variant='outlined'>Criar nova tarefa</Button>
+            {usuarioLogado.permissao != 'FUNC' ?
+              <Button size='medium' onClick={handleOpenModalPostTask} variant='outlined'>Criar nova tarefa</Button>
+              : null}
             <Button size='medium' onClick={handleOpenProject} variant='outlined'>Ver todas tarefas</Button>
           </Stack>
         </>

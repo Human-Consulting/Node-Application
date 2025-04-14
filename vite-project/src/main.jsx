@@ -8,6 +8,7 @@ import Login from './Pages/Login/Login.jsx'
 import Task from './Molecules/Task/Task.jsx'
 import NextStep from './Molecules/NextStep/NextStep.jsx'
 import CentralTask from './Molecules/CentralTask/CentralTask.jsx'
+import Usuarios from './Molecules/Usuarios/Usuarios.jsx'
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "central-task/:idSprint", 
         element: <CentralTask />,
+      },
+      {
+        path: "Usuarios/:idEmpresa", 
+        element: <Usuarios />,
       },
     ],
   },

@@ -33,7 +33,6 @@ export const handleSubmitLogin = async (emailLogin, senhaLogin, navigate, setRes
     } catch (error) {
       setResponseMessage('Erro ao tentar fazer login!');
       setTimeout(() => setResponseMessage(''), 3000);
-      console.log('Erro ao tentar fazer login!', error);
 
     } finally {
       setLoading(false);

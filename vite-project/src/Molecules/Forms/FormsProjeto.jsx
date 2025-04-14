@@ -2,20 +2,19 @@ import { useState } from "react";
 import { postProjeto, putProjeto } from '../../Utils/cruds/CrudsProjeto.jsx';
 
 const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmpresa }) => {
-    console.log(projeto);
-    
+
     const [descricao, setDescricao] = useState(projeto?.descricao || "");
-    const [orcamento, setOrcamento] = useState(projeto?.orcamento || 0.0);
+    const [orcamento, setOrcamento] = useState(projeto?.orcamento || "");
     const [fkResponsavel, setResponsavel] = useState(projeto?.idResponsavel || '0');
     const [urlImagem, setUrlImagem] = useState('');
+
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handleFileUpload = (file) => {
         const reader = new FileReader();
 
-        console.log(file);
         reader.onloadend = () => {
             const base64String = reader.result.split(',')[1];
-            console.log(base64String);
             setUrlImagem(base64String);
         };
 
@@ -31,14 +30,22 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
     };
 
     const handlePutProjeto = async () => {
-        const modifiedProjeto = { descricao, orcamento, fkResponsavel }
+
+        const modifiedProjeto = {
+            idEditor: usuarioLogado.idUsuario,
+            permissaoEditor: usuarioLogado.permissao,
+            descricao,
+            orcamento,
+            fkResponsavel,
+            urlImagem
+        }
         await putProjeto(modifiedProjeto, projeto.idProjeto, toogleModal);
         await atualizarProjetos();
     }
 
     return (
         <>
-            <h2>{projeto == null ? "Adicionar Projeto" : `Editar Projeto ${projeto.idProjeto}`}</h2>
+            <h2>{projeto == null ? "Adicionar Projeto" : `Editar Projeto`}</h2>
             <form onSubmit={(e) => e.preventDefault()}>
                 <label>
                     Descrição:
@@ -50,7 +57,6 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                     <input autoComplete="off" type="number" value={orcamento} onChange={(e) => setOrcamento(e.target.value)} />
                 </label>
 
-
                 <label>
                     Responsável:
                     <select value={fkResponsavel} onChange={(e) => setResponsavel(e.target.value)}>
@@ -60,7 +66,7 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                         ))}
                     </select>
                 </label>
-                
+
                 <label>
                     Imagem:
                     <input type="file" onChange={(e) => handleFileUpload(e.target.files[0])} />

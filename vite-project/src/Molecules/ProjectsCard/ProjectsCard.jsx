@@ -7,6 +7,7 @@ import { deleteProjeto } from './../../Utils/cruds/CrudsProjeto.jsx';
 
 function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjetos }) {
   const navigate = useNavigate();
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   let statusColor = '#08D13D';
   if (projeto) {
@@ -36,6 +37,21 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
     await atualizarProjetos();
   }
 
+  const validarPermissaoPut = () => {
+    if (usuarioLogado.permissao === 'DIRETOR' ||
+      usuarioLogado.permissao.includes('CONSULTOR') ||
+      usuarioLogado.permissao === 'GESTOR') return true;
+    return false;
+  };
+
+  const validarPermissaoDelete = () => {
+    if (usuarioLogado.permissao.includes('CONSULTOR')) return true;
+    return false;
+  };
+
+  const temPermissaoPut = validarPermissaoPut();
+  const temPermissaoDelete = validarPermissaoDelete();
+
   return (
     <>
       {projeto ?
@@ -49,14 +65,48 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
           <BodyCard>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <Title>{projeto.nomeResponsavel}</Title>
-              <DeleteIcon sx={{ color: '#fff', position: 'absolute', right: '40px', cursor: 'pointer', transition: '1s' }} onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteProjeto();
-              }} />
-              <EditIcon sx={{ color: '#fff', position: 'absolute', right: '8px', cursor: 'pointer' }} onClick={(e) => {
-                e.stopPropagation();
-                handleOpenModalPutProjeto();
-              }} />
+              <DeleteIcon
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (temPermissaoDelete) handleDeleteProjeto();
+                }}
+                title={temPermissaoDelete ? "Excluir projeto" : "Você não tem permissão"}
+                sx={{
+                  color: temPermissaoDelete ? '#fff' : '#aaa', // cor diferente se desabilitado
+                  position: 'absolute',
+                  right: '40px',
+                  cursor: temPermissaoDelete ? 'pointer' : 'not-allowed',
+                  transition: '0.3s',
+                  opacity: temPermissaoDelete ? 1 : 0.5,
+                  border: '1px solid transparent',
+                  borderRadius: '4px',
+
+                  '&:hover': {
+                    border: temPermissaoDelete ? '1px solid #f0f0f0' : '1px solid transparent'
+                  }
+                }}
+              />
+              <EditIcon
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (temPermissaoPut) handleOpenModalPutProjeto();
+                }}
+                title={temPermissaoPut ? "Excluir projeto" : "Você não tem permissão"}
+                sx={{
+                  color: temPermissaoPut ? '#fff' : '#aaa', // cor diferente se desabilitado
+                  position: 'absolute',
+                  right: '10px',
+                  cursor: temPermissaoPut ? 'pointer' : 'not-allowed',
+                  transition: '0.3s',
+                  opacity: temPermissaoPut ? 1 : 0.5,
+                  border: '1px solid transparent',
+                  borderRadius: '4px',
+
+                  '&:hover': {
+                    border: temPermissaoPut ? '1px solid #f0f0f0' : '1px solid transparent'
+                  }
+                }}
+              />
             </Stack>
             <Subtitle>{projeto.descricao}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -70,8 +120,8 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
           </StatusCircle>
         </BoxBody>
         :
-        <BoxBody onClick={handleOpenModalPostProjeto} sx={{height: '224px', justifyContent: 'center', alignItems: 'center'}}>
-          <BodyCard sx={{top: '25%', justifyContent: 'center', alignItems: 'center'}}>
+        <BoxBody onClick={handleOpenModalPostProjeto} sx={{ height: '224px', justifyContent: 'center', alignItems: 'center' }}>
+          <BodyCard sx={{ top: '25%', justifyContent: 'center', alignItems: 'center' }}>
             <Button
               variant="contained">
               CRIAR NOVO PROJETO

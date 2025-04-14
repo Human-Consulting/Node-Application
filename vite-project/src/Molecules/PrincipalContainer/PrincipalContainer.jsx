@@ -9,14 +9,28 @@ import FormsProjeto from './../Forms/FormsProjeto.jsx';
 const PrincipalContainer = ({ toogleLateralBar, idEmpresa, atualizarProjetos, projetos, usuarios }) => {
   const [showModal, setShowModal] = useState(false);
   const [projeto, setProjeto] = useState(null);
-  
+  const [projetosFiltrados, setProjetosFiltrados] = useState([]);
+
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
   const filtrarProjetos = (texto) => {
-    const projetosFiltrados = projetos.filter(projeto => projeto.descricao.contains(texto));
+    if (texto !== '') {
+      const textoLower = texto.toLowerCase();
+      const projetosFiltrados = projetos.filter(projeto => {
+        const palavras = (projeto.descricao ?? '').toLowerCase().split(' ');
+        return palavras.some(palavra => palavra.startsWith(textoLower));
+      });
+      setProjetosFiltrados(projetosFiltrados);
+
+    } else {
+      setProjetosFiltrados(projetos);
+    }
   }
 
   useEffect(() => {
     toogleLateralBar();
-  }, []);
+    setProjetosFiltrados(projetos);
+  }, [projetos]);
 
   const toogleModal = (projeto) => {
     setProjeto(projeto);
@@ -44,21 +58,23 @@ const PrincipalContainer = ({ toogleLateralBar, idEmpresa, atualizarProjetos, pr
         </ShaderGradientCanvas>
         <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6' }}>
           <Avatar sx={{ background: 'none', border: '1px solid gray' }}>OP</Avatar>
-          <InputSearch sx={{ background: 'none', fontSize: '18px' }} type='text' placeholder='Pesquise um projeto...' onChange={filtrarProjetos} />
+          <InputSearch sx={{ background: 'none', fontSize: '18px' }} type='text' placeholder='Pesquise um projeto...' onChange={(e) => filtrarProjetos(e.target.value)} />
         </Stack>
         <TituloHeader>Meus projetos</TituloHeader>
       </HeaderContent>
       <MidleCarrousel>
-        {projetos.map(projeto => (
+        {projetosFiltrados.map(projeto => (
           <ProjectsCard idEmpresa={idEmpresa} projeto={projeto} toogleProjetoModal={toogleModal} atualizarProjetos={atualizarProjetos} ></ProjectsCard>
         ))}
+        {usuarioLogado.permissao.includes('CONSULTOR') ? 
         <ProjectsCard toogleProjetoModal={toogleModal} ></ProjectsCard>
+        : null}
       </MidleCarrousel>
       <Modal
         showModal={showModal}
         fechar={toogleModal}
         form={<FormsProjeto projeto={projeto} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} usuarios={usuarios} fkEmpresa={idEmpresa} />}
-        >
+      >
       </Modal>
     </PrincipalContainerStyled>
 

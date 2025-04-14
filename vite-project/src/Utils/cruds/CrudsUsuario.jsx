@@ -111,7 +111,7 @@ export const putUsuario = async (modifiedUsuario, idUsuario, toogleModal) => {
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Número de série em conflito!",
+                text: data.message || "Erro",
                 customClass: {
                     popup: "swalAlerta",
                 }
@@ -157,8 +157,6 @@ export const deleteUsuario = async (idUsuario, toogleModal) => {
                 method: 'DELETE'
             });
 
-            const data = await res.json();
-
             if (res.ok) {
                 Swal.fire({
                     icon: "success",
@@ -168,7 +166,7 @@ export const deleteUsuario = async (idUsuario, toogleModal) => {
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: data.message || "Usuario removida com sucesso!",
+                    text: "Usuario removida com sucesso!",
                     customClass: {
                         popup: "swalAlerta",
                     }
@@ -183,7 +181,7 @@ export const deleteUsuario = async (idUsuario, toogleModal) => {
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: data.message || "Usuario não encontrada!",
+                    text: "Usuario não encontrada!",
                     customClass: {
                         popup: "swalAlerta",
                     }

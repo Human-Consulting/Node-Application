@@ -6,8 +6,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteTask, putImpedimento } from './../../Utils/cruds/CrudsTask.jsx';
 const TarefasItem = ({ entrega, toogleModal, atualizarProjeto }) => {
 
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
   const handleToogleModal = () => {
     const task = {
+      idEditor: usuarioLogado.idUsuario,
       idEntrega: entrega.idEntrega,
       descricao: entrega.descricao,
       dtInicio: entrega.dtInicio,
@@ -24,21 +27,76 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjeto }) => {
   }
 
   const handleImpedimentoTask = async () => {
-    await putImpedimento(entrega.idEntrega);
+    const body = {
+      idEditor: usuarioLogado.idUsuario
+    }
+    console.log("Chamando putImpedimento com:", entrega.idEntrega, body);
+    await putImpedimento(entrega.idEntrega, body);
     await atualizarProjeto();
   }
 
-  const handleFinalizadoTask = async () => {
-    await putFinalizado(entrega.idEntrega);
-    await atualizarProjeto();
-  }
+  const validarPermissaoPut = () => {
+    if (usuarioLogado.permissao === 'DIRETOR' ||
+      usuarioLogado.permissao.includes('CONSULTOR') ||
+      usuarioLogado.permissao === 'GESTOR') return true;
+    if (usuarioLogado.idUsuario == entrega.fkResponsavel) return true;
+    return false;
+  };
+
+  const validarPermissaoDelete = () => {
+    if (usuarioLogado.permissao.includes('CONSULTOR')) return true;
+    return false;
+  };
+
+  const temPermissaoPut = validarPermissaoPut();
+  const temPermissaoDelete = validarPermissaoDelete();
 
   return (
     <TarefaBody>
       <Stack sx={{ height: '20%', width: '100%', position: 'relative', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
         {entrega.descricao}
-        <DeleteIcon sx={{ color: '#fff', position: 'absolute', right: '40px', cursor: 'pointer' }} onClick={handleDeleteTask} />
-        <EditIcon sx={{ color: '#fff', position: 'absolute', right: '8px', cursor: 'pointer' }} onClick={handleToogleModal} />
+        <DeleteIcon
+          onClick={(e) => {
+            e.stopPropagation();
+            if (temPermissaoDelete) handleDeleteTask();
+          }}
+          title={temPermissaoDelete ? "Excluir entrega" : "Você não tem permissão"}
+          sx={{
+            color: temPermissaoDelete ? '#fff' : '#aaa',
+            position: 'absolute',
+            right: '40px',
+            cursor: temPermissaoDelete ? 'pointer' : 'not-allowed',
+            transition: '0.3s',
+            opacity: temPermissaoDelete ? 1 : 0.5,
+            border: '1px solid transparent',
+            borderRadius: '4px',
+
+            '&:hover': {
+              border: temPermissaoDelete ? '1px solid #f0f0f0' : '1px solid transparent'
+            }
+          }}
+        />
+        <EditIcon
+          onClick={(e) => {
+            e.stopPropagation();
+            if (temPermissaoPut) handleToogleModal();
+          }}
+          title={temPermissaoPut ? "Excluir entrega" : "Você não tem permissão"}
+          sx={{
+            color: temPermissaoPut ? '#fff' : '#aaa',
+            position: 'absolute',
+            right: '10px',
+            cursor: temPermissaoPut ? 'pointer' : 'not-allowed',
+            transition: '0.3s',
+            opacity: temPermissaoPut ? 1 : 0.5,
+            border: '1px solid transparent',
+            borderRadius: '4px',
+
+            '&:hover': {
+              border: temPermissaoPut ? '1px solid #f0f0f0' : '1px solid transparent'
+            }
+          }}
+        />
       </Stack>
       <Grid2 sx={{ alignItems: 'center', justifyContent: 'center', alignContent: 'center' }} container spacing={2}>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '0.5px solid #fff', gap: '4px', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
@@ -59,18 +117,15 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjeto }) => {
             borderRadius: '7px',
             padding: '8px',
             border: '2px solid transparent',
-            borderImage: `linear-gradient(to right, #6f63f3, #000000 ${entrega.progresso + 20}%) 1`,
+            borderImage: `linear-gradient(to right, #6f63f3, #000000 ${entrega.progresso + 20}%) 1`
           }}
           size={5}
         >
           <b>Progresso: </b> {entrega.progresso}%
         </Grid2>
-        <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px' }} size={5}>
-          <Button fullWidth variant={entrega.comImpedimento ? 'contained' : 'outlined'} color='error' onClick={handleImpedimentoTask}>Impedimento</Button>
-        </Grid2>
-        <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px' }} size={5}>
-          <Button fullWidth variant={entrega.progresso == 100 ? 'contained' : 'outlined'} onClick={handleFinalizadoTask}>finalizado</Button>
-
+        <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px' }} size={10}>
+          <Button fullWidth variant='outlined' color={entrega.comImpedimento ? 'error' : 'success'} onClick={(e) => {e.stopPropagation();
+                  if (usuarioLogado.idUsuario === entrega.fkResponsavel) handleImpedimentoTask()}}>{entrega.comImpedimento ? 'Com Impedimento' : 'Sem Impedimento'}</Button>
         </Grid2>
       </Grid2>
     </TarefaBody>

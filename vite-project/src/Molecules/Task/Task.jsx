@@ -19,10 +19,12 @@ const Task = ({ toogleLateralBar, idEmpresa }) => {
   const [usuariosList, setUsuariosList] = useState([]);
   const [sprintsList, setSprintsList] = useState([]);
 
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
   const buscarUsuarios = async () => {
     const usuarios = await getUsuarios(idEmpresa);
     setUsuariosList(usuarios);
-    
+
   };
 
   const atualizarProjeto = async () => {
@@ -50,12 +52,14 @@ const Task = ({ toogleLateralBar, idEmpresa }) => {
         {sprintsList.map((sprint, index) => (
           <TaskCard toogleTaskModal={toogleModal} sprint={sprint} index={index + 1} atualizarProjeto={atualizarProjeto} />
         ))}
-        <TaskCard toogleTaskModal={toogleModal} />
+        {usuarioLogado.permissao != 'FUNC' ?
+          <TaskCard toogleTaskModal={toogleModal} />
+          : null}
       </TaskBody>
 
       <Modal showModal={showModal} fechar={toogleModal}
-        form={ acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuariosList} idSprint={id} atualizarProjeto={atualizarProjeto} />
-      : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarProjeto={atualizarProjeto} />}
+        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuariosList} idSprint={id} atualizarProjeto={atualizarProjeto} />
+          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarProjeto={atualizarProjeto} />}
       >
       </Modal>
     </>
