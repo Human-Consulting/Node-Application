@@ -27,7 +27,7 @@ const TarefasItem = ({descricao, dataInicio, dataFim, responsavel, impedido, fin
     gap: '4px',
     borderRadius: '7px',
     padding: '8px',
-    border: '2px solid transparent',
+    borderBottom: '2px solid transparent',
     borderImage: `linear-gradient(to right, #6f63f3, #000000 ${progresso + 20}%) 1`,
   }}
   size={5}

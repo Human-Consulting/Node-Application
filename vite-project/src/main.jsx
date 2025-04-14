@@ -8,6 +8,7 @@ import Login from './Pages/Login/Login.jsx'
 import Task from './Molecules/Task/Task.jsx'
 import NextStep from './Molecules/NextStep/NextStep.jsx'
 import CentralTask from './Molecules/CentralTask/CentralTask.jsx'
+import Dashboard from './Molecules/Dashboard/Dashboard.jsx'
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,11 @@ const router = createBrowserRouter([
         path: "task",
         element: <Task />, 
       },
+      {
+        path: "dash",
+        element: <Dashboard />, 
+      },
+
       {
         path: "next-step",
         element: <NextStep />, 

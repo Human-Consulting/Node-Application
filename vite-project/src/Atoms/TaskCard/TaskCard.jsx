@@ -45,8 +45,8 @@ const handleOpenModal = () => {
         ))}
         </BodyTarefa>
         <Stack sx={{flexDirection: 'row', width: '100%', gap: '1rem', justifyContent: 'center', alignItems: 'center'}}>
-        <Button size ='medium' onClick={handleOpenModal} variant='outlined'>Criar nova tarefa</Button>
         <Button size ='medium' onClick={handleOpenProject} variant='outlined'>Ver todas tarefas</Button>
+        <Button size ='medium' onClick={handleOpenModal} variant='contained'>Criar nova tarefa</Button>
         </Stack>
   
 

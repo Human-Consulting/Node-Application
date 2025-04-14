@@ -1,4 +1,3 @@
-import React from 'react'
 import { TaskBody } from './Task.styles'
 import TaskCard from '../../Atoms/TaskCard/TaskCard'
 import { MockSprint } from '../../Mock/MockSprint'
