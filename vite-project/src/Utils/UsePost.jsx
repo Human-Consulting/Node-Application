@@ -3,14 +3,29 @@ export const handleSubmitLogin = async (emailLogin, senhaLogin, navigate, setRes
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/usuario');
-      const users = await response.json();
-  
-      const usuario = users.find(user => user.email === emailLogin && user.senha === senhaLogin);
-  
-      if (usuario) {
-        navigate('/Home');
+      const newUsuario = { email: emailLogin, senha: senhaLogin };
+      const formattedUsuario = JSON.stringify(newUsuario);
+
+      const res = await fetch("http://localhost:8081/usuarios/autenticar", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: formattedUsuario,
+      });
+
+
+
+      if (res.ok) {
+        const usuario = await res.json();
+        localStorage.setItem("usuario", JSON.stringify(usuario));
+        if (usuario.permissao.toLowerCase == 'consultor') {
+          // TODO => navigate('/Empresas');
+        } else {
+          navigate(`/Home/${Number(usuario.fkEmpresa)}`);
+        }
         setResponseMessage('');
+
       } else {
         setResponseMessage('Credenciais inválidas!');
         setTimeout(() => setResponseMessage(''), 3000);
@@ -18,7 +33,7 @@ export const handleSubmitLogin = async (emailLogin, senhaLogin, navigate, setRes
     } catch (error) {
       setResponseMessage('Erro ao tentar fazer login!');
       setTimeout(() => setResponseMessage(''), 3000);
-      console.log('Erro ao tentar fazer login!', error);
+
     } finally {
       setLoading(false);
     }

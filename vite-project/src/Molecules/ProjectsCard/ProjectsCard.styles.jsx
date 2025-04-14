@@ -11,7 +11,8 @@ export const BoxBody = styled('div')({
     borderRadius: '10px',
     flexShrink: 0,
     position: 'relative',
-    marginTop: '2rem'
+    marginTop: '2rem',
+    cursor: 'pointer'
 });
 
 export const StatusCircle = styled('div')({
@@ -49,7 +50,7 @@ export const HeaderCard = styled('div')({
 })
 
 export const BodyCard = styled('div')({
-    height: '50%',
+    height: '65%',
     width: '100%',
     backgroundColor: '#1d1d1d',
     zIndex: '30',

@@ -1,56 +1,136 @@
 import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './ProjectsCard.styles';
-import PropTypes from 'prop-types';
-import { Stack } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Stack, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteProjeto } from './../../Utils/cruds/CrudsProjeto.jsx';
 
-function ProjectsCard({ status, title, subtitle, image, progress }) {
-  const navigate = useNavigate(); 
+function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjetos }) {
+  const navigate = useNavigate();
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   let statusColor = '#08D13D';
-  if (status === 'ok') {
-    statusColor = '#08D13D';
-  } else if (status === 'attention') {
-    statusColor = '#CED108';
-  } else {
-    statusColor = '#FF0707';
+  if (projeto) {
+    if (projeto.comImpedimento == 0) {
+      statusColor = '#08D13D';
+    } else if (projeto.comImpedimento == 1 && projeto.progresso > 50) {
+      statusColor = '#CED108';
+    } else {
+      statusColor = '#FF0707';
+    }
   }
 
   const handleOpenProject = () => {
-    navigate('/home/task');
-    console.log('estou')
+    navigate(`/Home/${idEmpresa}/task/${Number(projeto.idProjeto)}`);
   }
+
+  const handleOpenModalPostProjeto = () => {
+    toogleProjetoModal(null);
+  }
+
+  const handleOpenModalPutProjeto = () => {
+    toogleProjetoModal(projeto);
+  }
+
+  const handleDeleteProjeto = async () => {
+    await deleteProjeto(projeto.idProjeto);
+    await atualizarProjetos();
+  }
+
+  const validarPermissaoPut = () => {
+    if (usuarioLogado.permissao === 'DIRETOR' ||
+      usuarioLogado.permissao.includes('CONSULTOR') ||
+      usuarioLogado.permissao === 'GESTOR') return true;
+    return false;
+  };
+
+  const validarPermissaoDelete = () => {
+    if (usuarioLogado.permissao.includes('CONSULTOR')) return true;
+    return false;
+  };
+
+  const temPermissaoPut = validarPermissaoPut();
+  const temPermissaoDelete = validarPermissaoDelete();
 
   return (
     <>
-      <BoxBody onClick={handleOpenProject}>
-        <HeaderCard sx={{ backgroundImage: `URL(${image})` }} />
-        <BodyCard>
-          <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Title>{title}</Title>
-            <MoreVertIcon sx={{ color: '#fff' }} />
-          </Stack>
-          <Subtitle>{subtitle}</Subtitle>
-          <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <ProgressBar>
-              <Progress sx={{ width: `${progress}%` }} />
-            </ProgressBar>
-            <Subtitle>{progress}%</Subtitle>
-          </Stack>
-        </BodyCard>
-        <StatusCircle sx={{ border: `5px solid ${statusColor}` }}>
-        </StatusCircle>
-      </BoxBody>
+      {projeto ?
+        <BoxBody onClick={handleOpenProject}>
+          <HeaderCard sx={{
+            backgroundImage: `url(data:image/png;base64,${projeto.urlImagem})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }} />
+          <BodyCard>
+            <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Title>{projeto.nomeResponsavel}</Title>
+              <DeleteIcon
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (temPermissaoDelete) handleDeleteProjeto();
+                }}
+                title={temPermissaoDelete ? "Excluir projeto" : "Você não tem permissão"}
+                sx={{
+                  color: temPermissaoDelete ? '#fff' : '#aaa', // cor diferente se desabilitado
+                  position: 'absolute',
+                  right: '40px',
+                  cursor: temPermissaoDelete ? 'pointer' : 'not-allowed',
+                  transition: '0.3s',
+                  opacity: temPermissaoDelete ? 1 : 0.5,
+                  border: '1px solid transparent',
+                  borderRadius: '4px',
+
+                  '&:hover': {
+                    border: temPermissaoDelete ? '1px solid #f0f0f0' : '1px solid transparent'
+                  }
+                }}
+              />
+              <EditIcon
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (temPermissaoPut) handleOpenModalPutProjeto();
+                }}
+                title={temPermissaoPut ? "Excluir projeto" : "Você não tem permissão"}
+                sx={{
+                  color: temPermissaoPut ? '#fff' : '#aaa', // cor diferente se desabilitado
+                  position: 'absolute',
+                  right: '10px',
+                  cursor: temPermissaoPut ? 'pointer' : 'not-allowed',
+                  transition: '0.3s',
+                  opacity: temPermissaoPut ? 1 : 0.5,
+                  border: '1px solid transparent',
+                  borderRadius: '4px',
+
+                  '&:hover': {
+                    border: temPermissaoPut ? '1px solid #f0f0f0' : '1px solid transparent'
+                  }
+                }}
+              />
+            </Stack>
+            <Subtitle>Orçamento: R${projeto.orcamento}</Subtitle>
+            <Subtitle>{projeto.descricao}</Subtitle>
+            <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <ProgressBar>
+                <Progress sx={{ width: `${projeto.progresso}%` }} />
+              </ProgressBar>
+              <Subtitle>{projeto.progresso}%</Subtitle>
+            </Stack>
+          </BodyCard>
+          <StatusCircle sx={{ border: `5px solid ${statusColor}` }}>
+          </StatusCircle>
+        </BoxBody>
+        :
+        <BoxBody onClick={handleOpenModalPostProjeto} sx={{ height: '224px', justifyContent: 'center', alignItems: 'center' }}>
+          <BodyCard sx={{ top: '25%', justifyContent: 'center', alignItems: 'center' }}>
+            <Button
+              variant="contained">
+              CRIAR NOVO PROJETO
+            </Button>
+          </BodyCard>
+        </BoxBody>}
     </>
   );
-}
-
-ProjectsCard.propTypes = {
-  status: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  progress: PropTypes.number.isRequired
 }
 
 export default ProjectsCard;

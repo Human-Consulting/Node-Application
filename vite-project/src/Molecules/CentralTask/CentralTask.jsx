@@ -1,22 +1,42 @@
 
 import { useParams } from 'react-router'
-import { MockSprint } from '../../Mock/MockSprint'
-import MiniProjectsCard from '../MiniProjectsCard/MiniProjectsCard'
 import TarefaMini from '../TarefaMini/TarefaMini'
 import { BackCentral, MidleCarrousel, TituloHeader } from './CentralTask.styles'
+import { useEffect, useState } from 'react'
+import { getTasks } from '../../Utils/cruds/CrudsTask'
 
-const CentralTask = () => {
-  const { sprintId } = useParams();
+const CentralTask = ({ toogleLateralBar, usuarios, idEmpresa, atualizarProjetos }) => {
+
+  const { idSprint } = useParams();
+
+  const [showModal, setShowModal] = useState(false);
+    const [task, setTask] = useState(null);
+    const [entregas, setEntregas] = useState([]);
+    
+    const atualizarTasks = async () => {
+      const entregas = await getTasks(idSprint);
+      setEntregas(entregas);
+    };
+  
+    useEffect(() => {
+      atualizarTasks();
+      toogleLateralBar();
+    }, []);
+  
+    const toogleModal = (task) => {
+      setTask(task);
+      setShowModal(!showModal);
+    };
 
     
   return (
     <BackCentral>
       <TituloHeader>
-        Tarefas da sprint {Number(sprintId) + 1}
+        Tarefas da sprint {Number(idSprint)}
       </TituloHeader>
         <MidleCarrousel>
-        {MockSprint[Number(sprintId)].tarefas.map((item, index) => (
-      <TarefaMini indice={index + 1} finalizado={item.finalizado} impedimento={item.impedido} title={item.descricao} progress={item.progresso} subtitle={item.responsavel} status={item.finalizado ? 'ok' : 'other'} key={item.index}/>
+        {entregas.map((entrega, index) => (
+      <TarefaMini idSprint={entrega.idSprint} indice={index + 1} entrega={entrega} key={entrega.index} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} />
     ))}
         </MidleCarrousel>
       

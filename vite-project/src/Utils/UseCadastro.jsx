@@ -12,8 +12,6 @@ export const handleSubmitCadastro = async (nomeCadastro, emailCadastro, senhaCad
       if (senhaCadastro === confirmarSenhaCadastro) {
         const { normalizedNome, normalizedEmail } = normalizeUserData(nomeCadastro, emailCadastro);
 
-        console.log(nomeCadastro, normalizedNome)
-
         const userData = {
           nomeCadastro: normalizedNome,
           emailCadastro: normalizedEmail,
