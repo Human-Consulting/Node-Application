@@ -52,10 +52,12 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                     <textarea autoComplete="off" type="text" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
                 </label>
 
-                <label>
-                    Orçamento:
-                    <input autoComplete="off" type="number" value={orcamento} onChange={(e) => setOrcamento(e.target.value)} />
-                </label>
+                {usuarioLogado.permissao.includes('CONSULTOR') ?
+                    <label>
+                        Orçamento:
+                        <input autoComplete="off" type="number" value={orcamento} onChange={(e) => setOrcamento(e.target.value)} />
+                    </label>
+                    : null}
 
                 <label>
                     Responsável:

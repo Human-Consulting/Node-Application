@@ -1,5 +1,5 @@
 import { HeaderContent, InputSearch, MidleCarrousel, PrincipalContainerStyled, TituloHeader } from './PrincipalContainer.styles'
-import { Avatar, Stack } from '@mui/material'
+import { Avatar, Stack, TextField } from '@mui/material'
 import ProjectsCard from '../ProjectsCard/ProjectsCard'
 import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient';
 import { useEffect, useState } from 'react';
@@ -58,7 +58,34 @@ const PrincipalContainer = ({ toogleLateralBar, idEmpresa, atualizarProjetos, pr
         </ShaderGradientCanvas>
         <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6' }}>
           <Avatar sx={{ background: 'none', border: '1px solid gray' }}>OP</Avatar>
-          <InputSearch sx={{ background: 'none', fontSize: '18px' }} type='text' placeholder='Pesquise um projeto...' onChange={(e) => filtrarProjetos(e.target.value)} />
+          <TextField
+            onChange={(e) => filtrarProjetos(e.target.value)}
+            label={
+              <span>
+                Pesquise um projeto da <strong style={{ color: '#90caf9' }}>{usuarioLogado.nomeEmpresa}</strong>
+              </span>
+            }
+            size="small"
+            sx={{ width: '100%' }}
+            autoComplete="off"
+            InputLabelProps={{
+              sx: {
+                color: "white",
+                '&.Mui-focused': {
+                  color: 'white',
+                }
+              }
+            }}
+            InputProps={{
+              sx: {
+                color: "white",
+                '& .MuiOutlinedInput-notchedOutline': {
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#fff'
+                }
+              }
+            }} />
         </Stack>
         <TituloHeader>Meus projetos</TituloHeader>
       </HeaderContent>
@@ -66,9 +93,9 @@ const PrincipalContainer = ({ toogleLateralBar, idEmpresa, atualizarProjetos, pr
         {projetosFiltrados.map(projeto => (
           <ProjectsCard idEmpresa={idEmpresa} projeto={projeto} toogleProjetoModal={toogleModal} atualizarProjetos={atualizarProjetos} ></ProjectsCard>
         ))}
-        {usuarioLogado.permissao.includes('CONSULTOR') ? 
-        <ProjectsCard toogleProjetoModal={toogleModal} ></ProjectsCard>
-        : null}
+        {usuarioLogado.permissao.includes('CONSULTOR') ?
+          <ProjectsCard toogleProjetoModal={toogleModal} ></ProjectsCard>
+          : null}
       </MidleCarrousel>
       <Modal
         showModal={showModal}

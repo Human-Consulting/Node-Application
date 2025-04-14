@@ -29,6 +29,8 @@ const MainContent = () => {
   const atualizarProjetos = async () => {
     const projetos = await getProjetos(idEmpresa);
     setProjetos(projetos);
+    console.log("oi: " + idEmpresa);
+    
   };
 
   const buscarUsuarios = async () => {
@@ -47,10 +49,10 @@ const MainContent = () => {
       <LateralBar projetos={projetos} idEmpresa={idEmpresa} />
 
       <Routes>
-        <Route path="/task/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} idEmpresa={idEmpresa} />} />
+        <Route path="/task/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
         <Route path="/next-step" element={<NextStep />} />
         <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} projetos={projetos} usuarios={usuarios} />} />
-        <Route path="/central-task/:idSprint" element={<CentralTask toogleLateralBar={hideShowLateralBar} />} />
+        <Route path="/central-task/:idSprint" element={<CentralTask toogleLateralBar={hideShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
         <Route path="/Usuarios/:idEmpresa" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} idEmpresa={idEmpresa} />} />
       </Routes>
 

@@ -108,6 +108,7 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
                 }}
               />
             </Stack>
+            <Subtitle>Orçamento: R${projeto.orcamento}</Subtitle>
             <Subtitle>{projeto.descricao}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>

@@ -4,7 +4,7 @@ import { Button, Grid2, Stack } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteTask, putImpedimento } from './../../Utils/cruds/CrudsTask.jsx';
-const TarefasItem = ({ entrega, toogleModal, atualizarProjeto }) => {
+const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints }) => {
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -23,16 +23,17 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjeto }) => {
 
   const handleDeleteTask = async () => {
     await deleteTask(entrega.idEntrega);
-    await atualizarProjeto();
+    atualizarProjetos();
+    atualizarSprints();
   }
 
   const handleImpedimentoTask = async () => {
     const body = {
       idEditor: usuarioLogado.idUsuario
     }
-    console.log("Chamando putImpedimento com:", entrega.idEntrega, body);
     await putImpedimento(entrega.idEntrega, body);
-    await atualizarProjeto();
+    atualizarProjetos();
+    atualizarSprints();
   }
 
   const validarPermissaoPut = () => {
@@ -124,8 +125,12 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjeto }) => {
           <b>Progresso: </b> {entrega.progresso}%
         </Grid2>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px' }} size={10}>
+          {entrega.progresso == 100 ? 
+          <Button fullWidth variant='outlined' color='info'>Tarefa Finalizada</Button>
+          :
           <Button fullWidth variant='outlined' color={entrega.comImpedimento ? 'error' : 'success'} onClick={(e) => {e.stopPropagation();
                   if (usuarioLogado.idUsuario === entrega.fkResponsavel) handleImpedimentoTask()}}>{entrega.comImpedimento ? 'Com Impedimento' : 'Sem Impedimento'}</Button>
+          }
         </Grid2>
       </Grid2>
     </TarefaBody>

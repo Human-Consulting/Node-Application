@@ -62,9 +62,10 @@ export const postTask = async (newTask, toogleModal) => {
     }
 };
 
-export const getTasks = async (idProjeto) => {
+export const getTasks = async (idSprint) => {
+    
     try {
-        const res = await fetch(`http://localhost:8081/entregas/buscarPorProjeto/${idProjeto}`);
+        const res = await fetch(`http://localhost:8081/entregas/buscarPorSprint/${idSprint}`);
         const data = await res.json();
         return data;
     } catch (error) {

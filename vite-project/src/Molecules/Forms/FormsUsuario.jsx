@@ -62,21 +62,23 @@ const FormsUsuario = ({ usuario, toogleModal, atualizarUsuarios, fkEmpresa, qtdU
                             <input autoComplete="off" type="text" value={area} onChange={(e) => setArea(e.target.value)} />
                         </label>
 
-                        <label>
-                            Permissão:
-                            <select value={permissao} onChange={(e) => setPermissao(e.target.value)}>
-                                {qtdUsuarios >= 1 ?
-                                    <>
-                                        <option value="#">Selecione a permissão</option>
-                                        <option value="GESTOR">Gestão</option>
-                                        <option value="FUNC">Team Member</option>
-                                    </>
-                                    :
-                                    <option value="DIRETOR">Diretor</option>
-                                }
+                        {usuario.permissao == 'DIRETOR' || usuario.permissao.includes('CONSULTOR') ? null :
+                            <label>
+                                Permissão:
+                                <select value={permissao} onChange={(e) => setPermissao(e.target.value)}>
+                                    {qtdUsuarios >= 1 ?
+                                        <>
+                                            <option value="#">Selecione a permissão</option>
+                                            <option value="GESTOR">Gestão</option>
+                                            <option value="FUNC">Team Member</option>
+                                        </>
+                                        :
+                                        <option value="DIRETOR">Diretor</option>
+                                    }
 
-                            </select>
-                        </label>
+                                </select>
+                            </label>
+                        }
                     </>
                 }
 

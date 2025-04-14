@@ -62,9 +62,9 @@ export const postUsuario = async (newUsuario, toogleModal) => {
     }
 };
 
-export const getUsuarios = async () => {
+export const getUsuarios = async (idEmpresa) => {
     try {
-        const res = await fetch("http://localhost:8081/usuarios");
+        const res = await fetch(`http://localhost:8081/usuarios/buscarPorEmpresa/${idEmpresa}`);
         const data = await res.json();
         return data;
     } catch (error) {

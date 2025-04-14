@@ -3,12 +3,11 @@ import { TaskBody } from './Task.styles'
 import TaskCard from '../../Atoms/TaskCard/TaskCard'
 import Modal from '../Modal/Modal'
 import FormsTask from '../Forms/FormsTask'
-import { getUsuarios } from '../../Utils/cruds/CrudsUsuario'
 import { getSprints } from '../../Utils/cruds/CrudsSprint'
 import { useParams } from 'react-router'
 import FormsSprint from '../Forms/FormsSprint'
 
-const Task = ({ toogleLateralBar, idEmpresa }) => {
+const Task = ({ toogleLateralBar, idEmpresa, atualizarProjetos, usuarios }) => {
 
   const { idProjeto } = useParams();
 
@@ -16,26 +15,18 @@ const Task = ({ toogleLateralBar, idEmpresa }) => {
   const [entidade, setEntidade] = useState(null);
   const [id, setId] = useState(null);
   const [acao, setAcao] = useState('');
-  const [usuariosList, setUsuariosList] = useState([]);
   const [sprintsList, setSprintsList] = useState([]);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
-  const buscarUsuarios = async () => {
-    const usuarios = await getUsuarios(idEmpresa);
-    setUsuariosList(usuarios);
-
-  };
-
-  const atualizarProjeto = async () => {
+  const atualizarSprints = async () => {
     const sprints = await getSprints(idProjeto);
     setSprintsList(sprints);
 
   };
 
   useEffect(() => {
-    buscarUsuarios();
-    atualizarProjeto();
+    atualizarSprints();
     toogleLateralBar();
   }, []);
 
@@ -50,7 +41,7 @@ const Task = ({ toogleLateralBar, idEmpresa }) => {
     <>
       <TaskBody>
         {sprintsList.map((sprint, index) => (
-          <TaskCard toogleTaskModal={toogleModal} sprint={sprint} index={index + 1} atualizarProjeto={atualizarProjeto} />
+          <TaskCard toogleTaskModal={toogleModal} sprint={sprint} index={index + 1} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} idEmpresa={idEmpresa} />
         ))}
         {usuarioLogado.permissao != 'FUNC' ?
           <TaskCard toogleTaskModal={toogleModal} />
@@ -58,8 +49,8 @@ const Task = ({ toogleLateralBar, idEmpresa }) => {
       </TaskBody>
 
       <Modal showModal={showModal} fechar={toogleModal}
-        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuariosList} idSprint={id} atualizarProjeto={atualizarProjeto} />
-          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarProjeto={atualizarProjeto} />}
+        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} idSprint={id} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
+          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />}
       >
       </Modal>
     </>

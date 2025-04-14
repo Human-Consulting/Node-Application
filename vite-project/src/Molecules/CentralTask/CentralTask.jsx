@@ -3,48 +3,27 @@ import { useParams } from 'react-router'
 import TarefaMini from '../TarefaMini/TarefaMini'
 import { BackCentral, MidleCarrousel, TituloHeader } from './CentralTask.styles'
 import { useEffect, useState } from 'react'
-import { getUsuarios } from '../../Utils/cruds/CrudsUsuario'
-import { getSprints } from '../../Utils/cruds/CrudsSprint'
 import { getTasks } from '../../Utils/cruds/CrudsTask'
 
-const CentralTask = ({ toogleLateralBar }) => {
+const CentralTask = ({ toogleLateralBar, usuarios, idEmpresa, atualizarProjetos }) => {
 
-  const { sprintId } = useParams();
+  const { idSprint } = useParams();
 
   const [showModal, setShowModal] = useState(false);
     const [task, setTask] = useState(null);
-    const [id, setId] = useState(null);
-    const [usuarios, setUsuarios] = useState([]);
-    const [tasks, setTasks] = useState([]);
-    const [sprints, setSprints] = useState([]);
-  
-    const buscarUsuarios = async () => {
-      const usuarios = await getUsuarios();
-      setUsuarios(usuarios);     
-    };
-  
-    const atualizarSprints = async () => {
-      const sprints = await getSprints(idProjeto);
-      const sprintsDoProjeto = sprints.filter(sprint => sprint.fkProjeto == idProjeto);
-      setSprints(sprintsDoProjeto);
-      
-    };
+    const [entregas, setEntregas] = useState([]);
     
     const atualizarTasks = async () => {
-      const tasks = await getTasks();
-      setTasks(tasks);
-      
+      const entregas = await getTasks(idSprint);
+      setEntregas(entregas);
     };
   
     useEffect(() => {
-      buscarUsuarios();
       atualizarTasks();
-      atualizarSprints();
       toogleLateralBar();
     }, []);
   
-    const toogleModal = (task, newId) => {
-      setId(newId)
+    const toogleModal = (task) => {
       setTask(task);
       setShowModal(!showModal);
     };
@@ -53,11 +32,11 @@ const CentralTask = ({ toogleLateralBar }) => {
   return (
     <BackCentral>
       <TituloHeader>
-        Tarefas da sprint {Number(sprintId)}
+        Tarefas da sprint {Number(idSprint)}
       </TituloHeader>
         <MidleCarrousel>
-        {tasks.filter(task => task.fkSprint == sprintId).map((task, index) => (
-      <TarefaMini idSprint={task.idSprint} indice={index + 1} finalizado={task.finalizado} impedimento={task.impedido} title={task.descricao} progress={task.progresso} subtitle={usuarios.filter(usuario => usuario.idUsuario === task.fkResponsavel)[0].nome} status={task.finalizado ? 'ok' : 'other'} key={task.index}/>
+        {entregas.map((entrega, index) => (
+      <TarefaMini idSprint={entrega.idSprint} indice={index + 1} entrega={entrega} key={entrega.index} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} />
     ))}
         </MidleCarrousel>
       

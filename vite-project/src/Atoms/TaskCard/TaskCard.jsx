@@ -6,14 +6,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteSprint } from './../../Utils/cruds/CrudsSprint.jsx';
 
-const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjeto }) => {
+const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints, idEmpresa }) => {
 
   const navigate = useNavigate();
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const handleOpenProject = () => {
-    navigate(`/Home/central-task/${sprint.idSprint}`);
+    navigate(`/Home/${idEmpresa}/central-task/${sprint.idSprint}`);
   }
 
   const handleOpenModalPutTask = (task) => {
@@ -26,7 +26,6 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjeto }) => {
 
   const handleOpenModalPostTask = () => {
     toogleTaskModal(null, 'task', sprint.idSprint);
-
   }
 
   const handleOpenModalPostSprint = () => {
@@ -35,7 +34,8 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjeto }) => {
 
   const handleDeleteSprint = async () => {
     await deleteSprint(sprint.idSprint);
-    await atualizarProjeto();
+    await atualizarSprints();
+    await atualizarProjetos();
   }
 
   const validarPermissaoPut = () => {
@@ -121,14 +121,14 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjeto }) => {
 
           <BodyTarefa>
             {sprint.entregas.map((entrega) => (
-              <TarefasItem entrega={entrega} toogleModal={handleOpenModalPutTask} atualizarProjeto={atualizarProjeto} ></TarefasItem>
+              <TarefasItem entrega={entrega} toogleModal={handleOpenModalPutTask} atualizarProjetos={atualizarProjetos} atualizarSprints={atualizarSprints} ></TarefasItem>
             ))}
           </BodyTarefa>
           <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', justifyContent: 'center', alignItems: 'center' }}>
             {usuarioLogado.permissao != 'FUNC' ?
-              <Button size='medium' onClick={handleOpenModalPostTask} variant='outlined'>Criar nova tarefa</Button>
+              <Button size='medium' onClick={handleOpenModalPostTask} variant='contained'>Criar nova tarefa</Button>
               : null}
-            <Button size='medium' onClick={handleOpenProject} variant='outlined'>Ver todas tarefas</Button>
+            <Button size='medium' onClick={handleOpenProject} variant='contained'>Ver todas tarefas</Button>
           </Stack>
         </>
         :

@@ -1,9 +1,13 @@
 .table-container {
     background-color: #1d1d1d;
-    padding: 16px 6px 16px 16px;
+    padding: 16px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+
+    table {
+        padding-right: 10px;
+    }
 }
 
 .table-body-scroll {
@@ -25,7 +29,7 @@
 }
 
 thead tr {
-    background-color: #007bff;
+    background-color: #007bff3d;
     color: #fff;
     text-transform: uppercase;
     font-weight: 600;
@@ -35,7 +39,7 @@ thead tr {
 
 th,
 td {
-    padding: 14px 16px;
+    padding-block: 16px;
     text-align: center;
 }
 

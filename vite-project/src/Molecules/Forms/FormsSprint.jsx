@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { postSprint, putSprint } from '../../Utils/cruds/CrudsSprint.jsx';
 
-const FormsSprint = ({ sprint, toogleModal, atualizarProjeto, fkProjeto }) => {
+const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos, fkProjeto }) => {
 
     const [descricao, setDescricao] = useState(sprint?.descricao || "");
     const [dtInicio, setDtInicio] = useState(sprint?.dtInicio || "");
@@ -10,7 +10,8 @@ const FormsSprint = ({ sprint, toogleModal, atualizarProjeto, fkProjeto }) => {
     const handlePostSprint = async () => {
         const newSprint = { fkProjeto, descricao, dtInicio, dtFim };
         await postSprint(newSprint, toogleModal);
-        atualizarProjeto();
+        atualizarSprints();
+        atualizarProjetos();
     };
 
     const handlePutSprint = async () => {
@@ -24,7 +25,8 @@ const FormsSprint = ({ sprint, toogleModal, atualizarProjeto, fkProjeto }) => {
             dtFim
         }
         await putSprint(modifiedSprint, Sprint.idSprint, toogleModal);
-        atualizarProjeto();
+        atualizarSprints();
+        atualizarProjetos();
     }
 
     return (

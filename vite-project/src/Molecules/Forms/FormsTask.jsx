@@ -1,20 +1,21 @@
 import { useState } from "react";
 import { postTask, putTask } from '../../Utils/cruds/CrudsTask.jsx';
 
-const FormsTask = ({ task, toogleModal, atualizarProjeto, usuarios, idSprint }) => {
+const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, idSprint }) => {
 
     const [descricao, setDescricao] = useState(task?.descricao || "");
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
     const [dtFim, setDtFim] = useState(task?.dtFim || "");
-    const [responsavel, setResponsavel] = useState(task?.fkResponsavel || '#');
+    const [fkResponsavel, setFkResponsavel] = useState(task?.fkResponsavel || '#');
     const [progresso, setProgresso] = useState(task?.progresso || '');
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handlePostTask = async () => {
-        const newTask = { "fkSprint": idSprint, descricao, dtInicio, dtFim, "fkResponsavel": responsavel, progresso };
+        const newTask = { "fkSprint": idSprint, descricao, dtInicio, dtFim, fkResponsavel, progresso };
         await postTask(newTask, toogleModal);
-        atualizarProjeto();
+        atualizarSprints();
+        atualizarProjetos();
     };
 
     const handlePutTask = async () => {
@@ -26,11 +27,12 @@ const FormsTask = ({ task, toogleModal, atualizarProjeto, usuarios, idSprint }) 
             descricao,
             dtInicio,
             dtFim,
-            responsavel,
+            fkResponsavel,
             progresso
         }
         await putTask(modifiedTask, task.idEntrega, toogleModal);
-        atualizarProjeto();
+        atualizarSprints();
+        atualizarProjetos();
     }
 
     return (
@@ -54,7 +56,7 @@ const FormsTask = ({ task, toogleModal, atualizarProjeto, usuarios, idSprint }) 
 
                         <label>
                             Responsável:
-                            <select value={responsavel} onChange={(e) => setResponsavel(e.target.value)}>
+                            <select value={fkResponsavel} onChange={(e) => setFkResponsavel(e.target.value)}>
                                 <option value="#">Selecione o responsável</option>
                                 {usuarios.map((usuario) => (
                                     <option key={usuario.idUsuario} value={usuario.idUsuario}>{usuario.nome}</option>

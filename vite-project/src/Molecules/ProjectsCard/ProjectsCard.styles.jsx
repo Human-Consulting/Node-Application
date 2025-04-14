@@ -50,7 +50,7 @@ export const HeaderCard = styled('div')({
 })
 
 export const BodyCard = styled('div')({
-    height: '50%',
+    height: '65%',
     width: '100%',
     backgroundColor: '#1d1d1d',
     zIndex: '30',

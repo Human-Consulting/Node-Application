@@ -41,10 +41,10 @@ const Linha = ({ usuario, toogleModal, atualizarUsuarios }) => {
             <td>{usuario.permissao}</td>
             <td className="tdActions">
                 <button onClick={handleDelete} disabled={!temPermissaoDelete}>
-                    <DeleteIcon />
+                    <DeleteIcon sx={{ color: '#00ffff' }}/>
                 </button>
                 <button onClick={handleEditar} disabled={!temPermissaoPut}>
-                    <EditIcon />
+                    <EditIcon color="primary" />
                 </button>
             </td>
         </tr>
