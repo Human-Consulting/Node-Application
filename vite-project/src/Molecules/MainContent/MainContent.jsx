@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { getProjetos } from '../../Utils/cruds/CrudsProjeto';
 import { getUsuarios } from '../../Utils/cruds/CrudsUsuario';
 import Usuarios from '../Usuarios/Usuarios';
+import Dashboard from '../Dashboard/Dashboard';
 
 const MainContent = () => {
   const { idEmpresa } = useParams();
@@ -54,9 +55,11 @@ const MainContent = () => {
         <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} projetos={projetos} usuarios={usuarios} />} />
         <Route path="/central-task/:idSprint" element={<CentralTask toogleLateralBar={hideShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
         <Route path="/Usuarios/:idEmpresa" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} idEmpresa={idEmpresa} />} />
-      </Routes>
+        <Route path="/dash" element={<Dashboard />} />
 
+      </Routes>
       <LateralBarRight showLateralBar={showLateralBar} projetos={projetos} />
+
     </BoxAltertive>
   );
 };

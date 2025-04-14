@@ -109,8 +109,7 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '0.5px solid #fff', gap: '4px', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
           <b>Responsavel: </b> {entrega.nomeResponsavel}
         </Grid2>
-        <Grid2
-          sx={{
+        <Grid2 sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -120,9 +119,9 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
             border: '2px solid transparent',
             borderImage: `linear-gradient(to right, #6f63f3, #000000 ${entrega.progresso + 20}%) 1`
           }}
-          size={5}
-        >
+          size={5}>
           <b>Progresso: </b> {entrega.progresso}%
+        
         </Grid2>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px' }} size={10}>
           {entrega.progresso == 100 ? 

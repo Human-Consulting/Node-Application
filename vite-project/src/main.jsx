@@ -9,6 +9,7 @@ import Task from './Molecules/Task/Task.jsx'
 import NextStep from './Molecules/NextStep/NextStep.jsx'
 import CentralTask from './Molecules/CentralTask/CentralTask.jsx'
 import Usuarios from './Molecules/Usuarios/Usuarios.jsx'
+import Dashboard from './Molecules/Dashboard/Dashboard.jsx'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,11 @@ const router = createBrowserRouter([
         path: "task/:idProjeto",
         element: <Task />, 
       },
+      {
+        path: "dash",
+        element: <Dashboard />, 
+      },
+
       {
         path: "next-step",
         element: <NextStep />, 
