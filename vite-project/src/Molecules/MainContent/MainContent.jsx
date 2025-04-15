@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { getProjetos } from '../../Utils/cruds/CrudsProjeto';
 import { getUsuarios } from '../../Utils/cruds/CrudsUsuario';
 import Usuarios from '../Usuarios/Usuarios';
-
+import Dashboard from './../Dashboard/Dashboard.jsx';
 const MainContent = () => {
   const { idEmpresa } = useParams();
 
