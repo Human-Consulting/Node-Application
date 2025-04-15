@@ -98,8 +98,6 @@ const Dashboard = ({ toogleLateralBar }) => {
           </Stack>
         </DashContainer>
       </Stack>
-
-
     </ContainerBack>
   )
 }

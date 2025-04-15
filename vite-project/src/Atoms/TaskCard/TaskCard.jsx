@@ -74,9 +74,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
       return (
         <WatchLaterIcon sx={{ border: 'solid transparent 3px', borderRadius: '50%', fontSize: '46px', position: 'absolute', left: 10 }} />
       );
-    }
-  
-    if (diasRestantes < 30 && sprint.comImpedimento) {
+if (diasRestantes < 30 && sprint.comImpedimento) {
       return (
         <PriorityHighIcon sx={{ border: 'solid red 3px', borderRadius: '50%', fontSize: '40px', position: 'absolute', left: 10 }} />
       );
@@ -92,6 +90,16 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
       <CheckIcon sx={{ border: 'solid green 3px', borderRadius: '50%', fontSize: '40px', position: 'absolute', left: 10 }} />
     );
   };
+    }
+const handleOpenProject = () => {
+  navigate(`/home/central-task/${index}`);
+  console.log('estou')
+}
+const handleOpenModal = () => {
+  navigate(`/home/central-task/${index}`);
+  console.log('estou')
+}
+    
 
   return (
     <TaskCardBody sx={{ position: 'relative' }}>
