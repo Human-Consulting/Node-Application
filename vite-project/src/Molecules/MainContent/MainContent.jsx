@@ -53,7 +53,8 @@ const MainContent = () => {
         <Route path="/next-step" element={<NextStep />} />
         <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} projetos={projetos} usuarios={usuarios} />} />
         <Route path="/central-task/:idSprint" element={<CentralTask toogleLateralBar={hideShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
-        <Route path="/Usuarios/:idEmpresa" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} idEmpresa={idEmpresa} />} />
+        <Route path="/Usuarios" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} idEmpresa={idEmpresa} />} />
+        <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} />} />
       </Routes>
 
       <LateralBarRight showLateralBar={showLateralBar} projetos={projetos} />

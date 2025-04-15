@@ -24,7 +24,7 @@ const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos,
             dtInicio,
             dtFim
         }
-        await putSprint(modifiedSprint, Sprint.idSprint, toogleModal);
+        await putSprint(modifiedSprint, sprint.idSprint, toogleModal);
         atualizarSprints();
         atualizarProjetos();
     }

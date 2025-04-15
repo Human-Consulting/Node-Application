@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { postTask, putTask } from '../../Utils/cruds/CrudsTask.jsx';
 
-const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, idSprint }) => {
+const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atualizarTasks, usuarios, idSprint }) => {
 
     const [descricao, setDescricao] = useState(task?.descricao || "");
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
@@ -16,6 +16,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         await postTask(newTask, toogleModal);
         atualizarSprints();
         atualizarProjetos();
+        atualizarTasks();
     };
 
     const handlePutTask = async () => {
@@ -33,6 +34,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         await putTask(modifiedTask, task.idEntrega, toogleModal);
         atualizarSprints();
         atualizarProjetos();
+        atualizarTasks();
     }
 
     return (

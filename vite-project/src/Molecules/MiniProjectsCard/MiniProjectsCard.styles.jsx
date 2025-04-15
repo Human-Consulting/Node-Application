@@ -13,11 +13,14 @@ export const BoxBody = styled('div')({
 });
 
 export const StatusCircle = styled('div')({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: '100px',
-    height: '28px',
-    width: '28px',
+    height: '32px',
+    width: '32px',
     position: 'absolute',
-    right: '-20px',
+    right: '-22px',
     top: '-14px'
 
 })

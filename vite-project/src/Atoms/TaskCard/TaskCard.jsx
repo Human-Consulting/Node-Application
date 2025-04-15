@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteSprint } from './../../Utils/cruds/CrudsSprint.jsx';
+import CheckIcon from '@mui/icons-material/Check';
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+
 
 const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints, idEmpresa }) => {
 
@@ -21,6 +25,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   }
 
   const handleOpenModalPutSprint = () => {
+    console.log(sprint);
     toogleTaskModal(sprint, 'sprint', null);
   }
 
@@ -38,65 +43,102 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
     await atualizarProjetos();
   }
 
-  const validarPermissaoPut = () => {
+  const validarPermissao = () => {
     if (usuarioLogado.permissao === 'DIRETOR' ||
       usuarioLogado.permissao.includes('CONSULTOR') ||
       usuarioLogado.permissao === 'GESTOR') return true;
     return false;
   };
 
-  const validarPermissaoDelete = () => {
-    if (usuarioLogado.permissao.includes('CONSULTOR')) return true;
-    return false;
-  };
+  const temPermissao = validarPermissao();
 
-  const temPermissaoPut = validarPermissaoPut();
-  const temPermissaoDelete = validarPermissaoDelete();
+  const calcularDiasAte = () => {
+    const hoje = new Date();
+    const [ano, mes, dia] = sprint.dtFim.split('-');
+    const fim = new Date(ano, mes - 1, dia);
+    const diff = (fim - hoje) / (1000 * 60 * 60 * 24);
+    return Math.floor(diff);
+  };
+  
+  const renderIconeStatusSprint = () => {
+
+    if (sprint.progresso == 100) {
+      return (
+        <CheckIcon sx={{ border: 'solid #2196f3 3px', borderRadius: '50%', fontSize: '40px', position: 'absolute', left: 10 }} />
+      );
+    }
+
+    const diasRestantes = calcularDiasAte();
+  
+    if (diasRestantes < 30 && !sprint.comImpedimento) {
+      return (
+        <WatchLaterIcon sx={{ border: 'solid transparent 3px', borderRadius: '50%', fontSize: '46px', position: 'absolute', left: 10 }} />
+      );
+    }
+  
+    if (diasRestantes < 30 && sprint.comImpedimento) {
+      return (
+        <PriorityHighIcon sx={{ border: 'solid red 3px', borderRadius: '50%', fontSize: '40px', position: 'absolute', left: 10 }} />
+      );
+    }
+  
+    if (diasRestantes >= 30 && sprint.comImpedimento) {
+      return (
+        <PriorityHighIcon sx={{ border: 'solid orange 3px', borderRadius: '50%', fontSize: '40px', position: 'absolute', left: 10 }} />
+      );
+    }
+  
+    return (
+      <CheckIcon sx={{ border: 'solid green 3px', borderRadius: '50%', fontSize: '40px', position: 'absolute', left: 10 }} />
+    );
+  };
 
   return (
     <TaskCardBody sx={{ position: 'relative' }}>
       {sprint ?
         <>
-          <NavTask>Sprint {index}
+          <NavTask>
+          {renderIconeStatusSprint(sprint)}
+            Sprint {index}
             <DeleteIcon
               onClick={(e) => {
                 e.stopPropagation();
-                if (temPermissaoDelete) handleDeleteSprint();
+                if (temPermissao) handleDeleteSprint();
               }}
-              title={temPermissaoDelete ? "Excluir sprint" : "Você não tem permissão"}
+              title={temPermissao ? "Excluir sprint" : "Você não tem permissão"}
               sx={{
-                color: temPermissaoDelete ? '#fff' : '#aaa',
+                color: temPermissao ? '#fff' : '#aaa',
                 position: 'absolute',
                 right: '40px',
-                cursor: temPermissaoDelete ? 'pointer' : 'not-allowed',
+                cursor: temPermissao ? 'pointer' : 'not-allowed',
                 transition: '0.3s',
-                opacity: temPermissaoDelete ? 1 : 0.5,
+                opacity: temPermissao ? 1 : 0.5,
                 border: '1px solid transparent',
                 borderRadius: '4px',
 
                 '&:hover': {
-                  border: temPermissaoDelete ? '1px solid #f0f0f0' : '1px solid transparent'
+                  border: temPermissao ? '1px solid #f0f0f0' : '1px solid transparent'
                 }
               }}
             />
             <EditIcon
               onClick={(e) => {
                 e.stopPropagation();
-                if (temPermissaoPut) handleOpenModalPutSprint();
+                if (temPermissao) handleOpenModalPutSprint();
               }}
-              title={temPermissaoPut ? "Excluir sprint" : "Você não tem permissão"}
+              title={temPermissao ? "Excluir sprint" : "Você não tem permissão"}
               sx={{
-                color: temPermissaoPut ? '#fff' : '#aaa',
+                color: temPermissao ? '#fff' : '#aaa',
                 position: 'absolute',
                 right: '10px',
-                cursor: temPermissaoPut ? 'pointer' : 'not-allowed',
+                cursor: temPermissao ? 'pointer' : 'not-allowed',
                 transition: '0.3s',
-                opacity: temPermissaoPut ? 1 : 0.5,
+                opacity: temPermissao ? 1 : 0.5,
                 border: '1px solid transparent',
                 borderRadius: '4px',
 
                 '&:hover': {
-                  border: temPermissaoPut ? '1px solid #f0f0f0' : '1px solid transparent'
+                  border: temPermissao ? '1px solid #f0f0f0' : '1px solid transparent'
                 }
               }}
             />
