@@ -11,15 +11,19 @@ export const BoxBody = styled('div')({
     borderRadius: '10px',
     flexShrink: 0,
     position: 'relative',
-    marginTop: '2rem'
+    marginTop: '2rem',
+    cursor: 'pointer'
 });
 
 export const StatusCircle = styled('div')({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: '100px',
     height: '42px',
     width: '42px',
     position: 'absolute',
-    right: '-25px',
+    right: '-32px',
     top: '-14px'
 
 })
@@ -49,7 +53,7 @@ export const HeaderCard = styled('div')({
 })
 
 export const BodyCard = styled('div')({
-    height: '50%',
+    height: '65%',
     width: '100%',
     backgroundColor: '#1d1d1d',
     zIndex: '30',

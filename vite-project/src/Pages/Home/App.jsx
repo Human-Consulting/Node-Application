@@ -5,9 +5,7 @@ import MainContent from '../../Molecules/MainContent/MainContent'
 function App() {
 
   return (
-    <MainContent>
-
-    </MainContent>
+    <MainContent/>
 
   )
 }

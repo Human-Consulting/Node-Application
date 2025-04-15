@@ -5,7 +5,8 @@ export const ProjectsTypesBox = styled(Box)({
     height: '42px',
     display: 'flex',
     flexDirection: 'row',
-    gap: '0.5rem'
+    gap: '0.5rem',
+    cursor: 'pointer',
 });
 
 export const ImageBox = styled('img')({

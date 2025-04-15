@@ -12,7 +12,7 @@ export const LateralNavBar = styled(Box)({
 });
 export const DivisorOne = styled(Box)({
     width: '100%',
-    height: '20%',
+    height: '30%',
     backgroundColor: '#000',
     display: 'flex',
     flexDirection: 'column',
@@ -34,13 +34,12 @@ export const ChipZone = styled(Box)({
 });
 export const CardZone = styled(Box)({
     width: '100%',
-    flex: '300px',
-    overflowY: 'scroll',
+    overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
     gap: '1.5rem',
     alignItems: 'start',
-    paddingLeft: '0.5rem'
+    paddingLeft: '0.5rem',
 
 });
 export const Title = styled('p')({
@@ -54,6 +53,5 @@ export const DivisorTwo = styled(Box)({
     flex: '1',
     backgroundColor: '#0d0d0d',
     display: 'flex',
-    flexDirection: 'column'
-
+    flexDirection: 'column',
 });

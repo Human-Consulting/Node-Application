@@ -2,9 +2,9 @@ import { Box} from '@mui/material';
 import { styled } from '@mui/system';
 
 export const BackCentral = styled(Box)({
-    maxWidth: '100%',
+    width: '100%',
     height: '100%',
-    background: "#0d0d0d",
+    background: "#0D0D0D",
     display: 'flex',
     overflow: 'hidden',
     justifyContent: 'center',
@@ -28,8 +28,7 @@ export const MidleCarrousel = styled(Box)({
     overflowY: 'scroll',
     height: '550px',
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
-    gap: '3rem',
+    gridTemplateColumns: '1fr 1fr 1fr 1fr',
     padding: '0rem',
     width: '100%'
 

@@ -23,4 +23,5 @@ AreaData.propTypes = {
     progresso: PropTypes.number.isRequired,
 
 }
+
 export default AreaData

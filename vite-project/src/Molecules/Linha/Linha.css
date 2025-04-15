@@ -1,0 +1,28 @@
+.tdActions {
+    display: flex;
+    justify-content: space-evenly;
+
+    button {
+        border: solid transparent 1px;
+        background-color: transparent;
+        padding: 5px;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    button:hover:not(:disabled) {
+        border: solid #f0f0f0 1px;
+        border-radius: 4px;
+    }
+
+    button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: all;
+    }
+
+    button:disabled:hover {
+        background-color: inherit;
+    }
+}

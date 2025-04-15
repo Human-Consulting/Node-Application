@@ -2,7 +2,7 @@ import { Alert, Divider, Snackbar, Stack } from "@mui/material";
 import { ButtonMeu, LoginBack, LoginTitulo, InputMinha } from "./ContainerBoard.styles";
 import { useNavigate } from "react-router";
 import { handleSubmitLogin } from "../../Utils/UsePost";
-import { handleSubmitCadastro } from "../../Utils/UseCadastro"; 
+import { handleSubmitCadastro } from "../../Utils/UseCadastro";
 import React from "react";
 
 const ContainerBoard = () => {
