@@ -2,8 +2,8 @@ import { Box, styled } from "@mui/material";
 
 export const TarefaBody = styled(Box)({
     width: '100%',
-    minHeight: 'calc(250px - 0.5rem)',
-    maxHeight: 'calc(250px - 0.5rem)',
+    minHeight: 'calc(250px - 0.6rem)',
+    maxHeight: 'calc(250px - 0.6rem)',
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',

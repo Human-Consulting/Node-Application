@@ -9,18 +9,18 @@ export const TaskCardBody = styled(Box)({
     borderRadius: '10px',
     flexShrink: 0,
     scrollSnapAlign: 'center',
-    margin: '0px 50px',
+    margin: '0 50px',
     alignItems: 'center',
     gap: '1rem'
-    
-    
+
+
 });
 export const TItleTarefa = styled('h2')({
     fontSize: '34px'
 });
 
 export const BodyTarefa = styled(Box)({
-    height: 'calc(205px + 2rem)',
+    height: 'calc(220px + 2rem)',
     width: '80%',
     gap: '2rem',
     display: 'flex',
@@ -34,10 +34,7 @@ export const BodyTarefa = styled(Box)({
 
     '&::-webkit-scrollbar': {
         width: '4px',
-      },
-    
-    
-    
+    },
 });
 
 export const NavTask = styled(Box)({

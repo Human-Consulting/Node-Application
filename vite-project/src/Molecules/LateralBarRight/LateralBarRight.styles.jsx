@@ -52,7 +52,8 @@ export const KpiFinalizados = styled('div')({
 export const SkipRigth = styled('button')({
     width: '42px',
     height: '42px',
-    backgroundColor: '#d4d4d4',
+    backgroundColor: '#1D1D1D',
+    border: 'solid #DDD 1px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -62,19 +63,18 @@ export const SkipRigth = styled('button')({
     right: '-5%',
     transform: 'translate(-50%, -50%)',
     zIndex: '100',
-    cursor: 'pointer',
-    border: 'none',          
+    cursor: 'pointer',      
     outline: 'none',          
     '&:focus': {
-        outline: 'none',       
-        border: 'none'         
+        outline: 'none' 
     }
 });
 
 export const SkipLeft = styled('button')({
     width: '42px',
     height: '42px',
-    backgroundColor: '#d4d4d4',
+    backgroundColor: '#1D1D1D',
+    border: 'solid #DDD 1px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -86,8 +86,7 @@ export const SkipLeft = styled('button')({
     zIndex:  '100',
     cursor: 'pointer',
     '&:focus': {
-        outline: 'none',       
-        border: 'none'         
+        outline: 'none' 
     }
 
     

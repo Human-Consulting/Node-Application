@@ -11,7 +11,7 @@ export const TaskBody = styled(Box)({
     overflow: 'scroll',
     scrollSnapType: 'x mandatory',
     boxSizing: 'padding-box',
-    paddingInline: '300px',
+    paddingInline: '200px',
     position: 'relative',
     '&::-webkit-scrollbar': {
         width: '0px',

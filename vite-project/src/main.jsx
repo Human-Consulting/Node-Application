@@ -21,7 +21,7 @@ const router = createBrowserRouter([
         element: <Task />, 
       },
       {
-        path: "dash",
+        path: "Dash",
         element: <Dashboard />, 
       },
 
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         element: <CentralTask />,
       },
       {
-        path: "Usuarios/:idEmpresa", 
+        path: "Usuarios", 
         element: <Usuarios />,
       },
     ],

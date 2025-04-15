@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteProjeto } from './../../Utils/cruds/CrudsProjeto.jsx';
+import CheckIcon from '@mui/icons-material/Check';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjetos }) {
   const navigate = useNavigate();
@@ -11,7 +13,10 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
 
   let statusColor = '#08D13D';
   if (projeto) {
-    if (projeto.comImpedimento == 0) {
+    if (projeto.progresso == 100) {
+      statusColor = '#2196f3';
+    }
+    else if (projeto.comImpedimento == 0) {
       statusColor = '#08D13D';
     } else if (projeto.comImpedimento == 1 && projeto.progresso > 50) {
       statusColor = '#CED108';
@@ -19,6 +24,13 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
       statusColor = '#FF0707';
     }
   }
+
+  const renderIconeStatusProjeto = () => {
+    if (projeto.progresso == 100) return (<CheckIcon sx={{ fontSize: '22px' }} />);
+    if (projeto.comImpedimento) return (<PriorityHighIcon sx={{ fontSize: '22px' }} />);
+
+    return (<CheckIcon sx={{ fontSize: '25px' }} />);
+  };
 
   const handleOpenProject = () => {
     navigate(`/Home/${idEmpresa}/task/${Number(projeto.idProjeto)}`);
@@ -118,6 +130,7 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
             </Stack>
           </BodyCard>
           <StatusCircle sx={{ border: `5px solid ${statusColor}` }}>
+            {renderIconeStatusProjeto()}
           </StatusCircle>
         </BoxBody>
         :

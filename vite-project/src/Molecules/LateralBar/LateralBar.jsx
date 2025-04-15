@@ -16,7 +16,11 @@ const LateralBar = ({ projetos, idEmpresa }) => {
     }
 
     const handleOpenUsuarios = () => {
-        navigate(`/Home/${idEmpresa}/Usuarios/${idEmpresa}`);
+        navigate(`/Home/${idEmpresa}/Usuarios`);
+    }
+
+    const handleOpenDash = () => {
+        navigate(`/Home/${idEmpresa}/Dash`);
     }
 
     const handleExit = () => {
@@ -37,7 +41,7 @@ const LateralBar = ({ projetos, idEmpresa }) => {
                         Home
                     </Title>
                 </Stack>
-                <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }}>
+                <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }} onClick={handleOpenDash}>
                     <InsightsIcon sx={{ color: '#ffff' }} />
                     <Title>
                         Dashboard Geral

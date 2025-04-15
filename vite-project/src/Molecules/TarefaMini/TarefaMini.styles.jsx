@@ -1,7 +1,7 @@
 import {styled } from "@mui/material";
 
 export const BoxBody = styled('div')({
-    width: 'calc(100%)',
+    width: 'calc(90%)',
     height: '200px',
     background: '#1d1d1d',
     display: 'flex',
@@ -16,14 +16,14 @@ export const BoxBody = styled('div')({
 
 export const Title = styled('p')({
     fontWeight: 500,
-    fontSize: '14px',
-    color: '#fff',
+    fontSize: '20px',
+    color: '#fff'
 
 })
 export const Subtitle = styled('p')({
     fontWeight: 300,
-    fontSize: '12px',
-    color: '#fff',
+    fontSize: '14px',
+    color: '#fff'
 
 })
 
@@ -35,7 +35,8 @@ export const BodyCard = styled('div')({
     borderRadius: '10px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.5rem'
+    gap: '0.5rem',
+    width: '90%'
 })
 export const ProgressBar = styled('div')({
     height: '10px',

@@ -1,16 +1,30 @@
 import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './MiniProjectsCard.styles'
 import { Stack } from '@mui/material'
+import CheckIcon from '@mui/icons-material/Check';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 function MiniProjectsCard({ projeto }) {
 
   let statusColor = '#08D13D';
-  if (projeto?.comImpedimento == false) {
-    statusColor = '#08D13D';
-  } else if (projeto?.comImpedimento == true && projeto?.progresso > 50) {
-    statusColor = '#CED108';
-  } else {
-    statusColor = '#FF0707';
+  if (projeto) {
+    if (projeto.progresso == 100) {
+      statusColor = '#2196f3';
+    }
+    else if (projeto.comImpedimento == false) {
+      statusColor = '#08D13D';
+    } else if (projeto.comImpedimento == true && projeto.progresso > 50) {
+      statusColor = '#CED108';
+    } else {
+      statusColor = '#FF0707';
+    }
   }
+
+  const renderIconeStatusProjeto = () => {
+    if (projeto.progresso == 100) return (<CheckIcon sx={{ fontSize: '25px' }} />);
+    if (projeto.comImpedimento) return (<PriorityHighIcon sx={{ fontSize: '16px' }} />);
+
+    return (<CheckIcon sx={{ fontSize: '16px' }} />);
+  };
 
   return (
     <>
@@ -35,7 +49,8 @@ function MiniProjectsCard({ projeto }) {
               </ProgressBar>
             </Stack>
           </BodyCard>
-          <StatusCircle sx={{ border: `5px solid ${statusColor}` }}>
+          <StatusCircle sx={{ border: `3px solid ${statusColor}` }}>
+            {renderIconeStatusProjeto()}
           </StatusCircle>
 
         </BoxBody>

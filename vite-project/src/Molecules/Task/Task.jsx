@@ -22,7 +22,6 @@ const Task = ({ toogleLateralBar, idEmpresa, atualizarProjetos, usuarios }) => {
   const atualizarSprints = async () => {
     const sprints = await getSprints(idProjeto);
     setSprintsList(sprints);
-
   };
 
   useEffect(() => {
