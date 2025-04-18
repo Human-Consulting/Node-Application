@@ -70,10 +70,7 @@ const MinimalBarChart = ({ areas }) => {
   return (
     <div
       style={{
-        // background: 'linear-gradient(to right, #007bff3d, #0f1125)',
-        // background: 'linear-gradient(to right, #2c2e8a, #0f1125)',
-        // background: 'linear-gradient(to right, #007bff31, #0f1125)',
-        background: 'linear-gradient(to right, #1D1D1D, #0f1125)',
+        background: 'linear-gradient(to right, #1F1F1F, #0f1125)',
         padding: '1rem',
         borderRadius: '1rem',
 

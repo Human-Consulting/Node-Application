@@ -11,7 +11,7 @@ export const ContainerBack = styled(Box)({
     display: 'flex',
     gap: '2rem',
     flexDirection: 'column',
-    padding: '1rem 0rem 1rem 1rem',
+    paddingInline: '1.5rem'
 });
 
 export const Title = styled('p')({

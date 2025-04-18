@@ -23,7 +23,7 @@
         }
 
         input, select, textarea {
-            background: #1E1E1E;
+            background: #1D1D1D;
         }
     }
 
@@ -39,10 +39,6 @@
         .header-box {
             width: 160px;
             height: 10px;
-            border-radius: 0 0 15px 15px;
-            border-left: solid #CCC 1px;
-            border-right: solid #CCC 1px;
-            border-bottom: solid #CCC 1px;
         }
     }
 

@@ -1,11 +1,10 @@
-import { Stack, Box } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import { BoxDetail, ContainerBack, DashContainer, DashKpi, KpiContainer, TextDefault, TextDefaultKpi, Title } from './Dashboard.styles'
 import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient'
 import LineChart from './LineChart/LineChart'
 import MinimalBarChart from './BarChart/BarChart'
 import AreaData from '../../Atoms/AreaData/AreaData'
 import LensIcon from '@mui/icons-material/Lens';
-import PizzaChart from './PizzaChart'
 import RadialChart from './RadialChart'
 import { useEffect, useState } from 'react'
 import { getEmpresaAtual } from '../../Utils/cruds/CrudsEmpresa'
@@ -83,9 +82,10 @@ const Dashboard = ({ toogleLateralBar }) => {
       </ShaderGradientCanvas>
       <Stack sx={{ width: '100%', height: '90vh%', overflowY: 'hidden', gap: '2rem', flex: '0 0 auto', position: 'relative', zIndex: '1000' }}>
         <KpiContainer>
-          <Title>
+          {/* <Title>
             Dashboard da {usuarioLogado.nomeEmpresa}
-          </Title>
+          </Title> */}
+          <Typography variant="h3" mt={3} mb={2}>Dashboard da {usuarioLogado.nomeEmpresa}</Typography>
 
           <DashContainer>
             <Stack sx={{ gap: 4 }}>

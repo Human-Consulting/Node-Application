@@ -64,7 +64,7 @@ export const BodyCard = styled('div')({
     borderRadius: '10px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.5rem'
+    gap: '0.5rem',
 })
 export const ProgressBar = styled('div')({
     height: '10px',

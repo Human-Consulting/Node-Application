@@ -1,5 +1,5 @@
-import { HeaderContent, InputSearch, MidleCarrousel, PrincipalContainerStyled, TituloHeader } from './PrincipalContainer.styles'
-import { Avatar, Stack, TextField } from '@mui/material'
+import { HeaderContent, MidleCarrousel, PrincipalContainerStyled, TituloHeader } from './PrincipalContainer.styles'
+import { Avatar, Stack, TextField, Button } from '@mui/material'
 import ProjectsCard from '../ProjectsCard/ProjectsCard'
 import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient';
 import { useEffect, useState } from 'react';
@@ -56,7 +56,7 @@ const PrincipalContainer = ({ toogleLateralBar, idEmpresa, atualizarProjetos, pr
           />
 
         </ShaderGradientCanvas>
-        <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6' }}>
+        <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6', alignItems: 'center' }}>
           <Avatar sx={{ background: 'none', border: '1px solid gray' }}>OP</Avatar>
           <TextField
             onChange={(e) => filtrarProjetos(e.target.value)}
@@ -66,7 +66,7 @@ const PrincipalContainer = ({ toogleLateralBar, idEmpresa, atualizarProjetos, pr
               </span>
             }
             size="small"
-            sx={{ width: '100%' }}
+            sx={{ flex: 1 }}
             autoComplete="off"
             InputLabelProps={{
               sx: {
@@ -86,6 +86,10 @@ const PrincipalContainer = ({ toogleLateralBar, idEmpresa, atualizarProjetos, pr
                 }
               }
             }} />
+          <Button onClick={() => toogleModal(null)}
+            variant="contained">
+            CRIAR NOVO PROJETO
+          </Button>
         </Stack>
         <TituloHeader>Meus projetos</TituloHeader>
       </HeaderContent>

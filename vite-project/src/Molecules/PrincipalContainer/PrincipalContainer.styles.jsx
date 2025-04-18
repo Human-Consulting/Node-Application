@@ -25,7 +25,7 @@ export const MidleCarrousel = styled(Box)({
     height: '600px',
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    gap: '3rem',
+    gap: '3.5rem',
     padding: '0rem 2rem',
 
 });

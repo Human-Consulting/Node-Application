@@ -84,7 +84,7 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
                 }}
                 title={temPermissaoDelete ? "Excluir projeto" : "Você não tem permissão"}
                 sx={{
-                  color: temPermissaoDelete ? '#fff' : '#aaa', // cor diferente se desabilitado
+                  color: temPermissaoDelete ? '#fff' : '#aaa',
                   position: 'absolute',
                   right: '40px',
                   cursor: temPermissaoDelete ? 'pointer' : 'not-allowed',
@@ -105,7 +105,7 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
                 }}
                 title={temPermissaoPut ? "Excluir projeto" : "Você não tem permissão"}
                 sx={{
-                  color: temPermissaoPut ? '#fff' : '#aaa', // cor diferente se desabilitado
+                  color: temPermissaoPut ? '#fff' : '#aaa',
                   position: 'absolute',
                   right: '10px',
                   cursor: temPermissaoPut ? 'pointer' : 'not-allowed',
@@ -134,12 +134,12 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
           </StatusCircle>
         </BoxBody>
         :
-        <BoxBody onClick={handleOpenModalPostProjeto} sx={{ height: '224px', justifyContent: 'center', alignItems: 'center' }}>
-          <BodyCard sx={{ top: '25%', justifyContent: 'center', alignItems: 'center' }}>
-            <Button
-              variant="contained">
-              CRIAR NOVO PROJETO
-            </Button>
+        <BoxBody onClick={handleOpenModalPostProjeto} sx={{ alignItems: 'center' }}>
+          <Button
+            variant="contained" sx={{ position: 'absolute', top: '50%', zIndex: '50' }}>
+            CRIAR NOVO PROJETO
+          </Button>
+          <BodyCard>
           </BodyCard>
         </BoxBody>}
     </>
