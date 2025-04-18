@@ -7,24 +7,21 @@ export const ContainerBack = styled(Box)({
     background: "#1d1d1dc8",
     borderRadius: '5px',
     position: 'relative',
-    overflowY: 'scroll',
+    overflowY: 'hidden',
     display: 'flex',
     gap: '2rem',
     flexDirection: 'column',
     padding: '1rem 0rem 1rem 1rem',
-
-   
 });
 
 export const Title = styled('p')({
     fontWeight: 700,
     fontSize: '32px',
     color: '#dbdbdb',
-
 })
 
 export const KpiContainer = styled(Box)({
-    width: '50%',
+    width: '100%',
     height: '90vh',
     borderRadius: '5px',
     position: 'relative',  
@@ -34,35 +31,34 @@ export const KpiContainer = styled(Box)({
 });
 
 export const DashContainer = styled(Box)({
-    width: 'calc(100% - 1rem)',
-    height: '60vh',
+    width: '100%',
+    height: '90vh',
     borderRadius: '5px',
     display: 'grid',
-    gridTemplateColumns: '40% 60%',
+    gridTemplateColumns: '60% 50%',
     gridTemplateRows: '100%',
-    gap: '1rem'
+    gap: '3rem'
 });
 
 export const TextDefault = styled('p')({
-    fontSize: '14px',
+    fontSize: '24px',
     color: '#d4d4d4',
     fontWeight: 600
 });
+
 export const TextDefaultKpi = styled('p')({
-    fontSize: '18px',
+    fontSize: '24px',
     color: '#d4d4d4',
     fontWeight: 600
 });
-
-
 
 export const DashKpi = styled(Box)({
-    width: 'calc(100%)',
-    height: 'calc(25% + 1rem)',
+    width: '100%',
+    height: 'calc(20% + 1rem)',
     borderRadius: '5px',
     display: 'grid',
-    gridTemplateColumns: 'calc(50% - 0.5rem) calc(50% - 0.5rem)',
-    gridTemplateRows: 'calc(50% - 0.5rem) calc(50% - 0.5rem)',
+    gridTemplateColumns: '50% 50%',
+    gridTemplateRows: '50% 50%',
     gap: '1rem'
 });
 

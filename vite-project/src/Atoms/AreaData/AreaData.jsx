@@ -3,25 +3,20 @@ import { AreaDataBox, Number, Progress, ProgressBar, TextDefault } from './AreaD
 import { Stack } from '@mui/material'
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
-const AreaData = () => {
+const AreaData = ({ area, valor, total }) => {
+  
   return (
     <AreaDataBox>
-    <Stack sx={{flexDirection: 'row', gap: '4px'}}><AccountBoxIcon/><TextDefault>Area</TextDefault></Stack>
+      <Stack sx={{ flexDirection: 'row', gap: '4px', alignItems: 'center' }}><AccountBoxIcon /><TextDefault>{area}</TextDefault></Stack>
 
-    <Stack sx={{justifyContent: 'center'}}><Number>28 K</Number></Stack>
-          <ProgressBar>
-    <Progress sx={{width:  `${50}%`}} />
-            </ProgressBar>
-       
+      <Stack sx={{ justifyContent: 'center' }}><Number>{valor} entregas</Number></Stack>
+      <ProgressBar>
+      <Progress sx={{ width: `${(valor * 100) / total}%` }} />
+
+      </ProgressBar>
+
     </AreaDataBox>
   )
-}
-AreaData.propTypes = {
-    urlImage: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
-    progresso: PropTypes.number.isRequired,
-
 }
 
 export default AreaData

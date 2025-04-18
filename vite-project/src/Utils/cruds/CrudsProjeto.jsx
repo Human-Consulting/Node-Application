@@ -4,7 +4,7 @@ export const postProjeto = async (newProjeto, toogleModal) => {
     try {
         const formattedProjeto = JSON.stringify(newProjeto);
 
-        const res = await fetch("http://localhost:8081/projetos", {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ export const postProjeto = async (newProjeto, toogleModal) => {
 
 export const getProjetos = async (idEmpresa) => {
     try {
-        const res = await fetch(`http://localhost:8081/projetos/buscarPorEmpresa/${idEmpresa}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/buscarPorEmpresa/${idEmpresa}`);
         const data = await res.json();
         return data;
     } catch (error) {
@@ -77,7 +77,7 @@ export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
     try {
         const formattedProjeto = JSON.stringify(modifiedProjeto);
 
-        const res = await fetch(`http://localhost:8081/projetos/${idProjeto}`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -153,7 +153,7 @@ export const deleteProjeto = async (idProjeto) => {
         });
 
         if (confirm.isConfirmed) {
-            const res = await fetch(`http://localhost:8081/projetos/${idProjeto}`, {
+            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`, {
                 method: 'DELETE'
             });
 

@@ -1,15 +1,15 @@
 import Swal from "sweetalert2";
 
-export const postSprint = async (newSprint, toogleModal) => {
+export const postEmpresa = async (newEmpresa, toogleModal) => {
     try {
-        const formattedSprint = JSON.stringify(newSprint);
+        const formattedEmpresa = JSON.stringify(newEmpresa);
 
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: formattedSprint,
+            body: formattedEmpresa,
         });
 
         const data = await res.json();
@@ -38,7 +38,7 @@ export const postSprint = async (newSprint, toogleModal) => {
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Erro ao adicionar Sprint!",
+                text: data.message || "Erro ao adicionar Empresa!",
                 customClass: {
                     popup: "swalAlerta",
                 }
@@ -62,9 +62,9 @@ export const postSprint = async (newSprint, toogleModal) => {
     }
 };
 
-export const getSprints = async (idProjeto) => {
+export const getEmpresas = async () => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/buscarPorProjeto/${idProjeto}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas`);
         const data = await res.json();
         return data;
     } catch (error) {
@@ -73,16 +73,27 @@ export const getSprints = async (idProjeto) => {
     }
 };
 
-export const putSprint = async (modifiedSprint, idSprint, toogleModal) => {
+export const getEmpresaAtual = async (idEmpresa) => {
     try {
-        const formattedSprint = JSON.stringify(modifiedSprint);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas/${idEmpresa}`);
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error);
+        return [];
+    }
+};
 
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/${idSprint}`, {
+export const putEmpresa = async (modifiedEmpresa, idEmpresa, toogleModal) => {
+    try {
+        const formattedEmpresa = JSON.stringify(modifiedEmpresa);
+
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas/${idEmpresa}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: formattedSprint,
+            body: formattedEmpresa,
         });
 
         const data = await res.json();
@@ -111,7 +122,7 @@ export const putSprint = async (modifiedSprint, idSprint, toogleModal) => {
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Número de série em conflito!",
+                text: data.message,
                 customClass: {
                     popup: "swalAlerta",
                 }
@@ -135,7 +146,7 @@ export const putSprint = async (modifiedSprint, idSprint, toogleModal) => {
     }
 };
 
-export const deleteSprint = async (idSprint) => {
+export const deleteEmpresa = async (idEmpresa) => {
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -153,7 +164,7 @@ export const deleteSprint = async (idSprint) => {
         });
 
         if (confirm.isConfirmed) {
-            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/${idSprint}`, {
+            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas/${idEmpresa}`, {
                 method: 'DELETE'
             });
 
@@ -166,7 +177,7 @@ export const deleteSprint = async (idSprint) => {
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: "Sprint removida com sucesso!",
+                    text: "Empresa removida com sucesso!",
                     customClass: {
                         popup: "swalAlerta",
                     }
@@ -180,7 +191,7 @@ export const deleteSprint = async (idSprint) => {
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: "Sprint não encontrada!",
+                    text: "Empresa não encontrada!",
                     customClass: {
                         popup: "swalAlerta",
                     }
@@ -188,7 +199,7 @@ export const deleteSprint = async (idSprint) => {
             }
         }
     } catch (error) {
-        console.error("Erro ao remover Sprint " + idSprint + ": ", error);
+        console.error("Erro ao remover Empresa " + idEmpresa + ": ", error);
         Swal.fire({
             icon: "error",
             title: "Oops...",

@@ -4,7 +4,7 @@ export const postTask = async (newTask, toogleModal) => {
     try {
         const formattedTask = JSON.stringify(newTask);
 
-        const res = await fetch("http://localhost:8081/entregas", {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/entregas`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ export const postTask = async (newTask, toogleModal) => {
 export const getTasks = async (idSprint) => {
     
     try {
-        const res = await fetch(`http://localhost:8081/entregas/buscarPorSprint/${idSprint}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/entregas/buscarPorSprint/${idSprint}`);
         const data = await res.json();
         return data;
     } catch (error) {
@@ -78,7 +78,7 @@ export const putTask = async (modifiedTask, idTask, toogleModal) => {
     try {
         const formattedTask = JSON.stringify(modifiedTask);
 
-        const res = await fetch(`http://localhost:8081/entregas/${idTask}`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/entregas/${idTask}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -154,7 +154,7 @@ export const deleteTask = async (idTask) => {
         });
 
         if (confirm.isConfirmed) {
-            const res = await fetch(`http://localhost:8081/entregas/${idTask}`, {
+            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/entregas/${idTask}`, {
                 method: 'DELETE'
             });
 
@@ -210,7 +210,7 @@ export const putImpedimento = async (idEntrega, body) => {
     try {
         const formattedBody = JSON.stringify(body);
 
-        const res = await fetch(`http://localhost:8081/entregas/impedimento/${idEntrega}`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/entregas/impedimento/${idEntrega}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -271,7 +271,7 @@ export const putImpedimento = async (idEntrega, body) => {
 export const putFinalizado = async (idTask, body) => {
     try {
         const formattedBody = JSON.stringify(body);
-        const res = await fetch(`http://localhost:8081/entregas/finalizada/${idTask}`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/entregas/finalizada/${idTask}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

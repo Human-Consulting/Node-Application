@@ -14,7 +14,7 @@ export const TextDefault = styled('p')({
 });
 
 export const Number = styled('p')({
-    fontSize: '22px',
+    fontSize: '16px',
     fontWeight: 600
 });
 

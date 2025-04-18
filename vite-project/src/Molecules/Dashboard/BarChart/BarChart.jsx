@@ -1,6 +1,6 @@
 import Chart from 'react-apexcharts';
 
-const MinimalBarChart = () => {
+const MinimalBarChart = ({ areas }) => {
   const options = {
     chart: {
       type: 'bar',
@@ -11,9 +11,14 @@ const MinimalBarChart = () => {
     },
     plotOptions: {
       bar: {
+        horizontal: true,
         columnWidth: '20%',
-        borderRadius: 4
+        borderRadius: 4,
+        distributed: true
       }
+    },
+    legend: {
+      show: false
     },
     dataLabels: {
       enabled: false
@@ -31,7 +36,7 @@ const MinimalBarChart = () => {
       }
     },
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      categories: areas.map(area => area.nome),
       labels: {
         style: {
           colors: '#fff'
@@ -51,26 +56,30 @@ const MinimalBarChart = () => {
         }
       }
     },
-    colors: ['#fff']
+    colors: ['#4dabf5', '#00E396', '#ffca28', '#ef5350'],
+    colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560'],
   };
 
   const series = [
     {
-      name: 'Sales',
-      data: [400, 150, 100, 450, 300, 50, 350, 200, 410]
+      name: 'Entregas',
+      data: areas.map(area => area.valor)
     }
   ];
 
   return (
     <div
       style={{
-        background: 'linear-gradient(to right, #2c2e8a, #0f1125)',
+        // background: 'linear-gradient(to right, #007bff3d, #0f1125)',
+        // background: 'linear-gradient(to right, #2c2e8a, #0f1125)',
+        // background: 'linear-gradient(to right, #007bff31, #0f1125)',
+        background: 'linear-gradient(to right, #1D1D1D, #0f1125)',
         padding: '1rem',
         borderRadius: '1rem',
 
       }}
     >
-      <Chart options={options} series={series} type="bar" height={150} width="100%" />
+      <Chart options={options} series={series} type="bar" height={300} width="100%" />
     </div>
   );
 };

@@ -6,15 +6,13 @@ export const handleSubmitLogin = async (emailLogin, senhaLogin, navigate, setRes
       const newUsuario = { email: emailLogin, senha: senhaLogin };
       const formattedUsuario = JSON.stringify(newUsuario);
 
-      const res = await fetch("http://localhost:8081/usuarios/autenticar", {
+      const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/autenticar`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: formattedUsuario,
       });
-
-
 
       if (res.ok) {
         const usuario = await res.json();

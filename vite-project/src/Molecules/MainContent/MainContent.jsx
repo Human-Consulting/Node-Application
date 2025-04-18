@@ -30,8 +30,6 @@ const MainContent = () => {
   const atualizarProjetos = async () => {
     const projetos = await getProjetos(idEmpresa);
     setProjetos(projetos);
-    console.log("oi: " + idEmpresa);
-
   };
 
   const buscarUsuarios = async () => {

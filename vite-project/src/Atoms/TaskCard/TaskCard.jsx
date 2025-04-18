@@ -25,7 +25,6 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   }
 
   const handleOpenModalPutSprint = () => {
-    console.log(sprint);
     toogleTaskModal(sprint, 'sprint', null);
   }
 
@@ -52,14 +51,6 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
 
   const temPermissao = validarPermissao();
 
-  const calcularDiasAte = () => {
-    const hoje = new Date();
-    const [ano, mes, dia] = sprint.dtFim.split('-');
-    const fim = new Date(ano, mes - 1, dia);
-    const diff = (fim - hoje) / (1000 * 60 * 60 * 24);
-    return Math.floor(diff);
-  };
-
   const renderIconeStatusSprint = () => {
 
     if (sprint.progresso == 100) {
@@ -68,20 +59,13 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
       );
     }
 
-    const diasRestantes = calcularDiasAte();
-
-    if (diasRestantes < 30 && !sprint.comImpedimento) {
-      return (
-        <WatchLaterIcon sx={{ border: 'solid transparent 3px', borderRadius: '50%', fontSize: '46px', position: 'absolute', left: 10 }} />
-      );
-    }
-    if (diasRestantes < 30 && sprint.comImpedimento) {
+    if (sprint.comImpedimento && sprint.progresso < 50) {
       return (
         <PriorityHighIcon sx={{ border: 'solid red 3px', borderRadius: '50%', fontSize: '40px', position: 'absolute', left: 10 }} />
       );
     }
 
-    if (diasRestantes >= 30 && sprint.comImpedimento) {
+    if (sprint.comImpedimento) {
       return (
         <PriorityHighIcon sx={{ border: 'solid orange 3px', borderRadius: '50%', fontSize: '40px', position: 'absolute', left: 10 }} />
       );
@@ -147,10 +131,10 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
           </Stack>
           <Grid2 sx={{ alignItems: 'center', justifyContent: 'center', alignContent: 'center' }} container spacing={2}>
             <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
-              inicio: {sprint.dtInicio}
+              Inicio: {new Date(sprint.dtInicio).toLocaleDateString('pt-BR')}
             </Grid2>
             <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
-              Fim: {sprint.dtFim}
+              Fim: {new Date(sprint.dtFim).toLocaleDateString('pt-BR')}
             </Grid2>
             <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
               Total entregas: {sprint.entregas.length}

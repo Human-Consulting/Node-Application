@@ -4,7 +4,7 @@ export const postUsuario = async (newUsuario, toogleModal) => {
     try {
         const formattedUsuario = JSON.stringify(newUsuario);
 
-        const res = await fetch("http://localhost:8081/usuarios", {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ export const postUsuario = async (newUsuario, toogleModal) => {
 
 export const getUsuarios = async (idEmpresa) => {
     try {
-        const res = await fetch(`http://localhost:8081/usuarios/buscarPorEmpresa/${idEmpresa}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/buscarPorEmpresa/${idEmpresa}`);
         const data = await res.json();
         return data;
     } catch (error) {
@@ -77,7 +77,7 @@ export const putUsuario = async (modifiedUsuario, idUsuario, toogleModal) => {
     try {
         const formattedUsuario = JSON.stringify(modifiedUsuario);
 
-        const res = await fetch(`http://localhost:8081/usuarios/${idUsuario}`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -153,7 +153,7 @@ export const deleteUsuario = async (idUsuario, toogleModal) => {
         });
 
         if (confirm.isConfirmed) {
-            const res = await fetch(`http://localhost:8081/usuarios/${idUsuario}`, {
+            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`, {
                 method: 'DELETE'
             });
 
@@ -211,7 +211,7 @@ export const uploadFile = async (file, toogleModal) => {
     formData.append("file", file);
 
     try {
-        const res = await fetch("http://localhost:8081/usuarios/upload", {
+        const res = await fetch("${import.meta.env.VITE_ENDERECO_API}/usuarios/upload", {
             method: "POST",
             body: formData
         });

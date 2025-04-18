@@ -57,14 +57,6 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
   const temPermissaoPut = validarPermissaoPut();
   const temPermissaoDelete = validarPermissaoDelete();
 
-  const calcularDiasAte = () => {
-    const hoje = new Date();
-    const [ano, mes, dia] = entrega.dtFim.split('-');
-    const fim = new Date(ano, mes - 1, dia);
-    const diff = (fim - hoje) / (1000 * 60 * 60 * 24);
-    return Math.floor(diff);
-  };
-  
   const renderIconeStatusEntrega = () => {
 
     if (entrega.progresso == 100) {
@@ -73,45 +65,27 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
       )
     }
 
-    const diasRestantes = calcularDiasAte();
-
-    // ⚠️ Caso esteja atrasada, sem impedimento, mas não finalizada
-    if (diasRestantes < 0 && entrega.progresso < 100) {
-      return (
-        <PriorityHighIcon sx={{ border: 'solid orange 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
-      );
-    }
-  
-    // ⏰ Faltando menos de uma semana, sem impedimento
-    if (diasRestantes < 7 && !entrega.comImpedimento) {
-      return (
-        <WatchLaterIcon sx={{ border: 'solid transparent 3px', borderRadius: '50%', fontSize: '34px', position: 'absolute', left: 10 }} />
-      );
-    }
-  
-    // 🔥 Faltando menos de uma semana, com impedimento
-    if (diasRestantes < 7 && entrega.comImpedimento) {
+    if (entrega.comImpedimento && entrega.progresso < 50) {
       return (
         <PriorityHighIcon sx={{ border: 'solid red 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
       );
     }
-  
-    // ⚠️ Com mais de uma semana, mas tem impedimento
-    if (diasRestantes >= 7 && entrega.comImpedimento) {
+
+    if (entrega.comImpedimento) {
       return (
         <PriorityHighIcon sx={{ border: 'solid orange 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
       );
     }
-  
-    // ✅ Caso padrão: tudo certo
+
     return (
       <CheckIcon sx={{ border: 'solid green 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
     );
+
   };
-  
+
 
   return (
-    <TarefaBody sx={{border: `solid ${entrega.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 1px`}}>
+    <TarefaBody sx={{ border: `solid ${entrega.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 1px` }}>
       <Stack sx={{ height: '20%', width: '100%', position: 'relative', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
         {renderIconeStatusEntrega()}
         {entrega.descricao}
@@ -160,33 +134,33 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
       </Stack>
       <Grid2 sx={{ alignItems: 'center', justifyContent: 'center', alignContent: 'center' }} container spacing={2}>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '0.5px solid #fff', gap: '4px', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
-          <b>Início: </b> {entrega.dtInicio}
+          <b>Início: </b> {new Date(entrega.dtInicio).toLocaleDateString('pt-BR')}
         </Grid2>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '0.5px solid #fff', gap: '4px', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
-          <b>Fim: </b>  {entrega.dtFim}
+          <b>Fim: </b>  {new Date(entrega.dtFim).toLocaleDateString('pt-BR')}
         </Grid2>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '0.5px solid #fff', gap: '4px', background: '#000', borderRadius: '5px', padding: '8px', textAlign: 'center' }} size={5}>
           {entrega.nomeResponsavel}
         </Grid2>
         <Grid2 sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '4px',
-            borderRadius: '7px',
-            padding: '8px',
-            border: '2px solid transparent',
-            borderImage: `linear-gradient(to right, #6f63f3, #000000 ${entrega.progresso + 20}%) 1`
-          }}
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '4px',
+          borderRadius: '7px',
+          padding: '8px',
+          border: 'none',
+          background: `linear-gradient(to right, #1769aa ${entrega.progresso}%, #000000 ${entrega.progresso + 0.1}%, #000000)`
+        }}
           size={5}>
           <b>Progresso: </b> {entrega.progresso}%
-        
+
         </Grid2>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px' }} size={10}>
           {entrega.progresso == 100 ?
             <Button fullWidth variant='outlined' color='info'>Tarefa Finalizada</Button>
             :
-            <Button fullWidth variant='outlined' color={entrega.comImpedimento ? 'PriorityHigh' : 'success'} onClick={(e) => {
+            <Button fullWidth variant='outlined' color={entrega.comImpedimento ? 'error' : 'success'} onClick={(e) => {
               e.stopPropagation();
               if (usuarioLogado.idUsuario === entrega.fkResponsavel) handleImpedimentoTask()
             }}>{entrega.fkResponsavel == usuarioLogado.idUsuario && entrega.comImpedimento ? 'Remover Impedimento' : entrega.fkResponsavel == usuarioLogado.idUsuario && !entrega.comImpedimento ? 'Acionar Impedimento' : entrega.comImpedimento ? 'Com Impedimento' : "Sem Impedimento"}</Button>

@@ -1,86 +1,124 @@
 import Chart from 'react-apexcharts';
 
-const LineChart = () => {
-    const options = {
-        chart: {
-          id: 'multi-line',
-          toolbar: {
-            show: false
-          }
-        },
-        colors: ['#008FFB', '#00E396'],
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'smooth',
-          width: 2
-        },
-        fill: {
-          type: 'gradient',
-          gradient: {
-            shade: 'light',
-            type: 'vertical',
-            shadeIntensity: 0.5,
-            gradientToColors: ['#00E396', '#008FFB'],
-            inverseColors: false,
-            opacityFrom: 0.4,
-            opacityTo: 0.1,
-            stops: [0, 90, 100]
-          }
-        },
-        grid: {
-          show: true,
-          borderColor: '#444',
-          strokeDashArray: 4
-        },
-        xaxis: {
-          labels: {
-            style: {
-              colors: '#888',
-              fontSize: '12px'
-            }
-          },
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false
-          }
-          
-        },
-        yaxis: {
-          show: true,
-          labels: {
-            style: {
-              colors: '#888',
-              fontSize: '12px'
-            }
-          }
-        },
-        tooltip: {
-          shared: true,
-          intersect: false
+const LineChart = ({ orcamento, financeiros }) => {
+  // const totaisPorMes = {};
+  const totaisPorMes = Array(financeiros.length).fill(0);
+  financeiros.forEach(financeiro => {
+    const mes = new Date(financeiro.dtInvestimento).getUTCMonth();
+    if (!totaisPorMes[mes]) {
+      totaisPorMes[mes] = 0;
+    }
+    totaisPorMes[mes] += financeiro.valor;
+  });
+
+  const totaisAcumulados = [];
+  let acumulado = 0;
+
+  for (let i = 0; i < totaisPorMes.length; i++) {
+      acumulado += totaisPorMes[i];
+      totaisAcumulados.push(acumulado);
+  }
+
+  const mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+  const resultadoFinal = totaisAcumulados.map((valor, i) => ({
+    mes: mesesNome[i],
+    valor
+  }));
+
+  const orcamentos = [];
+  for (let i = 0; i < resultadoFinal.length; i++) {
+    orcamentos.push(orcamento);
+  }
+
+  console.log(resultadoFinal);
+
+
+  const options = {
+    chart: {
+      id: 'multi-line',
+      toolbar: { show: false }
+    },
+    colors: ['#4dabf5', '#ff1744'],
+    colors: ['#008FFB', '#ff1744'],
+    dataLabels: { enabled: false },
+    stroke: {
+      curve: 'smooth',
+      curve: 'straight',
+      width: [2, 1],
+      dashArray: [0, 0]
+    },
+    fill: {
+      type: ['gradient', 'solid'],
+      opacity: [0, 0],
+      gradient: {
+        shade: 'light',
+        shade: 'dark',
+        type: 'vertical',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: undefined,
+        inverseColors: false,
+        opacityFrom: 0.8,
+        opacityTo: 0.4,
+        stops: [0, 90, 100]
+      }
+    },
+    grid: {
+      show: false,
+    },
+    xaxis: {
+      labels: {
+        style: {
+          colors: '#FFF',
+          fontSize: '12px'
         }
-      };
-    
-      const series = [
-        {
-          name: 'Vendas 2024',
-          data: [30, 40, 35, 50, 49]
-        },
-        {
-          name: 'Vendas 2025',
-          data: [23, 30, 44, 45, 41]
+      },
+      categories: resultadoFinal.map(item => item.mes),
+      axisBorder: { show: false },
+      axisTicks: { show: false }
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: '#FFF',
+          fontSize: '12px'
         }
-      ];
-    
-      return (
-        <div className="App" style={{ width: '100%', padding: '1rem' }}>
-        <h2>Gráfico de Linhas com Gradiente</h2>
-        <Chart options={options} series={series} type="area" height={350} width="100%" />
-      </div>
-      );
-    };
-  export default LineChart;
+      }
+    },
+    tooltip: {
+      shared: false,
+      intersect: false,
+      theme: 'dark',
+    },
+    legend: {
+      fontSize: '16px',
+      labels: {
+        colors: '#FFF',
+      }
+    },
+    legend: {
+      show: false
+    },
+  };
+
+  const series = [
+    {
+      name: 'Investimento',
+      data: resultadoFinal.map(item => item.valor)
+    },
+    {
+      name: "Orçamento",
+      data: orcamentos
+    }
+  ];
+
+  return (
+    <div className="App" style={{ width: '100%', padding: '1rem' }}>
+      <h2>Gráfico Financeiro</h2>
+      <Chart options={options} series={series} type="area" height={320} width="100%" />
+    </div>
+  );
+};
+
+export default LineChart;

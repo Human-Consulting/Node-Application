@@ -62,7 +62,7 @@ const FormsUsuario = ({ usuario, toogleModal, atualizarUsuarios, fkEmpresa, qtdU
                             <input autoComplete="off" type="text" value={area} onChange={(e) => setArea(e.target.value)} />
                         </label>
 
-                        {usuario.permissao == 'DIRETOR' || usuario.permissao.includes('CONSULTOR') ? null :
+                        {usuarioLogado.permissao == 'DIRETOR' || usuarioLogado.permissao.includes('CONSULTOR') ? null :
                             <label>
                                 Permissão:
                                 <select value={permissao} onChange={(e) => setPermissao(e.target.value)}>
