@@ -1,13 +1,14 @@
 import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './ProjectsCard.styles';
 import { Stack, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteProjeto } from './../../Utils/cruds/CrudsProjeto.jsx';
 import CheckIcon from '@mui/icons-material/Check';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
-function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjetos }) {
+function ProjectsCard({ projeto, toogleProjetoModal, atualizarProjetos }) {
+  const { nomeEmpresa, idEmpresa } = useParams();
   const navigate = useNavigate();
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -33,7 +34,7 @@ function ProjectsCard({ idEmpresa, projeto, toogleProjetoModal, atualizarProjeto
   };
 
   const handleOpenProject = () => {
-    navigate(`/Home/${idEmpresa}/task/${Number(projeto.idProjeto)}`);
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${Number(projeto.idProjeto)}`);
   }
 
   const handleOpenModalPostProjeto = () => {

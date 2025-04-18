@@ -1,16 +1,23 @@
 
-import { useParams } from 'react-router'
-import TarefaMini from '../TarefaMini/TarefaMini'
-import { BackCentral, MidleCarrousel, TituloHeader } from './CentralTask.styles'
-import { useEffect, useState } from 'react'
-import { getTasks } from '../../Utils/cruds/CrudsTask'
-import Modal from '../Modal/Modal'
-import FormsTask from '../Forms/FormsTask'
-import { getSprints } from '../../Utils/cruds/CrudsSprint'
+import { useNavigate, useParams } from 'react-router';
+import TarefaMini from '../TarefaMini/TarefaMini';
+import { BackCentral, MidleCarrousel, TituloHeader } from './CentralTask.styles';
+import { useEffect, useState } from 'react';
+import { getTasks } from '../../Utils/cruds/CrudsTask';
+import Modal from '../Modal/Modal';
+import FormsTask from '../Forms/FormsTask';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import { getSprints } from '../../Utils/cruds/CrudsSprint';
+import { Stack } from '@mui/material'
 
-const CentralTask = ({ toogleLateralBar, usuarios, idEmpresa, atualizarProjetos }) => {
+const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
 
-  const { idSprint } = useParams();
+  const { nomeEmpresa, idEmpresa, idProjeto, idSprint, index } = useParams();
+  const navigate = useNavigate();
+
+  const handleOpenProject = () => {
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${idProjeto}`);
+  }
 
   const [showModal, setShowModal] = useState(false);
   const [task, setTask] = useState(null);
@@ -39,13 +46,17 @@ const CentralTask = ({ toogleLateralBar, usuarios, idEmpresa, atualizarProjetos 
 
   return (
     <BackCentral>
-      <TituloHeader>
-        Tarefas da sprint
-      </TituloHeader>
+      <Stack sx={{ flexDirection: 'row', alignItems: 'center' }}>
+      <ArrowCircleLeftOutlinedIcon sx={{cursor: 'pointer', fontSize: '45px'}} onClick={handleOpenProject}/>
+        <TituloHeader>
+          Tarefas da sprint {index}
+        </TituloHeader>
+      </Stack>
       <MidleCarrousel>
         {entregas.map((entrega, index) => (
           <TarefaMini idSprint={entrega.idSprint} indice={index + 1} entrega={entrega} key={entrega.index} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarTasks={atualizarTasks} />
         ))}
+        <TarefaMini toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarTasks={atualizarTasks} entrega={null} />
       </MidleCarrousel>
 
       <Modal showModal={showModal} fechar={toogleModal}

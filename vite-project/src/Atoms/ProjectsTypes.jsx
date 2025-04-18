@@ -1,13 +1,15 @@
 import { ImageBox, ProjectsTypesBox, SubTitle, Title } from './ProjectTypes.styles'
 import { Stack } from '@mui/material'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 
-const ProjectsTypes = ({ idEmpresa, projeto }) => {
+const ProjectsTypes = ({ projeto }) => {
+
+  const { nomeEmpresa, idEmpresa } = useParams();
 
   const navigate = useNavigate()
 
   const handleOpenProject = () => {
-    navigate(`/Home/${idEmpresa}/task/${Number(projeto.idProjeto)}`);
+    navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${Number(projeto.idProjeto)}`);
   }
 
   return (

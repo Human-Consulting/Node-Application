@@ -5,22 +5,24 @@ import InsightsIcon from '@mui/icons-material/Insights';
 import GroupIcon from '@mui/icons-material/Group';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import ProjectsTypes from '../../Atoms/ProjectsTypes';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { Button } from '@mui/material';
 
-const LateralBar = ({ projetos, idEmpresa }) => {
+const LateralBar = ({ projetos }) => {
+    
+    const { nomeEmpresa, idEmpresa } = useParams();
     const navigate = useNavigate()
 
     const handleOpenHome = () => {
-        navigate(`/Home/${idEmpresa}`);
+        navigate(`/Home/${nomeEmpresa}/${idEmpresa}`);
     }
 
     const handleOpenUsuarios = () => {
-        navigate(`/Home/${idEmpresa}/Usuarios`);
+        navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Usuarios`);
     }
 
     const handleOpenDash = () => {
-        navigate(`/Home/${idEmpresa}/Dash`);
+        navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Dash`);
     }
 
     const handleExit = () => {

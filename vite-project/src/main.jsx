@@ -13,12 +13,18 @@ import Dashboard from './Molecules/Dashboard/Dashboard.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/home/:idEmpresa",
+    path: "/Home/:nomeEmpresa/:idEmpresa",
     element: <App/>,
     children: [
       {
-        path: "task/:idProjeto",
-        element: <Task />, 
+        path: "Roadmap/:idProjeto",
+        element: <Task />,
+        children: [
+          {
+            path: "Entregas/:idSprint/:index", 
+            element: <CentralTask />,
+          }
+        ]
       },
       {
         path: "Dash",
@@ -28,10 +34,6 @@ const router = createBrowserRouter([
       {
         path: "next-step",
         element: <NextStep />, 
-      },
-      {
-        path: "central-task/:idSprint", 
-        element: <CentralTask />,
       },
       {
         path: "Usuarios", 

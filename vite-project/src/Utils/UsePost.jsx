@@ -18,9 +18,10 @@ export const handleSubmitLogin = async (emailLogin, senhaLogin, navigate, setRes
         const usuario = await res.json();
         localStorage.setItem("usuario", JSON.stringify(usuario));
         if (usuario.permissao.includes('CONSULTOR')) {
-          navigate(`/Home/2`);
+          navigate(`/Home/Human/2`);
+          //TODO => navigate(`/Home/Empresas`);
         } else {
-          navigate(`/Home/${Number(usuario.fkEmpresa)}`);
+          navigate(`/Home/${usuario.nomeEmpresa}/${Number(usuario.fkEmpresa)}`);
         }
         setResponseMessage('');
 

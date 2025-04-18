@@ -13,7 +13,7 @@ import Usuarios from '../Usuarios/Usuarios';
 import Dashboard from '../Dashboard/Dashboard';
 
 const MainContent = () => {
-  const { idEmpresa } = useParams();
+  const { nomeEmpresa, idEmpresa } = useParams();
 
   const [showLateralBar, setShowLateralBar] = useState(true);
   const [projetos, setProjetos] = useState([]);
@@ -45,15 +45,17 @@ const MainContent = () => {
   return (
     <BoxAltertive>
 
-      <LateralBar projetos={projetos} idEmpresa={idEmpresa} />
+      <LateralBar projetos={projetos} />
 
       <Routes>
-        <Route path="/task/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
+        <Route path="/Roadmap/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
         <Route path="/next-step" element={<NextStep />} />
-        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} projetos={projetos} usuarios={usuarios} />} />
-        <Route path="/central-task/:idSprint" element={<CentralTask toogleLateralBar={hideShowLateralBar} idEmpresa={idEmpresa} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
-        <Route path="/Usuarios" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} idEmpresa={idEmpresa} />} />
+        {/* //TODO <Route path="/Empresas" element={<Empresas />} /> */}
+        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar}  atualizarProjetos={atualizarProjetos} projetos={projetos} usuarios={usuarios} />} />
+        <Route path="/Roadmap/:idProjeto/Entregas/:idSprint/:index" element={<CentralTask toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
+        <Route path="/Usuarios" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} />} />
         <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} />} />
+        {/* //TODO <Route path="/Dash/:idProjeto" element={<DashboardProjeto toogleLateralBar={hideShowLateralBar} />} /> */}
       </Routes>
 
       <LateralBarRight showLateralBar={showLateralBar} projetos={projetos} />

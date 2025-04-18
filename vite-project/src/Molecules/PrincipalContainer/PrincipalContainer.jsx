@@ -5,8 +5,12 @@ import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient';
 import { useEffect, useState } from 'react';
 import Modal from '../Modal/Modal'
 import FormsProjeto from './../Forms/FormsProjeto.jsx';
+import { useParams } from 'react-router';
 
-const PrincipalContainer = ({ toogleLateralBar, idEmpresa, atualizarProjetos, projetos, usuarios }) => {
+const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, projetos, usuarios }) => {
+  
+  const { nomeEmpresa, idEmpresa } = useParams();
+
   const [showModal, setShowModal] = useState(false);
   const [projeto, setProjeto] = useState(null);
   const [projetosFiltrados, setProjetosFiltrados] = useState([]);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { TaskBody } from './Task.styles'
 import TaskCard from '../../Atoms/TaskCard/TaskCard'
 import Modal from '../Modal/Modal'
@@ -10,6 +10,8 @@ import FormsSprint from '../Forms/FormsSprint'
 const Task = ({ toogleLateralBar, idEmpresa, atualizarProjetos, usuarios }) => {
 
   const { idProjeto } = useParams();
+
+  const scrollRef = useRef(null);
 
   const [showModal, setShowModal] = useState(false);
   const [entidade, setEntidade] = useState(null);
@@ -27,7 +29,7 @@ const Task = ({ toogleLateralBar, idEmpresa, atualizarProjetos, usuarios }) => {
   useEffect(() => {
     atualizarSprints();
     toogleLateralBar();
-  }, []);
+  }, [idProjeto]);
 
   const toogleModal = (entidade, post, id) => {
     setAcao(post);

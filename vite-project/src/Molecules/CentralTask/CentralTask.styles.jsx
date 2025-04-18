@@ -19,9 +19,7 @@ export const TituloHeader = styled('h1')({
     fontFamily: "Bebas Neue",
     fontWeight: 400,
     fontSize: '75px',
-    color: '#fff'
-
-      
+    color: '#fff',
 })
 
 export const MidleCarrousel = styled(Box)({

@@ -1,23 +1,24 @@
 import { BodyTarefa, NavTask, TaskCardBody } from './TaskCard.styles'
 import { Button, Grid2, Stack } from '@mui/material'
 import TarefasItem from '../TarefasItem/TarefasItem'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteSprint } from './../../Utils/cruds/CrudsSprint.jsx';
 import CheckIcon from '@mui/icons-material/Check';
-import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 
-const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints, idEmpresa }) => {
+const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints }) => {
+
+  const { nomeEmpresa, idEmpresa, idProjeto } = useParams();
 
   const navigate = useNavigate();
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const handleOpenProject = () => {
-    navigate(`/Home/${idEmpresa}/central-task/${sprint.idSprint}`);
+    navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${idProjeto}/Entregas/${sprint.idSprint}/${index}`);
   }
 
   const handleOpenModalPutTask = (task) => {
