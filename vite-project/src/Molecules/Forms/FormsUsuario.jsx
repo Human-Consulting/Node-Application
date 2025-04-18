@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { postUsuario, putUsuario } from '../../Utils/cruds/CrudsUsuario.jsx';
 
-const FormsUsuario = ({ usuario, toogleModal, atualizarUsuarios, fkEmpresa, qtdUsuarios }) => {
+const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, fkEmpresa, qtdUsuarios }) => {
 
+    console.log(diretor);
     const [nome, setNome] = useState(usuario?.nome || '');
     const [email, setEmail] = useState(usuario?.email || '');
     const [senha, setSenha] = useState(usuario?.senha || '');
@@ -62,22 +63,29 @@ const FormsUsuario = ({ usuario, toogleModal, atualizarUsuarios, fkEmpresa, qtdU
                             <input autoComplete="off" type="text" value={area} onChange={(e) => setArea(e.target.value)} />
                         </label>
 
-                        {usuarioLogado.permissao == 'DIRETOR' || usuarioLogado.permissao.includes('CONSULTOR') ? null :
+                        {((usuario == null && usuarioLogado.permissao != 'FUNC') || (usuario != null && usuarioLogado.permissao.includes('DIRETOR', 'CONSULTOR')) || (usuario != null && usuarioLogado.permissao == 'GESTOR' && usuario.permissao.includes('GESTOR', 'FUNC'))) && usuario?.permissao !== 'DIRETOR' ?
                             <label>
                                 Permissão:
                                 <select value={permissao} onChange={(e) => setPermissao(e.target.value)}>
-                                    {qtdUsuarios >= 1 ?
+                                    {qtdUsuarios >= 1 && diretor ?
                                         <>
                                             <option value="#">Selecione a permissão</option>
                                             <option value="GESTOR">Gestão</option>
                                             <option value="FUNC">Team Member</option>
                                         </>
-                                        :
-                                        <option value="DIRETOR">Diretor</option>
+                                        : qtdUsuarios >= 1 && !diretor ?
+                                            <>
+                                                <option value="#">Selecione a permissão</option>
+                                                <option value="GESTOR">Gestão</option>
+                                                <option value="FUNC">Team Member</option>
+                                                <option value="DIRETOR">Diretor</option>
+                                            </>
+                                            : <option value="DIRETOR">Diretor</option>
                                     }
 
                                 </select>
                             </label>
+                            : null
                         }
                     </>
                 }

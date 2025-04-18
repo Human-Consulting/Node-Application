@@ -85,7 +85,7 @@ const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios, idEmpresa }) 
       </Box>
       <Tabela usuarios={usuariosFiltrados} toogleModal={toogleModal} atualizarUsuarios={atualizarUsuarios} />
       <Modal showModal={showModal} fechar={toogleModal}
-        form={<FormsUsuario usuario={usuario} toogleModal={toogleModal} atualizarUsuarios={atualizarUsuarios} fkEmpresa={idEmpresa} qtdUsuarios={usuarios.length} />}
+        form={<FormsUsuario diretor={usuariosFiltrados.some(usuario => usuario.permissao === 'DIRETOR')} usuario={usuario} toogleModal={toogleModal} atualizarUsuarios={atualizarUsuarios} fkEmpresa={idEmpresa} qtdUsuarios={usuarios.length} />}
       >
       </Modal>
     </UsuariosBody>
