@@ -31,8 +31,6 @@ const LineChart = ({ orcamento, financeiros }) => {
     orcamentos.push(orcamento);
   }
 
-  console.log(resultadoFinal);
-
 
   const options = {
     chart: {

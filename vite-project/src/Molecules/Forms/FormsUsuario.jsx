@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { postUsuario, putUsuario } from '../../Utils/cruds/CrudsUsuario.jsx';
+import { useParams } from "react-router";
 
-const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, fkEmpresa, qtdUsuarios }) => {
+const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsuarios }) => {
 
-    console.log(diretor);
+    const { idEmpresa } = useParams();
+    
     const [nome, setNome] = useState(usuario?.nome || '');
     const [email, setEmail] = useState(usuario?.email || '');
     const [senha, setSenha] = useState(usuario?.senha || '');
@@ -14,7 +16,8 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, fkEmpr
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handlePostUsuario = async () => {
-        const newUsuario = { nome, email, senha, cargo, area, permissao, fkEmpresa };
+
+        const newUsuario = { nome, email, senha, cargo, area, permissao, fkEmpresa: idEmpresa };
         await postUsuario(newUsuario, toogleModal);
         atualizarUsuarios();
     };
@@ -67,20 +70,31 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, fkEmpr
                             <label>
                                 Permissão:
                                 <select value={permissao} onChange={(e) => setPermissao(e.target.value)}>
-                                    {qtdUsuarios >= 1 && diretor ?
+                                    {idEmpresa == 1 ?
                                         <>
                                             <option value="#">Selecione a permissão</option>
-                                            <option value="GESTOR">Gestão</option>
-                                            <option value="FUNC">Team Member</option>
+                                            <option value="CONSULTOR_DIRETOR">Diretor</option>
+                                            <option value="CONSULTOR">Consultor</option>
                                         </>
-                                        : qtdUsuarios >= 1 && !diretor ?
+                                        :
+                                        qtdUsuarios >= 1 && diretor ?
                                             <>
                                                 <option value="#">Selecione a permissão</option>
                                                 <option value="GESTOR">Gestão</option>
                                                 <option value="FUNC">Team Member</option>
-                                                <option value="DIRETOR">Diretor</option>
                                             </>
-                                            : <option value="DIRETOR">Diretor</option>
+                                            : qtdUsuarios >= 1 && !diretor ?
+                                                <>
+                                                    <option value="#">Selecione a permissão</option>
+                                                    <option value="GESTOR">Gestão</option>
+                                                    <option value="FUNC">Team Member</option>
+                                                    <option value="DIRETOR">Diretor</option>
+                                                </>
+                                                : 
+                                                <>
+                                                    <option value="#">Selecione a permissão</option>
+                                                    <option value="DIRETOR">Diretor</option>
+                                                </>
                                     }
 
                                 </select>

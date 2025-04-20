@@ -11,7 +11,7 @@ export const BoxBody = styled('div')({
     borderRadius: '10px',
     flexShrink: 0,
     position: 'relative',
-    marginTop: '2rem',
+    marginTop: '1rem',
     cursor: 'pointer'
 });
 
@@ -37,8 +37,8 @@ export const Subtitle = styled('p')({
     fontWeight: 300,
     fontSize: '14px',
     color: '#fff',
-
 })
+
 export const HeaderCard = styled('div')({
     height: '50%',
     width: '100%',
@@ -53,7 +53,7 @@ export const HeaderCard = styled('div')({
 })
 
 export const BodyCard = styled('div')({
-    height: '65%',
+    height: '60%',
     width: '100%',
     backgroundColor: '#1d1d1d',
     zIndex: '30',

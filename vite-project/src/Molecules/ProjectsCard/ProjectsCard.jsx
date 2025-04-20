@@ -4,22 +4,23 @@ import { useNavigate, useParams } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteProjeto } from './../../Utils/cruds/CrudsProjeto.jsx';
+import { deleteEmpresa } from './../../Utils/cruds/CrudsEmpresa.jsx';
 import CheckIcon from '@mui/icons-material/Check';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
-function ProjectsCard({ projeto, toogleProjetoModal, atualizarProjetos }) {
+function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas }) {
   const { nomeEmpresa, idEmpresa } = useParams();
   const navigate = useNavigate();
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   let statusColor = '#08D13D';
-  if (projeto) {
-    if (projeto.progresso == 100) {
+  if (item) {
+    if (item.progresso == 100) {
       statusColor = '#2196f3';
     }
-    else if (projeto.comImpedimento == 0) {
+    else if (item.comImpedimento == 0) {
       statusColor = '#08D13D';
-    } else if (projeto.comImpedimento == 1 && projeto.progresso > 50) {
+    } else if (item.comImpedimento == 1 && item.progresso > 50) {
       statusColor = '#CED108';
     } else {
       statusColor = '#FF0707';
@@ -27,27 +28,25 @@ function ProjectsCard({ projeto, toogleProjetoModal, atualizarProjetos }) {
   }
 
   const renderIconeStatusProjeto = () => {
-    if (projeto.progresso == 100) return (<CheckIcon sx={{ fontSize: '22px' }} />);
-    if (projeto.comImpedimento) return (<PriorityHighIcon sx={{ fontSize: '22px' }} />);
+    if (item.progresso == 100) return (<CheckIcon sx={{ fontSize: '22px' }} />);
+    if (item.comImpedimento) return (<PriorityHighIcon sx={{ fontSize: '22px' }} />);
 
     return (<CheckIcon sx={{ fontSize: '25px' }} />);
   };
 
-  const handleOpenProject = () => {
-    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${Number(projeto.idProjeto)}`);
+  const handleOpenProject = async () => {
+    idEmpresa == 1 ? navigate(`/Home/${item.nome}/${Number(item.idEmpresa)}`)
+      : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${Number(item.idProjeto)}`);
   }
 
-  const handleOpenModalPostProjeto = () => {
-    toogleProjetoModal(null);
-  }
-
-  const handleOpenModalPutProjeto = () => {
-    toogleProjetoModal(projeto);
-  }
-
-  const handleDeleteProjeto = async () => {
-    await deleteProjeto(projeto.idProjeto);
-    await atualizarProjetos();
+  const handleDelete = async () => {
+    if (idEmpresa == 1) {
+      await deleteEmpresa(item.idEmpresa);
+      await atualizarEmpresas();
+    } else {
+      await deleteProjeto(item.idProjeto);
+      await atualizarProjetos();
+    }
   }
 
   const validarPermissaoPut = () => {
@@ -67,21 +66,21 @@ function ProjectsCard({ projeto, toogleProjetoModal, atualizarProjetos }) {
 
   return (
     <>
-      {projeto ?
+      {item ?
         <BoxBody onClick={handleOpenProject}>
           <HeaderCard sx={{
-            backgroundImage: `url(data:image/png;base64,${projeto.urlImagem})`,
+            backgroundImage: `url(data:image/png;base64,${item.urlImagem})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
           }} />
           <BodyCard>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Title>{projeto.nomeResponsavel}</Title>
+              <Title>{item?.nomeResponsavel || item.diretor}</Title>
               <DeleteIcon
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (temPermissaoDelete) handleDeleteProjeto();
+                  if (temPermissaoDelete) handleDelete();
                 }}
                 title={temPermissaoDelete ? "Excluir projeto" : "Você não tem permissão"}
                 sx={{
@@ -102,7 +101,7 @@ function ProjectsCard({ projeto, toogleProjetoModal, atualizarProjetos }) {
               <EditIcon
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (temPermissaoPut) handleOpenModalPutProjeto();
+                  if (temPermissaoPut) toogleModal(item, idEmpresa == 1 ? 'empresa' : 'projeto');
                 }}
                 title={temPermissaoPut ? "Excluir projeto" : "Você não tem permissão"}
                 sx={{
@@ -121,13 +120,13 @@ function ProjectsCard({ projeto, toogleProjetoModal, atualizarProjetos }) {
                 }}
               />
             </Stack>
-            <Subtitle>Orçamento: R${projeto.orcamento}</Subtitle>
-            <Subtitle>{projeto.descricao}</Subtitle>
+            <Subtitle>Orçamento: R${item.orcamento}</Subtitle>
+            <Subtitle>{item?.descricao || item.nome}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
-                <Progress sx={{ width: `${projeto.progresso}%` }} />
+                <Progress sx={{ width: `${item.progresso}%` }} />
               </ProgressBar>
-              <Subtitle>{projeto.progresso}%</Subtitle>
+              <Subtitle>{item.progresso}%</Subtitle>
             </Stack>
           </BodyCard>
           <StatusCircle sx={{ border: `5px solid ${statusColor}` }}>
@@ -135,10 +134,10 @@ function ProjectsCard({ projeto, toogleProjetoModal, atualizarProjetos }) {
           </StatusCircle>
         </BoxBody>
         :
-        <BoxBody onClick={handleOpenModalPostProjeto} sx={{ alignItems: 'center' }}>
+        <BoxBody onClick={() => toogleModal(null, idEmpresa == 1 ? 'empresa' : 'projeto')} sx={{ alignItems: 'center' }}>
           <Button
-            variant="contained" sx={{ position: 'absolute', top: '50%', zIndex: '50' }}>
-            CRIAR NOVO PROJETO
+            variant="contained" sx={{ position: 'absolute', top: '50%', zIndex: '40' }}>
+            {idEmpresa == 1 ? "CRIAR NOVA EMPRESA" : "CRIAR NOVO PROJETO"}
           </Button>
           <BodyCard>
           </BodyCard>

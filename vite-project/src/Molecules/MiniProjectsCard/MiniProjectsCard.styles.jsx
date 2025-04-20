@@ -10,6 +10,7 @@ export const BoxBody = styled('div')({
     borderRadius: '10px',
     flexShrink: 0,
     position: 'relative',
+    cursor: 'pointer',
 });
 
 export const StatusCircle = styled('div')({
@@ -65,14 +66,13 @@ export const BodyCard = styled('div')({
 })
 export const ProgressBar = styled('div')({
     height: '10px',
-    width: '70%',
+    width: '100%',
     backgroundColor: '#474747',
     borderRadius: '2px',
     overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'start'
-    
 })
 
 export const Progress = styled('div')({

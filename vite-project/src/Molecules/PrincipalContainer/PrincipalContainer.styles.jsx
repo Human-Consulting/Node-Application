@@ -26,7 +26,7 @@ export const MidleCarrousel = styled(Box)({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
     gap: '3.5rem',
-    padding: '0rem 2rem',
+    padding: '0rem 2rem 5rem',
 
 });
 export const InputSearch = styled('input')({

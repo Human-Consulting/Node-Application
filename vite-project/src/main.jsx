@@ -13,7 +13,7 @@ import Dashboard from './Molecules/Dashboard/Dashboard.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/Home/:nomeEmpresa/:idEmpresa",
+    path: "/Home/:nomeEmpresa/:idEmpresa", //? validar se for Human Consulting, id 1, permissão CONSULTOR
     element: <App/>,
     children: [
       {

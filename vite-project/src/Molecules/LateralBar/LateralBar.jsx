@@ -8,13 +8,15 @@ import ProjectsTypes from '../../Atoms/ProjectsTypes';
 import { useNavigate, useParams } from 'react-router';
 import { Button } from '@mui/material';
 
-const LateralBar = ({ projetos }) => {
-    
+const LateralBar = ({ projetos, empresas }) => {
+
     const { nomeEmpresa, idEmpresa } = useParams();
     const navigate = useNavigate()
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handleOpenHome = () => {
-        navigate(`/Home/${nomeEmpresa}/${idEmpresa}`);
+        if (usuarioLogado.permissao.includes('CONSULTOR')) navigate(`/Home/Empresas/1`);
+        else navigate(`/Home/${nomeEmpresa}/${idEmpresa}`);
     }
 
     const handleOpenUsuarios = () => {
@@ -43,13 +45,15 @@ const LateralBar = ({ projetos }) => {
                         Home
                     </Title>
                 </Stack>
-                <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }} onClick={handleOpenDash}>
-                    <InsightsIcon sx={{ color: '#ffff' }} />
-                    <Title>
-                        Dashboard Geral
-                    </Title>
+                {idEmpresa != 1 ?
+                    <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }} onClick={handleOpenDash}>
+                        <InsightsIcon sx={{ color: '#ffff' }} />
+                        <Title>
+                            Dashboard Geral
+                        </Title>
 
-                </Stack>
+                    </Stack>
+                    : null}
                 <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }} onClick={handleOpenUsuarios}>
                     <GroupIcon sx={{ color: '#ffff' }} />
                     <Title>
@@ -73,9 +77,14 @@ const LateralBar = ({ projetos }) => {
 
                 </ChipZone>
                 <CardZone>
-                    {projetos.map(projeto => (
-                        <ProjectsTypes idEmpresa={idEmpresa} projeto={projeto} />
-                    ))}
+                    {idEmpresa != 1 ? projetos.map(projeto => (
+                        <ProjectsTypes entidade={projeto} />
+                    ))
+                        :
+                        empresas.map(empresa => (
+                            <ProjectsTypes entidade={empresa} />
+                        ))
+                    }
                 </CardZone>
                 <Button variant='outlined' sx={{ position: 'absolute', bottom: '5%', left: '1rem' }} onClick={handleExit}>Sair</Button>
             </DivisorTwo>

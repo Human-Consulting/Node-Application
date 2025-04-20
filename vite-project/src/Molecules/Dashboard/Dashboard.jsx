@@ -8,17 +8,25 @@ import LensIcon from '@mui/icons-material/Lens';
 import RadialChart from './RadialChart'
 import { useEffect, useState } from 'react'
 import { getEmpresaAtual } from '../../Utils/cruds/CrudsEmpresa'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import CheckIcon from '@mui/icons-material/Check';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import CircularProgress from '@mui/material/CircularProgress';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 
 const Dashboard = ({ toogleLateralBar }) => {
+
+  const { idEmpresa, nomeEmpresa } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     toogleLateralBar();
     atualizarEmpresa();
   }, [])
-  const { idEmpresa } = useParams();
+
+  const handleOpenProject = async () => {
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}`)
+  }
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
   const [empresa, setEmpresa] = useState({});
@@ -31,14 +39,16 @@ const Dashboard = ({ toogleLateralBar }) => {
     setLoading(false);
   }
 
-  if (loading) return <TextDefault>Carregando...</TextDefault>;
+  if (loading) return (
+    <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+      <CircularProgress size={50} />
+      <TextDefault sx={{ mt: 2 }}>Carregando dados da empresa...</TextDefault>
+    </Stack>
+  );
+
   const totalEntregas = empresa.areas.reduce((total, area) => total + area.valor, 0);
 
   const renderIcon = () => {
-
-
-    console.log(empresa.comImpedimento);
-    
 
     if (empresa.progresso == 100) {
       return (
@@ -82,10 +92,7 @@ const Dashboard = ({ toogleLateralBar }) => {
       </ShaderGradientCanvas>
       <Stack sx={{ width: '100%', height: '90vh%', overflowY: 'hidden', gap: '2rem', flex: '0 0 auto', position: 'relative', zIndex: '1000' }}>
         <KpiContainer>
-          {/* <Title>
-            Dashboard da {usuarioLogado.nomeEmpresa}
-          </Title> */}
-          <Typography variant="h3" mt={3} mb={2}>Dashboard da {usuarioLogado.nomeEmpresa}</Typography>
+          <Typography variant="h3" mt={3} mb={2} sx={{display: 'flex', alignItems: 'center', }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />Dashboard da {nomeEmpresa}</Typography>
 
           <DashContainer>
             <Stack sx={{ gap: 4 }}>

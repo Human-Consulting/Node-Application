@@ -2,25 +2,26 @@ import { ImageBox, ProjectsTypesBox, SubTitle, Title } from './ProjectTypes.styl
 import { Stack } from '@mui/material'
 import { useNavigate, useParams } from 'react-router'
 
-const ProjectsTypes = ({ projeto }) => {
+const ProjectsTypes = ({ entidade }) => {
 
   const { nomeEmpresa, idEmpresa } = useParams();
 
   const navigate = useNavigate()
 
   const handleOpenProject = () => {
-    navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${Number(projeto.idProjeto)}`);
+    if (idEmpresa == 1) navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
+    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${Number(entidade.idProjeto || entidade.idEmpresa)}`);
   }
 
   return (
     <ProjectsTypesBox onClick={handleOpenProject}>
-      <ImageBox src={`data:image/png;base64,${projeto.urlImagem}`} />
+      <ImageBox src={`data:image/png;base64,${entidade.urlImagem}`} />
       <Stack sx={{ justifyContent: 'space-between' }}>
         <Title>
-          {projeto.descricao}
+          {entidade.descricao || entidade.nome}
         </Title>
         <SubTitle>
-          {projeto.subtitle} Este projeto está {projeto.progresso}% completo
+          {idEmpresa == 1 ? `Esta empresa está ${entidade.progresso}% concluida` : `Este projeto está ${entidade.progresso}% concluido`}
         </SubTitle>
       </Stack>
     </ProjectsTypesBox>

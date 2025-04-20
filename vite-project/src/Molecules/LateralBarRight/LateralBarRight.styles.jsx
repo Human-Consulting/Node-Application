@@ -7,6 +7,7 @@ export const LateralNavBar = styled(Box)({
     background: '#0d0d0d',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-evenly',
     flexDirection: 'column',
 
 });

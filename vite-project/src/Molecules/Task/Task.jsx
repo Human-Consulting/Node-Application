@@ -11,8 +11,6 @@ const Task = ({ toogleLateralBar, idEmpresa, atualizarProjetos, usuarios }) => {
 
   const { idProjeto } = useParams();
 
-  const scrollRef = useRef(null);
-
   const [showModal, setShowModal] = useState(false);
   const [entidade, setEntidade] = useState(null);
   const [id, setId] = useState(null);

@@ -15,6 +15,8 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
   const { nomeEmpresa, idEmpresa, idProjeto, idSprint, index } = useParams();
   const navigate = useNavigate();
 
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
   const handleOpenProject = () => {
     navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${idProjeto}`);
   }
@@ -47,7 +49,7 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
   return (
     <BackCentral>
       <Stack sx={{ flexDirection: 'row', alignItems: 'center' }}>
-      <ArrowCircleLeftOutlinedIcon sx={{cursor: 'pointer', fontSize: '45px'}} onClick={handleOpenProject}/>
+        <ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />
         <TituloHeader>
           Tarefas da sprint {index}
         </TituloHeader>
@@ -56,7 +58,9 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
         {entregas.map((entrega, index) => (
           <TarefaMini idSprint={entrega.idSprint} indice={index + 1} entrega={entrega} key={entrega.index} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarTasks={atualizarTasks} />
         ))}
-        <TarefaMini toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarTasks={atualizarTasks} entrega={null} />
+        {usuarioLogado.permissao != 'FUNC' ?
+          <TarefaMini toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarTasks={atualizarTasks} entrega={null} />
+          : null}
       </MidleCarrousel>
 
       <Modal showModal={showModal} fechar={toogleModal}

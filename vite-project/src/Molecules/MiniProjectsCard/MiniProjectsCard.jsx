@@ -2,37 +2,47 @@ import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Sub
 import { Stack } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import { useNavigate, useParams } from 'react-router';
 
-function MiniProjectsCard({ projeto }) {
+function MiniProjectsCard({ entidade }) {
 
   let statusColor = '#08D13D';
-  if (projeto) {
-    if (projeto.progresso == 100) {
+  if (entidade) {
+    if (entidade.progresso == 100) {
       statusColor = '#2196f3';
     }
-    else if (projeto.comImpedimento == false) {
+    else if (entidade.comImpedimento == false) {
       statusColor = '#08D13D';
-    } else if (projeto.comImpedimento == true && projeto.progresso > 50) {
+    } else if (entidade.comImpedimento == true && entidade.progresso > 50) {
       statusColor = '#CED108';
     } else {
       statusColor = '#FF0707';
     }
   }
 
-  const renderIconeStatusProjeto = () => {
-    if (projeto.progresso == 100) return (<CheckIcon sx={{ fontSize: '25px' }} />);
-    if (projeto.comImpedimento) return (<PriorityHighIcon sx={{ fontSize: '16px' }} />);
+  const renderIconeStatus = () => {
+    if (entidade.progresso == 100) return (<CheckIcon sx={{ fontSize: '25px' }} />);
+    if (entidade.comImpedimento) return (<PriorityHighIcon sx={{ fontSize: '16px' }} />);
 
     return (<CheckIcon sx={{ fontSize: '16px' }} />);
   };
 
+  const { nomeEmpresa, idEmpresa } = useParams();
+
+  const navigate = useNavigate()
+
+  const handleOpenProject = () => {
+    if (idEmpresa == 1) navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
+    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${Number(entidade.idProjeto || entidade.idEmpresa)}`);
+  }
+
   return (
     <>
-      {projeto != null ?
-        <BoxBody>
+      {entidade != null ?
+        <BoxBody onClick={handleOpenProject}>
           <HeaderCard
             sx={{
-              backgroundImage: `url("data:image/png;base64,${projeto.urlImagem}")`,
+              backgroundImage: `url("data:image/png;base64,${entidade.urlImagem}")`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
@@ -40,17 +50,17 @@ function MiniProjectsCard({ projeto }) {
           />
           <BodyCard>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Title>{projeto.nomeResponsavel}</Title>
+              <Title>{entidade.nomeResponsavel || entidade.nomeDiretor}</Title>
             </Stack>
-            <Subtitle>{projeto.descricao}</Subtitle>
+            <Subtitle>{entidade.descricao || entidade.nome}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
-                <Progress sx={{ width: `${projeto.progresso}%` }} />
+                <Progress sx={{ width: `${entidade.progresso}%` }} />
               </ProgressBar>
             </Stack>
           </BodyCard>
           <StatusCircle sx={{ border: `3px solid ${statusColor}` }}>
-            {renderIconeStatusProjeto()}
+            {renderIconeStatus()}
           </StatusCircle>
 
         </BoxBody>
