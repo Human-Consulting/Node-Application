@@ -2,7 +2,7 @@ export const MockSprint = [
   {
     "numero_sprint": 1,
     "titulo": "Configuração Inicial",
-    "total_entregas": Math.floor(Math.random() * 10) + 1, // Número aleatório entre 1 e 10
+    "total_tarefas": Math.floor(Math.random() * 10) + 1, // Número aleatório entre 1 e 10
     "porcentagem": Math.floor(Math.random() * 101), // Porcentagem aleatória entre 0 e 100
     "data_inicio": "2025-03-01",
     "data_fim": "2025-03-31",
@@ -40,7 +40,7 @@ export const MockSprint = [
   {
     "numero_sprint": 2,
     "titulo": "Autenticação e API",
-    "total_entregas": Math.floor(Math.random() * 10) + 1,
+    "total_tarefas": Math.floor(Math.random() * 10) + 1,
     "porcentagem": Math.floor(Math.random() * 101),
     "data_inicio": "2025-04-01",
     "data_fim": "2025-04-30",
@@ -168,7 +168,7 @@ export const MockSprint = [
   {
     "numero_sprint": 3,
     "titulo": "Funcionalidades e Testes",
-    "total_entregas": Math.floor(Math.random() * 10) + 1,
+    "total_tarefas": Math.floor(Math.random() * 10) + 1,
     "porcentagem": Math.floor(Math.random() * 101),
     "data_inicio": "2025-05-01",
     "data_fim": "2025-05-31",
@@ -206,7 +206,7 @@ export const MockSprint = [
   {
     "numero_sprint": 4,
     "titulo": "Finalização e Integração",
-    "total_entregas": Math.floor(Math.random() * 10) + 1,
+    "total_tarefas": Math.floor(Math.random() * 10) + 1,
     "porcentagem": Math.floor(Math.random() * 101),
     "data_inicio": "2025-06-01",
     "data_fim": "2025-06-30",
@@ -244,7 +244,7 @@ export const MockSprint = [
   {
     "numero_sprint": 5,
     "titulo": "Ajustes Finais e Treinamento",
-    "total_entregas": Math.floor(Math.random() * 10) + 1,
+    "total_tarefas": Math.floor(Math.random() * 10) + 1,
     "porcentagem": Math.floor(Math.random() * 101),
     "data_inicio": "2025-07-01",
     "data_fim": "2025-07-31",

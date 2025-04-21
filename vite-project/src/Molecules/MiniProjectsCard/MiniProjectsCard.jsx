@@ -33,7 +33,7 @@ function MiniProjectsCard({ entidade }) {
 
   const handleOpenProject = () => {
     if (idEmpresa == 1) navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
-    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${Number(entidade.idProjeto || entidade.idEmpresa)}`);
+    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.descricao}/${Number(entidade.idProjeto)}`);
   }
 
   return (

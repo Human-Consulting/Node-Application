@@ -73,6 +73,17 @@ export const getProjetos = async (idEmpresa) => {
     }
 };
 
+export const getProjetoAtual = async (idProjeto) => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`);
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error);
+        return [];
+    }
+};
+
 export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
     try {
         const formattedProjeto = JSON.stringify(modifiedProjeto);

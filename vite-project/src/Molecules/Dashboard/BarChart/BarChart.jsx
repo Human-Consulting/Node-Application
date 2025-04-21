@@ -62,7 +62,7 @@ const MinimalBarChart = ({ areas }) => {
 
   const series = [
     {
-      name: 'Entregas',
+      name: 'Tarefas',
       data: areas.map(area => area.valor)
     }
   ];

@@ -11,14 +11,14 @@ import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints }) => {
 
-  const { nomeEmpresa, idEmpresa, idProjeto } = useParams();
+  const { nomeEmpresa, idEmpresa, descricaoProjeto, idProjeto } = useParams();
 
   const navigate = useNavigate();
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const handleOpenProject = () => {
-    navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${idProjeto}/Entregas/${sprint.idSprint}/${index}`);
+    navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${descricaoProjeto}/${idProjeto}/Tarefas/${sprint.idSprint}/${index}`);
   }
 
   const handleOpenModalPutTask = (task) => {
@@ -130,7 +130,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
           <Stack sx={{ height: '20%', width: '70%', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
             {sprint.descricao}
           </Stack>
-          <Grid2 sx={{ alignItems: 'center', justifyContent: 'center', alignContent: 'center' }} container spacing={2}>
+          <Grid2 sx={{ alignItems: 'center', justifyContent: 'space-between', alignContent: 'center', width: '90%' }} container spacing={2}>
             <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
               Inicio: {new Date(sprint.dtInicio).toLocaleDateString('pt-BR')}
             </Grid2>
@@ -138,7 +138,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
               Fim: {new Date(sprint.dtFim).toLocaleDateString('pt-BR')}
             </Grid2>
             <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
-              Total entregas: {sprint.entregas.length}
+              Total tarefas: {sprint.tarefas.length}
             </Grid2>
             <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
               Progresso: {sprint.progresso}%
@@ -146,15 +146,15 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
           </Grid2>
 
           <BodyTarefa>
-            {sprint.entregas.map((entrega) => (
-              <TarefasItem entrega={entrega} toogleModal={handleOpenModalPutTask} atualizarProjetos={atualizarProjetos} atualizarSprints={atualizarSprints} ></TarefasItem>
+            {sprint.tarefas.map((tarefa) => (
+              <TarefasItem tarefa={tarefa} toogleModal={handleOpenModalPutTask} atualizarProjetos={atualizarProjetos} atualizarSprints={atualizarSprints} ></TarefasItem>
             ))}
           </BodyTarefa>
           <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', justifyContent: 'center', alignItems: 'center' }}>
             {usuarioLogado.permissao != 'FUNC' ?
-              <Button size='medium' onClick={handleOpenModalPostTask} variant='contained'>Criar nova tarefa</Button>
+              <Button size='medium' onClick={handleOpenModalPostTask} variant='contained'>CRIAR NOVA TAREFA</Button>
               : null}
-            <Button size='medium' onClick={handleOpenProject} variant='contained'>Ver todas tarefas</Button>
+            <Button size='medium' onClick={handleOpenProject} variant='contained'>VER TAREFAS</Button>
           </Stack>
         </>
         :

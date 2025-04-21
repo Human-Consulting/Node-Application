@@ -13,15 +13,15 @@ import Dashboard from './Molecules/Dashboard/Dashboard.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/Home/:nomeEmpresa/:idEmpresa", //? validar se for Human Consulting, id 1, permissão CONSULTOR
+    path: "/Home/:nomeEmpresa/:idEmpresa",
     element: <App/>,
     children: [
       {
-        path: "Roadmap/:idProjeto",
+        path: "Roadmap/:descricaoProjeto/:idProjeto",
         element: <Task />,
         children: [
           {
-            path: "Entregas/:idSprint/:index", 
+            path: "Tarefas/:idSprint/:index", 
             element: <CentralTask />,
           }
         ]
@@ -30,9 +30,13 @@ const router = createBrowserRouter([
         path: "Dash",
         element: <Dashboard />, 
       },
+      {
+        path: "Dash/:descricaoProjeto/:idProjeto",
+        element: <Dashboard />, 
+      },
 
       {
-        path: "next-step",
+        path: "next-step/:descricaoProjeto/:idProjeto",
         element: <NextStep />, 
       },
       {

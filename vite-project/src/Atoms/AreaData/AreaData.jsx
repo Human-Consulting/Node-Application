@@ -9,7 +9,7 @@ const AreaData = ({ area, valor, total }) => {
     <AreaDataBox>
       <Stack sx={{ flexDirection: 'row', gap: '4px', alignItems: 'center' }}><AccountBoxIcon /><TextDefault>{area}</TextDefault></Stack>
 
-      <Stack sx={{ justifyContent: 'center' }}><Number>{valor} entregas</Number></Stack>
+      <Stack sx={{ justifyContent: 'center' }}><Number>{valor} tarefas</Number></Stack>
       <ProgressBar>
       <Progress sx={{ width: `${(valor * 100) / total}%` }} />
 

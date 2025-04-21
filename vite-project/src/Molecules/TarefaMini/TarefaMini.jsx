@@ -4,24 +4,24 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteTask, putImpedimento } from './../../Utils/cruds/CrudsTask.jsx';
 
-function TarefaMini({ indice, entrega, toogleModal, atualizarProjetos, atualizarTasks }) {
+function TarefaMini({ indice, tarefa, toogleModal, atualizarProjetos, atualizarTasks }) {
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const handleToogleModal = () => {
     const task = {
       idEditor: usuarioLogado.idUsuario,
-      idEntrega: entrega.idEntrega,
-      descricao: entrega.descricao,
-      dtInicio: entrega.dtInicio,
-      dtFim: entrega.dtFim,
-      fkResponsavel: entrega.fkResponsavel,
-      progresso: entrega.progresso
+      idTarefa: tarefa.idTarefa,
+      descricao: tarefa.descricao,
+      dtInicio: tarefa.dtInicio,
+      dtFim: tarefa.dtFim,
+      fkResponsavel: tarefa.fkResponsavel,
+      progresso: tarefa.progresso
     }
     toogleModal(task);
   }
 
   const handleDeleteTask = async () => {
-    await deleteTask(entrega.idEntrega);
+    await deleteTask(tarefa.idTarefa);
     atualizarProjetos();
     atualizarTasks();
   }
@@ -30,7 +30,7 @@ function TarefaMini({ indice, entrega, toogleModal, atualizarProjetos, atualizar
     const body = {
       idEditor: usuarioLogado.idUsuario
     }
-    await putImpedimento(entrega.idEntrega, body);
+    await putImpedimento(tarefa.idTarefa, body);
     atualizarProjetos();
     atualizarTasks();
   }
@@ -39,7 +39,7 @@ function TarefaMini({ indice, entrega, toogleModal, atualizarProjetos, atualizar
     if (usuarioLogado.permissao === 'DIRETOR' ||
       usuarioLogado.permissao.includes('CONSULTOR') ||
       usuarioLogado.permissao === 'GESTOR') return true;
-    if (usuarioLogado.idUsuario == entrega.fkResponsavel) return true;
+    if (usuarioLogado.idUsuario == tarefa.fkResponsavel) return true;
     return false;
   };
 
@@ -54,15 +54,15 @@ function TarefaMini({ indice, entrega, toogleModal, atualizarProjetos, atualizar
 
   return (
     <>
-      {entrega ?
-        <BoxBody sx={{ border: `solid ${entrega.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 1px` }}>
+      {tarefa ?
+        <BoxBody sx={{ border: `solid ${tarefa.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 1px` }}>
           <Stack sx={{ height: '20%', width: '100%', position: 'absolute', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
             <DeleteIcon
               onClick={(e) => {
                 e.stopPropagation();
                 if (temPermissaoDelete) handleDeleteTask();
               }}
-              title={temPermissaoDelete ? "Excluir entrega" : "Você não tem permissão"}
+              title={temPermissaoDelete ? "Excluir tarefa" : "Você não tem permissão"}
               sx={{
                 color: temPermissaoDelete ? '#fff' : '#aaa',
                 position: 'absolute',
@@ -83,7 +83,7 @@ function TarefaMini({ indice, entrega, toogleModal, atualizarProjetos, atualizar
                 e.stopPropagation();
                 if (temPermissaoPut) handleToogleModal();
               }}
-              title={temPermissaoPut ? "Excluir entrega" : "Você não tem permissão"}
+              title={temPermissaoPut ? "Excluir tarefa" : "Você não tem permissão"}
               sx={{
                 color: temPermissaoPut ? '#fff' : '#aaa',
                 position: 'absolute',
@@ -104,24 +104,24 @@ function TarefaMini({ indice, entrega, toogleModal, atualizarProjetos, atualizar
             <Stack sx={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'start' }}>
               <Title>Tarefa: {indice}</Title>
             </Stack>
-            <Subtitle>{entrega.nomeResponsavel}</Subtitle>
-            <Subtitle>{entrega.descricao}</Subtitle>
+            <Subtitle>{tarefa.nomeResponsavel}</Subtitle>
+            <Subtitle>{tarefa.descricao}</Subtitle>
 
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
-                <Progress sx={{ width: `${entrega.progresso}%` }} />
+                <Progress sx={{ width: `${tarefa.progresso}%` }} />
               </ProgressBar>
-              {entrega.progresso}%
+              {tarefa.progresso}%
             </Stack>
 
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              {entrega.progresso == 100 ?
+              {tarefa.progresso == 100 ?
                 <Button fullWidth variant='outlined' color='info'>Tarefa Finalizada</Button>
                 :
-                <Button fullWidth variant='outlined' color={entrega.comImpedimento ? 'error' : 'success'} onClick={(e) => {
+                <Button fullWidth variant='outlined' color={tarefa.comImpedimento ? 'error' : 'success'} onClick={(e) => {
                   e.stopPropagation();
-                  if (usuarioLogado.idUsuario === entrega.fkResponsavel) handleImpedimentoTask()
-                }}>{entrega.fkResponsavel == usuarioLogado.idUsuario && entrega.comImpedimento ? 'Remover Impedimento' : entrega.fkResponsavel == usuarioLogado.idUsuario && !entrega.comImpedimento ? 'Acionar Impedimento' : entrega.comImpedimento ? 'Com Impedimento' : "Sem Impedimento"}</Button>
+                  if (usuarioLogado.idUsuario === tarefa.fkResponsavel) handleImpedimentoTask()
+                }}>{tarefa.fkResponsavel == usuarioLogado.idUsuario && tarefa.comImpedimento ? 'Remover Impedimento' : tarefa.fkResponsavel == usuarioLogado.idUsuario && !tarefa.comImpedimento ? 'Acionar Impedimento' : tarefa.comImpedimento ? 'Com Impedimento' : "Sem Impedimento"}</Button>
               }
             </Stack>
           </BodyCard>
@@ -129,7 +129,7 @@ function TarefaMini({ indice, entrega, toogleModal, atualizarProjetos, atualizar
         :
         <BoxBody sx={{ justifyContent: 'center' }}>
           <BodyCard sx={{justifyContent: 'center'}}>
-              <Button variant='contained' onClick={() => toogleModal(null)}>CRIAR NOVA ENTREGA</Button>
+              <Button variant='contained' onClick={() => toogleModal(null)}>CRIAR NOVA TAREFA</Button>
           </BodyCard>
         </BoxBody>}
     </>

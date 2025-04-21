@@ -9,7 +9,7 @@ import FormsEmpresa from './../Forms/FormsEmpresa.jsx';
 import { useNavigate, useParams } from 'react-router';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 
-const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, empresas, usuarios, imagemEmpresas }) => {
+const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, empresas, usuarios }) => {
 
   const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
 
   useEffect(() => {
     toogleLateralBar();
-    setListaFiltrada(idEmpresa == 1 ? empresas : projetos);
+    setListaFiltrada(idEmpresa == 1 ? empresas.slice(1) : projetos);
 
   }, [projetos, empresas, idEmpresa]);
 
@@ -90,7 +90,7 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
           <Stack sx={{
             border: '1px solid gray',
             background: 'none',
-            backgroundImage: `url(data:image/png;base64,${imagemEmpresas[idEmpresa]})`,
+            backgroundImage: `url(data:image/png;base64,${empresas[0]?.urlImagem || projetos[0].urlImagemEmpresa})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',

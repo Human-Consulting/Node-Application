@@ -1,21 +1,22 @@
 import Chart from 'react-apexcharts';
 
 const LineChart = ({ orcamento, financeiros }) => {
-  // const totaisPorMes = {};
-  const totaisPorMes = Array(financeiros.length).fill(0);
-  financeiros.forEach(financeiro => {
-    const mes = new Date(financeiro.dtInvestimento).getUTCMonth();
-    if (!totaisPorMes[mes]) {
-      totaisPorMes[mes] = 0;
-    }
-    totaisPorMes[mes] += financeiro.valor;
-  });
+  const totaisPorMes = Array(financeiros.length + 2).fill(0);
+
+financeiros.forEach(financeiro => {
+  const data = new Date(financeiro.dtInvestimento);
+  const mes = !isNaN(data.getTime()) ? data.getUTCMonth() : null;
+
+  if (mes !== null) {
+    totaisPorMes[mes] += financeiro.valor || 0;
+  }
+});
 
   const totaisAcumulados = [];
   let acumulado = 0;
 
   for (let i = 0; i < totaisPorMes.length; i++) {
-      acumulado += totaisPorMes[i];
+      acumulado += totaisPorMes[i] || 0;
       totaisAcumulados.push(acumulado);
   }
 

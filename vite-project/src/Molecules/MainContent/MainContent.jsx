@@ -22,7 +22,6 @@ const MainContent = () => {
   const [projetos, setProjetos] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [empresas, setEmpresas] = useState([]);
-  const [imagemEmpresas, setImagemEmpresas] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const hideShowLateralBar = () => {
@@ -41,13 +40,7 @@ const MainContent = () => {
 
   const atualizarEmpresas = async () => {
     const empresas = await getEmpresas();
-    const imagensPorEmpresa = {};
-    empresas.forEach(empresa => {
-      imagensPorEmpresa[empresa.idEmpresa] = empresa.urlImagem;
-    });
-    setImagemEmpresas(imagensPorEmpresa);
-    setEmpresas(empresas.slice(1));
-    console.log(imagemEmpresas);
+    setEmpresas(empresas);
     setProjetos([]);
   };
 
@@ -80,17 +73,19 @@ const MainContent = () => {
       <LateralBar projetos={projetos} empresas={empresas} />
 
       <Routes>
-        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} projetos={projetos} empresas={empresas} usuarios={usuarios} imagemEmpresas={imagemEmpresas} />} />
+        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} projetos={projetos} empresas={empresas} usuarios={usuarios} />} />
 
-        <Route path="/Roadmap/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
+        <Route path="/Roadmap/:descricaoProjeto/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} showTitle={true} />} />
 
-        <Route path="/Roadmap/:idProjeto/Entregas/:idSprint/:index" element={<CentralTask toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
+        <Route path="/Roadmap/:descricaoProjeto/:idProjeto/Tarefas/:idSprint/:index" element={<CentralTask toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
 
         <Route path="/Usuarios" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} />} />
 
-        <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} />} />
+        <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
+        
+        <Route path="/Dash/:descricaoProjeto/:idProjeto" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
 
-        {/* <Route path="/next-step" element={<NextStep />} /> */}
+        <Route path="/next-step/:descricaoProjeto/:idProjeto" element={<NextStep toogleLateralBar={hideShowLateralBar} />} />
 
         {/* //TODO <Route path="/Dash/:idProjeto" element={<DashboardProjeto toogleLateralBar={hideShowLateralBar} />} /> */}
       </Routes>

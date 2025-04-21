@@ -8,25 +8,25 @@ import CheckIcon from '@mui/icons-material/Check';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
-const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints }) => {
+const TarefasItem = ({ tarefa, toogleModal, atualizarProjetos, atualizarSprints }) => {
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const handleToogleModal = () => {
     const task = {
       idEditor: usuarioLogado.idUsuario,
-      idEntrega: entrega.idEntrega,
-      descricao: entrega.descricao,
-      dtInicio: entrega.dtInicio,
-      dtFim: entrega.dtFim,
-      fkResponsavel: entrega.fkResponsavel,
-      progresso: entrega.progresso
+      idTarefa: tarefa.idTarefa,
+      descricao: tarefa.descricao,
+      dtInicio: tarefa.dtInicio,
+      dtFim: tarefa.dtFim,
+      fkResponsavel: tarefa.fkResponsavel,
+      progresso: tarefa.progresso
     }
     toogleModal(task);
   }
 
   const handleDeleteTask = async () => {
-    await deleteTask(entrega.idEntrega);
+    await deleteTask(tarefa.idTarefa);
     atualizarProjetos();
     atualizarSprints();
   }
@@ -35,7 +35,7 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
     const body = {
       idEditor: usuarioLogado.idUsuario
     }
-    await putImpedimento(entrega.idEntrega, body);
+    await putImpedimento(tarefa.idTarefa, body);
     atualizarProjetos();
     atualizarSprints();
   }
@@ -44,7 +44,7 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
     if (usuarioLogado.permissao === 'DIRETOR' ||
       usuarioLogado.permissao.includes('CONSULTOR') ||
       usuarioLogado.permissao === 'GESTOR') return true;
-    if (usuarioLogado.idUsuario == entrega.fkResponsavel) return true;
+    if (usuarioLogado.idUsuario == tarefa.fkResponsavel) return true;
     return false;
   };
 
@@ -57,21 +57,21 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
   const temPermissaoPut = validarPermissaoPut();
   const temPermissaoDelete = validarPermissaoDelete();
 
-  const renderIconeStatusEntrega = () => {
+  const renderIconeStatusTarefa = () => {
 
-    if (entrega.progresso == 100) {
+    if (tarefa.progresso == 100) {
       return (
         <CheckIcon sx={{ border: 'solid #2196f3 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
       )
     }
 
-    if (entrega.comImpedimento && entrega.progresso < 50) {
+    if (tarefa.comImpedimento && tarefa.progresso < 50) {
       return (
         <PriorityHighIcon sx={{ border: 'solid red 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
       );
     }
 
-    if (entrega.comImpedimento) {
+    if (tarefa.comImpedimento) {
       return (
         <PriorityHighIcon sx={{ border: 'solid orange 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
       );
@@ -85,16 +85,16 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
 
 
   return (
-    <TarefaBody sx={{ border: `solid ${entrega.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 1px` }}>
+    <TarefaBody sx={{ border: `solid ${tarefa.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 1px` }}>
       <Stack sx={{ height: '20%', width: '100%', position: 'relative', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-        {renderIconeStatusEntrega()}
-        {entrega.descricao}
+        {renderIconeStatusTarefa()}
+        {tarefa.descricao}
         <DeleteIcon
           onClick={(e) => {
             e.stopPropagation();
             if (temPermissaoDelete) handleDeleteTask();
           }}
-          title={temPermissaoDelete ? "Excluir entrega" : "Você não tem permissão"}
+          title={temPermissaoDelete ? "Excluir tarefa" : "Você não tem permissão"}
           sx={{
             color: temPermissaoDelete ? '#fff' : '#aaa',
             position: 'absolute',
@@ -115,7 +115,7 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
             e.stopPropagation();
             if (temPermissaoPut) handleToogleModal();
           }}
-          title={temPermissaoPut ? "Excluir entrega" : "Você não tem permissão"}
+          title={temPermissaoPut ? "Excluir tarefa" : "Você não tem permissão"}
           sx={{
             color: temPermissaoPut ? '#fff' : '#aaa',
             position: 'absolute',
@@ -134,13 +134,13 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
       </Stack>
       <Grid2 sx={{ alignItems: 'center', justifyContent: 'center', alignContent: 'center' }} container spacing={2}>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '0.5px solid #fff', gap: '4px', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
-          <b>Início: </b> {new Date(entrega.dtInicio).toLocaleDateString('pt-BR')}
+          <b>Início: </b> {new Date(tarefa.dtInicio).toLocaleDateString('pt-BR')}
         </Grid2>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '0.5px solid #fff', gap: '4px', background: '#000', borderRadius: '5px', padding: '8px' }} size={5}>
-          <b>Fim: </b>  {new Date(entrega.dtFim).toLocaleDateString('pt-BR')}
+          <b>Fim: </b>  {new Date(tarefa.dtFim).toLocaleDateString('pt-BR')}
         </Grid2>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '0.5px solid #fff', gap: '4px', background: '#000', borderRadius: '5px', padding: '8px', textAlign: 'center' }} size={5}>
-          {entrega.nomeResponsavel}
+          {tarefa.nomeResponsavel}
         </Grid2>
         <Grid2 sx={{
           display: 'flex',
@@ -150,20 +150,20 @@ const TarefasItem = ({ entrega, toogleModal, atualizarProjetos, atualizarSprints
           borderRadius: '7px',
           padding: '8px',
           border: 'none',
-          background: `linear-gradient(to right, #1769aa ${entrega.progresso}%, #000000 ${entrega.progresso + 0.1}%, #000000)`
+          background: `linear-gradient(to right, #1769aa ${tarefa.progresso}%, #000000 ${tarefa.progresso + 0.1}%, #000000)`
         }}
           size={5}>
-          <b>Progresso: </b> {entrega.progresso}%
+          <b>Progresso: </b> {tarefa.progresso}%
 
         </Grid2>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px' }} size={10}>
-          {entrega.progresso == 100 ?
+          {tarefa.progresso == 100 ?
             <Button fullWidth variant='outlined' color='info'>Tarefa Finalizada</Button>
             :
-            <Button fullWidth variant='outlined' color={entrega.comImpedimento ? 'error' : 'success'} onClick={(e) => {
+            <Button fullWidth variant='outlined' color={tarefa.comImpedimento ? 'error' : 'success'} onClick={(e) => {
               e.stopPropagation();
-              if (usuarioLogado.idUsuario === entrega.fkResponsavel) handleImpedimentoTask()
-            }}>{entrega.fkResponsavel == usuarioLogado.idUsuario && entrega.comImpedimento ? 'Remover Impedimento' : entrega.fkResponsavel == usuarioLogado.idUsuario && !entrega.comImpedimento ? 'Acionar Impedimento' : entrega.comImpedimento ? 'Com Impedimento' : "Sem Impedimento"}</Button>
+              if (usuarioLogado.idUsuario === tarefa.fkResponsavel) handleImpedimentoTask()
+            }}>{tarefa.fkResponsavel == usuarioLogado.idUsuario && tarefa.comImpedimento ? 'Remover Impedimento' : tarefa.fkResponsavel == usuarioLogado.idUsuario && !tarefa.comImpedimento ? 'Acionar Impedimento' : tarefa.comImpedimento ? 'Com Impedimento' : "Sem Impedimento"}</Button>
           }
         </Grid2>
       </Grid2>

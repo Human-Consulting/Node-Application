@@ -6,17 +6,18 @@ export const ContainerStep = styled(Box)({
     backgroundColor: 'rgb(0, 0, 0)',
     display: 'flex',
     flexDirection:  'column',
-    gap: '0.5rem'
+    // gap: '0.5rem'
 });
 
 export const ContainerSide = styled(Box)({
-    height: '100%',
-    flex: 1,
+    // width: '100%',
+    height: '60%',
+    // flex: 1,
     backgroundColor: 'rgb(13, 13, 13)',
     display: 'flex',
 });
 export const ContainerFooter = styled(Box)({
-    height: '50%',
+    height: '40%',
     width: '100%',
     backgroundColor: 'rgb(13, 13, 13)',
     display: 'flex',

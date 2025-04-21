@@ -36,7 +36,8 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
 
   const handleOpenProject = async () => {
     idEmpresa == 1 ? navigate(`/Home/${item.nome}/${Number(item.idEmpresa)}`)
-      : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${Number(item.idProjeto)}`);
+      : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${item.descricao}/${Number(item.idProjeto)}`);
+      // : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/next-step/${item.descricao}/${Number(item.idProjeto)}`);
   }
 
   const handleDelete = async () => {

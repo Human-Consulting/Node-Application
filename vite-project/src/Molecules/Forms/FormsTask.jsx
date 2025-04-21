@@ -31,7 +31,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atu
             fkResponsavel,
             progresso
         }
-        await putTask(modifiedTask, task.idEntrega, toogleModal);
+        await putTask(modifiedTask, task.idTarefa, toogleModal);
         atualizarSprints();
         atualizarProjetos();
         atualizarTasks();
@@ -39,7 +39,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atu
 
     return (
         <>
-            <h2>{task == null ? "Adicionar Entrega" : usuarioLogado.permissao != 'FUNC' ? `Editar Entrega` : 'Editar Progresso'}</h2>
+            <h2>{task == null ? "Adicionar Tarefa" : usuarioLogado.permissao != 'FUNC' ? `Editar Tarefa` : 'Editar Progresso'}</h2>
             <form onSubmit={(e) => e.preventDefault()}>
                 {usuarioLogado.permissao != 'FUNC' ?
                     <>

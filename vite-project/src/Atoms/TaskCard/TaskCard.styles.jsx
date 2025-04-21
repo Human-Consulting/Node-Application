@@ -2,7 +2,7 @@ import { Box, styled } from "@mui/material";
 
 export const TaskCardBody = styled(Box)({
     width: '500px',
-    height: '650px',
+    height: '665px',
     display: 'flex',
     flexDirection: 'column',
     background: "#1d1d1d",
@@ -15,13 +15,13 @@ export const TaskCardBody = styled(Box)({
 
 
 });
-export const TItleTarefa = styled('h2')({
+export const TitleTarefa = styled('h2')({
     fontSize: '34px'
 });
 
 export const BodyTarefa = styled(Box)({
     height: 'calc(220px + 2rem)',
-    width: '80%',
+    width: 'calc(90% + 8px)',
     gap: '2rem',
     display: 'flex',
     flexDirection: 'column',
@@ -33,7 +33,17 @@ export const BodyTarefa = styled(Box)({
     scrollBehavior: 'smooth',
 
     '&::-webkit-scrollbar': {
-        width: '4px',
+        width: '8px',
+    },
+    '&::-webkit-scrollbar-track': {
+        background: 'transparent',
+    },
+    '&::-webkit-scrollbar-thumb': {
+        background: '#888',
+        borderRadius: '4px',
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+        background: '#aaa',
     },
 });
 

@@ -8,22 +8,26 @@ import Modal from '../Modal/Modal';
 import FormsTask from '../Forms/FormsTask';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import { getSprints } from '../../Utils/cruds/CrudsSprint';
-import { Stack } from '@mui/material'
+import { Stack, Typography, Button } from '@mui/material'
 
 const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
 
-  const { nomeEmpresa, idEmpresa, idProjeto, idSprint, index } = useParams();
+  const { nomeEmpresa, idEmpresa, descricaoProjeto, idProjeto, idSprint, index } = useParams();
   const navigate = useNavigate();
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const handleOpenProject = () => {
-    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${idProjeto}`);
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${descricaoProjeto}/${idProjeto}`);
+  }
+
+  const handleOpenDash = async () => {
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Dash/${descricaoProjeto}/${Number(idProjeto)}`)
   }
 
   const [showModal, setShowModal] = useState(false);
   const [task, setTask] = useState(null);
-  const [entregas, setEntregas] = useState([]);
+  const [tarefas, setTarefas] = useState([]);
 
   const atualizarSprints = async () => {
     const sprints = await getSprints(idSprint);
@@ -31,8 +35,8 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
   };
 
   const atualizarTasks = async () => {
-    const entregas = await getTasks(idSprint);
-    setEntregas(entregas);
+    const tarefas = await getTasks(idSprint);
+    setTarefas(tarefas);
   };
 
   useEffect(() => {
@@ -48,18 +52,16 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
 
   return (
     <BackCentral>
-      <Stack sx={{ flexDirection: 'row', alignItems: 'center' }}>
-        <ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />
-        <TituloHeader>
-          Tarefas da sprint {index}
-        </TituloHeader>
-      </Stack>
+        <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', position: 'relative', fontFamily: "Bebas Neue" }}>
+          <ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />
+          {descricaoProjeto} - Sprint {index}
+          <Button variant='contained' sx={{ cursor: 'pointer', position: 'absolute', right: 0 }} onClick={handleOpenDash}>Ir para Dashboard</Button></Typography>
       <MidleCarrousel>
-        {entregas.map((entrega, index) => (
-          <TarefaMini idSprint={entrega.idSprint} indice={index + 1} entrega={entrega} key={entrega.index} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarTasks={atualizarTasks} />
+        {tarefas.map((tarefa, index) => (
+          <TarefaMini idSprint={tarefa.idSprint} indice={index + 1} tarefa={tarefa} key={tarefa.index} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarTasks={atualizarTasks} />
         ))}
         {usuarioLogado.permissao != 'FUNC' ?
-          <TarefaMini toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarTasks={atualizarTasks} entrega={null} />
+          <TarefaMini toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarTasks={atualizarTasks} tarefa={null} />
           : null}
       </MidleCarrousel>
 
