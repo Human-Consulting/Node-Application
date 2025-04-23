@@ -37,6 +37,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
   const handleOpenProject = async () => {
     idEmpresa == 1 ? navigate(`/Home/${item.nome}/${Number(item.idEmpresa)}`)
       : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${item.descricao}/${Number(item.idProjeto)}`);
+      //? Utilizar? 
       // : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/next-step/${item.descricao}/${Number(item.idProjeto)}`);
   }
 
@@ -68,7 +69,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
   return (
     <>
       {item ?
-        <BoxBody onClick={handleOpenProject}>
+        <BoxBody onClick={handleOpenProject} sx={{ border: `solid ${usuarioLogado.projetosVinculados.includes(item.idProjeto) ? 'white' : 'transparent'} 1px` }}>
           <HeaderCard sx={{
             backgroundImage: `url(data:image/png;base64,${item.urlImagem})`,
             backgroundSize: 'cover',
@@ -76,7 +77,6 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
             backgroundRepeat: 'no-repeat',
           }} />
           <BodyCard>
-            <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <Title>{item?.nomeResponsavel || item.diretor}</Title>
               <DeleteIcon
                 onClick={(e) => {
@@ -120,7 +120,6 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
                   }
                 }}
               />
-            </Stack>
             <Subtitle>Orçamento: R${item.orcamento}</Subtitle>
             <Subtitle>{item?.descricao || item.nome}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>

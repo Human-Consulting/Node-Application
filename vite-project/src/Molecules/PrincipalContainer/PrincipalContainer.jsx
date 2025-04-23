@@ -1,5 +1,5 @@
 import { HeaderContent, MidleCarrousel, PrincipalContainerStyled, TituloHeader } from './PrincipalContainer.styles'
-import { Avatar, Stack, TextField, Button } from '@mui/material'
+import { Stack, TextField, Button, Badge, Avatar } from '@mui/material'
 import ProjectsCard from '../ProjectsCard/ProjectsCard'
 import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient';
 import { useEffect, useState } from 'react';
@@ -8,6 +8,7 @@ import FormsProjeto from './../Forms/FormsProjeto.jsx';
 import FormsEmpresa from './../Forms/FormsEmpresa.jsx';
 import { useNavigate, useParams } from 'react-router';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, empresas, usuarios }) => {
 
@@ -87,17 +88,7 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
         </ShaderGradientCanvas>
 
         <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6', alignItems: 'center' }}>
-          <Stack sx={{
-            border: '1px solid gray',
-            background: 'none',
-            backgroundImage: `url(data:image/png;base64,${empresas[0]?.urlImagem || projetos[0].urlImagemEmpresa})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%'
-          }}></Stack>
+          <Avatar sx={{ width: 56, height: 56 }} src={`data:image/png;base64,${empresas[0]?.urlImagem || projetos[0].urlImagemEmpresa}`}></Avatar>
           <TextField
             onChange={(e) => filtrar(e.target.value)}
             label=
@@ -129,16 +120,26 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
               }
             }} />
           {
-            !usuarioLogado.permissao.includes('CONSULTOR') ? null : idEmpresa == 1 ?
-              <Button onClick={() => toogleModal(null, 'empresa')}
-                variant="contained">
-                CRIAR NOVA EMPRESA
-              </Button>
-              :
-              <Button onClick={() => toogleModal(null, 'projeto')}
-                variant="contained">
-                CRIAR NOVO PROJETO
-              </Button>
+            !usuarioLogado.permissao.includes('CONSULTOR') ?
+              <Badge sx={{
+                '& .MuiBadge-badge': {
+                  fontSize: '1.5rem',
+                  height: '32px',
+                  width: '32px',
+                }
+              }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
+                <AssignmentIcon sx={{ fontSize: 44 }} />
+              </Badge>
+              : idEmpresa == 1 ?
+                <Button onClick={() => toogleModal(null, 'empresa')}
+                  variant="contained">
+                  CRIAR NOVA EMPRESA
+                </Button>
+                :
+                <Button onClick={() => toogleModal(null, 'projeto')}
+                  variant="contained">
+                  CRIAR NOVO PROJETO
+                </Button>
           }
 
         </Stack>

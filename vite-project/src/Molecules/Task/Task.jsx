@@ -51,7 +51,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle }) => {
     <>
       <TaskBody>
         {showTitle ?
-            <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', position: 'relative', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{descricaoProjeto} - Roadmap <Button variant='contained' sx={{ cursor: 'pointer', position: 'absolute', right: 0 }} onClick={handleOpenDash}>Ir para Dashboard</Button></Typography>
+            <Typography variant="h3" mt={3} sx={{ display: 'flex', alignItems: 'center', position: 'fixed', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{descricaoProjeto} - Roadmap <Button variant='contained' sx={{ cursor: 'pointer', position: 'fixed', right: '2%' }} onClick={handleOpenDash}>Ir para Dashboard</Button></Typography>
           : <Stack sx={{ marginTop: '1.5rem' }} />}
         <SprintBody>
 

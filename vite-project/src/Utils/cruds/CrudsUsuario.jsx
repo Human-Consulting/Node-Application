@@ -251,3 +251,14 @@ export const uploadFile = async (file, toogleModal) => {
         });
     }
 };
+
+export const getUsuario = async (idUsuario) => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`);
+        const usuario = await res.json();
+        localStorage.setItem("usuario", JSON.stringify(usuario));
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error);
+        return null;
+    }
+}

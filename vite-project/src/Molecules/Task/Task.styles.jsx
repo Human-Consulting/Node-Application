@@ -35,5 +35,5 @@ export const SprintBody = styled(Box)({
   // scrollSnapType: 'x mandatory',
   boxSizing: 'padding-box',
   paddingInline: '200px',
-  paddingTop: '50px',
+  marginTop: '125px',
 })

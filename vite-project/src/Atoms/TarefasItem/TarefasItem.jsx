@@ -158,7 +158,7 @@ const TarefasItem = ({ tarefa, toogleModal, atualizarProjetos, atualizarSprints 
         </Grid2>
         <Grid2 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000', borderRadius: '5px' }} size={10}>
           {tarefa.progresso == 100 ?
-            <Button fullWidth variant='outlined' color='info'>Tarefa Finalizada</Button>
+            <Button fullWidth variant='outlined' color='info'>TAREFA FINALIZADA</Button>
             :
             <Button fullWidth variant='outlined' color={tarefa.comImpedimento ? 'error' : 'success'} onClick={(e) => {
               e.stopPropagation();

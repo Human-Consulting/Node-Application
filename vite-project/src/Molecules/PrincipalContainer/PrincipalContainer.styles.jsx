@@ -17,11 +17,10 @@ export const HeaderContent = styled(Box)({
     gap: '0.5rem',
     padding: '2rem 1rem',
     justifyContent: 'space-between'
-
-
 });
 export const MidleCarrousel = styled(Box)({
-    overflowY: 'scroll',
+    overflowX: 'hidden',
+    overflowY: 'auto',
     height: '600px',
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
@@ -57,6 +56,4 @@ export const TituloHeader = styled('h1')({
     fontWeight: 400,
     fontSize: '75px',
     color: '#fff'
-
-      
 })

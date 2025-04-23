@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import { getUsuario } from "./CrudsUsuario";
 
 export const postSprint = async (newSprint, toogleModal) => {
     try {
@@ -66,6 +67,7 @@ export const getSprints = async (idProjeto) => {
     try {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/buscarPorProjeto/${idProjeto}`);
         const data = await res.json();
+        await getUsuario(JSON.parse(localStorage.getItem('usuario')).idUsuario);
         return data;
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);

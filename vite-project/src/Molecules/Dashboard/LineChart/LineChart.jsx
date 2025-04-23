@@ -1,23 +1,24 @@
 import Chart from 'react-apexcharts';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const LineChart = ({ orcamento, financeiros }) => {
+const LineChart = ({ orcamento, financeiros, toogleModal }) => {
   const totaisPorMes = Array(financeiros.length + 2).fill(0);
 
-financeiros.forEach(financeiro => {
-  const data = new Date(financeiro.dtInvestimento);
-  const mes = !isNaN(data.getTime()) ? data.getUTCMonth() : null;
+  financeiros.forEach(financeiro => {
+    const data = new Date(financeiro.dtInvestimento);
+    const mes = !isNaN(data.getTime()) ? data.getUTCMonth() : null;
 
-  if (mes !== null) {
-    totaisPorMes[mes] += financeiro.valor || 0;
-  }
-});
+    if (mes !== null) {
+      totaisPorMes[mes] += financeiro.valor || 0;
+    }
+  });
 
   const totaisAcumulados = [];
   let acumulado = 0;
 
   for (let i = 0; i < totaisPorMes.length; i++) {
-      acumulado += totaisPorMes[i] || 0;
-      totaisAcumulados.push(acumulado);
+    acumulado += totaisPorMes[i] || 0;
+    totaisAcumulados.push(acumulado);
   }
 
   const mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
@@ -114,7 +115,10 @@ financeiros.forEach(financeiro => {
 
   return (
     <div className="App" style={{ width: '100%', padding: '1rem' }}>
-      <h2>Gráfico Financeiro</h2>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <h2>Gráfico Financeiro</h2>
+        <MoreVertIcon sx={{cursor: 'pointer'}} onClick={toogleModal}/>
+      </div>
       <Chart options={options} series={series} type="area" height={320} width="100%" />
     </div>
   );

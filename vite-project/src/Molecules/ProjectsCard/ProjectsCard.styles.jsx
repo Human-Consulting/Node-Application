@@ -1,18 +1,16 @@
 import { styled } from "@mui/material";
 
 export const BoxBody = styled('div')({
-    width: '100%',
-    height: '202px',
+    width: '250px',  
+    height: '70%',
     background: '#1d1d1d',
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
-    padding: '0.5rem',
     borderRadius: '10px',
-    flexShrink: 0,
     position: 'relative',
     marginTop: '1rem',
-    cursor: 'pointer'
+    cursor: 'pointer',
 });
 
 export const StatusCircle = styled('div')({
@@ -23,20 +21,26 @@ export const StatusCircle = styled('div')({
     height: '42px',
     width: '42px',
     position: 'absolute',
-    right: '-32px',
+    right: '-34px',
     top: '-14px'
-
 })
 export const Title = styled('p')({
     fontWeight: 500,
     fontSize: '16px',
     color: '#fff',
-
+    width: '70%',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
 })
 export const Subtitle = styled('p')({
     fontWeight: 300,
     fontSize: '14px',
     color: '#fff',
+    width: 'auto',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
 })
 
 export const HeaderCard = styled('div')({
@@ -44,9 +48,6 @@ export const HeaderCard = styled('div')({
     width: '100%',
     backgroundColor: '#1d1d1d',
     zIndex: '30',
-    position: 'absolute',
-    top: '0%',
-    right: '0%',
     borderRadius: '10px 10px 0px 0px',
     overflow: 'hidden',
     backgroundSize: 'cover'
@@ -54,17 +55,14 @@ export const HeaderCard = styled('div')({
 
 export const BodyCard = styled('div')({
     height: '60%',
-    width: '100%',
     backgroundColor: '#1d1d1d',
+    width: '100%',
     zIndex: '30',
-    position: 'absolute',
-    top: '60%',
-    right: '0%',
     padding: '0.5rem',
     borderRadius: '10px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.5rem',
+    justifyContent: 'space-between',
 })
 export const ProgressBar = styled('div')({
     height: '10px',

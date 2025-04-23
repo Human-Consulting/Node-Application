@@ -86,7 +86,9 @@ const LateralBar = ({ projetos, empresas }) => {
                         ))
                     }
                 </CardZone>
+                <Stack>
                 <Button variant='outlined' sx={{ position: 'absolute', bottom: '5%', left: '1rem' }} onClick={handleExit}>Sair</Button>
+                </Stack>
             </DivisorTwo>
         </LateralNavBar>
     )

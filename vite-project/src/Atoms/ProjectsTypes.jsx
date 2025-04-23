@@ -16,7 +16,7 @@ const ProjectsTypes = ({ entidade }) => {
   return (
     <ProjectsTypesBox onClick={handleOpenProject}>
       <ImageBox src={`data:image/png;base64,${entidade.urlImagem}`} />
-      <Stack sx={{ justifyContent: 'space-between' }}>
+      <Stack sx={{ justifyContent: 'space-between', maxWidth: '80%' }}>
         <Title>
           {entidade.descricao || entidade.nome}
         </Title>

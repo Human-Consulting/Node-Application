@@ -14,6 +14,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import Modal from '../Modal/Modal'
+import FormsFinanceiro from '../Forms/FormsFinanceiro'
 
 const Dashboard = ({ toogleLateralBar, showTitle }) => {
 
@@ -37,8 +39,8 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const [entidade, setEntidade] = useState({});
-
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const atualizarEntidade = async () => {
     const entidadeData = idProjeto ? await getProjetoAtual(idProjeto) : await getEmpresaAtual(idEmpresa);
@@ -47,6 +49,10 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
 
     setLoading(false);
   }
+
+  const toogleModal = () => {
+    setShowModal(!showModal);
+  };
 
   if (loading) return (
     <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
@@ -161,6 +167,9 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
           </DashContainer>
         </KpiContainer>
       </Stack>
+      <Modal showModal={showModal} fechar={toogleModal}
+        form={<FormsFinanceiro toogleModal={toogleModal} />}
+      ></Modal>
     </ContainerBack >
   )
 }
