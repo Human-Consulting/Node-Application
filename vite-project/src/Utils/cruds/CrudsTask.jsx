@@ -217,13 +217,11 @@ export const putImpedimento = async (idTarefa, body) => {
         if (res.ok) {
             Swal.fire({
                 icon: "success",
-                title: res.status,
                 position: "center",
                 backdrop: false,
                 timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Impedimento atualizado com sucesso!",
                 customClass: {
                     popup: "swalAlerta",
                 }
