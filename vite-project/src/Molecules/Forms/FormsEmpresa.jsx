@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { postEmpresa, putEmpresa } from '../../Utils/cruds/CrudsEmpresa.jsx';
+import { postEmpresa, putEmpresa, deleteEmpresa } from '../../Utils/cruds/CrudsEmpresa.jsx';
+import { Box, Button, TextField, Typography, Stack } from '@mui/material';
+import { inputStyle } from "./Forms.styles.jsx";
+import SendIcon from '@mui/icons-material/Send';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmpresa }) => {
 
@@ -24,9 +29,16 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmp
 
     const handlePostEmpresa = async () => {
         const newEmpresa = { cnpj, nome, urlImagem };
-        await postEmpresa(newEmpresa, toogleModal);
+        await postEmpresa(newEmpresa);
         atualizarEmpresas();
+        toogleModal();
     };
+
+    const handleDeleteEmpresa = async () => {
+        toogleModal();
+        await deleteEmpresa(empresa.idEmpresa);
+        await atualizarEmpresas();
+    }
 
     const handlePutEmpresa = async () => {
 
@@ -37,39 +49,70 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmp
             nome,
             urlImagem
         }
-        await putEmpresa(modifiedEmpresa, empresa.idEmpresa, toogleModal);
+        await putEmpresa(modifiedEmpresa, empresa.idEmpresa);
         await atualizarEmpresas();
     }
 
     return (
-        <>
-            <h2>{empresa == null ? "Adicionar Empresa" : `Editar Empresa`}</h2>
-            <form onSubmit={(e) => e.preventDefault()}>
+        <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
+            <Typography variant="h5" textAlign="center" mb={2}>
+                {empresa == null ? "Adicionar Empresa" : "Visualizar Empresa"}
+            </Typography>
 
-                <label>
-                    Nome:
-                    <input value={nome} onChange={(e) => setNome(e.target.value)} />
-                </label>
+            <TextField
+                label="Nome"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
 
-                <label>
-                    CNPJ:
-                    <input autoComplete="off" type="text" value={cnpj} onChange={(e) => setCnpj(e.target.value)} />
-                </label>
+            <TextField
+                label="CNPJ"
+                value={cnpj}
+                onChange={(e) => setCnpj(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
 
+            <Button
+                variant="contained"
+                component="label"
+                fullWidth
+                sx={{ ...inputStyle.sx, py: 1.5 }}
+            >
+                {empresa == null ? 'Selecionar' : 'Modificar'} Imagem
+                <AttachFileIcon />
+                <input
+                    type="file"
+                    hidden
+                    onChange={(e) => handleFileUpload(e.target.files[0])}
+                />
+            </Button>
 
-                <label>
-                    Imagem:
-                    <input type="file" onChange={(e) => handleFileUpload(e.target.files[0])} />
-                </label>
-
+            <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
                 {empresa == null ? (
-                    <button type="button" onClick={handlePostEmpresa}>Enviar</button>
+                    <Button variant="contained" color="primary" onClick={handlePostEmpresa} endIcon={<SendIcon />} sx={{ flex: 1 }}>
+                        Adicionar
+                    </Button>
                 ) : (
-                    <button type="button" onClick={handlePutEmpresa}>Enviar Alterações</button>
+                    <>
+                        <Button variant="contained" color="error" onClick={handleDeleteEmpresa}>
+                            <DeleteIcon />
+                        </Button>
+                        <Button variant="contained" color="primary" onClick={handlePutEmpresa} endIcon={<SendIcon />} sx={{ flex: 1 }}>
+                            Salvar Alterações
+                        </Button>
+                    </>
                 )}
-
-            </form>
-        </>
+            </Stack>
+        </Box>
     )
 }
 

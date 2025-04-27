@@ -21,7 +21,7 @@ const ProjectsTypes = ({ entidade }) => {
           {entidade.descricao || entidade.nome}
         </Title>
         <SubTitle>
-          {idEmpresa == 1 ? `Esta empresa está ${entidade.progresso}% concluida` : `Este projeto está ${entidade.progresso}% concluido`}
+          {idEmpresa == 1 ? `Esta empresa está ${entidade.progresso}% concluída` : `Este projeto está ${entidade.progresso}% concluido`}
         </SubTitle>
       </Stack>
     </ProjectsTypesBox>

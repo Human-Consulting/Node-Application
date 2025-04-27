@@ -4,6 +4,7 @@ import ProjectsCard from '../ProjectsCard/ProjectsCard'
 import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient';
 import { useEffect, useState } from 'react';
 import Modal from '../Modal/Modal'
+import ModalTarefas from '../ModalTarefas/ModalTarefas'
 import FormsProjeto from './../Forms/FormsProjeto.jsx';
 import FormsEmpresa from './../Forms/FormsEmpresa.jsx';
 import { useNavigate, useParams } from 'react-router';
@@ -67,6 +68,18 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
     navigate(`/Home/Empresas/${Number(1)}`);
   }
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleBadgeClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const openPopover = Boolean(anchorEl);
+
   return (
     <PrincipalContainerStyled>
       <HeaderContent>
@@ -88,7 +101,7 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
         </ShaderGradientCanvas>
 
         <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6', alignItems: 'center' }}>
-          <Avatar sx={{ width: 56, height: 56 }} src={`data:image/png;base64,${empresas[0]?.urlImagem || projetos[0].urlImagemEmpresa}`}></Avatar>
+          <Avatar sx={{ width: 56, height: 56 }} src={`data:image/png;base64,${empresas[0]?.urlImagem || projetos[0]?.urlImagemEmpresa}`}></Avatar>
           <TextField
             onChange={(e) => filtrar(e.target.value)}
             label=
@@ -121,14 +134,16 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
             }} />
           {
             !usuarioLogado.permissao.includes('CONSULTOR') ?
-              <Badge sx={{
-                '& .MuiBadge-badge': {
-                  fontSize: '1.5rem',
-                  height: '32px',
-                  width: '32px',
-                }
-              }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
-                <AssignmentIcon sx={{ fontSize: 44 }} />
+              <Badge onClick={handleBadgeClick}
+                sx={{
+                  '& .MuiBadge-badge': {
+                    fontSize: '1.5rem',
+                    height: '26px',
+                    width: '26px',
+                    cursor: 'pointer'
+                  }
+                }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
+                <AssignmentIcon sx={{ fontSize: 32, cursor: 'pointer' }} />
               </Badge>
               : idEmpresa == 1 ?
                 <Button onClick={() => toogleModal(null, 'empresa')}
@@ -161,6 +176,12 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
           <FormsEmpresa empresa={empresa} toogleModal={toogleModal} atualizarEmpresas={atualizarEmpresas} />}
       >
       </Modal>
+      <ModalTarefas
+        tarefas={usuarioLogado.tarefasVinculadas}
+        open={openPopover}
+        anchorEl={anchorEl}
+        onClose={handlePopoverClose}
+      />
     </PrincipalContainerStyled>
 
   )

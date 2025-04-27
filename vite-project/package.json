@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.11",
     "@mui/material": "^6.4.11",
+    "@mui/x-date-pickers": "^8.1.0",
     "@react-spring/three": "^9.7.5",
     "@react-three/fiber": "^9.1.0",
     "apexcharts": "^4.5.0",

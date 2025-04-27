@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-export const postEmpresa = async (newEmpresa, toogleModal) => {
+export const postEmpresa = async (newEmpresa) => {
     try {
         const formattedEmpresa = JSON.stringify(newEmpresa);
 
@@ -17,25 +17,22 @@ export const postEmpresa = async (newEmpresa, toogleModal) => {
         if (res.ok) {
             Swal.fire({
                 icon: "success",
-                title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Dados enviados com sucesso!",
                 customClass: {
                     popup: "swalAlerta",
                 }
             });
-            toogleModal && toogleModal();
         } else {
             Swal.fire({
                 icon: "error",
                 title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 text: data.message || "Erro ao adicionar Empresa!",
@@ -51,7 +48,7 @@ export const postEmpresa = async (newEmpresa, toogleModal) => {
             title: "Erro",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",
@@ -84,7 +81,7 @@ export const getEmpresaAtual = async (idEmpresa) => {
     }
 };
 
-export const putEmpresa = async (modifiedEmpresa, idEmpresa, toogleModal) => {
+export const putEmpresa = async (modifiedEmpresa, idEmpresa) => {
     try {
         const formattedEmpresa = JSON.stringify(modifiedEmpresa);
 
@@ -101,25 +98,22 @@ export const putEmpresa = async (modifiedEmpresa, idEmpresa, toogleModal) => {
         if (res.ok) {
             Swal.fire({
                 icon: "success",
-                title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Dados atualizados com sucesso!",
                 customClass: {
                     popup: "swalAlerta",
                 }
             });
-            toogleModal && toogleModal();
         } else {
             Swal.fire({
                 icon: "error",
                 title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 text: data.message,
@@ -135,7 +129,7 @@ export const putEmpresa = async (modifiedEmpresa, idEmpresa, toogleModal) => {
             title: "Erro",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",
@@ -171,13 +165,11 @@ export const deleteEmpresa = async (idEmpresa) => {
             if (res.ok) {
                 Swal.fire({
                     icon: "success",
-                    title: res.status,
                     position: "center",
                     backdrop: false,
-                    timer: 2000,
+                    timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: "Empresa removida com sucesso!",
                     customClass: {
                         popup: "swalAlerta",
                     }
@@ -188,7 +180,7 @@ export const deleteEmpresa = async (idEmpresa) => {
                     title: res.status,
                     position: "center",
                     backdrop: false,
-                    timer: 2000,
+                    timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     text: "Empresa não encontrada!",
@@ -205,7 +197,7 @@ export const deleteEmpresa = async (idEmpresa) => {
             title: "Oops...",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",

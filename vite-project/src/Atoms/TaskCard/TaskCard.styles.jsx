@@ -1,36 +1,33 @@
 import { Box, styled } from "@mui/material";
 
 export const TaskCardBody = styled(Box)({
-    width: '500px',
-    height: '665px',
+    width: '35%',
     display: 'flex',
     flexDirection: 'column',
-    background: "#1d1d1d",
+    background: "#000",
     borderRadius: '10px',
     flexShrink: 0,
     scrollSnapAlign: 'center',
     margin: '0 50px',
     alignItems: 'center',
-    gap: '1rem'
-
-
+    gap: '2rem',
+    padding: '1rem',
 });
 export const TitleTarefa = styled('h2')({
     fontSize: '34px'
 });
 
 export const BodyTarefa = styled(Box)({
-    height: 'calc(220px + 2rem)',
-    width: 'calc(90% + 8px)',
+    height: '100%',
+    width: 'calc(100% + 1rem)',
+    overflowY: 'auto',
+    maxHeight: '300px',
     gap: '2rem',
     display: 'flex',
     flexDirection: 'column',
-    background: "#ff00000",
-    overflowY: 'scroll',
-    flexShrink: 0,
-    scrollSnapType: 'y mandatory',
     alignItems: 'center',
     scrollBehavior: 'smooth',
+    paddingInline: '1rem',
 
     '&::-webkit-scrollbar': {
         width: '8px',
@@ -48,12 +45,11 @@ export const BodyTarefa = styled(Box)({
 });
 
 export const NavTask = styled(Box)({
-    height: '10%',
+    height: '50px',
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    background: '#000',
+    justifyContent: 'space-evenly',
+    // background: '#000',
     borderRadius: '10px 10px 0px 0px'
 });

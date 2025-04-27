@@ -15,17 +15,16 @@
         border-radius: 8px;
         width: 420px;
         max-width: 100%;
-        background: #111111;
-        border: solid #1D1D1D 1px;
-
+        background: #000;
+        
         h2 {
             margin-block: 20px;
         }
-
+        
         input,
         select,
         textarea {
-            background: #1D1D1D;
+            background: #22272B;
         }
     }
 
@@ -78,6 +77,7 @@ form {
         border-radius: 8px;
         flex: 1;
         border: none;
+        background: #22272B;
     }
 
     .inputFile {

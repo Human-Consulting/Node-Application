@@ -2,16 +2,17 @@ import {styled } from "@mui/material";
 
 export const BoxBody = styled('div')({
     width: 'calc(90%)',
-    height: '200px',
+    height: '225px',
     background: '#1d1d1d',
+    background: '#000',
+    // background: '#22272B',
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.5rem',
     borderRadius: '10px',
     flexShrink: 0,
     position: 'relative',
     alignItems: 'center',
-    paddingTop: '0.5rem'
+    padding: '0.5rem'
 });
 
 export const Title = styled('p')({
@@ -24,19 +25,14 @@ export const Subtitle = styled('p')({
     fontWeight: 300,
     fontSize: '14px',
     color: '#fff'
-
 })
 
 export const BodyCard = styled('div')({
-    height: '50%',
-    backgroundColor: '#1d1d1d',
-    top: '60%',
-    padding: '0.5rem',
-    borderRadius: '10px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.5rem',
-    width: '90%'
+    width: '100%',
+    flex: 1,
+    justifyContent: 'space-between',
 })
 export const ProgressBar = styled('div')({
     height: '10px',

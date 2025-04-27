@@ -1,8 +1,11 @@
 import { styled } from "@mui/material";
 
 export const BoxBody = styled('div')({
-    width: '250px',  
-    height: '70%',
+    width: '100%',
+    minWidth: '250px',
+    maxWidth: '400px',
+    height: '225px',
+    minHeight: '225px',
     background: '#1d1d1d',
     display: 'flex',
     flexDirection: 'column',

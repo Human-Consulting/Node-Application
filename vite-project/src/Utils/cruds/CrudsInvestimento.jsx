@@ -1,15 +1,16 @@
+import { ConstructionOutlined } from "@mui/icons-material";
 import Swal from "sweetalert2";
 
-export const postProjeto = async (newProjeto, toogleModal) => {
+export const postInvestimento = async (newInvestimento) => {
     try {
-        const formattedProjeto = JSON.stringify(newProjeto);
+        const formattedInvestimento = JSON.stringify(newInvestimento);
 
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/financeiros`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: formattedProjeto,
+            body: formattedInvestimento,
         });
 
         const data = await res.json();
@@ -26,7 +27,6 @@ export const postProjeto = async (newProjeto, toogleModal) => {
                     popup: "swalAlerta",
                 }
             });
-            toogleModal && toogleModal();
         } else {
             Swal.fire({
                 icon: "error",
@@ -36,7 +36,7 @@ export const postProjeto = async (newProjeto, toogleModal) => {
                 timer: 1500,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Erro ao adicionar Projeto!",
+                text: data.message || "Erro ao adicionar Investimento!",
                 customClass: {
                     popup: "swalAlerta",
                 }
@@ -60,38 +60,16 @@ export const postProjeto = async (newProjeto, toogleModal) => {
     }
 };
 
-export const getProjetos = async (idEmpresa) => {
+export const putInvestimento = async (modifiedInvestimento, idInvestimento) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/buscarPorEmpresa/${idEmpresa}`);
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        console.error("Erro ao buscar dados: ", error);
-        return [];
-    }
-};
+        const formattedInvestimento = JSON.stringify(modifiedInvestimento);
 
-export const getProjetoAtual = async (idProjeto) => {
-    try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`);
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        console.error("Erro ao buscar dados: ", error);
-        return [];
-    }
-};
-
-export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
-    try {
-        const formattedProjeto = JSON.stringify(modifiedProjeto);
-
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/financeiros/${idInvestimento}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: formattedProjeto,
+            body: formattedInvestimento,
         });
 
         const data = await res.json();
@@ -108,7 +86,6 @@ export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
                     popup: "swalAlerta",
                 }
             });
-            toogleModal && toogleModal();
         } else {
             Swal.fire({
                 icon: "error",
@@ -142,7 +119,8 @@ export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
     }
 };
 
-export const deleteProjeto = async (idProjeto) => {
+export const deleteInvestimento = async (idFinanceiro) => {
+    console.log("deleteInvestimento", idFinanceiro);
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -160,7 +138,7 @@ export const deleteProjeto = async (idProjeto) => {
         });
 
         if (confirm.isConfirmed) {
-            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`, {
+            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/financeiros/${idFinanceiro}`, {
                 method: 'DELETE'
             });
 
@@ -185,7 +163,7 @@ export const deleteProjeto = async (idProjeto) => {
                     timer: 1500,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: "Projeto não encontrada!",
+                    text: "Investimento não encontrada!",
                     customClass: {
                         popup: "swalAlerta",
                     }
@@ -193,7 +171,7 @@ export const deleteProjeto = async (idProjeto) => {
             }
         }
     } catch (error) {
-        console.error("Erro ao remover Projeto " + idProjeto + ": ", error);
+        console.error("Erro ao remover Investimento " + idFinanceiro + ": ", error);
         Swal.fire({
             icon: "error",
             title: "Oops...",

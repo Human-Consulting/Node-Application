@@ -1,76 +1,81 @@
 import { useState } from "react";
-import { postEmpresa, putEmpresa } from '../../Utils/cruds/CrudsEmpresa.jsx';
+import { postInvestimento, putInvestimento } from '../../Utils/cruds/CrudsInvestimento.jsx';
+import { Box, Button, TextField, Typography, Stack } from '@mui/material';
+import { inputStyle } from "./Forms.styles.jsx";
+import SendIcon from '@mui/icons-material/Send';
+import { useParams } from "react-router";
 
-const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmpresa }) => {
+const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => {
 
-    const [valor, setValor] = useState(empresa?.valor || "");
-    const [nome, setNome] = useState(empresa?.nome || "");
-    const [urlImagem, setUrlImagem] = useState('');
+    const { idProjeto } = useParams();
+
+    const [valor, setValor] = useState(investimento?.valor || 0);
+    const [dtInvestimento, setDtInvestimento] = useState(investimento?.dtInvestimento || "");
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
-    const handleFileUpload = (file) => {
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-            const base64String = reader.result.split(',')[1];
-            setUrlImagem(base64String);
-        };
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
+    const handlePostInvestimento = async () => {
+        const newInvestimento = { valor, dtInvestimento, fkProjeto: idProjeto };
+        toogleModal();
+        await postInvestimento(newInvestimento, toogleModal);
+        atualizarEntidade();
     };
 
-    const handlePostEmpresa = async () => {
-        const newEmpresa = { valor, nome, urlImagem };
-        await postEmpresa(newEmpresa, toogleModal);
-        atualizarEmpresas();
-    };
+    const handlePutInvestimento = async () => {
 
-    const handlePutEmpresa = async () => {
-
-        const modifiedEmpresa = {
+        const modifiedInvestimento = {
             idEditor: usuarioLogado.idUsuario,
             permissaoEditor: usuarioLogado.permissao,
+            fkProjeto: idProjeto,
             valor,
-            nome,
-            urlImagem
+            dtInvestimento
         }
-        await putEmpresa(modifiedEmpresa, empresa.idEmpresa, toogleModal);
-        await atualizarEmpresas();
+        toogleModal();
+        await putInvestimento(modifiedInvestimento, investimento.idFinanceiro);
+        await atualizarEntidade();
     }
 
     return (
-        <>
-            <h2>{empresa == null ? "Adicionar Empresa" : `Editar Empresa`}</h2>
-            <form onSubmit={(e) => e.preventDefault()}>
+        <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
+            <Typography variant="h5" textAlign="center" mb={2}>
+                {investimento == null ? "Adicionar Investimento" : `Visualizar Investimento`}
+            </Typography>
 
-                <label>
-                    Nome:
-                    <input value={nome} onChange={(e) => setNome(e.target.value)} />
-                </label>
+            <TextField
+                label="Valor"
+                type="number"
+                value={valor}
+                onChange={(e) => setValor(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
+            <TextField
+                label="Data do Investimento"
+                type="date"
+                disabled={usuarioLogado.permissao === 'FUNC'}
+                value={dtInvestimento}
+                onChange={(e) => setDtInvestimento(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label, shrink: true }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
 
-                <label>
-                    CNPJ:
-                    <input autoComplete="off" type="text" value={valor} onChange={(e) => setValor(e.target.value)} />
-                </label>
-
-
-                <label>
-                    Imagem:
-                    <input type="file" onChange={(e) => handleFileUpload(e.target.files[0])} />
-                </label>
-
-                {empresa == null ? (
-                    <button type="button" onClick={handlePostEmpresa}>Enviar</button>
-                ) : (
-                    <button type="button" onClick={handlePutEmpresa}>Enviar Alterações</button>
-                )}
-
-            </form>
-        </>
+            {investimento == null ? (
+                <Button variant="contained" color="primary" endIcon={<SendIcon />} onClick={handlePostInvestimento}>
+                    Adicionar
+                </Button>
+            ) : (
+                <Button sx={{ flex: 1 }} variant="contained" color="primary" endIcon={<SendIcon />} onClick={handlePutInvestimento}>
+                    Salvar Alterações
+                </Button>
+            )}
+        </Box>
     )
 }
 
-export default FormsEmpresa
+export default FormsInvestimento

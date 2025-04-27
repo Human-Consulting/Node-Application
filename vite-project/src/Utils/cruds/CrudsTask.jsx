@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { getUsuario } from "./CrudsUsuario";
 
-export const postTask = async (newTask, toogleModal) => {
+export const postTask = async (newTask) => {
     try {
         const formattedTask = JSON.stringify(newTask);
 
@@ -18,25 +18,22 @@ export const postTask = async (newTask, toogleModal) => {
         if (res.ok) {
             Swal.fire({
                 icon: "success",
-                title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Dados enviados com sucesso!",
                 customClass: {
                     popup: "swalAlerta",
                 }
             });
-            toogleModal && toogleModal();
         } else {
             Swal.fire({
                 icon: "error",
                 title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 text: data.message || "Erro ao adicionar task!",
@@ -52,7 +49,7 @@ export const postTask = async (newTask, toogleModal) => {
             title: "Erro",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",
@@ -63,7 +60,7 @@ export const postTask = async (newTask, toogleModal) => {
     }
 };
 
-export const getTasks = async (idSprint) => {  
+export const getTasks = async (idSprint) => {
     try {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/buscarPorSprint/${idSprint}`);
         const data = await res.json();
@@ -75,7 +72,7 @@ export const getTasks = async (idSprint) => {
     }
 };
 
-export const putTask = async (modifiedTask, idTask, toogleModal) => {
+export const putTask = async (modifiedTask, idTask) => {
     try {
         const formattedTask = JSON.stringify(modifiedTask);
 
@@ -92,25 +89,22 @@ export const putTask = async (modifiedTask, idTask, toogleModal) => {
         if (res.ok) {
             Swal.fire({
                 icon: "success",
-                title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Dados atualizados com sucesso!",
                 customClass: {
                     popup: "swalAlerta",
                 }
             });
-            toogleModal && toogleModal();
         } else {
             Swal.fire({
                 icon: "error",
                 title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 text: data.message || "Erro ao enviar modificação!",
@@ -126,7 +120,7 @@ export const putTask = async (modifiedTask, idTask, toogleModal) => {
             title: "Erro",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",
@@ -146,7 +140,7 @@ export const deleteTask = async (idTask) => {
             showCancelButton: true,
             backdrop: false,
             confirmButtonColor: "#007bff",
-            cancelButtonColor: "#ff4d4d",
+            cancelButtonColor: "#D32F2F",
             confirmButtonText: "Sim, deletar!",
             cancelButtonText: "Cancelar",
             customClass: {
@@ -162,13 +156,11 @@ export const deleteTask = async (idTask) => {
             if (res.ok) {
                 Swal.fire({
                     icon: "success",
-                    title: res.status,
                     position: "center",
                     backdrop: false,
-                    timer: 2000,
+                    timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: "Task removida com sucesso!",
                     customClass: {
                         popup: "swalAlerta",
                     }
@@ -179,7 +171,7 @@ export const deleteTask = async (idTask) => {
                     title: res.status,
                     position: "center",
                     backdrop: false,
-                    timer: 2000,
+                    timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     text: "Task não encontrada!",
@@ -196,7 +188,7 @@ export const deleteTask = async (idTask) => {
             title: "Oops...",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",
@@ -217,7 +209,7 @@ export const putImpedimento = async (idTarefa, body) => {
                 'Content-Type': 'application/json'
             },
             body: formattedBody
-            
+
         });
 
         const data = await res.json();
@@ -228,7 +220,7 @@ export const putImpedimento = async (idTarefa, body) => {
                 title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 text: data.message || "Impedimento atualizado com sucesso!",
@@ -242,7 +234,7 @@ export const putImpedimento = async (idTarefa, body) => {
                 title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 text: data.message || "Erro ao enviar modificação!",
@@ -258,7 +250,7 @@ export const putImpedimento = async (idTarefa, body) => {
             title: "Erro",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",

@@ -2,7 +2,6 @@ import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const PrincipalContainerStyled = styled(Box)({
-    height: '100%',
     flex: 1,
     backgroundColor: 'rgb(13, 13, 13)',
     display: 'flex',
@@ -16,16 +15,17 @@ export const HeaderContent = styled(Box)({
     flexDirection: 'column',
     gap: '0.5rem',
     padding: '2rem 1rem',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
 });
 export const MidleCarrousel = styled(Box)({
     overflowX: 'hidden',
     overflowY: 'auto',
-    height: '600px',
+    height: '400px',
+    minHeight: '400px',
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    gap: '3.5rem',
-    padding: '0rem 2rem 5rem',
+    gap: '3rem',
+    padding: '0rem 2rem 5rem 1rem',
 
 });
 export const InputSearch = styled('input')({
@@ -54,6 +54,6 @@ export const TituloHeader = styled('h1')({
     zIndex: '6',
     fontFamily: "Bebas Neue",
     fontWeight: 400,
-    fontSize: '75px',
+    fontSize: '70px',
     color: '#fff'
 })

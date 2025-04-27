@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { getUsuario } from "./CrudsUsuario";
 
-export const postSprint = async (newSprint, toogleModal) => {
+export const postSprint = async (newSprint) => {
     try {
         const formattedSprint = JSON.stringify(newSprint);
 
@@ -21,7 +21,7 @@ export const postSprint = async (newSprint, toogleModal) => {
                 title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 text: data.message || "Dados enviados com sucesso!",
@@ -29,17 +29,14 @@ export const postSprint = async (newSprint, toogleModal) => {
                     popup: "swalAlerta",
                 }
             });
-            toogleModal && toogleModal();
         } else {
             Swal.fire({
                 icon: "error",
-                title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Erro ao adicionar Sprint!",
                 customClass: {
                     popup: "swalAlerta",
                 }
@@ -52,7 +49,7 @@ export const postSprint = async (newSprint, toogleModal) => {
             title: "Erro",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",
@@ -75,7 +72,7 @@ export const getSprints = async (idProjeto) => {
     }
 };
 
-export const putSprint = async (modifiedSprint, idSprint, toogleModal) => {
+export const putSprint = async (modifiedSprint, idSprint) => {
     try {
         const formattedSprint = JSON.stringify(modifiedSprint);
 
@@ -92,25 +89,22 @@ export const putSprint = async (modifiedSprint, idSprint, toogleModal) => {
         if (res.ok) {
             Swal.fire({
                 icon: "success",
-                title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Dados atualizados com sucesso!",
                 customClass: {
                     popup: "swalAlerta",
                 }
             });
-            toogleModal && toogleModal();
         } else {
             Swal.fire({
                 icon: "error",
                 title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 text: data.message || "Número de série em conflito!",
@@ -126,7 +120,7 @@ export const putSprint = async (modifiedSprint, idSprint, toogleModal) => {
             title: "Erro",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",
@@ -162,13 +156,11 @@ export const deleteSprint = async (idSprint) => {
             if (res.ok) {
                 Swal.fire({
                     icon: "success",
-                    title: res.status,
                     position: "center",
                     backdrop: false,
-                    timer: 2000,
+                    timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: "Sprint removida com sucesso!",
                     customClass: {
                         popup: "swalAlerta",
                     }
@@ -179,7 +171,7 @@ export const deleteSprint = async (idSprint) => {
                     title: res.status,
                     position: "center",
                     backdrop: false,
-                    timer: 2000,
+                    timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     text: "Sprint não encontrada!",
@@ -196,7 +188,7 @@ export const deleteSprint = async (idSprint) => {
             title: "Oops...",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",

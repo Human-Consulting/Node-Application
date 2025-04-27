@@ -43,7 +43,7 @@ const MinimalBarChart = ({ areas }) => {
         }
       },
       axisBorder: {
-        show: false
+        show: true
       },
       axisTicks: {
         show: false
@@ -70,10 +70,8 @@ const MinimalBarChart = ({ areas }) => {
   return (
     <div
       style={{
-        background: 'linear-gradient(to right, #1F1F1F, #0f1125)',
-        padding: '1rem',
+        // background: 'linear-gradient(to right, #1F1F1F, #0f1125)',
         borderRadius: '1rem',
-
       }}
     >
       <Chart options={options} series={series} type="bar" height={300} width="100%" />

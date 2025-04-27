@@ -17,13 +17,11 @@ export const postUsuario = async (newUsuario, toogleModal) => {
         if (res.ok) {
             Swal.fire({
                 icon: "success",
-                title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Dados enviados com sucesso!",
                 customClass: {
                     popup: "swalAlerta",
                 }
@@ -35,7 +33,7 @@ export const postUsuario = async (newUsuario, toogleModal) => {
                 title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 text: data.message || "Erro ao cadastrar!",
@@ -51,7 +49,7 @@ export const postUsuario = async (newUsuario, toogleModal) => {
             title: "Erro",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",
@@ -90,13 +88,11 @@ export const putUsuario = async (modifiedUsuario, idUsuario, toogleModal) => {
         if (res.ok) {
             Swal.fire({
                 icon: "success",
-                title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
-                text: data.message || "Dados atualizados com sucesso!",
                 customClass: {
                     popup: "swalAlerta",
                 }
@@ -108,7 +104,7 @@ export const putUsuario = async (modifiedUsuario, idUsuario, toogleModal) => {
                 title: res.status,
                 position: "center",
                 backdrop: false,
-                timer: 2000,
+                timer: 1000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 text: data.message || "Erro",
@@ -124,7 +120,7 @@ export const putUsuario = async (modifiedUsuario, idUsuario, toogleModal) => {
             title: "Erro",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",
@@ -160,13 +156,11 @@ export const deleteUsuario = async (idUsuario, toogleModal) => {
             if (res.ok) {
                 Swal.fire({
                     icon: "success",
-                    title: res.status,
                     position: "center",
                     backdrop: false,
-                    timer: 2000,
+                    timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false,
-                    text: "Usuario removida com sucesso!",
                     customClass: {
                         popup: "swalAlerta",
                     }
@@ -178,7 +172,7 @@ export const deleteUsuario = async (idUsuario, toogleModal) => {
                     title: res.status,
                     position: "center",
                     backdrop: false,
-                    timer: 2000,
+                    timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     text: "Usuario não encontrada!",
@@ -195,7 +189,7 @@ export const deleteUsuario = async (idUsuario, toogleModal) => {
             title: "Oops...",
             position: "center",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: error.message || "Algo deu errado!",
@@ -222,7 +216,7 @@ export const uploadFile = async (file, toogleModal) => {
             icon: res.ok ? "success" : "error",
             title: res.status,
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             text: data.message || (res.ok ? "Dados enviados com sucesso!" : "Erro ao cadastrar via upload!"),
@@ -242,7 +236,7 @@ export const uploadFile = async (file, toogleModal) => {
             title: "Erro",
             text: error.message || "Erro ao cadastrar via upload!",
             backdrop: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             showConfirmButton: false,
             customClass: {

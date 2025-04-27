@@ -2,14 +2,15 @@ import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const LateralNavBar = styled(Box)({
-    width: '20%',
+    width: '300px',
+    minWidth: '300px',
+    maxWidth: '350px',
     height: '100%',
     background: '#0d0d0d',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-evenly',
     flexDirection: 'column',
-
 });
 
 export const MiniCarrousel = styled('div')({

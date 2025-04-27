@@ -7,6 +7,6 @@ export const BoxAltertive = styled(Box)({
     backgroundColor: '#000000',
     display: 'flex',
     flexDirection: 'row',
-    gap: '0.5rem'
-
+    gap: '0.5rem',
+    overflow: 'hidden',
 });

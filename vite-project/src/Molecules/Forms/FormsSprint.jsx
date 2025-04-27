@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { postSprint, putSprint } from '../../Utils/cruds/CrudsSprint.jsx';
+import { postSprint, putSprint, deleteSprint } from '../../Utils/cruds/CrudsSprint.jsx';
+import { Box, Button, TextField, Typography, Stack } from '@mui/material';
+import { inputStyle } from "./Forms.styles.jsx";
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
 
 const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos, fkProjeto }) => {
 
@@ -7,12 +11,22 @@ const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos,
     const [dtInicio, setDtInicio] = useState(sprint?.dtInicio || "");
     const [dtFim, setDtFim] = useState(sprint?.dtFim || "");
 
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
     const handlePostSprint = async () => {
         const newSprint = { fkProjeto, descricao, dtInicio, dtFim };
-        await postSprint(newSprint, toogleModal);
+        await postSprint(newSprint);
         atualizarSprints();
         atualizarProjetos();
+        toogleModal();
     };
+
+    const handleDeleteSprint = async () => {
+        toogleModal();
+        await deleteSprint(sprint.idSprint);
+        await atualizarSprints();
+        await atualizarProjetos();
+    }
 
     const handlePutSprint = async () => {
         const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
@@ -24,36 +38,71 @@ const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos,
             dtInicio,
             dtFim
         }
-        await putSprint(modifiedSprint, sprint.idSprint, toogleModal);
+        await putSprint(modifiedSprint, sprint.idSprint);
         atualizarSprints();
         atualizarProjetos();
     }
 
     return (
-        <>
-            <h2>{sprint == null ? "Adicionar Sprint" : `Editar Sprint`}</h2>
-            <form onSubmit={(e) => e.preventDefault()}>
-                <label>
-                    Descrição:
-                    <textarea autoComplete="off" type="text" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
-                </label>
-                <label>
-                    Data de Início:
-                    <input autoComplete="off" type="date" value={dtInicio} onChange={(e) => setDtInicio(e.target.value)} />
-                </label>
-                <label>
-                    Date Final:
-                    <input autoComplete="off" type="date" value={dtFim} onChange={(e) => setDtFim(e.target.value)} />
-                </label>
+        <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
+            <Typography variant="h5" textAlign="center" mb={2}>
+                {sprint == null ? "Adicionar Sprint" : "Visualizar Sprint"}
+            </Typography>
 
-                {sprint == null ?
-                    <button type="button" onClick={handlePostSprint}>Enviar</button>
-                    :
-                    <button type="button" onClick={handlePutSprint}>Enviar Alterações</button>
+            <TextField
+                label="Descrição"
+                multiline
+                rows={3}
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
+                fullWidth
+                disabled={usuarioLogado.permissao === "FUNC"}
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
+            <TextField
+                label="Data de Início"
+                type="date"
+                value={dtInicio}
+                disabled={usuarioLogado.permissao === "FUNC"}
+                onChange={(e) => setDtInicio(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ shrink: true, style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
+            <TextField
+                label="Data Final"
+                type="date"
+                value={dtFim}
+                disabled={usuarioLogado.permissao === "FUNC"}
+                onChange={(e) => setDtFim(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ shrink: true, style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
+            <Stack direction="row" spacing={2} justifyContent="center">
+                {sprint == null ? (
+                    <Button variant="contained" color="primary" onClick={handlePostSprint}>
+                        Adicionar
+                    </Button>
+                ) : usuarioLogado.permissao == 'FUNC' ? null :
+                    <>
+                        <Button variant="contained" color="error" onClick={handleDeleteSprint}>
+                            <DeleteIcon />
+                        </Button>
+                        < Button variant="contained" color="primary" onClick={handlePutSprint} endIcon={<SendIcon />} sx={{ flex: 1 }}>
+                            Salvar Alterações
+                        </Button>
+                    </>
                 }
-
-            </form>
-        </>
+            </Stack>
+        </Box >
     )
 }
 

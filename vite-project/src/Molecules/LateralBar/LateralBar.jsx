@@ -7,8 +7,14 @@ import WidgetsIcon from '@mui/icons-material/Widgets';
 import ProjectsTypes from '../../Atoms/ProjectsTypes';
 import { useNavigate, useParams } from 'react-router';
 import { Button } from '@mui/material';
+import { useState } from 'react';
 
 const LateralBar = ({ projetos, empresas }) => {
+
+    const [projetosFiltrados, setProjetosFiltrados] = useState(projetos);
+    const [empresasFiltradas, setEmpresasFiltradas] = useState(empresas);
+    const [filtroConcluido, setFiltroConcluido] = useState(false);
+    const [filtroImpedimento, setFiltroImpedimento] = useState(false);
 
     const { nomeEmpresa, idEmpresa } = useParams();
     const navigate = useNavigate()
@@ -32,7 +38,23 @@ const LateralBar = ({ projetos, empresas }) => {
         navigate('/');
     }
 
-    const handleClick = () => {
+    const handleClick = (acao) => {
+        if (acao == 'concluido') {
+            setFiltroConcluido(!filtroConcluido);
+            setFiltroImpedimento(false);
+            setProjetosFiltrados(projetos.filter(projeto => projeto.progresso == 100));
+            setEmpresasFiltradas(empresas.filter(empresa => empresa.progresso == 100));
+        } else if (acao == 'impedido') {
+            setFiltroImpedimento(!filtroImpedimento);
+            setFiltroConcluido(false);
+            setProjetosFiltrados(projetos.filter(projeto => projeto.comImpedimento));
+            setEmpresasFiltradas(empresas.filter(empresa => empresa.comImpedimento));
+        } else if (acao == 'todos') {
+            setFiltroConcluido(false);
+            setFiltroImpedimento(false);
+            setProjetosFiltrados(projetos);
+            setEmpresasFiltradas(empresas);
+        }
     }
 
 
@@ -66,28 +88,32 @@ const LateralBar = ({ projetos, empresas }) => {
                 <ChipZone>
                     <Stack sx={{ padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center' }}>
                         <WidgetsIcon sx={{ color: '#ffff' }} />
-                        <Title>Menu rapido</Title>
+                        <Title>Menu Rápido</Title>
                     </Stack>
-                    <Stack sx={{ padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center' }}>
-                        <Chip sx={{ background: '#1d1d1d', color: '#fff' }} label="Concluidos" onClick={handleClick} />
-                        <Chip sx={{ background: '#1d1d1d', color: '#fff' }} label="Impedidos" onClick={handleClick} />
-                        <Chip sx={{ background: '#1d1d1d', color: '#fff' }} label="Atenção" onClick={handleClick} />
-                        <Chip sx={{ background: '#1d1d1d', color: '#fff' }} label="Certo" onClick={handleClick} />
+                    <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', width: '100%' }}>
+                        <Chip sx={{ backgroundColor: '#1D1D1D', color: '#fff', fontSize: '12px', }}
+                            label="Todos" onClick={() => handleClick('todos')} />
+                        
+                        <Chip sx={{ backgroundColor: filtroConcluido ? '#2e7d32' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
+                            label="Concluídos" onClick={() => handleClick('concluido')} />
+                        
+                        <Chip sx={{ backgroundColor: filtroImpedimento ? '#D32F2F' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
+                            label="Impedídos" onClick={() => handleClick('impedido')} />
                     </Stack>
 
                 </ChipZone>
                 <CardZone>
-                    {idEmpresa != 1 ? projetos.map(projeto => (
+                    {idEmpresa != 1 ? projetosFiltrados.map(projeto => (
                         <ProjectsTypes entidade={projeto} />
                     ))
                         :
-                        empresas.map(empresa => (
+                        empresasFiltradas.slice(1).map(empresa => (
                             <ProjectsTypes entidade={empresa} />
                         ))
                     }
                 </CardZone>
                 <Stack>
-                <Button variant='outlined' sx={{ position: 'absolute', bottom: '5%', left: '1rem' }} onClick={handleExit}>Sair</Button>
+                    <Button variant='outlined' sx={{ position: 'absolute', bottom: '5%', left: '1rem' }} onClick={handleExit}>Sair</Button>
                 </Stack>
             </DivisorTwo>
         </LateralNavBar>

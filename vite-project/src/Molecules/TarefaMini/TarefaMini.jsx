@@ -1,8 +1,8 @@
 import { BodyCard, BoxBody, Progress, ProgressBar, Subtitle, Title } from './TarefaMini.styles'
 import { Button, Stack } from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteTask, putImpedimento } from './../../Utils/cruds/CrudsTask.jsx';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import CheckIcon from '@mui/icons-material/Check';
 
 function TarefaMini({ indice, tarefa, toogleModal, atualizarProjetos, atualizarTasks }) {
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
@@ -15,97 +15,66 @@ function TarefaMini({ indice, tarefa, toogleModal, atualizarProjetos, atualizarT
       dtInicio: tarefa.dtInicio,
       dtFim: tarefa.dtFim,
       fkResponsavel: tarefa.fkResponsavel,
-      progresso: tarefa.progresso
+      progresso: tarefa.progresso,
+      comImpedimento: tarefa.comImpedimento,
     }
     toogleModal(task);
   }
 
-  const handleDeleteTask = async () => {
-    await deleteTask(tarefa.idTarefa);
-    atualizarProjetos();
-    atualizarTasks();
-  }
+  const renderIconeStatusTarefa = () => {
 
-  const handleImpedimentoTask = async () => {
-    const body = {
-      idEditor: usuarioLogado.idUsuario
+    if (tarefa.progresso == 100) {
+      return (
+        <CheckIcon sx={{ border: 'solid #2196f3 3px', borderRadius: '50%', fontSize: '25px' }} />
+      )
     }
-    await putImpedimento(tarefa.idTarefa, body);
-    atualizarProjetos();
-    atualizarTasks();
-  }
 
-  const validarPermissaoPut = () => {
-    if (usuarioLogado.permissao === 'DIRETOR' ||
-      usuarioLogado.permissao.includes('CONSULTOR') ||
-      usuarioLogado.permissao === 'GESTOR') return true;
-    if (usuarioLogado.idUsuario == tarefa.fkResponsavel) return true;
-    return false;
+    if (tarefa.comImpedimento && tarefa.progresso < 50) {
+      return (
+        <PriorityHighIcon sx={{ border: 'solid #F44336 3px', borderRadius: '50%', fontSize: '25px' }} />
+      );
+    }
+
+    if (tarefa.comImpedimento) {
+      return (
+        <PriorityHighIcon sx={{ border: 'solid orange 3px', borderRadius: '50%', fontSize: '25px' }} />
+      );
+    }
+
+    return null;
+
   };
-
-  const validarPermissaoDelete = () => {
-    if (usuarioLogado.permissao.includes('CONSULTOR')) return true;
-    if (usuarioLogado.permissao == 'DIRETOR' || usuarioLogado.permissao == 'GESTOR') return true;
-    return false;
-  };
-
-  const temPermissaoPut = validarPermissaoPut();
-  const temPermissaoDelete = validarPermissaoDelete();
 
   return (
     <>
       {tarefa ?
-        <BoxBody sx={{ border: `solid ${tarefa.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 1px` }}>
-          <Stack sx={{ height: '20%', width: '100%', position: 'absolute', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-            <DeleteIcon
-              onClick={(e) => {
-                e.stopPropagation();
-                if (temPermissaoDelete) handleDeleteTask();
-              }}
-              title={temPermissaoDelete ? "Excluir tarefa" : "Você não tem permissão"}
-              sx={{
-                color: temPermissaoDelete ? '#fff' : '#aaa',
-                position: 'absolute',
-                right: '40px',
-                cursor: temPermissaoDelete ? 'pointer' : 'not-allowed',
-                transition: '0.3s',
-                opacity: temPermissaoDelete ? 1 : 0.5,
-                border: '1px solid transparent',
-                borderRadius: '4px',
-
-                '&:hover': {
-                  border: temPermissaoDelete ? '1px solid #f0f0f0' : '1px solid transparent'
-                }
-              }}
-            />
-            <EditIcon
-              onClick={(e) => {
-                e.stopPropagation();
-                if (temPermissaoPut) handleToogleModal();
-              }}
-              title={temPermissaoPut ? "Excluir tarefa" : "Você não tem permissão"}
-              sx={{
-                color: temPermissaoPut ? '#fff' : '#aaa',
-                position: 'absolute',
-                right: '10px',
-                cursor: temPermissaoPut ? 'pointer' : 'not-allowed',
-                transition: '0.3s',
-                opacity: temPermissaoPut ? 1 : 0.5,
-                border: '1px solid transparent',
-                borderRadius: '4px',
-
-                '&:hover': {
-                  border: temPermissaoPut ? '1px solid #f0f0f0' : '1px solid transparent'
-                }
-              }}
-            />
-          </Stack>
+        <BoxBody sx={{ border: `solid ${tarefa.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 2px` }}>
           <BodyCard>
-            <Stack sx={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'start' }}>
+            <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'start' }}>
               <Title>Tarefa: {indice}</Title>
+              <Stack sx={{ flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
+                {renderIconeStatusTarefa()}
+                <MoreVertIcon
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleToogleModal();
+                  }}
+                  sx={{
+                    color: '#FFF',
+                    cursor: 'pointer',
+                    transition: '0.3s',
+                    border: '1px solid transparent',
+                    borderRadius: '4px',
+                    '&:hover': {
+                      border: '1px solid #f0f0f0'
+                    }
+                  }}
+                />
+              </Stack>
             </Stack>
             <Subtitle>{tarefa.nomeResponsavel}</Subtitle>
             <Subtitle>{tarefa.descricao}</Subtitle>
+            <Subtitle>Data limite em {tarefa.dtFim}</Subtitle>
 
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
@@ -113,24 +82,11 @@ function TarefaMini({ indice, tarefa, toogleModal, atualizarProjetos, atualizarT
               </ProgressBar>
               {tarefa.progresso}%
             </Stack>
-
-            <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              {tarefa.progresso == 100 ?
-                <Button fullWidth variant='outlined' color='info'>Tarefa Finalizada</Button>
-                :
-                <Button fullWidth variant='outlined' color={tarefa.comImpedimento ? 'error' : 'success'} onClick={(e) => {
-                  e.stopPropagation();
-                  if (usuarioLogado.idUsuario === tarefa.fkResponsavel) handleImpedimentoTask()
-                }}>{tarefa.fkResponsavel == usuarioLogado.idUsuario && tarefa.comImpedimento ? 'Remover Impedimento' : tarefa.fkResponsavel == usuarioLogado.idUsuario && !tarefa.comImpedimento ? 'Acionar Impedimento' : tarefa.comImpedimento ? 'Com Impedimento' : "Sem Impedimento"}</Button>
-              }
-            </Stack>
           </BodyCard>
         </BoxBody>
         :
         <BoxBody sx={{ justifyContent: 'center' }}>
-          <BodyCard sx={{justifyContent: 'center'}}>
-              <Button variant='contained' onClick={() => toogleModal(null)}>CRIAR NOVA TAREFA</Button>
-          </BodyCard>
+          <Button variant='contained' onClick={() => toogleModal(null)}>CRIAR NOVA TAREFA</Button>
         </BoxBody>}
     </>
   )

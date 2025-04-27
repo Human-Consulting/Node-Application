@@ -1,7 +1,25 @@
 import Chart from 'react-apexcharts';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useState } from 'react';
+import ModalFinanceiro from '../../ModalFinanceiro/ModalFinanceiro';
+import { useParams } from 'react-router';
 
-const LineChart = ({ orcamento, financeiros, toogleModal }) => {
+const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) => {
+
+  const { idProjeto } = useParams();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleBadgeClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const openPopover = Boolean(anchorEl);
+
   const totaisPorMes = Array(financeiros.length + 2).fill(0);
 
   financeiros.forEach(financeiro => {
@@ -114,12 +132,20 @@ const LineChart = ({ orcamento, financeiros, toogleModal }) => {
   ];
 
   return (
-    <div className="App" style={{ width: '100%', padding: '1rem' }}>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+    <div className="App" style={{ paddingInline: '1rem', flex: 1, background: '#0d0d0d', width: 'calc(100% + 1rem)', borderRadius: '20px', justifyContent: 'space-evenly', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2>Gráfico Financeiro</h2>
-        <MoreVertIcon sx={{cursor: 'pointer'}} onClick={toogleModal}/>
+        {idProjeto == null ? null : <MoreVertIcon sx={{ cursor: 'pointer' }} onClick={handleBadgeClick} />}
       </div>
-      <Chart options={options} series={series} type="area" height={320} width="100%" />
+      <Chart options={options} series={series} type="area" height={250} />
+      <ModalFinanceiro
+        investimentos={financeiros || []}
+        open={openPopover}
+        anchorEl={anchorEl}
+        onClose={handlePopoverClose}
+        toogleModal={toogleModal}
+        atualizarEntidade={atualizarEntidade}
+      />
     </div>
   );
 };

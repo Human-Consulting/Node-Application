@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { postUsuario, putUsuario } from '../../Utils/cruds/CrudsUsuario.jsx';
 import { useParams } from "react-router";
+import { Box, Button, TextField, Typography, Stack, MenuItem, Grow, Select } from '@mui/material';
+import { inputStyle } from "./Forms.styles.jsx";
+import SendIcon from '@mui/icons-material/Send';
 
 const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsuarios }) => {
 
     const { idEmpresa } = useParams();
-    
+
     const [nome, setNome] = useState(usuario?.nome || '');
     const [email, setEmail] = useState(usuario?.email || '');
     const [senha, setSenha] = useState(usuario?.senha || '');
     const [cargo, setCargo] = useState(usuario?.cargo || '');
     const [area, setArea] = useState(usuario?.area || '');
-    const [permissao, setPermissao] = useState(usuario?.permissao || '#');
+    const [permissao, setPermissao] = useState(usuario?.permissao || "#");
+    console.log(permissao);
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -39,79 +43,161 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
         atualizarUsuarios();
     }
 
+    const mostrarPermissaoSelect = (
+        (usuario == null && usuarioLogado.permissao != 'FUNC') ||
+        (usuario != null && (
+            usuarioLogado.permissao.includes('DIRETOR') ||
+            usuarioLogado.permissao.includes('CONSULTOR') ||
+            (usuarioLogado.permissao === 'GESTOR' && ['GESTOR', 'FUNC'].includes(usuario.permissao))
+        ))
+    ) && usuario?.permissao !== 'DIRETOR';
+
     return (
-        <>
-            <h2>{usuario == null ? "Adicionar Usuario" : `Editar Usuario`}</h2>
-            <form onSubmit={(e) => e.preventDefault()}>
-                <label>
-                    Nome:
-                    <input autoComplete="off" type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
-                </label>
-                <label>
-                    Email:
-                    <input autoComplete="off" type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </label>
-                <label>
-                    Senha:
-                    <input autoComplete="off" type="text" value={senha} onChange={(e) => setSenha(e.target.value)} />
-                </label>
-                {usuarioLogado.permissao == 'FUNC' ? null :
-                    <>
-                        <label>
-                            Cargo:
-                            <input autoComplete="off" type="text" value={cargo} onChange={(e) => setCargo(e.target.value)} />
-                        </label>
-                        <label>
-                            Área:
-                            <input autoComplete="off" type="text" value={area} onChange={(e) => setArea(e.target.value)} />
-                        </label>
+        <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
+            <Typography variant="h5" textAlign="center" mb={2}>
+                {usuario == null ? "Adicionar Usuário" : "Editar Usuário"}
+            </Typography>
 
-                        {((usuario == null && usuarioLogado.permissao != 'FUNC') || (usuario != null && usuarioLogado.permissao.includes('DIRETOR', 'CONSULTOR')) || (usuario != null && usuarioLogado.permissao == 'GESTOR' && usuario.permissao.includes('GESTOR', 'FUNC'))) && usuario?.permissao !== 'DIRETOR' ?
-                            <label>
-                                Permissão:
-                                <select value={permissao} onChange={(e) => setPermissao(e.target.value)}>
-                                    {idEmpresa == 1 ?
-                                        <>
-                                            <option value="#">Selecione a permissão</option>
-                                            <option value="CONSULTOR_DIRETOR">Diretor</option>
-                                            <option value="CONSULTOR">Consultor</option>
-                                        </>
-                                        :
-                                        qtdUsuarios >= 1 && diretor ?
-                                            <>
-                                                <option value="#">Selecione a permissão</option>
-                                                <option value="GESTOR">Gestão</option>
-                                                <option value="FUNC">Team Member</option>
-                                            </>
-                                            : qtdUsuarios >= 1 && !diretor ?
-                                                <>
-                                                    <option value="#">Selecione a permissão</option>
-                                                    <option value="GESTOR">Gestão</option>
-                                                    <option value="FUNC">Team Member</option>
-                                                    <option value="DIRETOR">Diretor</option>
-                                                </>
-                                                : 
-                                                <>
-                                                    <option value="#">Selecione a permissão</option>
-                                                    <option value="DIRETOR">Diretor</option>
-                                                </>
+            <TextField
+                label="Nome"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                fullWidth
+                variant="outlined"
+                autoComplete="off"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
+
+            <TextField
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                fullWidth
+                variant="outlined"
+                autoComplete="off"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
+
+            <TextField
+                label="Senha"
+                type="password"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                fullWidth
+                variant="outlined"
+                autoComplete="off"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
+
+            {usuarioLogado.permissao !== 'FUNC' && (
+                <>
+                    <TextField
+                        label="Cargo"
+                        value={cargo}
+                        onChange={(e) => setCargo(e.target.value)}
+                        fullWidth
+                        variant="outlined"
+                        autoComplete="off"
+                        InputLabelProps={{ style: inputStyle.label }}
+                        InputProps={{ style: inputStyle.input }}
+                        sx={inputStyle.sx}
+                    />
+
+                    <TextField
+                        label="Área"
+                        value={area}
+                        onChange={(e) => setArea(e.target.value)}
+                        fullWidth
+                        variant="outlined"
+                        autoComplete="off"
+                        InputLabelProps={{ style: inputStyle.label }}
+                        InputProps={{ style: inputStyle.input }}
+                        sx={inputStyle.sx}
+                    />
+
+                    {mostrarPermissaoSelect && (
+                        <Select
+                            value={permissao}
+                            onChange={(e) => setPermissao(e.target.value)}
+                            fullWidth
+                            displayEmpty
+                            variant="outlined"
+                            sx={{
+                                ...inputStyle.sx,
+                                color: '#FFF',
+                            }}
+                            MenuProps={{
+                                TransitionComponent: Grow,
+                                PaperProps: {
+                                    sx: {
+                                        backgroundColor: '#22272B',
+                                        color: '#fff',
+                                        borderRadius: 2,
+                                        mt: 1,
+                                        maxHeight: 200,
                                     }
+                                }
+                            }}
+                        >
+                            <MenuItem key="#" value="#">
+                                Selecione a permissão
+                            </MenuItem>
+                            {idEmpresa == 1 ? (
+                                [
+                                    <MenuItem key="CONSULTOR_DIRETOR" value="CONSULTOR_DIRETOR">Diretor</MenuItem>,
+                                    <MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>
+                                ]
+                            ) : (
+                                qtdUsuarios >= 1 && diretor ? (
+                                    [
+                                        <MenuItem key="GESTOR" value="GESTOR">Gestão</MenuItem>,
+                                        <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
+                                    ]
+                                ) : qtdUsuarios >= 1 && !diretor ? (
+                                    [
+                                        <MenuItem key="GESTOR" value="GESTOR">Gestão</MenuItem>,
+                                        <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>,
+                                        <MenuItem key="DIRETOR" value="DIRETOR">Diretor</MenuItem>
+                                    ]
+                                ) : (
+                                    <MenuItem key="DIRETOR" value="DIRETOR">Diretor</MenuItem>
+                                )
+                            )}
+                        </Select>
+                    )}
+                </>
+            )}
 
-                                </select>
-                            </label>
-                            : null
-                        }
-                    </>
-                }
-
+            <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
                 {usuario == null ? (
-                    <button type="button" onClick={handlePostUsuario}>Enviar</button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handlePostUsuario}
+                        endIcon={<SendIcon />}
+                        sx={{ flex: 1 }}
+                    >
+                        Adicionar
+                    </Button>
                 ) : (
-                    <button type="button" onClick={handlePutUsuario}>Enviar Alterações</button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handlePutUsuario}
+                        endIcon={<SendIcon />}
+                        sx={{ flex: 1 }}
+                    >
+                        Salvar Alterações
+                    </Button>
                 )}
-
-            </form>
-        </>
+            </Stack>
+        </Box>
     )
 }
 

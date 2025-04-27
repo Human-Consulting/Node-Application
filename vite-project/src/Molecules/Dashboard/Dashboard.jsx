@@ -1,5 +1,5 @@
 import { Stack, Typography, Button } from '@mui/material'
-import { BoxDetail, ContainerBack, DashContainer, DashKpi, KpiContainer, TextDefault, TextDefaultKpi, Title } from './Dashboard.styles'
+import { DashKpi, ContainerBack, DashContainer, KpiContainer, TextDefault, TextDefaultKpi, Title } from './Dashboard.styles'
 import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient'
 import LineChart from './LineChart/LineChart'
 import MinimalBarChart from './BarChart/BarChart'
@@ -20,6 +20,8 @@ import FormsFinanceiro from '../Forms/FormsFinanceiro'
 const Dashboard = ({ toogleLateralBar, showTitle }) => {
 
   const { idEmpresa, nomeEmpresa, descricaoProjeto, idProjeto } = useParams();
+
+  const [investimento, setInvestimento] = useState(null);
 
   const navigate = useNavigate();
 
@@ -45,13 +47,13 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
   const atualizarEntidade = async () => {
     const entidadeData = idProjeto ? await getProjetoAtual(idProjeto) : await getEmpresaAtual(idEmpresa);
     setEntidade(entidadeData);
-    console.log(entidadeData);
 
     setLoading(false);
   }
 
-  const toogleModal = () => {
+  const toogleModal = (investimento) => {
     setShowModal(!showModal);
+    investimento != null ? setInvestimento(investimento) : setInvestimento(null);
   };
 
   if (loading) return (
@@ -107,68 +109,63 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
           </ShaderGradientCanvas>
         </>
         : null}
-      <Stack sx={{ width: '100%', height: '90vh%', overflowY: 'hidden', gap: '2rem', flex: '0 0 auto', position: 'relative', zIndex: '1000' }}>
-        <KpiContainer>
-          {showTitle ? <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', position: 'relative', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idProjeto ? descricaoProjeto : nomeEmpresa} - Dashboard {idProjeto ? <Button variant='contained' sx={{ cursor: 'pointer', position: 'absolute', right: 0 }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button> : null}</Typography> : <Stack sx={{ marginTop: '1.5rem' }} />}
+      <KpiContainer>
+        {showTitle ? <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', position: 'relative', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idProjeto ? descricaoProjeto : nomeEmpresa} - Dashboard {idProjeto ? <Button variant='contained' sx={{ cursor: 'pointer', position: 'absolute', right: 0 }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button> : null}</Typography> : <Stack sx={{ marginTop: '1.5rem' }} />}
 
-          <DashContainer>
-            <Stack sx={{ gap: 4 }}>
-              <DashKpi>
-                <Stack sx={{ bgcolor: '#0d0d0d', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
-                  <Stack sx={{ alignItems: 'start' }}>
-                    <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Total de {entidade?.idEmpresa ? "Projetos" : "Sprints"}</TextDefaultKpi>
-                    <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.totalItens}</TextDefaultKpi>
-                  </Stack>
-                  <LensIcon sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></LensIcon>
+        <DashContainer>
+          <Stack sx={{ justifyContent: 'space-between', gap: '3rem', flex: 1 }}>
+            <DashKpi>
+              <Stack sx={{ bgcolor: '#0d0d0d', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
+                <Stack sx={{ alignItems: 'start' }}>
+                  <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Total de {entidade?.idEmpresa ? "Projetos" : "Sprints"}</TextDefaultKpi>
+                  <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.totalItens}</TextDefaultKpi>
                 </Stack>
+                <LensIcon sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></LensIcon>
+              </Stack>
 
-                <Stack sx={{ bgcolor: '#0d0d0d', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                  <div style={{ width: '50%', heigth: '50%', textAlign: 'center' }}>
-                    {renderIcon()}
-                  </div>
-                  <RadialChart progresso={entidade.progresso}></RadialChart>
+              <Stack sx={{ bgcolor: '#0d0d0d', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <div style={{ width: '50%', heigth: '50%', textAlign: 'center' }}>
+                  {renderIcon()}
+                </div>
+                <RadialChart progresso={entidade.progresso}></RadialChart>
+              </Stack>
+
+              <Stack sx={{ bgcolor: '#0d0d0d', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
+                <Stack sx={{ alignItems: 'start' }}>
+                  <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Responsável</TextDefaultKpi>
+                  <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.nomeResponsavel}</TextDefaultKpi>
                 </Stack>
+                <LensIcon sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></LensIcon>
+              </Stack>
+            </DashKpi>
+            <LineChart orcamento={entidade.orcamento} financeiros={entidade.financeiroResponseDtos} toogleModal={toogleModal} atualizarEntidade={atualizarEntidade}></LineChart>
+          </Stack>
 
-                <Stack sx={{ bgcolor: '#0d0d0d', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
-                  <Stack sx={{ alignItems: 'start' }}>
-                    <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Responsável</TextDefaultKpi>
-                    <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.nomeResponsavel}</TextDefaultKpi>
-                  </Stack>
-                  <LensIcon sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></LensIcon>
-                </Stack>
+          <Stack sx={{ bgcolor: '#0d0d0d', borderRadius: '20px', width: '40%', height: 'calc(100%)', padding: '1rem', justifyContent: 'space-between', gap: '2rem' }}>
+            <MinimalBarChart areas={entidade.areas} sx={{ flex: 1 }}></MinimalBarChart>
 
-              </DashKpi>
-              <Stack sx={{ bgcolor: '#0d0d0d', borderRadius: '20px', width: 'calc(100% + 1rem)', height: 'calc(60% + 1rem)', alignItems: 'center', justifyContent: 'center' }}>
-                <LineChart orcamento={entidade.orcamento} financeiros={entidade.financeiroResponseDtos}></LineChart>
+            <Stack sx={{ gap: '2rem', flex: 1 }}>
+              <Stack>
+                <TextDefault sx={{ color: '#eeeeee' }}>Áreas com mais tarefa</TextDefault>
+                <TextDefault sx={{ fontSize: '12px', fontWeight: '400' }}>Nos ultimos meses</TextDefault>
+              </Stack>
+
+              <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }} >
+                {entidade.areas?.length ? (
+                  entidade.areas.slice(0, 3).map((area, index) => (
+                    <AreaData key={index} area={area.nome} valor={area.valor} total={totalTarefas} />
+                  ))
+                ) : (
+                  <TextDefault>Carregando áreas...</TextDefault>
+                )}
               </Stack>
             </Stack>
 
-            <Stack sx={{ bgcolor: '#0d0d0d', borderRadius: '20px', width: '70%', height: 'calc(90% + 1rem)', padding: '1rem', justifyContent: 'space-between' }}>
-              <MinimalBarChart areas={entidade.areas}></MinimalBarChart>
-
-              <Stack sx={{ gap: '1rem' }}>
-                <Stack>
-                  <TextDefault sx={{ color: '#eeeeee' }}>Áreas com mais tarefa</TextDefault>
-                  <TextDefault sx={{ fontSize: '12px', fontWeight: '400' }}>Nos ultimos meses</TextDefault>
-                </Stack>
-
-                <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }} >
-                  {entidade.areas?.length ? (
-                    entidade.areas.slice(0, 3).map((area, index) => (
-                      <AreaData key={index} area={area.nome} valor={area.valor} total={totalTarefas} />
-                    ))
-                  ) : (
-                    <TextDefault>Carregando áreas...</TextDefault>
-                  )}
-                </Stack>
-              </Stack>
-
-            </Stack>
-          </DashContainer>
-        </KpiContainer>
-      </Stack>
+          </Stack>
+        </DashContainer>
+      </KpiContainer>
       <Modal showModal={showModal} fechar={toogleModal}
-        form={<FormsFinanceiro toogleModal={toogleModal} />}
+        form={<FormsFinanceiro toogleModal={toogleModal} investimento={investimento} atualizarEntidade={atualizarEntidade} />}
       ></Modal>
     </ContainerBack >
   )

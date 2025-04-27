@@ -9,6 +9,7 @@ export const BackCentral = styled(Box)({
     overflow: 'hidden',
     flexDirection: 'column',
     paddingInline: '1.5rem',
+    paddingBottom: '1.5rem',
 });
 
 export const TituloHeader = styled('h1')({
@@ -26,6 +27,7 @@ export const MidleCarrousel = styled(Box)({
     height: '550px',
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr 1fr',
+    gap: '1.5rem',
     padding: '0rem',
     width: '100%'
 

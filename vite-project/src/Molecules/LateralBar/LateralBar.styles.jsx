@@ -2,13 +2,14 @@ import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const LateralNavBar = styled(Box)({
-    width: '25%',
-    height: '100%',
+    width: '300px',
+    minWidth: '300px',
+    maxWidth: '350px',
+    height: '100vh',
     backgroundColor: '#000000',
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem'
-
 });
 export const DivisorOne = styled(Box)({
     width: '100%',
@@ -19,9 +20,8 @@ export const DivisorOne = styled(Box)({
     gap: '0.5rem',
     alignItems: 'start',
     justifyContent: 'center'
-
-
 });
+
 export const ChipZone = styled(Box)({
     width: '100%',
     height: '150px',
@@ -44,7 +44,7 @@ export const CardZone = styled(Box)({
 });
 export const Title = styled('p')({
     fontWeight: 500,
-    fontSize: '18px',
+    fontSize: '14px',
     color: '#fff',
 
 })

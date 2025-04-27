@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { postProjeto, putProjeto } from '../../Utils/cruds/CrudsProjeto.jsx';
+import { deleteProjeto, postProjeto, putProjeto } from '../../Utils/cruds/CrudsProjeto.jsx';
+import { Box, Button, TextField, Typography, Stack, MenuItem, Grow, Select } from '@mui/material';
+import { inputStyle } from "./Forms.styles.jsx";
+import SendIcon from '@mui/icons-material/Send';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmpresa }) => {
 
@@ -29,6 +34,12 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
         atualizarProjetos();
     };
 
+    const handleDeleteProjeto = async () => {
+        toogleModal();
+            await deleteProjeto(projeto.idProjeto);
+            await atualizarProjetos();
+    }
+
     const handlePutProjeto = async () => {
 
         const modifiedProjeto = {
@@ -44,44 +55,104 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
     }
 
     return (
-        <>
-            <h2>{projeto == null ? "Adicionar Projeto" : `Editar Projeto`}</h2>
-            <form onSubmit={(e) => e.preventDefault()}>
-                <label>
-                    Descrição:
-                    <textarea autoComplete="off" type="text" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
-                </label>
+        <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
+            <Typography variant="h5" textAlign="center" mb={2}>
+                {projeto == null ? "Adicionar Projeto" : "Visualizar Projeto"}
+            </Typography>
 
-                {usuarioLogado.permissao.includes('CONSULTOR') ?
-                    <label>
-                        Orçamento:
-                        <input autoComplete="off" type="number" value={orcamento} onChange={(e) => setOrcamento(e.target.value)} />
-                    </label>
-                    : null}
+            <TextField
+                label="Descrição"
+                multiline
+                rows={3}
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
+            <TextField
+                label="Orçamento"
+                type="number"
+                disabled={!usuarioLogado.permissao.includes('CONSULTOR')}
+                value={orcamento}
+                onChange={(e) => setOrcamento(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
 
-                <label>
-                    Responsável:
-                    <select value={fkResponsavel} onChange={(e) => setResponsavel(e.target.value)}>
-                        <option value="#">Selecione o responsável</option>
-                        {usuarios.map((usuario) => (
-                            <option key={usuario.idUsuario} value={usuario.idUsuario}>{usuario.nome}</option>
-                        ))}
-                    </select>
-                </label>
+            <Select
+                select
+                label="Responsável"
+                value={fkResponsavel}
+                onChange={(e) => setResponsavel(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={{
+                    ...inputStyle.sx,
+                    color: '#FFF',
+                }}
+                MenuProps={{
+                    TransitionComponent: Grow,
+                    PaperProps: {
+                        sx: {
+                            backgroundColor: '#22272B',
+                            color: '#fff',
+                            borderRadius: 2,
+                            mt: 1,
+                            maxHeight: 200,
+                        }
+                    }
+                }}
+            >
+                <MenuItem value="0">Selecione o responsável</MenuItem>
+                {usuarios.map((usuario) => (
+                    <MenuItem key={usuario.idUsuario} value={usuario.idUsuario}>
+                        {usuario.nome}
+                    </MenuItem>
+                ))}
+            </Select>
 
-                <label>
-                    Imagem:
-                    <input type="file" onChange={(e) => handleFileUpload(e.target.files[0])} />
-                </label>
+            <Button
+                variant="contained"
+                component="label"
+                fullWidth
+                sx={{ ...inputStyle.sx, py: 1.5 }}
+            >
+                {projeto == null ? 'Selecionar' : 'Modificar'} Imagem
+                <AttachFileIcon />
+                <input
+                    type="file"
+                    hidden
+                    onChange={(e) => handleFileUpload(e.target.files[0])}
+                />
+            </Button>
 
+            <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
                 {projeto == null ? (
-                    <button type="button" onClick={handlePostProjeto}>Enviar</button>
+                    <Button variant="contained" color="primary" onClick={handlePostProjeto} endIcon={<SendIcon />} sx={{ flex: 1 }}>
+                        Adicionar
+                    </Button>
                 ) : (
-                    <button type="button" onClick={handlePutProjeto}>Enviar Alterações</button>
+                    <>
+                        {!usuarioLogado.permissao.includes("CONSULTOR") ? null :
+                            <Button variant="contained" color="error" onClick={handleDeleteProjeto} >
+                                <DeleteIcon />
+                            </Button>
+                        }
+                        <Button variant="contained" color="primary" onClick={handlePutProjeto} endIcon={<SendIcon />} sx={{ flex: 1 }}>
+                            Salvar Alterações
+                        </Button>
+                    </>
                 )}
-
-            </form>
-        </>
+            </Stack>
+        </Box>
     )
 }
 

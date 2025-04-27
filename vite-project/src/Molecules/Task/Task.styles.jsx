@@ -4,19 +4,21 @@ import { styled } from '@mui/system';
 export const TaskBody = styled(Box)({
   width: '100%',
   height: '100%',
-  background: "#0d0d0d",
   overflow: 'scroll',
   overflowY: 'hidden',
   display: 'flex',
   flexDirection: 'column',
   paddingInline: '1.5rem',
+  zIndex: 2,
+  // background: '#0D0D0D',
 
   '&::-webkit-scrollbar': {
-    height: '16px',
+    height: '10px',
   },
   '&::-webkit-scrollbar-track': {
     background: '#1a1a1a',
     borderRadius: '4px',
+    zIndex: 5
   },
   '&::-webkit-scrollbar-thumb': {
     background: '#888',
@@ -30,10 +32,9 @@ export const TaskBody = styled(Box)({
 export const SprintBody = styled(Box)({
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center',
+  alignItems: 'start',
   overflow: 'none',
-  // scrollSnapType: 'x mandatory',
   boxSizing: 'padding-box',
-  paddingInline: '200px',
   marginTop: '125px',
+  paddingRight: '1.5rem',
 })
