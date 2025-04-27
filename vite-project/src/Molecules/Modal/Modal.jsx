@@ -1,12 +1,13 @@
 import { useRef } from "react";
 import React from "react";
-import { Box, Fade, Grow, Zoom } from "@mui/material";
+import { Box, Zoom } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
-// import './Modal.css';
+
 import { Backdrop, ModalContent, DragHandle } from "./Modal.styles";
 
 const Modal = ({ showModal, fechar, form }) => {
+    
     if (!showModal) return null;
 
     const modalRef = useRef(null);
@@ -31,19 +32,9 @@ const Modal = ({ showModal, fechar, form }) => {
     };
 
     return (
-        // <div className="modal">
-        //     <div className="modal-content" ref={modalRef}>
-        //         <div className="modal-header" onMouseDown={handleDragStart}>
-        //             <div className="header-box"></div>
-        //         </div>
-
-        //         <span className="close" onClick={fechar}>&times;</span>
-        //         {form}
-        //     </div>
-        // </div>
         <Zoom in={showModal} >
             <Backdrop>
-                <ModalContent ref={modalRef}>
+                <ModalContent ref={modalRef} sx={{width: 750}}>
                     <DragHandle onMouseDown={handleDragStart} />
                     <Box display="flex" justifyContent="flex-end">
                         <IconButton onClick={fechar} size="small">
@@ -53,7 +44,7 @@ const Modal = ({ showModal, fechar, form }) => {
                     {form}
                 </ModalContent>
             </Backdrop>
-        </Zoom>
+        </Zoom >
     );
 };
 
