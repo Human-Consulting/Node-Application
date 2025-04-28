@@ -3,7 +3,6 @@ import Linha from "../Linha/Linha";
 import "./Tabela.css"
 
 const Tabela = ({ usuarios, toogleModal, atualizarUsuarios }) => {
-    console.log(usuarios);
     const { idEmpresa } = useParams();
 
     return (

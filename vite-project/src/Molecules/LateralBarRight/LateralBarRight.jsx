@@ -16,9 +16,9 @@ const LateralBarRight = ({ showLateralBar, projetos, empresas }) => {
   let idxTwo = 0
   const carrousel = useRef(null)
   const carrouselTwo = useRef(null)
-  const caosList = idEmpresa != 1 ? projetos.filter(item => item.comImpedimento == true) : empresas.filter(item => item.comImpedimento == true);
-  const noneList = idEmpresa != 1 ? projetos.filter(item => item.progresso != 100) : empresas.filter(item => item.progresso != 100);
-  const finalizadosList = idEmpresa != 1 ? projetos.filter(item => item.progresso == 100) : empresas.filter(item => item.progresso == 100);
+  const caosList = projetos.length > 0 || empresas.length > 0 ? idEmpresa != 1 ? projetos.filter(item => item.comImpedimento == true) : empresas.filter(item => item.comImpedimento == true) : [];
+  const noneList = projetos.length > 0 || empresas.length > 0 ? idEmpresa != 1 ? projetos.filter(item => item.progresso != 100) : empresas.filter(item => item.progresso != 100) : [];
+  const finalizadosList = projetos.length > 0 || empresas.length > 0 ? idEmpresa != 1 ? projetos.filter(item => item.progresso == 100) : empresas.filter(item => item.progresso == 100) : [];
 
   const handleRightSkip = () => {
     if (idx < caosList.length - 1) {

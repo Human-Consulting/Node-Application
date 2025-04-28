@@ -5,7 +5,7 @@ import { inputStyle } from "./Forms.styles.jsx";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 
-const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atualizarTasks, usuarios, idSprint }) => {
+const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, setUsuarios, idSprint }) => {
     const [descricao, setDescricao] = useState(task?.descricao || "");
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
     const [dtFim, setDtFim] = useState(task?.dtFim || "");
@@ -21,7 +21,6 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atu
         toogleModal();
         atualizarSprints();
         atualizarProjetos();
-        atualizarTasks();
     };
 
     const handleImpedimentoTask = async () => {
@@ -48,7 +47,6 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atu
         toogleModal();
         atualizarSprints();
         atualizarProjetos();
-        atualizarTasks();
     };
 
     const handleDeleteTask = async () => {
@@ -56,6 +54,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atu
         await deleteTask(task.idTarefa);
         atualizarProjetos();
         atualizarSprints();
+        
     };
 
     return (

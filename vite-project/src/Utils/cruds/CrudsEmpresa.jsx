@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+const token = JSON.parse(localStorage.getItem('token'));
 
 export const postEmpresa = async (newEmpresa) => {
     try {
@@ -7,7 +8,8 @@ export const postEmpresa = async (newEmpresa) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedEmpresa,
         });
@@ -61,7 +63,13 @@ export const postEmpresa = async (newEmpresa) => {
 
 export const getEmpresas = async () => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
         const data = await res.json();
         return data;
     } catch (error) {
@@ -72,7 +80,13 @@ export const getEmpresas = async () => {
 
 export const getEmpresaAtual = async (idEmpresa) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas/${idEmpresa}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas/${idEmpresa}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
         const data = await res.json();
         return data;
     } catch (error) {
@@ -88,7 +102,8 @@ export const putEmpresa = async (modifiedEmpresa, idEmpresa) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas/${idEmpresa}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedEmpresa,
         });
@@ -159,7 +174,11 @@ export const deleteEmpresa = async (idEmpresa) => {
 
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas/${idEmpresa}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
             });
 
             if (res.ok) {

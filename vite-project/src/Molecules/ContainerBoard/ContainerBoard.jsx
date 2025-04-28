@@ -14,14 +14,14 @@ const ContainerBoard = () => {
 
   return (
     <LoginBack>
-      <Snackbar open={Boolean(responseMessage)}>
-        <Alert severity="error" variant="filled" autoHideDuration={3000} sx={{ width: '100%' }}>
+      <Snackbar open={Boolean(responseMessage)} autoHideDuration={3000}>
+        <Alert severity="error" variant="filled" sx={{ width: '100%' }}>
           {responseMessage}
         </Alert>
       </Snackbar>
 
-      <Snackbar open={Boolean(responseSucess)}>
-        <Alert severity="success" variant="filled" autoHideDuration={3000} sx={{ width: '100%' }}>
+      <Snackbar open={Boolean(responseSucess)} autoHideDuration={3000}>
+        <Alert severity="success" variant="filled" sx={{ width: '100%' }}>
           {responseSucess}
         </Alert>
       </Snackbar>

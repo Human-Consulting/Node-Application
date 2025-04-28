@@ -82,12 +82,10 @@ const MainContent = () => {
         <Route path="/Usuarios" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} />} />
 
         <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
-        
+
         <Route path="/Dash/:descricaoProjeto/:idProjeto" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
 
         <Route path="/next-step/:descricaoProjeto/:idProjeto" element={<NextStep toogleLateralBar={hideShowLateralBar} />} />
-
-        {/* //TODO <Route path="/Dash/:idProjeto" element={<DashboardProjeto toogleLateralBar={hideShowLateralBar} />} /> */}
       </Routes>
 
       <LateralBarRight showLateralBar={showLateralBar} projetos={projetos} empresas={empresas} />

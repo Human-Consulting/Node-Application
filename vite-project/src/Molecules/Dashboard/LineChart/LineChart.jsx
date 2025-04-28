@@ -1,7 +1,7 @@
 import Chart from 'react-apexcharts';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
-import ModalFinanceiro from '../../ModalFinanceiro/ModalFinanceiro';
+import ModalInvestimento from '../../ModalInvestimento/ModalInvestimento';
 import { useParams } from 'react-router';
 
 const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) => {
@@ -138,7 +138,7 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
         {idProjeto == null ? null : <MoreVertIcon sx={{ cursor: 'pointer' }} onClick={handleBadgeClick} />}
       </div>
       <Chart options={options} series={series} type="area" height={250} />
-      <ModalFinanceiro
+      <ModalInvestimento
         investimentos={financeiros || []}
         open={openPopover}
         anchorEl={anchorEl}

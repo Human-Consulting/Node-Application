@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { getUsuario } from "./CrudsUsuario";
+const token = JSON.parse(localStorage.getItem('token'));
 
 export const postTask = async (newTask) => {
     try {
@@ -8,7 +9,8 @@ export const postTask = async (newTask) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedTask,
         });
@@ -62,7 +64,13 @@ export const postTask = async (newTask) => {
 
 export const getTasks = async (idSprint) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/buscarPorSprint/${idSprint}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/buscarPorSprint/${idSprint}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
         const data = await res.json();
         await getUsuario(JSON.parse(localStorage.getItem('usuario')).idUsuario);
         return data;
@@ -79,7 +87,8 @@ export const putTask = async (modifiedTask, idTask) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/${idTask}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedTask,
         });
@@ -150,7 +159,11 @@ export const deleteTask = async (idTask) => {
 
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/${idTask}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
             });
 
             if (res.ok) {
@@ -206,7 +219,8 @@ export const putImpedimento = async (idTarefa, body) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/impedimento/${idTarefa}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedBody
 

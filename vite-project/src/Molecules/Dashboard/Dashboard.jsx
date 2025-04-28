@@ -15,7 +15,7 @@ import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import Modal from '../Modal/Modal'
-import FormsFinanceiro from '../Forms/FormsFinanceiro'
+import FormsInvestimento from '../Forms/FormsInvestimento'
 
 const Dashboard = ({ toogleLateralBar, showTitle }) => {
 
@@ -62,8 +62,8 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
       <TextDefault sx={{ mt: 2 }}>Carregando dados {entidade?.idEmpresa ? "da empresa" : "do projeto"}...</TextDefault>
     </Stack>
   );
-
-  const totalTarefas = entidade.areas.reduce((total, area) => total + area.valor, 0);
+  
+  const totalTarefas = entidade.areas.length > 0 ? entidade.areas.reduce((total, area) => total + area.valor, 0) : 0;
 
   const renderIcon = () => {
 
@@ -165,7 +165,7 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
         </DashContainer>
       </KpiContainer>
       <Modal showModal={showModal} fechar={toogleModal}
-        form={<FormsFinanceiro toogleModal={toogleModal} investimento={investimento} atualizarEntidade={atualizarEntidade} />}
+        form={<FormsInvestimento toogleModal={toogleModal} investimento={investimento} atualizarEntidade={atualizarEntidade} />}
       ></Modal>
     </ContainerBack >
   )

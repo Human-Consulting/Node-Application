@@ -57,6 +57,9 @@ button:focus-visible {
 .swalAlerta {
   background-color: #000;
   color: var(--fontLight);
+  width: fit-content;
+  padding: 1em;
+  border-radius: 50px;
 }
 
 @media (prefers-color-scheme: light) {
