@@ -2,6 +2,9 @@ import { Popover, List, ListItem, ListItemText, Typography, Button, Stack } from
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { deleteInvestimento } from '../../Utils/cruds/CrudsInvestimento.jsx';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal, atualizarEntidade }) => {
     const id = open ? 'investimentos-popover' : undefined;
@@ -50,7 +53,7 @@ const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal
                                 }
                                 secondary={
                                     <Typography variant="body2" color="#ccc">
-                                        Data: {new Date(investimento.dtInvestimento).toLocaleDateString()}
+                                        Data: {dayjs.utc(investimento.dtInvestimento).format('DD/MM/YYYY')}
                                     </Typography>
                                 }
                             />

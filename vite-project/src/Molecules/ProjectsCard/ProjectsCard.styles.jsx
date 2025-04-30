@@ -4,9 +4,9 @@ export const BoxBody = styled('div')({
     width: '100%',
     minWidth: '250px',
     maxWidth: '400px',
-    height: '225px',
+    height: '250px',
     minHeight: '225px',
-    background: '#1d1d1d',
+    background: '#1D1D1D',
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
@@ -58,7 +58,6 @@ export const HeaderCard = styled('div')({
 
 export const BodyCard = styled('div')({
     height: '60%',
-    backgroundColor: '#1d1d1d',
     width: '100%',
     zIndex: '30',
     padding: '0.5rem',

@@ -57,7 +57,6 @@ const LateralBar = ({ projetos, empresas }) => {
         }
     }
 
-
     return (
         <LateralNavBar>
             <DivisorOne>
@@ -107,7 +106,7 @@ const LateralBar = ({ projetos, empresas }) => {
                         <ProjectsTypes entidade={projeto} />
                     ))
                         :
-                        empresasFiltradas.length > 0 ? empresasFiltradas.slice(1).map(empresa => (
+                        empresasFiltradas.length > 0 ? empresasFiltradas.filter(empresa => empresa.idEmpresa != 1).map(empresa => (
                             <ProjectsTypes entidade={empresa} />
                         )) : null
                     }

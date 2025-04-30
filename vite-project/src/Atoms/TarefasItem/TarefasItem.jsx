@@ -53,7 +53,7 @@ const TarefasItem = ({ tarefa, toogleModal, atualizarProjetos, atualizarSprints 
   return (
     <TarefaBody sx={{ border: `solid ${tarefa.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 3px` }}>
       <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-        {tarefa.descricao}
+        <span style={{textOverflow: 'ellipsis',whiteSpace: 'nowrap',overflow: 'hidden' }}>{tarefa.descricao}</span>
         <Stack sx={{ flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
           {renderIconeStatusTarefa()}
           <MoreVertIcon

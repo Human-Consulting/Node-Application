@@ -49,6 +49,7 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmp
             nome,
             urlImagem
         }
+        toogleModal();
         await putEmpresa(modifiedEmpresa, empresa.idEmpresa);
         await atualizarEmpresas();
     }

@@ -49,7 +49,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
             backgroundRepeat: 'no-repeat',
           }} />
           <BodyCard>
-            <Title>{item?.nomeResponsavel || item.diretor}</Title>
+            <Title>{item?.descricao || item.nome}</Title>
             <MoreVertIcon
               onClick={(e) => {
                 e.stopPropagation();
@@ -69,8 +69,8 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
                 }
               }}
             />
-            <Subtitle>Orçamento: R${item.orcamento}</Subtitle>
-            <Subtitle>{item?.descricao || item.nome}</Subtitle>
+            <Subtitle>{item?.nomeResponsavel != null ? `Responsável: ${item.nomeResponsavel}` : item.nomeDiretor == null ? "Diretor não registrado" : `Diretor: ${item.nomeDiretor}`}</Subtitle>
+            <Subtitle><b>Orçamento:</b> R${item.orcamento}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
                 <Progress sx={{ width: `${item.progresso}%` }} />

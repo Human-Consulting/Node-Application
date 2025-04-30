@@ -47,15 +47,15 @@ const MainContent = () => {
   const buscarUsuarios = async () => {
     const usuarios = await getUsuarios(Number(idEmpresa));
     setUsuarios(usuarios);
+    setLoading(false);
   };
 
   useEffect(() => {
     const carregarDados = async () => {
-      setLoading(true);
+      setLoading(true); 
       if (Number(idEmpresa) === 1) await atualizarEmpresas();
       else await atualizarProjetos();
       await buscarUsuarios();
-      setLoading(false);
     };
     carregarDados();
   }, [idEmpresa])
