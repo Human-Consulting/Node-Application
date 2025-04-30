@@ -31,7 +31,7 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
             dtInvestimento
         }
         toogleModal();
-        await putInvestimento(modifiedInvestimento, investimento.idFinanceiro);
+        await putInvestimento(modifiedInvestimento, investimento.idInvestimento);
         await atualizarEntidade();
     }
 

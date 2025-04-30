@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+const token = JSON.parse(localStorage.getItem('token'));
 
 export const postProjeto = async (newProjeto, toogleModal) => {
     try {
@@ -7,7 +8,8 @@ export const postProjeto = async (newProjeto, toogleModal) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedProjeto,
         });
@@ -62,7 +64,13 @@ export const postProjeto = async (newProjeto, toogleModal) => {
 
 export const getProjetos = async (idEmpresa) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/buscarPorEmpresa/${idEmpresa}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/buscarPorEmpresa/${idEmpresa}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
         const data = await res.json();
         return data;
     } catch (error) {
@@ -73,7 +81,13 @@ export const getProjetos = async (idEmpresa) => {
 
 export const getProjetoAtual = async (idProjeto) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
         const data = await res.json();
         return data;
     } catch (error) {
@@ -89,7 +103,8 @@ export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedProjeto,
         });
@@ -161,7 +176,11 @@ export const deleteProjeto = async (idProjeto) => {
 
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
             });
 
             if (res.ok) {

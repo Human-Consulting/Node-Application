@@ -9,7 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atualizarTasks, usuarios, idSprint }) => {
+const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, setUsuarios, idSprint }) => {
     const [descricao, setDescricao] = useState(task?.descricao || "");
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
     const [dtFim, setDtFim] = useState(task?.dtFim || "");
@@ -25,7 +25,6 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atu
         toogleModal();
         atualizarSprints();
         atualizarProjetos();
-        atualizarTasks();
     };
 
     const handleImpedimentoTask = async () => {
@@ -52,7 +51,6 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atu
         toogleModal();
         atualizarSprints();
         atualizarProjetos();
-        atualizarTasks();
     };
 
     const handleDeleteTask = async () => {
@@ -60,6 +58,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, atu
         await deleteTask(task.idTarefa);
         atualizarProjetos();
         atualizarSprints();
+        
     };
 
     const [checkboxes, setCheckboxes] = useState([

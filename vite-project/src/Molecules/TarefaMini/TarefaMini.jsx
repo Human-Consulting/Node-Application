@@ -3,8 +3,11 @@ import { Button, Stack } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CheckIcon from '@mui/icons-material/Check';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
-function TarefaMini({ indice, tarefa, toogleModal, atualizarProjetos, atualizarTasks }) {
+function TarefaMini({ indice, tarefa, toogleModal }) {
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const handleToogleModal = () => {
@@ -72,9 +75,9 @@ function TarefaMini({ indice, tarefa, toogleModal, atualizarProjetos, atualizarT
                 />
               </Stack>
             </Stack>
-            <Subtitle>{tarefa.nomeResponsavel}</Subtitle>
-            <Subtitle>{tarefa.descricao}</Subtitle>
-            <Subtitle>Data limite em {tarefa.dtFim}</Subtitle>
+            <Subtitle><b>Responsável:</b> {tarefa.nomeResponsavel}</Subtitle>
+            <Subtitle><b>Descrição:</b>{tarefa.descricao}</Subtitle>
+            <Subtitle><b>Data limite:</b> {dayjs.utc(tarefa.dtFim).format('DD/MM/YYYY')}</Subtitle>
 
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>

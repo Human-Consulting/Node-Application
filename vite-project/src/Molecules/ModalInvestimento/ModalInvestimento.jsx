@@ -1,14 +1,18 @@
 import { Popover, List, ListItem, ListItemText, Typography, Button, Stack } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { deleteInvestimento } from './../../Utils/cruds/CrudsInvestimento.jsx';
+import { deleteInvestimento } from '../../Utils/cruds/CrudsInvestimento.jsx';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
-const ModalFinanceiro = ({ investimentos, open, anchorEl, onClose, toogleModal, atualizarEntidade }) => {
+const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal, atualizarEntidade }) => {
     const id = open ? 'investimentos-popover' : undefined;
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
-    const handleDeleteInvestimento = async (idFinanceiro) => {
+    const handleDeleteInvestimento = async (idInvestimento) => {
         onClose();
-        await deleteInvestimento(idFinanceiro);
+        await deleteInvestimento(idInvestimento);
         await atualizarEntidade();
     }
 
@@ -33,9 +37,11 @@ const ModalFinanceiro = ({ investimentos, open, anchorEl, onClose, toogleModal, 
             }}
         >
             <List sx={{ width: 400, height: 400, background: '#000' }}>
+                {usuarioLogado.permissao != 'FUNC' && (
                 <ListItem sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                     <Button variant="contained" color='primary' onClick={() => handleToogleModal(null)}>Adicionar investimento</Button>
                 </ListItem>
+                )}
                 {investimentos.map((investimento, index) => (
                     <ListItem key={index} sx={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#000' }}>
                         <Stack sx={{ flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
@@ -47,13 +53,13 @@ const ModalFinanceiro = ({ investimentos, open, anchorEl, onClose, toogleModal, 
                                 }
                                 secondary={
                                     <Typography variant="body2" color="#ccc">
-                                        Data: {new Date(investimento.dtInvestimento).toLocaleDateString()}
+                                        Data: {dayjs.utc(investimento.dtInvestimento).format('DD/MM/YYYY')}
                                     </Typography>
                                 }
                             />
                         </Stack>
                         <Stack sx={{ flexDirection: 'row', gap: 1 }}>
-                            <Button sx={{ borderWidth: '2px' }} variant="outlined" color='error' onClick={() => handleDeleteInvestimento(investimento.idFinanceiro)}><DeleteIcon /></Button>
+                            <Button sx={{ borderWidth: '2px' }} variant="outlined" color='error' onClick={() => handleDeleteInvestimento(investimento.idInvestimento)}><DeleteIcon /></Button>
                             <Button sx={{ borderWidth: '2px' }} variant="outlined" onClick={() => handleToogleModal(investimento)}><EditIcon /></Button>
                         </Stack>
                     </ListItem>
@@ -68,4 +74,4 @@ const ModalFinanceiro = ({ investimentos, open, anchorEl, onClose, toogleModal, 
     );
 };
 
-export default ModalFinanceiro;
+export default ModalInvestimento;

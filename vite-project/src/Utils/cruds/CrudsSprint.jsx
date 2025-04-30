@@ -1,5 +1,7 @@
 import Swal from "sweetalert2";
-import { getUsuario } from "./CrudsUsuario";
+import { getUsuario, getUsuarios } from "./CrudsUsuario";
+import { useParams } from "react-router";
+const token = JSON.parse(localStorage.getItem('token'));
 
 export const postSprint = async (newSprint) => {
     try {
@@ -8,7 +10,8 @@ export const postSprint = async (newSprint) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedSprint,
         });
@@ -62,7 +65,13 @@ export const postSprint = async (newSprint) => {
 
 export const getSprints = async (idProjeto) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/buscarPorProjeto/${idProjeto}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/buscarPorProjeto/${idProjeto}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
         const data = await res.json();
         await getUsuario(JSON.parse(localStorage.getItem('usuario')).idUsuario);
         return data;
@@ -79,7 +88,8 @@ export const putSprint = async (modifiedSprint, idSprint) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/${idSprint}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedSprint,
         });
@@ -150,7 +160,11 @@ export const deleteSprint = async (idSprint) => {
 
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/${idSprint}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
             });
 
             if (res.ok) {

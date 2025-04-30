@@ -38,9 +38,8 @@ const Linha = ({ usuario, toogleModal, atualizarUsuarios }) => {
         <tr>
             <td>{usuario.nome}</td>
             <td>{usuario.email}</td>
-            {/* <td>{usuario.cargo}</td> */}
             <td>{usuario.area}</td>
-            <td>{usuario.permissao}</td>
+            <td>{usuario.permissao == 'FUNC' ? "TEAM MEMBER" : usuario.permissao}</td>
             {idEmpresa == 1 ? null :
                 <>
                     <td>{usuario.qtdTarefas}</td>

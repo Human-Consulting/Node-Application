@@ -1,18 +1,18 @@
 import {styled } from "@mui/material";
 
 export const BoxBody = styled('div')({
-    width: 'calc(90%)',
+    width: '100%',
+    maxWidth: '250px',
     height: '225px',
-    background: '#1d1d1d',
-    background: '#000',
-    // background: '#22272B',
+    gap: '0.5rem',
+    background: '#101010',
     display: 'flex',
     flexDirection: 'column',
     borderRadius: '10px',
-    flexShrink: 0,
     position: 'relative',
     alignItems: 'center',
-    padding: '0.5rem'
+    padding: '0.5rem',
+    marginBottom: '3rem',
 });
 
 export const Title = styled('p')({
@@ -24,7 +24,11 @@ export const Title = styled('p')({
 export const Subtitle = styled('p')({
     fontWeight: 300,
     fontSize: '14px',
-    color: '#fff'
+    color: '#fff',
+    width: '100%',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
 })
 
 export const BodyCard = styled('div')({

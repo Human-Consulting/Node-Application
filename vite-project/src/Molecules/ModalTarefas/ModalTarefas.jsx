@@ -19,8 +19,8 @@ const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
             }}
         >
             <List sx={{ width: 300, maxHeight: 300, background: '#000' }}>
-                {tarefas.map((tarefa, index) => (
-                    <ListItem key={index} alignItems="flex-start" sx={{ flexDirection: 'column', alignItems: 'flex-start', background: '#000' }}>
+                {tarefas.filter(tarefa => tarefa.progresso < 100).map((tarefa, index) => (
+                    <ListItem key={index} alignItems="flex-start" sx={{ flexDirection: 'column', alignItems: 'flex-start', background: '#000', borderBlock: 'solid #22272B 1px', paddingBlock: '1rem' }}>
                         <ListItemText
                             primary={
                                 <Typography variant="subtitle1" fontWeight="bold" color={'text.paper'}>

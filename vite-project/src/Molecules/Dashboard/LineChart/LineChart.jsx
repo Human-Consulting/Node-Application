@@ -1,7 +1,7 @@
 import Chart from 'react-apexcharts';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
-import ModalFinanceiro from '../../ModalFinanceiro/ModalFinanceiro';
+import ModalInvestimento from '../../ModalInvestimento/ModalInvestimento';
 import { useParams } from 'react-router';
 
 const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) => {
@@ -20,7 +20,10 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
 
   const openPopover = Boolean(anchorEl);
 
-  const totaisPorMes = Array(financeiros.length + 2).fill(0);
+  const mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+  const totaisPorMes = Array(12).fill(0);
+
 
   financeiros.forEach(financeiro => {
     const data = new Date(financeiro.dtInvestimento);
@@ -31,26 +34,25 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
     }
   });
 
-  const totaisAcumulados = [];
+  let ultimoMesComDados = -1;
+  for (let i = totaisPorMes.length - 1; i >= 0; i--) {
+    if (totaisPorMes[i] > 0) {
+      ultimoMesComDados = i;
+      break;
+    }
+  }
+
+  const resultadoFinal = [];
   let acumulado = 0;
-
-  for (let i = 0; i < totaisPorMes.length; i++) {
-    acumulado += totaisPorMes[i] || 0;
-    totaisAcumulados.push(acumulado);
+  for (let i = 0; i <= ultimoMesComDados; i++) {
+    acumulado += totaisPorMes[i];
+    resultadoFinal.push({
+      mes: mesesNome[i],
+      valor: acumulado
+    });
   }
 
-  const mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-
-  const resultadoFinal = totaisAcumulados.map((valor, i) => ({
-    mes: mesesNome[i],
-    valor
-  }));
-
-  const orcamentos = [];
-  for (let i = 0; i < resultadoFinal.length; i++) {
-    orcamentos.push(orcamento);
-  }
-
+  const orcamentos = resultadoFinal.map(() => orcamento);
 
   const options = {
     chart: {
@@ -138,7 +140,7 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
         {idProjeto == null ? null : <MoreVertIcon sx={{ cursor: 'pointer' }} onClick={handleBadgeClick} />}
       </div>
       <Chart options={options} series={series} type="area" height={250} />
-      <ModalFinanceiro
+      <ModalInvestimento
         investimentos={financeiros || []}
         open={openPopover}
         anchorEl={anchorEl}

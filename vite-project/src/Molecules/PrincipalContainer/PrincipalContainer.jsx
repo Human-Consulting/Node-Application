@@ -23,6 +23,7 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
   const [empresa, setEmpresa] = useState('');
   const [acao, setAcao] = useState('');
   const [listaFiltrada, setListaFiltrada] = useState([]);
+  
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
   if (!usuarioLogado.permissao.includes("CONSULTOR") && idEmpresa == 1) navigate(-1);
@@ -101,7 +102,15 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
         </ShaderGradientCanvas>
 
         <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6', alignItems: 'center' }}>
-          <Avatar sx={{ width: 56, height: 56 }} src={`data:image/png;base64,${empresas[0]?.urlImagem || projetos[0]?.urlImagemEmpresa}`}></Avatar>
+          <Avatar sx={{
+            width: 56, height: 56, bgcolor: 'transparent',
+            '& img': {
+              objectFit: 'cover',
+              objectPosition: 'center',
+              width: '100%',
+              height: '100%',
+            }
+          }} src={`data:image/png;base64,${empresas[0]?.urlImagem || projetos[0]?.urlImagemEmpresa}`}></Avatar>
           <TextField
             onChange={(e) => filtrar(e.target.value)}
             label=
@@ -161,7 +170,7 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
         <TituloHeader>{idEmpresa != 1 && usuarioLogado.permissao.includes('CONSULTOR') ? <ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px' }} onClick={handleOpenEmpresas} /> : null} {idEmpresa == 1 ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}</TituloHeader>
       </HeaderContent>
       <MidleCarrousel>
-        {listaFiltrada.length < 1 ? null : listaFiltrada.map(item => (
+        {listaFiltrada.length < 1 || listaFiltrada == null ? null : listaFiltrada.map(item => (
           <ProjectsCard item={item} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} ></ProjectsCard>
         ))}
         {usuarioLogado.permissao.includes('CONSULTOR') ?

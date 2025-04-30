@@ -3,7 +3,8 @@ import { styled } from '@mui/system';
 
 export const ContainerBack = styled(Box)({
     width: 'calc(100% - 2rem)',
-    background: "#1D1D1D",
+    // background: "#1D1D1D",
+    // background: "#1D1D1D",
     borderRadius: '5px',
     position: 'relative',
     overflowY: 'hidden',
@@ -41,7 +42,7 @@ export const TextDefault = styled('p')({
 export const TextDefaultKpi = styled('p')({
     fontSize: '24px',
     color: '#d4d4d4',
-    fontWeight: 600
+    fontWeight: 600,
 });
 
 export const DashKpi = styled(Box)({

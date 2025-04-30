@@ -15,7 +15,7 @@ import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import Modal from '../Modal/Modal'
-import FormsFinanceiro from '../Forms/FormsFinanceiro'
+import FormsInvestimento from '../Forms/FormsInvestimento'
 
 const Dashboard = ({ toogleLateralBar, showTitle }) => {
 
@@ -62,8 +62,8 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
       <TextDefault sx={{ mt: 2 }}>Carregando dados {entidade?.idEmpresa ? "da empresa" : "do projeto"}...</TextDefault>
     </Stack>
   );
-
-  const totalTarefas = entidade.areas.reduce((total, area) => total + area.valor, 0);
+  
+  const totalTarefas = entidade.areas.length > 0 ? entidade.areas.reduce((total, area) => total + area.valor, 0) : 0;
 
   const renderIcon = () => {
 
@@ -115,7 +115,7 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
         <DashContainer>
           <Stack sx={{ justifyContent: 'space-between', gap: '3rem', flex: 1 }}>
             <DashKpi>
-              <Stack sx={{ bgcolor: '#0d0d0d', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
+              <Stack sx={{ bgcolor: '#101010', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
                 <Stack sx={{ alignItems: 'start' }}>
                   <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Total de {entidade?.idEmpresa ? "Projetos" : "Sprints"}</TextDefaultKpi>
                   <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.totalItens}</TextDefaultKpi>
@@ -123,14 +123,14 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
                 <LensIcon sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></LensIcon>
               </Stack>
 
-              <Stack sx={{ bgcolor: '#0d0d0d', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <div style={{ width: '50%', heigth: '50%', textAlign: 'center' }}>
                   {renderIcon()}
                 </div>
                 <RadialChart progresso={entidade.progresso}></RadialChart>
               </Stack>
 
-              <Stack sx={{ bgcolor: '#0d0d0d', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
+              <Stack sx={{ bgcolor: '#101010', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
                 <Stack sx={{ alignItems: 'start' }}>
                   <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Responsável</TextDefaultKpi>
                   <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.nomeResponsavel}</TextDefaultKpi>
@@ -141,7 +141,7 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
             <LineChart orcamento={entidade.orcamento} financeiros={entidade.financeiroResponseDtos} toogleModal={toogleModal} atualizarEntidade={atualizarEntidade}></LineChart>
           </Stack>
 
-          <Stack sx={{ bgcolor: '#0d0d0d', borderRadius: '20px', width: '40%', height: 'calc(100%)', padding: '1rem', justifyContent: 'space-between', gap: '2rem' }}>
+          <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '40%', height: 'calc(100%)', padding: '1rem', justifyContent: 'space-between', gap: '2rem' }}>
             <MinimalBarChart areas={entidade.areas} sx={{ flex: 1 }}></MinimalBarChart>
 
             <Stack sx={{ gap: '2rem', flex: 1 }}>
@@ -165,7 +165,7 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
         </DashContainer>
       </KpiContainer>
       <Modal showModal={showModal} fechar={toogleModal}
-        form={<FormsFinanceiro toogleModal={toogleModal} investimento={investimento} atualizarEntidade={atualizarEntidade} />}
+        form={<FormsInvestimento toogleModal={toogleModal} investimento={investimento} atualizarEntidade={atualizarEntidade} />}
       ></Modal>
     </ContainerBack >
   )

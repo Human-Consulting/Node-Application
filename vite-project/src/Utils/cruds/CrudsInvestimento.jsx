@@ -1,14 +1,15 @@
-import { ConstructionOutlined } from "@mui/icons-material";
 import Swal from "sweetalert2";
+const token = JSON.parse(localStorage.getItem('token'));
 
 export const postInvestimento = async (newInvestimento) => {
     try {
         const formattedInvestimento = JSON.stringify(newInvestimento);
 
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/financeiros`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/investimentos`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedInvestimento,
         });
@@ -64,10 +65,11 @@ export const putInvestimento = async (modifiedInvestimento, idInvestimento) => {
     try {
         const formattedInvestimento = JSON.stringify(modifiedInvestimento);
 
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/financeiros/${idInvestimento}`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/investimentos/${idInvestimento}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedInvestimento,
         });
@@ -119,8 +121,7 @@ export const putInvestimento = async (modifiedInvestimento, idInvestimento) => {
     }
 };
 
-export const deleteInvestimento = async (idFinanceiro) => {
-    console.log("deleteInvestimento", idFinanceiro);
+export const deleteInvestimento = async (idInvestimento) => {
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -138,8 +139,12 @@ export const deleteInvestimento = async (idFinanceiro) => {
         });
 
         if (confirm.isConfirmed) {
-            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/financeiros/${idFinanceiro}`, {
-                method: 'DELETE'
+            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/investimentos/${idInvestimento}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
             });
 
             if (res.ok) {
@@ -171,7 +176,7 @@ export const deleteInvestimento = async (idFinanceiro) => {
             }
         }
     } catch (error) {
-        console.error("Erro ao remover Investimento " + idFinanceiro + ": ", error);
+        console.error("Erro ao remover Investimento " + idInvestimento + ": ", error);
         Swal.fire({
             icon: "error",
             title: "Oops...",

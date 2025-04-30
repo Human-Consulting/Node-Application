@@ -12,6 +12,7 @@ const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios }) => {
 
   const navigate = useNavigate();
   const { idEmpresa, nomeEmpresa } = useParams();
+
   const [showModal, setShowModal] = useState(false);
   const [usuario, setUsuario] = useState(null);
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);

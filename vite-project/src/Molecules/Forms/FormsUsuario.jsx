@@ -15,7 +15,6 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
     const [cargo, setCargo] = useState(usuario?.cargo || '');
     const [area, setArea] = useState(usuario?.area || '');
     const [permissao, setPermissao] = useState(usuario?.permissao || "#");
-    console.log(permissao);
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -82,18 +81,20 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                 sx={inputStyle.sx}
             />
 
-            <TextField
-                label="Senha"
-                type="password"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                fullWidth
-                variant="outlined"
-                autoComplete="off"
-                InputLabelProps={{ style: inputStyle.label }}
-                InputProps={{ style: inputStyle.input }}
-                sx={inputStyle.sx}
-            />
+            {usuario == null && (
+                <TextField
+                    label="Senha"
+                    type="password"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                    autoComplete="off"
+                    InputLabelProps={{ style: inputStyle.label }}
+                    InputProps={{ style: inputStyle.input }}
+                    sx={inputStyle.sx}
+                />
+            )}
 
             {usuarioLogado.permissao !== 'FUNC' && (
                 <>

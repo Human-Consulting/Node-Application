@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+const token = JSON.parse(localStorage.getItem('token'));
 
 export const postUsuario = async (newUsuario, toogleModal) => {
     try {
@@ -7,7 +8,8 @@ export const postUsuario = async (newUsuario, toogleModal) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedUsuario,
         });
@@ -62,7 +64,13 @@ export const postUsuario = async (newUsuario, toogleModal) => {
 
 export const getUsuarios = async (idEmpresa) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/buscarPorEmpresa/${idEmpresa}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/buscarPorEmpresa/${idEmpresa}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        });
         const data = await res.json();
         return data;
     } catch (error) {
@@ -78,7 +86,8 @@ export const putUsuario = async (modifiedUsuario, idUsuario, toogleModal) => {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: formattedUsuario,
         });
@@ -150,7 +159,11 @@ export const deleteUsuario = async (idUsuario, toogleModal) => {
 
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
             });
 
             if (res.ok) {
@@ -207,6 +220,10 @@ export const uploadFile = async (file, toogleModal) => {
     try {
         const res = await fetch("${import.meta.env.VITE_ENDERECO_API}/usuarios/upload", {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
             body: formData
         });
 
@@ -248,7 +265,13 @@ export const uploadFile = async (file, toogleModal) => {
 
 export const getUsuario = async (idUsuario) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`);
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
         const usuario = await res.json();
         localStorage.setItem("usuario", JSON.stringify(usuario));
     } catch (error) {
