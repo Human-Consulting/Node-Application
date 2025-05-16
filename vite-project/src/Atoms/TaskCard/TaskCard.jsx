@@ -15,6 +15,8 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
+  const [tarefasFiltradas, setTarefasFiltradas] = useState(sprint.tarefas);
+
   const handleOpenProject = () => {
     navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${descricaoProjeto}/${idProjeto}/Tarefas/${sprint.idSprint}/${index}`);
   }
@@ -56,6 +58,11 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
     }
   };
 
+  const filterTarefas = (status) => {
+    if (status != 'TODOS') {
+      setTarefasFiltradas(sprint.tarefas.filter((tarefa) => tarefa.status == status));
+    }
+  }
 
   return (
     <TaskCardBody sx={{ position: 'relative' }}>
@@ -64,6 +71,36 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
           <NavTask>
             {renderIconeStatusSprint(sprint)}
             {sprint.descricao}
+
+            <Select
+              defaultValue="TODOS"
+              onChange={(e) => filterTarefas(e.target.value)}
+              fullWidth
+              displayEmpty
+              sx={{
+                ...inputStyle.sx,
+                color: '#FFF',
+                mt: 2,
+              }}
+              MenuProps={{
+                TransitionComponent: Grow,
+                PaperProps: {
+                  sx: {
+                    backgroundColor: '#22272B',
+                    color: '#fff',
+                    borderRadius: 2,
+                    mt: 1,
+                    maxHeight: 200,
+                  }
+                }
+              }}
+            >
+              <MenuItem value="TODOS">Todos</MenuItem>
+              <MenuItem value="IMPEDIDOS">Impedidos</MenuItem>
+              <MenuItem value="FINALIZADO">Finalizados</MenuItem>
+              <MenuItem value="PENDENTE">Pendentes</MenuItem>
+            </Select>
+
             <MoreVertIcon
               onClick={(e) => {
                 e.stopPropagation();
@@ -84,7 +121,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
             />
           </NavTask>
           <BodyTarefa>
-            {sprint.tarefas.map((tarefa) => (
+            {tarefasFiltradas.map((tarefa) => (
               <TarefasItem tarefa={tarefa} toogleModal={handleOpenModalPutTask} atualizarProjetos={atualizarProjetos} atualizarSprints={atualizarSprints} ></TarefasItem>
             ))}
           </BodyTarefa>
