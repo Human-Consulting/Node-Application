@@ -1,93 +1,94 @@
-import { useState } from "react";
-import { Button, Stack } from "@mui/material";
+import { useState, useEffect, useRef } from "react";
+import { Avatar, Button, Stack} from "@mui/material";
 import {
   BackChat,
   ContainerGeral,
   LateralMessage,
   Scroll,
-  TextInput
+  TextInput,
+  ChatInputContainer,
+  ContactItem
 } from "./Chat.styles";
 import ChatMessage from "../../Atoms/ChatMessage/ChatMessage";
+import useMessage from "../../Utils/cruds/UseMessage";
 
 const Chat = () => {
-  const currentUserId = 1; 
-  const [selectedChatId, setSelectedChatId] = useState("chat-1");
+  const currentUserId = 1;
+  const [selectedChatId, setSelectedChatId] = useState(1);
+  const [chats, setChats] = useState([]);
+  const [inputMessage, setInputMessage] = useState("");
+  const scrollRef = useRef(null);
 
-  const mockMessages = [
-    {
-      chatId: "chat-1",
-      participants: [
-        { id: 1, name: "Samuel Luciano", avatarUrl: "https://i.pravatar.cc/150?img=1" },
-        { id: 2, name: "Maria Souza", avatarUrl: "https://i.pravatar.cc/150?img=2" }
-      ],
-      messages: [
-        { id: 1, senderId: 1, message: "Oi Maria! Tudo certo por aí?", date: "09:00" },
-        { id: 2, senderId: 2, message: "Bom dia! Tudo sim, e contigo?", date: "09:01" },
-        { id: 3, senderId: 1, message: "Tranquilo. Já viu o novo layout?", date: "09:03" },
-        { id: 4, senderId: 2, message: "Vi sim. Achei ótimo!", date: "09:04" },
-        { id: 4, senderId: 2, message: "Vi sim. Achei ótimo!", date: "09:04" },
-        { id: 4, senderId: 2, message: "Vi sim. Achei ótimo!", date: "09:04" },
-        { id: 4, senderId: 2, message: "Vi sim. Achei ótimo!", date: "09:04" },
-        { id: 4, senderId: 2, message: "Vi sim. Achei ótimo!", date: "09:04" },
-        { id: 4, senderId: 2, message: "Vi sim. Achei ótimo!", date: "09:04" },
-        { id: 4, senderId: 2, message: "Vi sim. Achei ótimo!", date: "09:04" },
+  const { sendMessage } = useMessage();
 
-      ]
-    },
-    {
-      chatId: "chat-2",
-      participants: [
-        { id: 1, name: "Samuel Luciano", avatarUrl: "https://i.pravatar.cc/150?img=1" },
-        { id: 3, name: "João Pedro", avatarUrl: "https://i.pravatar.cc/150?img=3" }
-      ],
-      messages: [
-        { id: 1, senderId: 3, message: "E aí, Samuel! Já viu aquele bug da home?", date: "08:30" },
-        { id: 2, senderId: 1, message: "Bom dia! Sim, to olhando agora.", date: "08:31" }
-      ]
-    },
-    {
-      chatId: "chat-3",
-      participants: [
-        { id: 1, name: "Samuel Luciano", avatarUrl: "https://i.pravatar.cc/150?img=1" },
-        { id: 4, name: "Luana Martins", avatarUrl: "https://i.pravatar.cc/150?img=4" }
-      ],
-      messages: [
-        { id: 1, senderId: 4, message: "Samuel, consegue revisar o cronograma?", date: "11:00" },
-        { id: 2, senderId: 1, message: "Consigo sim!", date: "11:02" }
-      ]
+  useEffect(() => {
+    const fetchChats = async () => {
+      const response = await fetch("http://localhost:3001/chats");
+      const data = await response.json();
+      setChats(data);
+    };
+    fetchChats();
+  }, []);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  ];
+  }, [selectedChatId, chats]);
 
-  const selectedChat = mockMessages.find(chat => chat.chatId === selectedChatId);
+  const selectedChat = chats.find(chat => chat.id === selectedChatId);
 
   const getSenderInfo = (chat, senderId) => {
     return chat.participants.find(participant => participant.id === senderId);
   };
 
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim()) return;
+
+    const newMsg = {
+      senderId: currentUserId,
+      message: inputMessage.trim(),
+      date: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    };
+
+    const updatedMessages = await sendMessage(selectedChatId, newMsg);
+    if (updatedMessages) {
+      setChats(prevChats =>
+        prevChats.map(chat =>
+          chat.id === selectedChatId
+            ? { ...chat, messages: updatedMessages }
+            : chat
+        )
+      );
+      setInputMessage("");
+    }
+  };
+
   return (
     <ContainerGeral>
       <LateralMessage>
-        {mockMessages.map((chat) => {
+        {chats.map(chat => {
           const otherParticipant = chat.participants.find(p => p.id !== currentUserId);
           return (
-            <div
-              key={chat.chatId}
-              onClick={() => setSelectedChatId(chat.chatId)}
-              style={{
-                padding: "10px",
-                cursor: "pointer",
-                backgroundColor: chat.chatId === selectedChatId ? "#2aa128" : "transparent"
-              }}
+            <ContactItem
+              key={chat.id}
+              active={chat.id === selectedChatId}
+              onClick={() => setSelectedChatId(chat.id)}
+              sx={{ userSelect: 'none' }}
             >
-              <strong>{otherParticipant.name}</strong>
-            </div>
+              <Stack sx={{flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+              <Avatar src={otherParticipant.avatarUrl} />
+              <strong style={{ color: 'white' }}>{otherParticipant.name}</strong>
+              </Stack>
+        
+            </ContactItem>
           );
         })}
       </LateralMessage>
 
       <BackChat>
-        <Scroll>
-          {selectedChat.messages.map((msg) => {
+        <Scroll ref={scrollRef}>
+          {selectedChat?.messages.map(msg => {
             const sender = getSenderInfo(selectedChat, msg.senderId);
             return (
               <ChatMessage
@@ -102,10 +103,17 @@ const Chat = () => {
           })}
         </Scroll>
 
-        <Stack sx={{ flexDirection: "row", position: "absolute", width: "100%", bottom: "20px", gap: "0.5rem" }}>
-          <TextInput placeholder="Digite uma mensagem" />
-          <Button variant="contained" size="large">Enviar</Button>
-        </Stack>
+        <ChatInputContainer>
+          <TextInput
+            placeholder="Digite uma mensagem"
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+          />
+          <Button variant="contained" size="large" onClick={handleSendMessage}>
+            Enviar
+          </Button>
+        </ChatInputContainer>
       </BackChat>
     </ContainerGeral>
   );

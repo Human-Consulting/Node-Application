@@ -10,11 +10,12 @@ import NextStep from './Molecules/NextStep/NextStep.jsx'
 import CentralTask from './Molecules/CentralTask/CentralTask.jsx'
 import Usuarios from './Molecules/Usuarios/Usuarios.jsx'
 import Dashboard from './Molecules/Dashboard/Dashboard.jsx'
+import Chat from './Molecules/Chat/Chat.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/Home/:nomeEmpresa/:idEmpresa",
-    element: <App/>,
+    path: "/Home",
+    element: <Chat/>,
     children: [
       {
         path: "Roadmap/:descricaoProjeto/:idProjeto",

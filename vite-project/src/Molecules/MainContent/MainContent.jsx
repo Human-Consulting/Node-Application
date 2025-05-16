@@ -63,7 +63,7 @@ const MainContent = () => {
   if (loading) return (
     <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
       <CircularProgress size={50} />
-      <h1 sx={{ mt: 2 }}>Carregando dados da empresa...</h1>
+      <h1>Carregando dados da empresa...</h1>
     </Stack>
   );
 
