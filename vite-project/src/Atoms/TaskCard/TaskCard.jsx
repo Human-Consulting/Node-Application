@@ -63,7 +63,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
         <>
           <NavTask>
             {renderIconeStatusSprint(sprint)}
-            {sprint.descricao}
+            {sprint.titulo}
             <MoreVertIcon
               onClick={(e) => {
                 e.stopPropagation();
