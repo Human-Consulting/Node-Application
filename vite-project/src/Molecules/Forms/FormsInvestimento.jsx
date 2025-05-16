@@ -9,14 +9,14 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
 
     const { idProjeto } = useParams();
 
-    const [descricao, setDescricao] = useState(investimento?.descricao || "Sem descrição");
-    const [valor, setValor] = useState(investimento?.valor || 0);
+    const [descricao, setDescricao] = useState(investimento?.descricao || "");
+    const [valor, setValor] = useState(investimento?.valor || "");
     const [dtInvestimento, setDtInvestimento] = useState(investimento?.dtInvestimento || "");
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handlePostInvestimento = async () => {
-        const newInvestimento = { valor, dtInvestimento, fkProjeto: idProjeto, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
+        const newInvestimento = { descricao, valor, dtInvestimento, fkProjeto: idProjeto, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         toogleModal();
         await postInvestimento(newInvestimento, toogleModal);
         atualizarEntidade();
@@ -28,6 +28,7 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
             idEditor: usuarioLogado.idUsuario,
             permissaoEditor: usuarioLogado.permissao,
             fkProjeto: idProjeto,
+            descricao,
             valor,
             dtInvestimento
         }
@@ -45,7 +46,7 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
             <TextField
                 label="Descrição"
                 type="text"
-                value={descricao || "Sem descrição"}
+                value={descricao}
                 onChange={(e) => setDescricao(e.target.value)}
                 fullWidth
                 variant="outlined"

@@ -12,13 +12,13 @@ import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, idSprint }) => {
     
     console.log(task);
-    const [titulo, setTitulo] = useState(task?.titulo || "Sem título");
+    const [titulo, setTitulo] = useState(task?.titulo || "");
     const [descricao, setDescricao] = useState(task?.descricao || "");
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
     const [dtFim, setDtFim] = useState(task?.dtFim || "");
     const [fkResponsavel, setFkResponsavel] = useState(task?.fkResponsavel || '#');
     const [progresso, setProgresso] = useState(task?.progresso || "");
-    const [comentario, setComentario] = useState(task?.comentario || "Sem comentários");
+    const [comentario, setComentario] = useState(task?.comentario || "");
     const [comImpedimento, setComImpedimento] = useState(task?.comImpedimento);
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));

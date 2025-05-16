@@ -7,6 +7,7 @@ import SendIcon from '@mui/icons-material/Send';
 
 const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos, fkProjeto }) => {
 
+    const [titulo, setTitulo] = useState(sprint?.titulo || "");
     const [descricao, setDescricao] = useState(sprint?.descricao || "");
     const [dtInicio, setDtInicio] = useState(sprint?.dtInicio || "");
     const [dtFim, setDtFim] = useState(sprint?.dtFim || "");
@@ -51,6 +52,18 @@ const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos,
                 {sprint == null ? "Adicionar Sprint" : "Visualizar Sprint"}
             </Typography>
 
+            <TextField
+                label="Título"
+                type="text"
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+                fullWidth
+                disabled={usuarioLogado.permissao === "FUNC"}
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
             <TextField
                 label="Descrição"
                 multiline
