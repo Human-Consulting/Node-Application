@@ -18,7 +18,7 @@ const TarefasItem = ({ tarefa, toogleModal, atualizarProjetos, atualizarSprints 
       descricao: tarefa.descricao,
       dtInicio: tarefa.dtInicio,
       dtFim: tarefa.dtFim,
-      fkResponsavel: tarefa.fkResponsavel,
+      fkResponsavel: tarefa.responsavel.idUsuario,
       progresso: tarefa.progresso,
       comImpedimento: tarefa.comImpedimento,
     }

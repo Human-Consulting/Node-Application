@@ -9,13 +9,14 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
 
     const { idProjeto } = useParams();
 
+    const [descricao, setDescricao] = useState(investimento?.descricao || "Sem descrição");
     const [valor, setValor] = useState(investimento?.valor || 0);
     const [dtInvestimento, setDtInvestimento] = useState(investimento?.dtInvestimento || "");
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handlePostInvestimento = async () => {
-        const newInvestimento = { valor, dtInvestimento, fkProjeto: idProjeto };
+        const newInvestimento = { valor, dtInvestimento, fkProjeto: idProjeto, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         toogleModal();
         await postInvestimento(newInvestimento, toogleModal);
         atualizarEntidade();
@@ -41,6 +42,17 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
                 {investimento == null ? "Adicionar Investimento" : `Visualizar Investimento`}
             </Typography>
 
+            <TextField
+                label="Descrição"
+                type="text"
+                value={descricao || "Sem descrição"}
+                onChange={(e) => setDescricao(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
             <TextField
                 label="Valor"
                 type="number"

@@ -28,7 +28,7 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmp
     };
 
     const handlePostEmpresa = async () => {
-        const newEmpresa = { cnpj, nome, urlImagem };
+        const newEmpresa = { cnpj, nome, urlImagem, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postEmpresa(newEmpresa);
         atualizarEmpresas();
         toogleModal();
@@ -36,7 +36,8 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmp
 
     const handleDeleteEmpresa = async () => {
         toogleModal();
-        await deleteEmpresa(empresa.idEmpresa);
+        const bodyDelete = {idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao}
+        await deleteEmpresa(empresa.idEmpresa, bodyDelete);
         await atualizarEmpresas();
     }
 

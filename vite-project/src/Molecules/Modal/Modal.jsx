@@ -6,8 +6,7 @@ import IconButton from "@mui/material/IconButton";
 
 import { Backdrop, ModalContent, DragHandle } from "./Modal.styles";
 
-const Modal = ({ showModal, fechar, form }) => {
-    
+const Modal = ({ showModal, fechar, form, acao }) => {
     if (!showModal) return null;
 
     const modalRef = useRef(null);
@@ -34,7 +33,7 @@ const Modal = ({ showModal, fechar, form }) => {
     return (
         <Zoom in={showModal} >
             <Backdrop>
-                <ModalContent ref={modalRef} sx={{width: 750}}>
+                <ModalContent ref={modalRef} sx={{ width: `${acao == 'task' ? '950px' : '450px'}` }}>
                     <DragHandle onMouseDown={handleDragStart} />
                     <Box display="flex" justifyContent="flex-end">
                         <IconButton onClick={fechar} size="small">

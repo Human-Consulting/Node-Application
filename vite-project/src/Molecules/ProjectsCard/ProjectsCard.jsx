@@ -38,10 +38,12 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
     // : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/next-step/${item.descricao}/${Number(item.idProjeto)}`);
   }
 
+  console.log(item);
+
   return (
     <>
       {item ?
-        <BoxBody onClick={handleOpenProject} sx={{ border: `solid ${usuarioLogado.projetosVinculados.includes(item.idProjeto) ? 'white' : 'transparent'} 1px` }}>
+        <BoxBody onClick={handleOpenProject} sx={{ border: `solid ${usuarioLogado.projetosVinculados.includes(item.idProjeto) ? 'white' : 'transparent'} 2px` }}>
           <HeaderCard sx={{
             backgroundImage: `url(data:image/png;base64,${item.urlImagem})`,
             backgroundSize: 'cover',
@@ -69,7 +71,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
                 }
               }}
             />
-            <Subtitle>{item?.nomeResponsavel != null ? `Responsável: ${item.nomeResponsavel}` : item.nomeDiretor == null ? "Diretor não registrado" : `Diretor: ${item.nomeDiretor}`}</Subtitle>
+            <Subtitle>{item?.responsavel?.nome != null && item?.nomeDiretor == null ? `Responsável: ${item.responsavel.nome}` : item.nomeDiretor == null ? "Diretor não registrado" : `Diretor: ${item.nomeDiretor}`}</Subtitle>
             <Subtitle><b>Orçamento:</b> R${item.orcamento}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>

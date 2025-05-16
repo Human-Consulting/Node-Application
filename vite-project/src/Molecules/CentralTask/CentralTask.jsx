@@ -15,6 +15,7 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
 
   const { nomeEmpresa, idEmpresa, descricaoProjeto, idProjeto, idSprint, index } = useParams();
   const navigate = useNavigate();
+  const acaoValue = "task";
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -79,7 +80,7 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
           : null}
       </MidleCarrousel>
 
-      <Modal showModal={showModal} fechar={toogleModal}
+      <Modal showModal={showModal} fechar={toogleModal} acao={acaoValue}
         form=<FormsTask task={task} toogleModal={toogleModal} atualizarSprints={atualizarSprints} usuarios={usuarios} idSprint={idSprint} atualizarProjetos={atualizarProjetos} atualizarTasks={atualizarTasks} />
       >
       </Modal>

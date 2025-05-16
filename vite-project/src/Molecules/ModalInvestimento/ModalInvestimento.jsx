@@ -12,7 +12,8 @@ const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal
 
     const handleDeleteInvestimento = async (idInvestimento) => {
         onClose();
-        await deleteInvestimento(idInvestimento);
+        const bodyDelete = {idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao};
+        await deleteInvestimento(idInvestimento, bodyDelete);
         await atualizarEntidade();
     }
 
@@ -37,10 +38,10 @@ const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal
             }}
         >
             <List sx={{ width: 400, height: 400, background: '#000' }}>
-                {usuarioLogado.permissao != 'FUNC' && (
-                <ListItem sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                    <Button variant="contained" color='primary' onClick={() => handleToogleModal(null)}>Adicionar investimento</Button>
-                </ListItem>
+                {usuarioLogado.permissao != 'FUNC' && !usuarioLogado.permissao.includes("CONSULTOR") && (
+                    <ListItem sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                        <Button variant="contained" color='primary' onClick={() => handleToogleModal(null)}>Adicionar investimento</Button>
+                    </ListItem>
                 )}
                 {investimentos.map((investimento, index) => (
                     <ListItem key={index} sx={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#000' }}>
@@ -48,13 +49,19 @@ const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal
                             <ListItemText
                                 primary={
                                     <Typography variant="subtitle1" fontWeight="bold" color="#fff">
-                                        Valor: R${investimento.valor}
+                                        Descrição: {investimento.descricao || 'Sem descrição'}
                                     </Typography>
                                 }
                                 secondary={
-                                    <Typography variant="body2" color="#ccc">
-                                        Data: {dayjs.utc(investimento.dtInvestimento).format('DD/MM/YYYY')}
-                                    </Typography>
+                                    <>
+                                        <Typography variant="body1" color="#fff">
+                                            Valor: R${investimento.valor}
+                                        </Typography>
+                                        <Typography variant="body1" color="#ccc">
+                                            Data: {dayjs.utc(investimento.dtInvestimento).format('DD/MM/YYYY')}
+                                        </Typography>
+
+                                    </>
                                 }
                             />
                         </Stack>

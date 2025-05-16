@@ -63,7 +63,7 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
     </Stack>
   );
   
-  const totalTarefas = entidade.areas.length > 0 ? entidade.areas.reduce((total, area) => total + area.valor, 0) : 0;
+  const totalTarefas = entidade.areas?.length > 0 ? entidade.areas.reduce((total, area) => total + area.valor, 0) : 0;
 
   const renderIcon = () => {
 
@@ -156,7 +156,7 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
                     <AreaData key={index} area={area.nome} valor={area.valor} total={totalTarefas} />
                   ))
                 ) : (
-                  <TextDefault>Carregando áreas...</TextDefault>
+                  null
                 )}
               </Stack>
             </Stack>

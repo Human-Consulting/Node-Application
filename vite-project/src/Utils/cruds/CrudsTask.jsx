@@ -85,7 +85,7 @@ export const putTask = async (modifiedTask, idTask) => {
         const formattedTask = JSON.stringify(modifiedTask);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/${idTask}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -140,7 +140,9 @@ export const putTask = async (modifiedTask, idTask) => {
     }
 };
 
-export const deleteTask = async (idTask) => {
+export const deleteTask = async (idTask, body) => {
+    const formattedTarefa = JSON.stringify(body);
+
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -160,6 +162,7 @@ export const deleteTask = async (idTask) => {
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/${idTask}`, {
                 method: 'DELETE',
+                body: formattedTarefa,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -217,7 +220,7 @@ export const putImpedimento = async (idTarefa, body) => {
         const formattedBody = JSON.stringify(body);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/impedimento/${idTarefa}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`

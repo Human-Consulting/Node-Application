@@ -25,7 +25,7 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
   const totaisPorMes = Array(12).fill(0);
 
 
-  financeiros.forEach(financeiro => {
+  financeiros?.forEach(financeiro => {
     const data = new Date(financeiro.dtInvestimento);
     const mes = !isNaN(data.getTime()) ? data.getUTCMonth() : null;
 
@@ -136,7 +136,7 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
   return (
     <div className="App" style={{ paddingInline: '1rem', flex: 1, background: '#0d0d0d', width: 'calc(100% + 1rem)', borderRadius: '20px', justifyContent: 'space-evenly', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Gráfico Financeiro</h2>
+        <h2>Investimentos</h2>
         {idProjeto == null ? null : <MoreVertIcon sx={{ cursor: 'pointer' }} onClick={handleBadgeClick} />}
       </div>
       <Chart options={options} series={series} type="area" height={250} />

@@ -66,7 +66,7 @@ export const putInvestimento = async (modifiedInvestimento, idInvestimento) => {
         const formattedInvestimento = JSON.stringify(modifiedInvestimento);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/investimentos/${idInvestimento}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -121,7 +121,8 @@ export const putInvestimento = async (modifiedInvestimento, idInvestimento) => {
     }
 };
 
-export const deleteInvestimento = async (idInvestimento) => {
+export const deleteInvestimento = async (idInvestimento, body) => {
+    const formattedInvestimento = JSON.stringify(body);
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -141,6 +142,7 @@ export const deleteInvestimento = async (idInvestimento) => {
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/investimentos/${idInvestimento}`, {
                 method: 'DELETE',
+                body: formattedInvestimento,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`

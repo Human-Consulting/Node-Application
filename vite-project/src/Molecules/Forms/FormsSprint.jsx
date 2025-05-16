@@ -14,7 +14,7 @@ const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos,
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handlePostSprint = async () => {
-        const newSprint = { fkProjeto, descricao, dtInicio, dtFim };
+        const newSprint = { descricao, dtInicio, dtFim, fkProjeto, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postSprint(newSprint);
         atualizarSprints();
         atualizarProjetos();
@@ -23,12 +23,14 @@ const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos,
 
     const handleDeleteSprint = async () => {
         toogleModal();
-        await deleteSprint(sprint.idSprint);
+        const bodyDelete = {idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao};
+        await deleteSprint(sprint.idSprint, bodyDelete);
         await atualizarSprints();
         await atualizarProjetos();
     }
 
     const handlePutSprint = async () => {
+        toogleModal();
         const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
         const modifiedSprint = {

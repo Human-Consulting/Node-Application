@@ -8,9 +8,11 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmpresa }) => {
 
+    console.log(projeto);
+
     const [descricao, setDescricao] = useState(projeto?.descricao || "");
     const [orcamento, setOrcamento] = useState(projeto?.orcamento || "");
-    const [fkResponsavel, setResponsavel] = useState(projeto?.idResponsavel || '0');
+    const [fkResponsavel, setResponsavel] = useState(projeto?.responsavel.idUsuario || '0');
     const [urlImagem, setUrlImagem] = useState('');
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
@@ -29,15 +31,16 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
     };
 
     const handlePostProjeto = async () => {
-        const newProjeto = { fkEmpresa, descricao, orcamento, fkResponsavel, urlImagem };
+        const newProjeto = { fkEmpresa, descricao, orcamento, fkResponsavel, urlImagem, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postProjeto(newProjeto, toogleModal);
         atualizarProjetos();
     };
 
     const handleDeleteProjeto = async () => {
         toogleModal();
-            await deleteProjeto(projeto.idProjeto);
-            await atualizarProjetos();
+        const bodyDelete = {idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao}
+        await deleteProjeto(projeto.idProjeto, bodyDelete);
+        await atualizarProjetos();
     }
 
     const handlePutProjeto = async () => {

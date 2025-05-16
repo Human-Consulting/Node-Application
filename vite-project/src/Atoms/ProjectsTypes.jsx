@@ -1,6 +1,7 @@
 import { ImageBox, ProjectsTypesBox, SubTitle, Title } from './ProjectTypes.styles'
 import { Stack } from '@mui/material'
 import { useNavigate, useParams } from 'react-router'
+import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 
 const ProjectsTypes = ({ entidade }) => {
 
@@ -15,7 +16,7 @@ const ProjectsTypes = ({ entidade }) => {
 
   return (
     <ProjectsTypesBox onClick={handleOpenProject}>
-      <ImageBox src={`data:image/png;base64,${entidade.urlImagem}`} />
+      {entidade.urlImagem == null ? <ImageNotSupportedIcon/> : <ImageBox src={`data:image/png;base64,${entidade.urlImagem}`} />}
       <Stack sx={{ justifyContent: 'space-between', maxWidth: '80%' }}>
         <Title>
           {entidade.descricao || entidade.nome}

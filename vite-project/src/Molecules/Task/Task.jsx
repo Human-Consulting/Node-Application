@@ -78,9 +78,9 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle }) => {
         </SprintBody>
       </TaskBody>
 
-      <Modal showModal={showModal} fechar={toogleModal}
+      <Modal showModal={showModal} fechar={toogleModal} acao={entidade == null ? null : acao}
         form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} idSprint={id} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
-          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />}
+          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} acao={null} />}
       >
       </Modal>
     </>

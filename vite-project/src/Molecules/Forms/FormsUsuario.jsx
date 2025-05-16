@@ -20,7 +20,7 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
 
     const handlePostUsuario = async () => {
 
-        const newUsuario = { nome, email, senha, cargo, area, permissao, fkEmpresa: idEmpresa };
+        const newUsuario = { nome, email, senha, cargo, area, permissao, fkEmpresa: idEmpresa, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postUsuario(newUsuario, toogleModal);
         atualizarUsuarios();
     };

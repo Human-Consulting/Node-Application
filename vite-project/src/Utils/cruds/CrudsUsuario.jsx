@@ -84,7 +84,7 @@ export const putUsuario = async (modifiedUsuario, idUsuario, toogleModal) => {
         const formattedUsuario = JSON.stringify(modifiedUsuario);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -140,7 +140,9 @@ export const putUsuario = async (modifiedUsuario, idUsuario, toogleModal) => {
     }
 };
 
-export const deleteUsuario = async (idUsuario, toogleModal) => {
+export const deleteUsuario = async (idUsuario, body) => {
+    const formattedUsuario = JSON.stringify(body);
+    
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -160,6 +162,7 @@ export const deleteUsuario = async (idUsuario, toogleModal) => {
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`, {
                 method: 'DELETE',
+                body: formattedUsuario,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -178,7 +181,6 @@ export const deleteUsuario = async (idUsuario, toogleModal) => {
                         popup: "swalAlerta",
                     }
                 });
-                toogleModal && toogleModal();
             } else {
                 Swal.fire({
                     icon: "error",
