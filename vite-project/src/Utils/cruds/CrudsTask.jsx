@@ -217,46 +217,62 @@ export const deleteTask = async (idTask, body) => {
 
 export const putImpedimento = async (idTarefa, body) => {
     try {
-        const formattedBody = JSON.stringify(body);
-
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/impedimento/${idTarefa}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: formattedBody
-
+        const confirm = await Swal.fire({
+            text: "Gostaria de editar o comentário atual? Ele será enviado ao responsável do projeto.",
+            icon: "warning",
+            showCancelButton: true,
+            backdrop: false,
+            confirmButtonColor: "#D32F2F",
+            cancelButtonColor: "#007bff",
+            confirmButtonText: "Continuar",
+            cancelButtonText: "Voltar",
+            customClass: {
+                popup: "swalAlerta",
+            }
         });
 
-        const data = await res.json();
+        if (confirm.isConfirmed) {
+            const formattedBody = JSON.stringify(body);
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
+            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/impedimento/${idTarefa}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formattedBody
+
             });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro ao enviar modificação!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                Swal.fire({
+                    icon: "success",
+                    position: "center",
+                    backdrop: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    customClass: {
+                        popup: "swalAlerta",
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: res.status,
+                    position: "center",
+                    backdrop: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    text: data.message || "Erro ao enviar modificação!",
+                    customClass: {
+                        popup: "swalAlerta",
+                    }
+                });
+            }
         }
     } catch (error) {
         console.error(error);

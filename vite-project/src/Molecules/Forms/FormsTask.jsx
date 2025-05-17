@@ -17,7 +17,6 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
     const [dtFim, setDtFim] = useState(task?.dtFim || "");
     const [fkResponsavel, setFkResponsavel] = useState(task?.fkResponsavel || '#');
-    const [progresso, setProgresso] = useState(task?.progresso || "");
     const [comentario, setComentario] = useState(task?.comentario || "");
     const [comImpedimento, setComImpedimento] = useState(task?.comImpedimento);
     const [checkpoints, setCheckpoints] = useState(task?.checkpoints || []);
@@ -29,7 +28,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
             descricao,
             finalizado,
         }));
-        const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, fkResponsavel, progresso, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao, checkpoints: novaLista };
+        const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, comentario, fkResponsavel, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postTask(newTask);
         toogleModal();
         atualizarSprints();
@@ -38,6 +37,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
 
     const handleImpedimentoTask = async () => {
         const body = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao }
+        toogleModal();
         await putImpedimento(task.idTarefa, body);
         setComImpedimento(!comImpedimento);
         atualizarProjetos();
@@ -53,6 +53,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
             dtInicio,
             dtFim,
             comImpedimento,
+            comentario,
             fkResponsavel,
             checkpoints
         };
@@ -180,23 +181,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         <Button variant="contained" color="primary" endIcon={<SendIcon />} onClick={handlePostTask}>
                             Enviar
                         </Button>
-                    ) : (
-                        // <>
-                        //     <TextField
-                        //         label="Progresso (%)"
-                        //         type="number"
-                        //         value={progresso}
-                        //         onChange={(e) => setProgresso(e.target.value)}
-                        //         fullWidth
-                        //         disabled={usuarioLogado.idUsuario !== task.fkResponsavel}
-                        //         variant="outlined"
-                        //         InputLabelProps={{ style: inputStyle.label }}
-                        //         InputProps={{ style: inputStyle.input }}
-                        //         sx={inputStyle.sx}
-                        //     />
-                        // </>
-                        null
-                    )}
+                    ) : null}
                 </Box>
                 {task == null ? null :
                     <>

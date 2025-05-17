@@ -20,6 +20,7 @@ const TarefasItem = ({ tarefa, toogleModal }) => {
       dtInicio: tarefa.dtInicio,
       dtFim: tarefa.dtFim,
       fkResponsavel: tarefa.responsavel.idUsuario,
+      comentario: tarefa.comentario,
       comImpedimento: tarefa.comImpedimento,
       checkpoints: tarefa.checkpoints
     }
