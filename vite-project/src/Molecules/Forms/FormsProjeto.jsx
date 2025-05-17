@@ -8,8 +8,6 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmpresa }) => {
 
-    console.log(projeto);
-
     const [descricao, setDescricao] = useState(projeto?.descricao || "");
     const [orcamento, setOrcamento] = useState(projeto?.orcamento || "");
     const [fkResponsavel, setResponsavel] = useState(projeto?.responsavel.idUsuario || '0');

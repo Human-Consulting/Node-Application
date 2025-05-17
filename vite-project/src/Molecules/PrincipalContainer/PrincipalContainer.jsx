@@ -66,8 +66,6 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
     setShowModal(!showModal);
   };
 
-  console.log(empresas);
-
   const handleOpenEmpresas = () => {
     navigate(`/Home/Empresas/${Number(1)}`);
   }

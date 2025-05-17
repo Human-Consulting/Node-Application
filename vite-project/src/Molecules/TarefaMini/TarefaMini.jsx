@@ -14,11 +14,11 @@ function TarefaMini({ indice, tarefa, toogleModal }) {
     const task = {
       idEditor: usuarioLogado.idUsuario,
       idTarefa: tarefa.idTarefa,
+      titulo: tarefa.titulo,
       descricao: tarefa.descricao,
       dtInicio: tarefa.dtInicio,
       dtFim: tarefa.dtFim,
       fkResponsavel: tarefa.fkResponsavel,
-      progresso: tarefa.progresso,
       comImpedimento: tarefa.comImpedimento,
     }
     toogleModal(task);

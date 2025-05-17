@@ -10,7 +10,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
 const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, idSprint }) => {
-    
+
     console.log(task);
     const [titulo, setTitulo] = useState(task?.titulo || "");
     const [descricao, setDescricao] = useState(task?.descricao || "");
@@ -20,11 +20,16 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     const [progresso, setProgresso] = useState(task?.progresso || "");
     const [comentario, setComentario] = useState(task?.comentario || "");
     const [comImpedimento, setComImpedimento] = useState(task?.comImpedimento);
+    const [checkpoints, setCheckpoints] = useState(task?.checkpoints || []);
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handlePostTask = async () => {
-        const newTask = { fkSprint: idSprint, descricao, dtInicio, dtFim, fkResponsavel, progresso, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
+        const novaLista = listaOriginal.map(({ descricao, finalizado }) => ({
+            descricao,
+            finalizado,
+        }));
+        const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, fkResponsavel, progresso, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao, checkpoints: novaLista };
         await postTask(newTask);
         toogleModal();
         atualizarSprints();
@@ -32,7 +37,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     };
 
     const handleImpedimentoTask = async () => {
-        const body = {idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao}
+        const body = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao }
         await putImpedimento(task.idTarefa, body);
         setComImpedimento(!comImpedimento);
         atualizarProjetos();
@@ -43,12 +48,13 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         const modifiedTask = {
             idEditor: usuarioLogado.idUsuario,
             permissaoEditor: usuarioLogado.permissao,
+            titulo,
             descricao,
             dtInicio,
             dtFim,
+            comImpedimento,
             fkResponsavel,
-            progresso,
-            //checkboxes
+            checkpoints
         };
         await putTask(modifiedTask, task.idTarefa);
         toogleModal();
@@ -58,29 +64,24 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
 
     const handleDeleteTask = async () => {
         toogleModal();
-        const bodyDelete = {idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao};
+        const bodyDelete = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await deleteTask(task.idTarefa, bodyDelete);
         atualizarProjetos();
         atualizarSprints();
 
     };
 
-    const [checkboxes, setCheckboxes] = useState([
-        { id: 1, label: 'Exemplo 1', checked: true },
-        { id: 2, label: 'Exemplo 2', checked: false },
-    ]);
-
     const handleAddCheckbox = () => {
-        const newId = checkboxes.length + 1;
-        setCheckboxes([...checkboxes, { id: newId, label: `Nova opção ${newId}`, checked: false }]);
+        const newId = checkpoints.length + 1;
+        setCheckpoints([...checkpoints, { idCheckpoint: `${newId}`, descricao: `Nova opção ${newId}`, finalizado: false }]);
     };
 
     const handleToggleCheckbox = (id) => {
-        setCheckboxes(checkboxes.map(cb => cb.id === id ? { ...cb, checked: !cb.checked } : cb));
+        setCheckpoints(checkpoints.map(cb => cb.idCheckpoint === id ? { ...cb, finalizado: !cb.finalizado } : cb));
     };
 
     const handleLabelChange = (id, newLabel) => {
-        setCheckboxes(checkboxes.map(cb => cb.id === id ? { ...cb, label: newLabel } : cb));
+        setCheckpoints(checkpoints.map(cb => cb.idCheckpoint === id ? { ...cb, descricao: newLabel } : cb));
     };
 
     return (
@@ -218,23 +219,23 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                                 },
                             }}>
 
-                                {checkboxes.map(cb => (
-                                    <Box key={cb.id} display="flex" backgroundColor="#22272B" gap={1} width="100%">
+                                {checkpoints.map(cb => (
+                                    <Box key={cb.idCheckpoint} display="flex" backgroundColor="#22272B" gap={1} width="100%">
                                         <Stack direction="row" alignItems="center" flex='1'>
                                             <Checkbox
-                                                checked={cb.checked}
-                                                onChange={() => handleToggleCheckbox(cb.id)}
+                                                checked={cb.finalizado}
+                                                onChange={() => handleToggleCheckbox(cb.idCheckpoint)}
                                                 icon={<CheckCircleOutlinedIcon />}
                                                 checkedIcon={<CheckCircleIcon />}
                                             />
                                             <TextField
-                                                value={cb.label}
-                                                onChange={(e) => handleLabelChange(cb.id, e.target.value)}
+                                                value={cb.descricao}
+                                                onChange={(e) => handleLabelChange(cb.idCheckpoint, e.target.value)}
                                                 variant="standard"
                                                 sx={{ input: { color: '#FFF' } }}
                                             />
                                         </Stack>
-                                        <IconButton onClick={() => setCheckboxes(checkboxes.filter(c => c.id !== cb.id))} color="error">
+                                        <IconButton onClick={() => setCheckpoints(checkpoints.filter(c => c.idCheckpoint !== cb.idCheckpoint))} color="error">
                                             <DeleteIcon />
                                         </IconButton>
                                     </Box>

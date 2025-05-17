@@ -5,8 +5,6 @@ const token = JSON.parse(localStorage.getItem('token'));
 
 export const postSprint = async (newSprint) => {
     try {
-        console.log("oioioiwoeidfocvifsueanwisjnk")
-        console.log(newSprint);
         const formattedSprint = JSON.stringify(newSprint);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints`, {
