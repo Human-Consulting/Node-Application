@@ -16,7 +16,7 @@ import { getEmpresas } from '../../Utils/cruds/CrudsEmpresa';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const MainContent = () => {
-  const { nomeEmpresa, idEmpresa } = useParams();
+  const { idEmpresa } = useParams();
 
   const [showLateralBar, setShowLateralBar] = useState(true);
   const [projetos, setProjetos] = useState([]);
@@ -75,17 +75,17 @@ const MainContent = () => {
       <Routes>
         <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} projetos={projetos} empresas={empresas} usuarios={usuarios} />} />
 
-        <Route path="/Roadmap/:descricaoProjeto/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} showTitle={true} />} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} showTitle={true} />} />
 
-        <Route path="/Roadmap/:descricaoProjeto/:idProjeto/Tarefas/:idSprint/:index" element={<CentralTask toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto/Tarefas/:idSprint/:index" element={<CentralTask toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
 
         <Route path="/Usuarios" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} />} />
 
         <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
 
-        <Route path="/Dash/:descricaoProjeto/:idProjeto" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
+        <Route path="/Dash/:tituloProjeto/:idProjeto" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
 
-        <Route path="/next-step/:descricaoProjeto/:idProjeto" element={<NextStep toogleLateralBar={hideShowLateralBar} />} />
+        <Route path="/next-step/:tituloProjeto/:idProjeto" element={<NextStep toogleLateralBar={hideShowLateralBar} />} />
       </Routes>
 
       <LateralBarRight showLateralBar={showLateralBar} projetos={projetos} empresas={empresas} />

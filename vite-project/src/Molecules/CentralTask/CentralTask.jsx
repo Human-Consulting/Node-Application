@@ -13,18 +13,18 @@ import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient';
 
 const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
 
-  const { nomeEmpresa, idEmpresa, descricaoProjeto, idProjeto, idSprint, index } = useParams();
+  const { nomeEmpresa, idEmpresa, tituloProjeto, idProjeto, idSprint, index } = useParams();
   const navigate = useNavigate();
   const acaoValue = "task";
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const handleOpenProject = () => {
-    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${descricaoProjeto}/${idProjeto}`);
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${tituloProjeto}/${idProjeto}`);
   }
 
   const handleOpenDash = async () => {
-    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Dash/${descricaoProjeto}/${Number(idProjeto)}`)
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Dash/${tituloProjeto}/${Number(idProjeto)}`)
   }
 
   const [showModal, setShowModal] = useState(false);
@@ -69,7 +69,7 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
             </ShaderGradientCanvas>
         <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', position: 'relative', fontFamily: "Bebas Neue" }}>
           <ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />
-          {descricaoProjeto} - Sprint {index}
+          {tituloProjeto} - Sprint {index}
           <Button variant='contained' sx={{ cursor: 'pointer', position: 'absolute', right: 0 }} onClick={handleOpenDash}>Ir para Dashboard</Button></Typography>
       <MidleCarrousel>
         {tarefas.map((tarefa, index) => (

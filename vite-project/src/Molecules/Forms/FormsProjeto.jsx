@@ -8,6 +8,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmpresa }) => {
 
+    const [titulo, setTitulo] = useState(projeto?.titulo || "");
     const [descricao, setDescricao] = useState(projeto?.descricao || "");
     const [orcamento, setOrcamento] = useState(projeto?.orcamento || "");
     const [fkResponsavel, setResponsavel] = useState(projeto?.responsavel.idUsuario || '0');
@@ -29,7 +30,7 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
     };
 
     const handlePostProjeto = async () => {
-        const newProjeto = { fkEmpresa, descricao, orcamento, fkResponsavel, urlImagem, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
+        const newProjeto = { fkEmpresa, titulo, descricao, orcamento, fkResponsavel, urlImagem, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postProjeto(newProjeto, toogleModal);
         atualizarProjetos();
     };
@@ -46,6 +47,7 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
         const modifiedProjeto = {
             idEditor: usuarioLogado.idUsuario,
             permissaoEditor: usuarioLogado.permissao,
+            titulo,
             descricao,
             orcamento,
             fkResponsavel,
@@ -55,6 +57,14 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
         await atualizarProjetos();
     }
 
+    const validarPermissaoConsultor = () => {
+        return !usuarioLogado.permissao.includes('CONSULTOR')
+    }
+
+    const validarPermissaoFunc = () => {
+        return usuarioLogado.permissao == 'FUNC'
+    }
+
     return (
         <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
             <Typography variant="h5" textAlign="center" mb={2}>
@@ -62,9 +72,22 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
             </Typography>
 
             <TextField
+                label="Título"
+                type="text"
+                disabled={validarPermissaoFunc()}
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+            />
+            <TextField
                 label="Descrição"
                 multiline
                 rows={3}
+                disabled={validarPermissaoFunc()}
                 value={descricao}
                 onChange={(e) => setDescricao(e.target.value)}
                 fullWidth
@@ -76,7 +99,7 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
             <TextField
                 label="Orçamento"
                 type="number"
-                disabled={!usuarioLogado.permissao.includes('CONSULTOR')}
+                disabled={validarPermissaoConsultor}
                 value={orcamento}
                 onChange={(e) => setOrcamento(e.target.value)}
                 fullWidth
@@ -90,6 +113,7 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                 select
                 label="Responsável"
                 value={fkResponsavel}
+                disabled={validarPermissaoFunc()}
                 onChange={(e) => setResponsavel(e.target.value)}
                 fullWidth
                 variant="outlined"

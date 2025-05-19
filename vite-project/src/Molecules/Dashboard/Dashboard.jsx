@@ -19,7 +19,7 @@ import FormsInvestimento from '../Forms/FormsInvestimento'
 
 const Dashboard = ({ toogleLateralBar, showTitle }) => {
 
-  const { idEmpresa, nomeEmpresa, descricaoProjeto, idProjeto } = useParams();
+  const { idEmpresa, nomeEmpresa, tituloProjeto, idProjeto } = useParams();
 
   const [investimento, setInvestimento] = useState(null);
 
@@ -35,7 +35,7 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
   }
 
   const handleOpenRoadmap = async () => {
-    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${descricaoProjeto}/${Number(idProjeto)}`)
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${tituloProjeto}/${Number(idProjeto)}`)
   }
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
@@ -110,7 +110,7 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
         </>
         : null}
       <KpiContainer>
-        {showTitle ? <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', position: 'relative', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idProjeto ? descricaoProjeto : nomeEmpresa} - Dashboard {idProjeto ? <Button variant='contained' sx={{ cursor: 'pointer', position: 'absolute', right: 0 }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button> : null}</Typography> : <Stack sx={{ marginTop: '1.5rem' }} />}
+        {showTitle ? <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', position: 'relative', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ? <Button variant='contained' sx={{ cursor: 'pointer', position: 'absolute', right: 0 }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button> : null}</Typography> : <Stack sx={{ marginTop: '1.5rem' }} />}
 
         <DashContainer>
           <Stack sx={{ justifyContent: 'space-between', gap: '3rem', flex: 1 }}>

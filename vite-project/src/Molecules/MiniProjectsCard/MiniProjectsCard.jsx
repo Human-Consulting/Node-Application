@@ -33,7 +33,7 @@ function MiniProjectsCard({ entidade }) {
 
   const handleOpenProject = () => {
     if (idEmpresa == 1) navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
-    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.descricao}/${Number(entidade.idProjeto)}`);
+    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.titulo}/${Number(entidade.idProjeto)}`);
   }
 
   return (
@@ -50,9 +50,9 @@ function MiniProjectsCard({ entidade }) {
           />
           <BodyCard>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Title>{entidade.nomeResponsavel || entidade.nomeDiretor}</Title>
+              <Title>{entidade.responsavel?.nome || entidade.nomeDiretor}</Title>
             </Stack>
-            <Subtitle>{entidade.descricao || entidade.nome}</Subtitle>
+            <Subtitle>{entidade.titulo || entidade.nome}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
                 <Progress sx={{ width: `${entidade.progresso}%` }} />

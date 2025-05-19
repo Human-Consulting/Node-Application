@@ -11,7 +11,7 @@ const ProjectsTypes = ({ entidade }) => {
 
   const handleOpenProject = () => {
     if (idEmpresa == 1) navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
-    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.descricao}/${Number(entidade.idProjeto)}`);
+    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.titulo}/${Number(entidade.idProjeto)}`);
   }
 
   return (
@@ -19,7 +19,7 @@ const ProjectsTypes = ({ entidade }) => {
       {entidade.urlImagem == null ? <ImageNotSupportedIcon/> : <ImageBox src={`data:image/png;base64,${entidade.urlImagem}`} />}
       <Stack sx={{ justifyContent: 'space-between', maxWidth: '80%' }}>
         <Title>
-          {entidade.descricao || entidade.nome}
+          {entidade.titulo || entidade.nome}
         </Title>
         <SubTitle>
           {idEmpresa == 1 ? `Esta empresa está ${entidade.progresso}% concluída` : `Este projeto está ${entidade.progresso}% concluido`}

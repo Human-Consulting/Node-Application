@@ -12,7 +12,7 @@ import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutl
 
 const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle }) => {
 
-  const { idProjeto, idEmpresa, nomeEmpresa, descricaoProjeto } = useParams();
+  const { idProjeto, idEmpresa, nomeEmpresa, tituloProjeto } = useParams();
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
@@ -33,7 +33,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle }) => {
   }
 
   const handleOpenDash = async () => {
-    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Dash/${descricaoProjeto}/${Number(idProjeto)}`)
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Dash/${tituloProjeto}/${Number(idProjeto)}`)
   }
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle }) => {
       </ShaderGradientCanvas>
       <TaskBody>
         {showTitle ?
-          <Typography variant="h3" mt={3} sx={{ display: 'flex', alignItems: 'center', position: 'fixed', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{descricaoProjeto} - Roadmap <Button variant='contained' sx={{ cursor: 'pointer', position: 'fixed', right: '2%' }} onClick={handleOpenDash}>Ir para Dashboard</Button></Typography>
+          <Typography variant="h3" mt={3} sx={{ display: 'flex', alignItems: 'center', position: 'fixed', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{tituloProjeto} - Roadmap <Button variant='contained' sx={{ cursor: 'pointer', position: 'fixed', right: '2%' }} onClick={handleOpenDash}>Ir para Dashboard</Button></Typography>
           : <Stack sx={{ marginTop: '1.5rem' }} />}
         <SprintBody>
 
