@@ -10,7 +10,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
 const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, idSprint }) => {
-
     const [titulo, setTitulo] = useState(task?.titulo || "");
     const [descricao, setDescricao] = useState(task?.descricao || "");
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
@@ -19,9 +18,9 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     const [comentario, setComentario] = useState(task?.comentario || "");
     const [comImpedimento, setComImpedimento] = useState(task?.comImpedimento);
     const [checkpoints, setCheckpoints] = useState(task?.checkpoints || []);
-
+    
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
-
+    
     const handlePostTask = async () => {
         const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, comentario, fkResponsavel, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postTask(newTask);
@@ -29,7 +28,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         atualizarSprints();
         atualizarProjetos();
     };
-
+    
     const handleImpedimentoTask = async () => {
         const body = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao }
         toogleModal();

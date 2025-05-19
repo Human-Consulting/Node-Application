@@ -1,9 +1,7 @@
 import React from 'react'
 import { TarefaBody, ProgressBar, Progress } from './TarefasItem.style'
-import { Button, Grid2, Stack } from '@mui/material'
-import { deleteTask, putImpedimento } from './../../Utils/cruds/CrudsTask.jsx';
+import { Stack } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
-import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
