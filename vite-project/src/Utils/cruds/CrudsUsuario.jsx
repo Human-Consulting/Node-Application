@@ -79,7 +79,7 @@ export const getUsuarios = async (idEmpresa) => {
     }
 };
 
-export const putUsuario = async (modifiedUsuario, idUsuario, toogleModal) => {
+export const putUsuario = async (modifiedUsuario, idUsuario) => {
     try {
         const formattedUsuario = JSON.stringify(modifiedUsuario);
 
@@ -106,7 +106,66 @@ export const putUsuario = async (modifiedUsuario, idUsuario, toogleModal) => {
                     popup: "swalAlerta",
                 }
             });
-            toogleModal && toogleModal();
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: res.status,
+                position: "center",
+                backdrop: false,
+                timer: 1000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                text: data.message || "Erro",
+                customClass: {
+                    popup: "swalAlerta",
+                }
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        Swal.fire({
+            icon: "error",
+            title: "Erro",
+            position: "center",
+            backdrop: false,
+            timer: 1000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            text: error.message || "Algo deu errado!",
+            customClass: {
+                popup: "swalAlerta",
+            }
+        });
+    }
+};
+
+export const putSenhaUsuario = async (modifiedUsuario, idUsuario) => {
+    try {
+        const formattedUsuario = JSON.stringify(modifiedUsuario);
+
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/atualizarSenha/${idUsuario}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: formattedUsuario,
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            Swal.fire({
+                icon: "success",
+                position: "center",
+                backdrop: false,
+                timer: 1000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                customClass: {
+                    popup: "swalAlerta",
+                }
+            });
         } else {
             Swal.fire({
                 icon: "error",

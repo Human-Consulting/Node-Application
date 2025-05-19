@@ -1,6 +1,8 @@
 import { Popover, List, ListItem, ListItemText, LinearProgress, Typography } from '@mui/material';
 
 const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
+
+    console.log(tarefas);
     const id = open ? 'tarefas-popover' : undefined;
 
     return (
@@ -24,7 +26,7 @@ const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
                         <ListItemText
                             primary={
                                 <Typography variant="subtitle1" fontWeight="bold" color={'text.paper'}>
-                                    {tarefa.descricao}
+                                    {tarefa.titulo}
                                 </Typography>
                             }
                             secondary={

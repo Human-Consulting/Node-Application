@@ -8,6 +8,7 @@ import { Box, Typography, Button, TextField, Stack } from '@mui/material';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import { useNavigate, useParams } from "react-router";
 import SearchOffIcon from '@mui/icons-material/SearchOff';
+import FormsEditarSenhaUsuario from "../Forms/FormsEditarSenhaUsuario";
 
 const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios }) => {
 
@@ -16,6 +17,8 @@ const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios }) => {
 
   const [showModal, setShowModal] = useState(false);
   const [usuario, setUsuario] = useState(null);
+  const [editarUsuario, setEditarUsuario] = useState(false);
+  const [idUsuarioEditar, setIdUsuarioEditar] = useState(null);
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
@@ -46,9 +49,15 @@ const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios }) => {
   }, [usuarios]);
 
   const toogleModal = (usuario) => {
+    editarUsuario && setEditarUsuario(false);
     setUsuario(usuario);
     setShowModal(!showModal);
   };
+
+  const toogleEditarSenhaUsuario = (id) => {
+      setEditarUsuario(!editarUsuario);
+      setIdUsuarioEditar(id || null);
+  }
 
   return (
     <UsuariosBody style={{ position: 'relative', zIndex: 0 }}>
@@ -106,9 +115,9 @@ const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios }) => {
           {usuarioLogado.permissao == "FUNC" ? null : <Button onClick={() => toogleModal(null)} variant="contained" color="primary">Adicionar Usuário</Button>}
         </Stack>
       }
-      <Modal showModal={showModal} fechar={toogleModal}
-        form={<FormsUsuario diretor={usuariosFiltrados.length > 0 && (
-          usuariosFiltrados.some(usuario => usuario.permissao === 'DIRETOR'))} usuario={usuario} toogleModal={toogleModal} atualizarUsuarios={atualizarUsuarios} fkEmpresa={idEmpresa} qtdUsuarios={usuarios.length} />}
+      <Modal showModal={showModal} fechar={toogleModal} editarSenhaUsuario={toogleEditarSenhaUsuario} editarUsuario={editarUsuario}
+        form={editarUsuario ? <FormsEditarSenhaUsuario idUsuario={idUsuarioEditar} atualizarUsuarios={atualizarUsuarios} editarSenhaUsuario={toogleEditarSenhaUsuario} /> : <FormsUsuario diretor={usuariosFiltrados.length > 0 && (
+          usuariosFiltrados.some(usuario => usuario.permissao === 'DIRETOR'))} usuario={usuario} toogleModal={toogleModal} atualizarUsuarios={atualizarUsuarios} fkEmpresa={idEmpresa} qtdUsuarios={usuarios.length} editarSenhaUsuario={toogleEditarSenhaUsuario} />}
       >
       </Modal>
     </UsuariosBody>

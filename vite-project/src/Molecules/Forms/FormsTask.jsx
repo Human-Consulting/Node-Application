@@ -11,7 +11,6 @@ import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
 const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, idSprint }) => {
 
-    console.log(task);
     const [titulo, setTitulo] = useState(task?.titulo || "");
     const [descricao, setDescricao] = useState(task?.descricao || "");
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
@@ -24,10 +23,6 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handlePostTask = async () => {
-        const novaLista = listaOriginal.map(({ descricao, finalizado }) => ({
-            descricao,
-            finalizado,
-        }));
         const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, comentario, fkResponsavel, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postTask(newTask);
         toogleModal();
@@ -84,6 +79,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     const handleLabelChange = (id, newLabel) => {
         setCheckpoints(checkpoints.map(cb => cb.idCheckpoint === id ? { ...cb, descricao: newLabel } : cb));
     };
+    console.log(task);
 
     return (
         <Stack direction="column" mb={2} >
@@ -234,7 +230,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                             <TextField
                                 label="Comentário"
                                 multiline
-                                disabled={usuarioLogado.permissao === 'FUNC'}
+                                disabled={usuarioLogado.idUsuario != task.fkResponsavel}
                                 rows={4.5}
                                 value={comentario}
                                 onChange={(e) => setComentario(e.target.value)}

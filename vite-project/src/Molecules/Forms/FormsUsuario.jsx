@@ -5,7 +5,7 @@ import { Box, Button, TextField, Typography, Stack, MenuItem, Grow, Select } fro
 import { inputStyle } from "./Forms.styles.jsx";
 import SendIcon from '@mui/icons-material/Send';
 
-const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsuarios }) => {
+const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsuarios, editarSenhaUsuario }) => {
 
     const { idEmpresa } = useParams();
 
@@ -50,6 +50,10 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
             (usuarioLogado.permissao === 'GESTOR' && ['GESTOR', 'FUNC'].includes(usuario.permissao))
         ))
     ) && usuario?.permissao !== 'DIRETOR';
+
+    const handleEditarSenhaUsuario = () => {
+        editarSenhaUsuario(usuario.idUsuario);
+    }
 
     return (
         <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
@@ -187,18 +191,32 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                         Adicionar
                     </Button>
                 ) : (
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handlePutUsuario}
-                        endIcon={<SendIcon />}
-                        sx={{ flex: 1 }}
-                    >
-                        Salvar Alterações
-                    </Button>
+                    <>
+                        {
+                            usuario.idUsuario == usuarioLogado.idUsuario && (
+                                <Button
+                                    variant="outlined"
+                                    color="error"
+                                    onClick={handleEditarSenhaUsuario}
+                                    sx={{ flex: 1 }}
+                                >
+                                    EDITAR SENHA
+                                </Button>
+                            )
+                        }
+                        < Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handlePutUsuario}
+                            endIcon={<SendIcon />}
+                            sx={{ flex: 1 }}
+                        >
+                            SALVAR
+                        </Button>
+                    </>
                 )}
             </Stack>
-        </Box>
+        </Box >
     )
 }
 
