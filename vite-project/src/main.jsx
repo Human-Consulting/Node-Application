@@ -14,9 +14,13 @@ import Chat from './Molecules/Chat/Chat.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/Home",
-    element: <Chat/>,
+    path: "/Home/:nomeEmpresa/:idEmpresa",
+    element: <App/>,
     children: [
+      {
+        path: "Chat", 
+        element: <Chat />,
+      },
       {
         path: "Roadmap/:descricaoProjeto/:idProjeto",
         element: <Task />,
@@ -44,6 +48,7 @@ const router = createBrowserRouter([
         path: "Usuarios", 
         element: <Usuarios />,
       },
+     
     ],
   },
   {

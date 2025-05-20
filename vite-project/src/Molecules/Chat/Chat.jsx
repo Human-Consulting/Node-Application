@@ -12,7 +12,7 @@ import {
 import ChatMessage from "../../Atoms/ChatMessage/ChatMessage";
 import useMessage from "../../Utils/cruds/UseMessage";
 
-const Chat = () => {
+const Chat = ({toogleLateralBar}) => {
   const currentUserId = 1;
   const [selectedChatId, setSelectedChatId] = useState(1);
   const [chats, setChats] = useState([]);
@@ -23,12 +23,16 @@ const Chat = () => {
 
   useEffect(() => {
     const fetchChats = async () => {
-      const response = await fetch("http://localhost:3001/chats");
+      const response = await fetch("http://localhost:3000/chats");
       const data = await response.json();
       setChats(data);
     };
     fetchChats();
   }, []);
+
+    useEffect(() => {
+      toogleLateralBar();
+    }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -67,6 +71,7 @@ const Chat = () => {
   return (
     <ContainerGeral>
       <LateralMessage>
+        <Stack sx={{flexDirection: 'row', width: 'auto', gap: '2.5rem', overFlow: 'hidden', flexShrink: '0', alignItems: 'center', height: '100%'}}>
         {chats.map(chat => {
           const otherParticipant = chat.participants.find(p => p.id !== currentUserId);
           return (
@@ -76,14 +81,15 @@ const Chat = () => {
               onClick={() => setSelectedChatId(chat.id)}
               sx={{ userSelect: 'none' }}
             >
-              <Stack sx={{flexDirection: 'row', alignItems: 'center', gap: '1rem'}}>
+              <Stack sx={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.3rem'}}>
               <Avatar src={otherParticipant.avatarUrl} />
-              <strong style={{ color: 'white' }}>{otherParticipant.name}</strong>
+              <p style={{ color: 'white', fontSize: '14px' }}>{otherParticipant.name}</p>
               </Stack>
         
             </ContactItem>
           );
         })}
+         </Stack>
       </LateralMessage>
 
       <BackChat>

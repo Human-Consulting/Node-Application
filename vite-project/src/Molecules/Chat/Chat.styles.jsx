@@ -10,29 +10,30 @@ export const TextInput = styled('input')({
   
 
 export const ContainerGeral = styled(Box)({
-  width: '70vw',
-  height: '100vh',
+  width: '80%',
+  height: '100%',
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'column',
   backgroundColor: '#121212',
   fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
 });
 
 export const LateralMessage = styled(Box)({
-  width: '280px',
-  height: '100%',
+  width: '100%',
+  height: '15%',
   backgroundColor: '#1f1f1f',
   display: 'flex',
   flexDirection: 'column',
-  overflowY: 'auto',
   borderRight: '1px solid #333',
   paddingTop: '10px',
 });
 
 export const ContactItem = styled(Box)(({ active }) => ({
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
-  padding: '10px 16px',
+  flexShrink: 0,
+  padding: '0.5rem',
   cursor: 'pointer',
   borderRadius: '8px',
   margin: '4px 10px',

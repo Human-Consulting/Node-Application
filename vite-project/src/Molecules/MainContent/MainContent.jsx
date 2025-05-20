@@ -14,6 +14,7 @@ import Usuarios from '../Usuarios/Usuarios';
 import Dashboard from '../Dashboard/Dashboard';
 import { getEmpresas } from '../../Utils/cruds/CrudsEmpresa';
 import CircularProgress from '@mui/material/CircularProgress';
+import Chat from '../Chat/Chat';
 
 const MainContent = () => {
   const { nomeEmpresa, idEmpresa } = useParams();
@@ -63,7 +64,7 @@ const MainContent = () => {
   if (loading) return (
     <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
       <CircularProgress size={50} />
-      <h1>Carregando dados da empresa...</h1>
+      <h1 sx={{ mt: 2 }}>Carregando dados da empresa...</h1>
     </Stack>
   );
 
@@ -82,6 +83,9 @@ const MainContent = () => {
         <Route path="/Usuarios" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} />} />
 
         <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
+
+        <Route path="/Chat" element={<Chat toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
+
 
         <Route path="/Dash/:descricaoProjeto/:idProjeto" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
 
