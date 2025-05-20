@@ -10,6 +10,7 @@ import FormsEmpresa from './../Forms/FormsEmpresa.jsx';
 import { useNavigate, useParams } from 'react-router';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import ConstructionIcon from '@mui/icons-material/Construction';
 
 const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, empresas, usuarios }) => {
 
@@ -23,7 +24,7 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
   const [empresa, setEmpresa] = useState('');
   const [acao, setAcao] = useState('');
   const [listaFiltrada, setListaFiltrada] = useState([]);
-  
+
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
   if (!usuarioLogado.permissao.includes("CONSULTOR") && idEmpresa == 1) navigate(-1);
@@ -54,10 +55,10 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
 
   useEffect(() => {
     toogleLateralBar();
-    setListaFiltrada(idEmpresa == 1 ? empresas.slice(1) : projetos);
+    setListaFiltrada(idEmpresa == 1 && empresas.length > 1 ? empresas.slice(1) : projetos);
 
   }, [projetos, empresas, idEmpresa]);
-
+  
   const toogleModal = (entidade, acao) => {
     setAcao(acao);
     setEmpresa(entidade);
@@ -146,7 +147,7 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
               <Badge onClick={handleBadgeClick}
                 sx={{
                   '& .MuiBadge-badge': {
-                    fontSize: '1.5rem',
+                    fontSize: '1.25rem',
                     height: '26px',
                     width: '26px',
                     cursor: 'pointer'
@@ -170,9 +171,33 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
         <TituloHeader>{idEmpresa != 1 && usuarioLogado.permissao.includes('CONSULTOR') ? <ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px' }} onClick={handleOpenEmpresas} /> : null} {idEmpresa == 1 ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}</TituloHeader>
       </HeaderContent>
       <MidleCarrousel>
-        {listaFiltrada.length < 1 || listaFiltrada == null ? null : listaFiltrada.map(item => (
-          <ProjectsCard item={item} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} ></ProjectsCard>
-        ))}
+        {listaFiltrada?.length > 0 ? (
+          listaFiltrada.map(item => (
+            <ProjectsCard
+              key={item.id}
+              item={item}
+              toogleModal={toogleModal}
+              atualizarProjetos={atualizarProjetos}
+              atualizarEmpresas={atualizarEmpresas}
+            />
+          ))
+        ) : (
+          <Stack sx={{ justifyContent: 'center', alignItems: 'center', marginTop: '2rem', width: '350%' }}>
+            <ConstructionIcon sx={{ fontSize: '5rem' }} />
+            Nenhum projeto encontrado!
+            {usuarioLogado.permissao?.includes("CONSULTOR") && (
+              idEmpresa === 1 ? (
+                <Button onClick={() => toogleModal(null, 'empresa')} variant="contained">
+                  CRIAR NOVA EMPRESA
+                </Button>
+              ) : (
+                <Button onClick={() => toogleModal(null, 'projeto')} variant="contained">
+                  CRIAR NOVO PROJETO
+                </Button>
+              )
+            )}
+          </Stack>
+        )}
         {usuarioLogado.permissao.includes('CONSULTOR') ?
           <ProjectsCard toogleModal={toogleModal} ></ProjectsCard>
           : null}

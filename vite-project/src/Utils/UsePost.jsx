@@ -21,9 +21,9 @@ export const handleSubmitLogin = async (emailLogin, senhaLogin, navigate, setRes
         localStorage.setItem("token", JSON.stringify(usuario.token));
 
         if (usuario.permissao.includes('CONSULTOR')) {
-          navigate(`/Home/Empresas/${usuario.fkEmpresa}`);
+          navigate(`/Home/Empresas/${usuario.empresa.idEmpresa}`);
         } else {
-          navigate(`/Home/${usuario.nomeEmpresa}/${Number(usuario.fkEmpresa)}`);
+          navigate(`/Home/${usuario.nomeEmpresa}/${Number(usuario.empresa.idEmpresa)}`);
         }
         setResponseMessage('');
 
@@ -32,7 +32,7 @@ export const handleSubmitLogin = async (emailLogin, senhaLogin, navigate, setRes
         setTimeout(() => setResponseMessage(''), 3000);
       }
     } catch (error) {
-      setResponseMessage('Erro ao tentar fazer login!');
+      setResponseMessage('Erro ao tentar fazer login: ', error);
       setTimeout(() => setResponseMessage(''), 3000);
 
     } finally {

@@ -33,7 +33,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
 
   const handleOpenProject = async () => {
     idEmpresa == 1 ? navigate(`/Home/${item.nome}/${Number(item.idEmpresa)}`)
-      : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${item.descricao}/${Number(item.idProjeto)}`);
+      : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${item.titulo}/${Number(item.idProjeto)}`);
     //? Utilizar? 
     // : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/next-step/${item.descricao}/${Number(item.idProjeto)}`);
   }
@@ -41,7 +41,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
   return (
     <>
       {item ?
-        <BoxBody onClick={handleOpenProject} sx={{ border: `solid ${usuarioLogado.projetosVinculados.includes(item.idProjeto) ? 'white' : 'transparent'} 1px` }}>
+        <BoxBody onClick={handleOpenProject} sx={{ border: `solid ${usuarioLogado.projetosVinculados.includes(item.idProjeto) ? 'white' : 'transparent'} 2px` }}>
           <HeaderCard sx={{
             backgroundImage: `url(data:image/png;base64,${item.urlImagem})`,
             backgroundSize: 'cover',
@@ -49,7 +49,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
             backgroundRepeat: 'no-repeat',
           }} />
           <BodyCard>
-            <Title>{item?.descricao || item.nome}</Title>
+            <Title>{item?.titulo || item.nome}</Title>
             <MoreVertIcon
               onClick={(e) => {
                 e.stopPropagation();
@@ -69,7 +69,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
                 }
               }}
             />
-            <Subtitle>{item?.nomeResponsavel != null ? `Responsável: ${item.nomeResponsavel}` : item.nomeDiretor == null ? "Diretor não registrado" : `Diretor: ${item.nomeDiretor}`}</Subtitle>
+            <Subtitle>{item?.nomeResponsavel != null && item?.nomeDiretor == null ? `Responsável: ${item.nomeResponsavel}` : item.nomeDiretor == null ? "Responsável não registrado" : `Diretor: ${item.nomeDiretor}`}</Subtitle>
             <Subtitle><b>Orçamento:</b> R${item.orcamento}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>

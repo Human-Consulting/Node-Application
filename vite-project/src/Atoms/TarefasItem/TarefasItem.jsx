@@ -1,13 +1,11 @@
 import React from 'react'
 import { TarefaBody, ProgressBar, Progress } from './TarefasItem.style'
-import { Button, Grid2, Stack } from '@mui/material'
-import { deleteTask, putImpedimento } from './../../Utils/cruds/CrudsTask.jsx';
+import { Stack } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
-import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const TarefasItem = ({ tarefa, toogleModal, atualizarProjetos, atualizarSprints }) => {
+const TarefasItem = ({ tarefa, toogleModal }) => {
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -15,12 +13,14 @@ const TarefasItem = ({ tarefa, toogleModal, atualizarProjetos, atualizarSprints 
     const task = {
       idEditor: usuarioLogado.idUsuario,
       idTarefa: tarefa.idTarefa,
+      titulo: tarefa.titulo,
       descricao: tarefa.descricao,
       dtInicio: tarefa.dtInicio,
       dtFim: tarefa.dtFim,
-      fkResponsavel: tarefa.fkResponsavel,
-      progresso: tarefa.progresso,
+      fkResponsavel: tarefa.responsavel.idUsuario,
+      comentario: tarefa.comentario,
       comImpedimento: tarefa.comImpedimento,
+      checkpoints: tarefa.checkpoints
     }
     toogleModal(task);
   }
@@ -51,9 +51,9 @@ const TarefasItem = ({ tarefa, toogleModal, atualizarProjetos, atualizarSprints 
 
 
   return (
-    <TarefaBody sx={{ border: `solid ${tarefa.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 3px` }}>
+    <TarefaBody sx={{ border: `solid ${tarefa.responsavel.idUsuario == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 3px` }}>
       <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-        <span style={{textOverflow: 'ellipsis',whiteSpace: 'nowrap',overflow: 'hidden' }}>{tarefa.descricao}</span>
+        <span style={{textOverflow: 'ellipsis',whiteSpace: 'nowrap',overflow: 'hidden' }}>{tarefa.titulo}</span>
         <Stack sx={{ flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
           {renderIconeStatusTarefa()}
           <MoreVertIcon

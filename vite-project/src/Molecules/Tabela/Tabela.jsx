@@ -12,9 +12,9 @@ const Tabela = ({ usuarios, toogleModal, atualizarUsuarios }) => {
                     <tr>
                         <th>Nome</th>
                         <th>Email</th>
-                        {/* <th>Cargo</th> */}
                         <th>Área</th>
-                        <th>Permissão</th>
+                        <th>Cargo</th>
+                        {/* <th>Permissão</th> */}
                         {idEmpresa == 1 ? null :
                             <>
                                 <th>Tarefas</th>

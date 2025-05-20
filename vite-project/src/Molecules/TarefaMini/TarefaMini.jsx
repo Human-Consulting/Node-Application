@@ -14,11 +14,11 @@ function TarefaMini({ indice, tarefa, toogleModal }) {
     const task = {
       idEditor: usuarioLogado.idUsuario,
       idTarefa: tarefa.idTarefa,
+      titulo: tarefa.titulo,
       descricao: tarefa.descricao,
       dtInicio: tarefa.dtInicio,
       dtFim: tarefa.dtFim,
       fkResponsavel: tarefa.fkResponsavel,
-      progresso: tarefa.progresso,
       comImpedimento: tarefa.comImpedimento,
     }
     toogleModal(task);
@@ -51,7 +51,7 @@ function TarefaMini({ indice, tarefa, toogleModal }) {
   return (
     <>
       {tarefa ?
-        <BoxBody sx={{ border: `solid ${tarefa.fkResponsavel == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 2px` }}>
+        <BoxBody sx={{ border: `solid ${tarefa.responsavel.idUsuario == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 2px` }}>
           <BodyCard>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'start' }}>
               <Title>Tarefa: {indice}</Title>
@@ -75,8 +75,8 @@ function TarefaMini({ indice, tarefa, toogleModal }) {
                 />
               </Stack>
             </Stack>
-            <Subtitle><b>Responsável:</b> {tarefa.nomeResponsavel}</Subtitle>
-            <Subtitle><b>Descrição:</b>{tarefa.descricao}</Subtitle>
+            <Subtitle><b>Responsável:</b> {tarefa.responsavel.nome}</Subtitle>
+            <Subtitle><b>Descrição:</b> {tarefa.descricao}</Subtitle>
             <Subtitle><b>Data limite:</b> {dayjs.utc(tarefa.dtFim).format('DD/MM/YYYY')}</Subtitle>
 
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
