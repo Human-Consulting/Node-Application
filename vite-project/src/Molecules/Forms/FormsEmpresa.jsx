@@ -8,9 +8,24 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmpresa }) => {
 
-    const [cnpj, setCnpj] = useState(empresa?.cnpj || "");
+    const formatarCNPJ = (valor) => {
+        valor = valor.replace(/\D/g, "");
+
+        if (valor.length <= 14) {
+            valor = valor.replace(/^(\d{2})(\d)/, "$1.$2");
+            valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+            valor = valor.replace(/\.(\d{3})(\d)/, ".$1/$2");
+            valor = valor.replace(/(\d{4})(\d)/, "$1-$2");
+        }
+
+        return valor;
+    };
+
+    const [cnpj, setCnpj] = useState(empresa?.cnpj ? formatarCNPJ(empresa?.cnpj) : "");
     const [nome, setNome] = useState(empresa?.nome || "");
     const [urlImagem, setUrlImagem] = useState('');
+
+    const [erros, setErros] = useState({});
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -27,8 +42,21 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmp
         }
     };
 
+    const validarCampos = () => {
+        const novosErros = {};
+
+        if (!nome.trim()) novosErros.nome = "Nome é obrigatório";
+        if (!cnpj.trim()) novosErros.cnpj = "Cnpj é obrigatório";
+        else if (!validarCNPJ(cnpj.replace(/\D/g, ""))) novosErros.cnpj = "CNPJ inválido";
+
+        setErros(novosErros);
+        return Object.keys(novosErros).length === 0;
+    };
+
     const handlePostEmpresa = async () => {
-        const newEmpresa = { cnpj, nome, urlImagem, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
+        if (!validarCampos()) return;
+        setErros({});
+        const newEmpresa = { nome, cnpj: cnpj.replace(/\D/g, ""), urlImagem, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postEmpresa(newEmpresa);
         atualizarEmpresas();
         toogleModal();
@@ -36,17 +64,18 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmp
 
     const handleDeleteEmpresa = async () => {
         toogleModal();
-        const bodyDelete = {idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao}
+        const bodyDelete = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao }
         await deleteEmpresa(empresa.idEmpresa, bodyDelete);
         await atualizarEmpresas();
     }
 
     const handlePutEmpresa = async () => {
-
+        if (!validarCampos()) return;
+        setErros({});
         const modifiedEmpresa = {
             idEditor: usuarioLogado.idUsuario,
             permissaoEditor: usuarioLogado.permissao,
-            cnpj,
+            cnpj: cnpj.replace(/\D/g, ""),
             nome,
             urlImagem
         }
@@ -54,6 +83,49 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmp
         await putEmpresa(modifiedEmpresa, empresa.idEmpresa);
         await atualizarEmpresas();
     }
+
+    const removerErro = (campo) => {
+        setErros((prevErros) => {
+            const { [campo]: _, ...resto } = prevErros;
+            return resto;
+        });
+    };
+
+    function validarCNPJ(cnpj) {
+        cnpj = cnpj.replace(/[^\d]+/g, '');
+
+        if (cnpj.length !== 14) return false;
+
+        if (/^(\d)\1+$/.test(cnpj)) return false;
+
+        let tamanho = cnpj.length - 2;
+        let numeros = cnpj.substring(0, tamanho);
+        let digitos = cnpj.substring(tamanho);
+        let soma = 0;
+        let pos = tamanho - 7;
+
+        for (let i = tamanho; i >= 1; i--) {
+            soma += parseInt(numeros.charAt(tamanho - i)) * pos--;
+            if (pos < 2) pos = 9;
+        }
+
+        let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+        if (resultado !== parseInt(digitos.charAt(0))) return false;
+
+        tamanho++;
+        numeros = cnpj.substring(0, tamanho);
+        soma = 0;
+        pos = tamanho - 7;
+
+        for (let i = tamanho; i >= 1; i--) {
+            soma += parseInt(numeros.charAt(tamanho - i)) * pos--;
+            if (pos < 2) pos = 9;
+        }
+
+        resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+        return resultado === parseInt(digitos.charAt(1));
+    }
+
 
     return (
         <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
@@ -64,23 +136,36 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmp
             <TextField
                 label="Nome"
                 value={nome}
-                onChange={(e) => setNome(e.target.value)}
+                onChange={(e) => {
+                    removerErro(nome)
+                    setNome(e.target.value)
+                }}
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
                 InputProps={{ style: inputStyle.input }}
                 sx={inputStyle.sx}
+                error={!!erros.nome}
+                helperText={erros.nome}
             />
 
             <TextField
                 label="CNPJ"
                 value={cnpj}
-                onChange={(e) => setCnpj(e.target.value)}
+                onChange={(e) => {
+                    const apenasNumeros = e.target.value.replace(/\D/g, "");
+                    if (apenasNumeros.length <= 14) {
+                        removerErro('cnpj');
+                        setCnpj(formatarCNPJ(apenasNumeros));
+                    }
+                }}
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
-                InputProps={{ style: inputStyle.input }}
+                InputProps={{ style: inputStyle.input, maxLength: 18 }}
                 sx={inputStyle.sx}
+                error={!!erros.cnpj}
+                helperText={erros.cnpj}
             />
 
             <Button

@@ -1,8 +1,6 @@
 import { Popover, List, ListItem, ListItemText, LinearProgress, Typography } from '@mui/material';
 
 const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
-
-    console.log(tarefas);
     const id = open ? 'tarefas-popover' : undefined;
 
     return (
