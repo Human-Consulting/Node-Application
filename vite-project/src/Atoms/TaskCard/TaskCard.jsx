@@ -1,10 +1,12 @@
 import { BodyTarefa, NavTask, TaskCardBody } from './TaskCard.styles'
-import { Button, Stack } from '@mui/material'
+import { Button, Select, Stack, MenuItem, Grow } from '@mui/material'
 import TarefasItem from '../TarefasItem/TarefasItem'
 import { useNavigate, useParams } from 'react-router'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CheckIcon from '@mui/icons-material/Check';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import { useState } from 'react';
+import { inputStyle } from "../../Molecules/Forms/Forms.styles";
 
 
 const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints }) => {
@@ -15,7 +17,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
-  const [tarefasFiltradas, setTarefasFiltradas] = useState(sprint.tarefas);
+  const [tarefasFiltradas, setTarefasFiltradas] = useState(sprint?.tarefas);
 
   const handleOpenProject = () => {
     navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${descricaoProjeto}/${idProjeto}/Tarefas/${sprint.idSprint}/${index}`);
@@ -59,8 +61,25 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   };
 
   const filterTarefas = (status) => {
-    if (status != 'TODOS') {
-      setTarefasFiltradas(sprint.tarefas.filter((tarefa) => tarefa.status == status));
+    console.log(status);
+    console.log(sprint.tarefas);
+    console.log(sprint.tarefas.filter((tarefa) => tarefa.progresso < 100));
+
+    switch (status) {
+      case 'PENDENTES':
+        setTarefasFiltradas(sprint.tarefas.filter((tarefa) => tarefa.progresso < 100));
+        break;
+      case 'IMPEDIDOS':
+        setTarefasFiltradas(sprint.tarefas.filter((tarefa) => tarefa.comImpedimento == true));
+        break;
+      
+      case 'FINALIZADOS':
+        setTarefasFiltradas(sprint.tarefas.filter((tarefa) => tarefa.progresso == 100));
+        break;
+
+      default:
+        setTarefasFiltradas(sprint.tarefas);
+        break;
     }
   }
 
@@ -97,8 +116,8 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
             >
               <MenuItem value="TODOS">Todos</MenuItem>
               <MenuItem value="IMPEDIDOS">Impedidos</MenuItem>
-              <MenuItem value="FINALIZADO">Finalizados</MenuItem>
-              <MenuItem value="PENDENTE">Pendentes</MenuItem>
+              <MenuItem value="FINALIZADOS">Finalizados</MenuItem>
+              <MenuItem value="PENDENTES">Pendentes</MenuItem>
             </Select>
 
             <MoreVertIcon
