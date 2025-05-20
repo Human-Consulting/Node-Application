@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+
 const token = JSON.parse(localStorage.getItem('token'));
 
 export const postEmpresa = async (newEmpresa) => {
@@ -17,17 +18,7 @@ export const postEmpresa = async (newEmpresa) => {
         const data = await res.json();
 
         if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
+            return data;
         } else {
             Swal.fire({
                 icon: "error",
@@ -156,7 +147,7 @@ export const putEmpresa = async (modifiedEmpresa, idEmpresa) => {
 };
 
 export const deleteEmpresa = async (idEmpresa, body) => {
-    
+
     const formattedEmpresa = JSON.stringify(body);
     try {
         const confirm = await Swal.fire({

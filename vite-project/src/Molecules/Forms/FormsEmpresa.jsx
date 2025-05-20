@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { useState } from "react";
 import { postEmpresa, putEmpresa, deleteEmpresa } from '../../Utils/cruds/CrudsEmpresa.jsx';
 import { Box, Button, TextField, Typography, Stack } from '@mui/material';
@@ -5,8 +6,12 @@ import { inputStyle } from "./Forms.styles.jsx";
 import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from "react-router";
+
 
 const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmpresa }) => {
+
+    const navigate = useNavigate();
 
     const formatarCNPJ = (valor) => {
         valor = valor.replace(/\D/g, "");
@@ -57,9 +62,22 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmp
         if (!validarCampos()) return;
         setErros({});
         const newEmpresa = { nome, cnpj: cnpj.replace(/\D/g, ""), urlImagem, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
-        await postEmpresa(newEmpresa);
+        const novaEmpresa = await postEmpresa(newEmpresa);
         atualizarEmpresas();
         toogleModal();
+        await Swal.fire({
+            icon: "success",
+            position: "center",
+            backdrop: false,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            text: "Adicione um diretor para adicionar projetos!",
+            customClass: {
+                popup: "swalAlerta",
+            }
+        });
+        navigate(`/Home/${novaEmpresa.nome}/${novaEmpresa.idEmpresa}/Usuarios`);
     };
 
     const handleDeleteEmpresa = async () => {
