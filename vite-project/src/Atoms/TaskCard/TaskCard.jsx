@@ -1,12 +1,11 @@
 import { BodyTarefa, NavTask, TaskCardBody } from './TaskCard.styles'
-import { Button, Select, Stack, MenuItem, Grow } from '@mui/material'
+import { Button, Select, Stack, MenuItem, Grow, Box } from '@mui/material'
 import TarefasItem from '../TarefasItem/TarefasItem'
 import { useNavigate, useParams } from 'react-router'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CheckIcon from '@mui/icons-material/Check';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import { useState } from 'react';
 import { inputStyle } from "../../Molecules/Forms/Forms.styles";
+import { CheckCircle, HourglassEmpty, Block, AllInclusive, Check, MoreVert } from '@mui/icons-material';
 
 
 const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints }) => {
@@ -43,28 +42,24 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
 
     if (sprint.progresso == 100) {
       return (
-        <CheckIcon sx={{ border: 'solid #2196f3 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
+        <Check sx={{ border: 'solid #2196f3 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
       );
     }
 
     if (sprint.comImpedimento && sprint.progresso < 50) {
       return (
-        <PriorityHighIcon sx={{ border: 'solid #F44336 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
+        <PriorityHigh sx={{ border: 'solid #F44336 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
       );
     }
 
     if (sprint.comImpedimento) {
       return (
-        <PriorityHighIcon sx={{ border: 'solid orange 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
+        <PriorityHigh sx={{ border: 'solid orange 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
       );
     }
   };
 
   const filterTarefas = (status) => {
-    console.log(status);
-    console.log(sprint.tarefas);
-    console.log(sprint.tarefas.filter((tarefa) => tarefa.progresso < 100));
-
     switch (status) {
       case 'PENDENTES':
         setTarefasFiltradas(sprint.tarefas.filter((tarefa) => tarefa.progresso < 100));
@@ -72,7 +67,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
       case 'IMPEDIDOS':
         setTarefasFiltradas(sprint.tarefas.filter((tarefa) => tarefa.comImpedimento == true));
         break;
-      
+
       case 'FINALIZADOS':
         setTarefasFiltradas(sprint.tarefas.filter((tarefa) => tarefa.progresso == 100));
         break;
@@ -83,23 +78,32 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
     }
   }
 
+  const statusOptions = [
+    { value: 'TODOS', icon: <AllInclusive />, label: 'Todos' },
+    { value: 'IMPEDIDOS', icon: <Block />, label: 'Impedidos' },
+    { value: 'FINALIZADOS', icon: <CheckCircle />, label: 'Finalizados' },
+    { value: 'PENDENTES', icon: <HourglassEmpty />, label: 'Pendentes' },
+  ];
+
   return (
     <TaskCardBody sx={{ position: 'relative' }}>
       {sprint ?
         <>
           <NavTask>
-            {renderIconeStatusSprint(sprint)}
-            {sprint.descricao}
-
             <Select
               defaultValue="TODOS"
               onChange={(e) => filterTarefas(e.target.value)}
               fullWidth
               displayEmpty
+              renderValue={(selected) => {
+                const option = statusOptions.find(opt => opt.value === selected);
+                return <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>{option?.icon}</Box>;
+              }}
               sx={{
-                ...inputStyle.sx,
                 color: '#FFF',
-                mt: 2,
+                position: 'absolute',
+                left: '10px',
+                width: "fit-content"
               }}
               MenuProps={{
                 TransitionComponent: Grow,
@@ -114,13 +118,18 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
                 }
               }}
             >
-              <MenuItem value="TODOS">Todos</MenuItem>
-              <MenuItem value="IMPEDIDOS">Impedidos</MenuItem>
-              <MenuItem value="FINALIZADOS">Finalizados</MenuItem>
-              <MenuItem value="PENDENTES">Pendentes</MenuItem>
+              {statusOptions.map((opt) => (
+                <MenuItem key={opt.value} value={opt.value}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {opt.icon}
+                    {opt.label}
+                  </Box>
+                </MenuItem>
+              ))}
             </Select>
+            {sprint.titulo}
 
-            <MoreVertIcon
+            <MoreVert
               onClick={(e) => {
                 e.stopPropagation();
                 handleOpenModalPutSprint();
