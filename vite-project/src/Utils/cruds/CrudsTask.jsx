@@ -215,10 +215,10 @@ export const deleteTask = async (idTask, body) => {
     }
 };
 
-export const putImpedimento = async (idTarefa, body) => {
+export const putImpedimento = async (idTarefa, body, comImpedimento) => {
     try {
         const confirm = await Swal.fire({
-            text: "Gostaria de editar o comentário atual? Ele será enviado ao responsável do projeto.",
+            text: `${comImpedimento ? "Você tem certeza de que o impedimento foi finalizado?" : "Gostaria de editar o comentário atual? Ele será enviado ao responsável do projeto."}`,
             icon: "warning",
             showCancelButton: true,
             backdrop: false,

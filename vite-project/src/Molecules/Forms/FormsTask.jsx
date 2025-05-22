@@ -32,7 +32,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     const handleImpedimentoTask = async () => {
         const body = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao }
         toogleModal();
-        await putImpedimento(task.idTarefa, body);
+        await putImpedimento(task.idTarefa, body, comImpedimento);
         setComImpedimento(!comImpedimento);
         atualizarProjetos();
         atualizarSprints();
@@ -78,7 +78,6 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     const handleLabelChange = (id, newLabel) => {
         setCheckpoints(checkpoints.map(cb => cb.idCheckpoint === id ? { ...cb, descricao: newLabel } : cb));
     };
-    console.log(task);
 
     return (
         <Stack direction="column" mb={2} >

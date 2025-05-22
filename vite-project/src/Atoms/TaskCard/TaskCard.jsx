@@ -2,9 +2,7 @@ import { BodyTarefa, NavTask, TaskCardBody } from './TaskCard.styles'
 import { Button, Select, Stack, MenuItem, Grow, Box } from '@mui/material'
 import TarefasItem from '../TarefasItem/TarefasItem'
 import { useNavigate, useParams } from 'react-router'
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import { useState } from 'react';
-import { inputStyle } from "../../Molecules/Forms/Forms.styles";
+import { useEffect, useState } from 'react';
 import { CheckCircle, HourglassEmpty, Block, AllInclusive, Check, MoreVert } from '@mui/icons-material';
 
 
@@ -16,7 +14,11 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
-  const [tarefasFiltradas, setTarefasFiltradas] = useState(sprint?.tarefas);
+  const [tarefasFiltradas, setTarefasFiltradas] = useState([]);
+
+  useEffect(() => {
+    setTarefasFiltradas(sprint?.tarefas);
+  }, [sprint])
 
   const handleOpenProject = () => {
     navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${descricaoProjeto}/${idProjeto}/Tarefas/${sprint.idSprint}/${index}`);
