@@ -3,8 +3,7 @@ import { Button, Select, Stack, MenuItem, Grow, Box } from '@mui/material'
 import TarefasItem from '../TarefasItem/TarefasItem'
 import { useNavigate, useParams } from 'react-router'
 import { useEffect, useState } from 'react';
-import { CheckCircle, HourglassEmpty, Block, AllInclusive, Check, MoreVert } from '@mui/icons-material';
-
+import { CheckCircle, HourglassEmpty, Block, AllInclusive, MoreVert } from '@mui/icons-material';
 
 const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints }) => {
 
@@ -39,27 +38,6 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   const handleOpenModalPostSprint = () => {
     toogleTaskModal(null, 'sprint', null);
   }
-
-  const renderIconeStatusSprint = () => {
-
-    if (sprint.progresso == 100) {
-      return (
-        <Check sx={{ border: 'solid #2196f3 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
-      );
-    }
-
-    if (sprint.comImpedimento && sprint.progresso < 50) {
-      return (
-        <PriorityHigh sx={{ border: 'solid #F44336 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
-      );
-    }
-
-    if (sprint.comImpedimento) {
-      return (
-        <PriorityHigh sx={{ border: 'solid orange 3px', borderRadius: '50%', fontSize: '30px', position: 'absolute', left: 10 }} />
-      );
-    }
-  };
 
   const filterTarefas = (status) => {
     switch (status) {
@@ -157,7 +135,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
           </BodyTarefa>
           <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', justifyContent: 'center', alignItems: 'center' }}>
             {usuarioLogado.permissao != 'FUNC' ?
-              <Button size='medium' onClick={handleOpenModalPostTask} variant='contained'>CRIAR NOVA TAREFA</Button>
+              <Button size='medium' onClick={handleOpenModalPostTask} variant='contained'>CRIAR TAREFA</Button>
               : null}
             <Button size='medium' onClick={handleOpenProject} variant='contained'>VER TAREFAS</Button>
           </Stack>
@@ -168,7 +146,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
             variant="contained"
             onClick={handleOpenModalPostSprint}
           >
-            CRIAR NOVA SPRINT
+            CRIAR SPRINT
           </Button>
         </Stack>
       }

@@ -1,9 +1,7 @@
 import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './ProjectsCard.styles';
 import { Stack, Button } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CheckIcon from '@mui/icons-material/Check';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import { Block, Check, MoreVert } from '@mui/icons-material';
 
 function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas }) {
   const { nomeEmpresa, idEmpresa } = useParams();
@@ -14,9 +12,10 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
   if (item) {
     if (item.progresso == 100) {
       statusColor = '#2196f3';
+      statusColor = '#08D13D';
     }
     else if (item.comImpedimento == 0) {
-      statusColor = '#08D13D';
+      statusColor = 'transparent';
     } else if (item.comImpedimento == 1 && item.progresso > 50) {
       statusColor = '#CED108';
     } else {
@@ -25,10 +24,10 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
   }
 
   const renderIconeStatusProjeto = () => {
-    if (item.progresso == 100) return (<CheckIcon sx={{ fontSize: '22px' }} />);
-    if (item.comImpedimento) return (<PriorityHighIcon sx={{ fontSize: '22px' }} />);
+    if (item.progresso == 100) return (<Check sx={{ fontSize: '22px' }} />);
+    if (item.comImpedimento) return (<Block sx={{ fontSize: '25px' }} />);
 
-    return (<CheckIcon sx={{ fontSize: '25px' }} />);
+    return null;
   };
 
   const handleOpenProject = async () => {
@@ -50,7 +49,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
           }} />
           <BodyCard>
             <Title>{item?.titulo || item.nome}</Title>
-            <MoreVertIcon
+            <MoreVert
               onClick={(e) => {
                 e.stopPropagation();
                 toogleModal(item, idEmpresa == 1 ? 'empresa' : 'projeto');
@@ -86,7 +85,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
         <BoxBody onClick={() => toogleModal(null, idEmpresa == 1 ? 'empresa' : 'projeto')} sx={{ justifyContent: 'center', alignItems: 'center' }}>
           <Button
             variant="contained" >
-            {idEmpresa == 1 ? "CRIAR NOVA EMPRESA" : "CRIAR NOVO PROJETO"}
+            {idEmpresa == 1 ? "CRIAR EMPRESA" : "CRIAR PROJETO"}
           </Button>
         </BoxBody>}
     </>

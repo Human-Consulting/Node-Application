@@ -1,12 +1,10 @@
 import { useRef } from "react";
-import React from "react";
 import { Box, Zoom } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
+import { Close, Check, Block } from "@mui/icons-material";
 
 import { Backdrop, ModalContent, DragHandle } from "./Modal.styles";
 
-const Modal = ({ showModal, fechar, form, acao }) => {
+const Modal = ({ showModal, fechar, form, acao, entidade }) => {
     if (!showModal) return null;
 
     const modalRef = useRef(null);
@@ -30,15 +28,35 @@ const Modal = ({ showModal, fechar, form, acao }) => {
         window.addEventListener("mouseup", handleMouseUp);
     };
 
+    const renderIconeStatus = () => {
+        if (entidade?.progresso == 100) {
+          return (
+            <Check sx={{ border: 'solid #2196f3 3px', borderRadius: '50%' }} size="small" />
+          )
+        }
+    
+        if (entidade?.comImpedimento && entidade?.progresso < 50) {
+          return (
+            <Block sx={{ border: 'solid #F44336 2px', borderRadius: '50%' }} size="small" />
+          );
+        }
+    
+        if (entidade?.comImpedimento) {
+          return (
+            <Block sx={{ border: 'solid orange 2px', borderRadius: '50%' }} size="small" />
+          );
+        }
+        return null;
+      };
+
     return (
         <Zoom in={showModal} >
             <Backdrop>
                 <ModalContent ref={modalRef} sx={{ width: `${acao == 'task' ? '950px' : '450px'}` }}>
                     <DragHandle onMouseDown={handleDragStart} />
-                    <Box display="flex" justifyContent="flex-end">
-                        <IconButton onClick={fechar} size="small">
-                            <CloseIcon style={{ color: '#fff' }} />
-                        </IconButton>
+                    <Box display="flex" justifyContent={renderIconeStatus() !== null ? "space-between" : "flex-end"} alignItems="center">
+                        {renderIconeStatus()}
+                            <Close onClick={fechar} size="small" style={{ cursor: 'pointer' }} />
                     </Box>
                     {form}
                 </ModalContent>

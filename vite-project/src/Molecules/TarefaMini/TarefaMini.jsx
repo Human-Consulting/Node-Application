@@ -89,7 +89,7 @@ function TarefaMini({ indice, tarefa, toogleModal }) {
         </BoxBody>
         :
         <BoxBody sx={{ justifyContent: 'center' }}>
-          <Button variant='contained' onClick={() => toogleModal(null)}>CRIAR NOVA TAREFA</Button>
+          <Button variant='contained' onClick={() => toogleModal(null)}>CRIAR TAREFA</Button>
         </BoxBody>}
     </>
   )

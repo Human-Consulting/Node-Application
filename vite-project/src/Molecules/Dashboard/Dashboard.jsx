@@ -1,6 +1,5 @@
 import { Stack, Typography, Button } from '@mui/material'
-import { DashKpi, ContainerBack, DashContainer, KpiContainer, TextDefault, TextDefaultKpi, Title } from './Dashboard.styles'
-import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient'
+import { DashKpi, ContainerBack, DashContainer, KpiContainer, TextDefault, TextDefaultKpi } from './Dashboard.styles'
 import LineChart from './LineChart/LineChart'
 import MinimalBarChart from './BarChart/BarChart'
 import AreaData from '../../Atoms/AreaData/AreaData'
@@ -10,14 +9,13 @@ import { useEffect, useState } from 'react'
 import { getEmpresaAtual } from '../../Utils/cruds/CrudsEmpresa'
 import { getProjetoAtual } from '../../Utils/cruds/CrudsProjeto'
 import { useNavigate, useParams } from 'react-router'
-import CheckIcon from '@mui/icons-material/Check';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CircularProgress from '@mui/material/CircularProgress';
-import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import { ArrowCircleLeftOutlined, Check, Block } from '@mui/icons-material';
 import Modal from '../Modal/Modal'
 import FormsInvestimento from '../Forms/FormsInvestimento'
+import Shader from '../Shader/Shader'
 
-const Dashboard = ({ toogleLateralBar, showTitle }) => {
+const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animate }) => {
 
   const { idEmpresa, nomeEmpresa, tituloProjeto, idProjeto } = useParams();
 
@@ -69,23 +67,23 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
 
     if (entidade.progresso == 100) {
       return (
-        <CheckIcon sx={{ border: 'solid #2196f3 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
+        <Check sx={{ border: 'solid #2196f3 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
       );
     }
 
     if (!entidade.comImpedimento) {
       return (
-        <CheckIcon sx={{ border: 'solid green 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
+        <Check sx={{ border: 'solid green 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
       );
     }
     if (entidade.comImpedimento && entidade.progresso < 50) {
       return (
-        <PriorityHighIcon sx={{ border: 'solid red 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
+        <Block sx={{ border: 'solid red 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
       );
     }
 
     return (
-      <PriorityHighIcon sx={{ border: 'solid orange 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
+      <Block sx={{ border: 'solid orange 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
     );
   };
 
@@ -93,24 +91,11 @@ const Dashboard = ({ toogleLateralBar, showTitle }) => {
     <ContainerBack>
       {showTitle ?
         <>
-          <ShaderGradientCanvas
-            style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 5,
-              pointerEvents: 'none',
-
-            }}>
-            <ShaderGradient
-              control='query'
-              urlString='https://www.shadergradient.co/customize?animate=on&axesHelper=off&bgColor1=%23000000&bgColor2=%23000000&brightness=1.2&cAzimuthAngle=180&cDistance=2.8&cPolarAngle=80&cameraZoom=8.3&color1=%23606080&color2=%238d7dca&color3=%234e5e8c&destination=onCanvas&embedMode=off&envPreset=city&format=gif&fov=60&frameRate=10&gizmoHelper=hide&grain=on&lightType=3d&pixelDensity=2.4&positionX=-1.3&positionY=0&positionZ=0&range=enabled&rangeEnd=40&rangeStart=0&reflection=0.1&rotationX=40&rotationY=170&rotationZ=-60&shader=defaults&type=sphere&uAmplitude=1.7&uDensity=1.2&uFrequency=0&uSpeed=0.1&uStrength=2.1&uTime=8&wireframe=false&zoomOut=true'
-            />
-
-          </ShaderGradientCanvas>
+          <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={5} />
         </>
         : null}
       <KpiContainer>
-        {showTitle ? <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', position: 'relative', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ? <Button variant='contained' sx={{ cursor: 'pointer', position: 'absolute', right: 0 }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button> : null}</Typography> : <Stack sx={{ marginTop: '1.5rem' }} />}
+        {showTitle ? <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', position: 'relative', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ? <Button variant='contained' sx={{ cursor: 'pointer', position: 'absolute', right: 0 }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button> : null}</Typography> : <Stack sx={{ marginTop: '1.5rem' }} />}
 
         <DashContainer>
           <Stack sx={{ justifyContent: 'space-between', gap: '3rem', flex: 1 }}>

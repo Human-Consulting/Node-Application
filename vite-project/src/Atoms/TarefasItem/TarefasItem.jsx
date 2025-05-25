@@ -1,9 +1,6 @@
-import React from 'react'
 import { TarefaBody, ProgressBar, Progress } from './TarefasItem.style'
 import { Stack } from '@mui/material'
-import CheckIcon from '@mui/icons-material/Check';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Block, Check, MoreVert } from '@mui/icons-material';
 
 const TarefasItem = ({ tarefa, toogleModal }) => {
 
@@ -20,7 +17,8 @@ const TarefasItem = ({ tarefa, toogleModal }) => {
       fkResponsavel: tarefa.responsavel.idUsuario,
       comentario: tarefa.comentario,
       comImpedimento: tarefa.comImpedimento,
-      checkpoints: tarefa.checkpoints
+      checkpoints: tarefa.checkpoints,
+      progresso: tarefa.progresso
     }
     toogleModal(task);
   }
@@ -29,24 +27,22 @@ const TarefasItem = ({ tarefa, toogleModal }) => {
 
     if (tarefa.progresso == 100) {
       return (
-        <CheckIcon sx={{ border: 'solid #2196f3 3px', borderRadius: '50%', fontSize: '25px' }} />
+        <Check sx={{ border: 'solid #2196f3 3px', borderRadius: '50%', fontSize: '25px' }} />
       )
     }
 
     if (tarefa.comImpedimento && tarefa.progresso < 50) {
       return (
-        <PriorityHighIcon sx={{ border: 'solid #F44336 3px', borderRadius: '50%', fontSize: '25px' }} />
+        <Block sx={{ border: 'solid #F44336 2px', borderRadius: '50%', fontSize: '25px' }} />
       );
     }
 
     if (tarefa.comImpedimento) {
       return (
-        <PriorityHighIcon sx={{ border: 'solid orange 3px', borderRadius: '50%', fontSize: '25px' }} />
+        <Block sx={{ border: 'solid orange 2px', borderRadius: '50%', fontSize: '25px' }} />
       );
     }
-
     return null;
-
   };
 
 
@@ -56,7 +52,7 @@ const TarefasItem = ({ tarefa, toogleModal }) => {
         <span style={{textOverflow: 'ellipsis',whiteSpace: 'nowrap',overflow: 'hidden' }}>{tarefa.titulo}</span>
         <Stack sx={{ flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
           {renderIconeStatusTarefa()}
-          <MoreVertIcon
+          <MoreVert
             onClick={(e) => {
               e.stopPropagation();
               handleToogleModal();

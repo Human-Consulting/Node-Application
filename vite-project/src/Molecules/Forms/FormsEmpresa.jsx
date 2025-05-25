@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from "react-router";
 
 
-const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas, usuarios, fkEmpresa }) => {
+const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas }) => {
 
     const navigate = useNavigate();
 
