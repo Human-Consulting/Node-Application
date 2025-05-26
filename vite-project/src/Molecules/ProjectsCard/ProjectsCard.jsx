@@ -3,10 +3,11 @@ import { Stack, Button } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Block, Check, MoreVert } from '@mui/icons-material';
 
-function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas }) {
+function ProjectsCard({ item, toogleModal }) {
   const { nomeEmpresa, idEmpresa } = useParams();
   const navigate = useNavigate();
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+  const responsavelCard = item?.nomeDiretor || item?.nomeResponsavel || 'Responsável não registrado';
 
   let statusColor = '#08D13D';
   if (item) {
@@ -36,6 +37,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
     //? Utilizar? 
     // : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/next-step/${item.descricao}/${Number(item.idProjeto)}`);
   }
+  console.log(item);
 
   return (
     <>
@@ -68,7 +70,8 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
                 }
               }}
             />
-            <Subtitle>{item?.nomeResponsavel != null && item?.nomeDiretor == null ? `Responsável: ${item.nomeResponsavel}` : item.nomeDiretor == null ? "Responsável não registrado" : `Diretor: ${item.nomeDiretor}`}</Subtitle>
+            {/* <Subtitle>{item?.nomeDiretor === null ? "Diretor não registrado." : item?.nomeDiretor !== null ? `Diretor: ${item?.nomeDiretor}` : item?.nomeResponsavel !== null ? `Responsável: ${item.nomeResponsavel}` : item.nomeResponsavel == null ? "Responsável não registrado" : null}</Subtitle> */}
+            <Subtitle>{responsavelCard}</Subtitle>
             <Subtitle><b>Orçamento:</b> R${item.orcamento}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>

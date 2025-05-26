@@ -184,23 +184,13 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
               atualizarEmpresas={atualizarEmpresas}
             />
           ))
-        ) : (
+        ) : (!usuarioLogado.permissao.includes('CONSULTOR')) && (
           <Stack sx={{ justifyContent: 'center', alignItems: 'center', marginTop: '2rem', width: '350%' }}>
             <ConstructionIcon sx={{ fontSize: '5rem' }} />
             Nenhum projeto encontrado!
-            {usuarioLogado.permissao?.includes("CONSULTOR") && (
-              idEmpresa === 1 ? (
-                <Button onClick={() => toogleModal(null, 'empresa')} variant="contained">
-                  CRIAR EMPRESA
-                </Button>
-              ) : (
-                <Button onClick={() => toogleModal(null, 'projeto')} variant="contained">
-                  CRIAR PROJETO
-                </Button>
-              )
-            )}
           </Stack>
         )}
+
         {usuarioLogado.permissao.includes('CONSULTOR') ?
           <ProjectsCard toogleModal={toogleModal} ></ProjectsCard>
           : null}

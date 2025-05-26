@@ -36,7 +36,7 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
 
         if (!titulo.trim()) novosErros.titulo = "Título é obrigatório";
         if (!descricao.trim()) novosErros.descricao = "Descrição é obrigatória";
-        if (!orcamento.trim()) novosErros.orcamento = "Orçamento é obrigatório";
+        if (!orcamento) novosErros.orcamento = "Orçamento é obrigatório";
         if (!validarPermissaoFunc() && fkResponsavel === "#") novosErros.fkResponsavel = "Responsável é obrigatório";
 
         setErros(novosErros);
