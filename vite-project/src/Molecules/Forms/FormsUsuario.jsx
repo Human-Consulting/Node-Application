@@ -23,7 +23,8 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
     const handlePostUsuario = async () => {
         if (!validarCampos()) return;
         setErros({});
-        const newUsuario = { nome, email, senha, cargo, area: area.toUpperCase(), permissao, fkEmpresa: idEmpresa, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
+        console.log("passou nos campos");
+        const newUsuario = { nome, email, cargo, area: area.toUpperCase(), permissao, fkEmpresa: idEmpresa, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postUsuario(newUsuario, toogleModal);
         atualizarUsuarios();
     };
@@ -66,8 +67,8 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
         if (!email.trim()) novosErros.email = "Email é obrigatório";
         else if (!emailRegex.test(email)) novosErros.email = "Formato de email inválido";
 
-        if (usuario == null && !senha.trim()) novosErros.senha = "Senha é obrigatória";
-        else if (usuario == null && senha.length < 6) novosErros.senha = "A senha deve ter pelo menos 6 dígitos";
+        if (usuario != null && !senha.trim()) novosErros.senha = "Senha é obrigatória";
+        else if (usuario != null && senha.length < 6) novosErros.senha = "A senha deve ter pelo menos 6 dígitos";
         
         if (!cargo.trim()) novosErros.cargo = "Cargo é obrigatório";
         if (!area.trim()) novosErros.area = "Área é obrigatória";
@@ -125,7 +126,7 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                 helperText={erros.email}
             />
 
-            {usuario == null && (
+            {/* {usuario == null && (
                 <TextField
                     label="Senha"
                     type="password"
@@ -143,7 +144,7 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                     error={!!erros.senha}
                     helperText={erros.senha}
                 />
-            )}
+            )} */}
 
             {usuarioLogado.permissao !== 'FUNC' && (
                 <>
