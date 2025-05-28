@@ -18,17 +18,35 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     const [comentario, setComentario] = useState(task?.comentario || "");
     const [comImpedimento, setComImpedimento] = useState(task?.comImpedimento);
     const [checkpoints, setCheckpoints] = useState(task?.checkpoints || []);
-    
+
+    const [erros, setErros] = useState({});
+
+    const validarCampos = () => {
+        const novosErros = {};
+
+        if (!titulo.trim()) novosErros.titulo = "Título é obrigatório";
+        if (!descricao.trim()) novosErros.descricao = "Descrição é obrigatória";
+        if (!dtInicio.trim()) novosErros.dtInicio = "Data de início é obrigatória";
+        if (!dtFim.trim()) novosErros.dtFim = "Data de finalização é obrigatória";
+        if (!fkResponsavel) novosErros.dtFim = "Responsável é obrigatório";
+
+        setErros(novosErros);
+        return Object.keys(novosErros).length === 0;
+    };
+
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
-    
+
     const handlePostTask = async () => {
+        if (!validarCampos()) return;
+        setErros({});
+
         const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, comentario, fkResponsavel, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postTask(newTask);
         toogleModal();
         atualizarSprints();
         atualizarProjetos();
     };
-    
+
     const handleImpedimentoTask = async () => {
         const body = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao }
         toogleModal();
@@ -39,6 +57,9 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     }
 
     const handlePutTask = async () => {
+        if (!validarCampos()) return;
+        setErros({});
+
         const modifiedTask = {
             idEditor: usuarioLogado.idUsuario,
             permissaoEditor: usuarioLogado.permissao,
@@ -79,6 +100,13 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         setCheckpoints(checkpoints.map(cb => cb.idCheckpoint === id ? { ...cb, descricao: newLabel } : cb));
     };
 
+    const removerErro = (campo) => {
+        setErros((prevErros) => {
+            const { [campo]: _, ...resto } = prevErros;
+            return resto;
+        });
+    };
+
     return (
         <Stack direction="column" mb={2} >
             <Typography variant="h5" textAlign="center" mb={2}>
@@ -92,12 +120,17 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         type="text"
                         disabled={usuarioLogado.permissao === 'FUNC'}
                         value={titulo}
-                        onChange={(e) => setTitulo(e.target.value)}
+                        onChange={(e) => {
+                            removerErro("titulo")
+                            setTitulo(e.target.value)
+                        }}
                         fullWidth
                         variant="outlined"
                         InputLabelProps={{ style: inputStyle.label }}
                         InputProps={{ style: inputStyle.input }}
                         sx={inputStyle.sx}
+                        error={!!erros.titulo}
+                        helperText={erros.titulo}
                     />
 
                     <TextField
@@ -106,12 +139,17 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         disabled={usuarioLogado.permissao === 'FUNC'}
                         rows={3}
                         value={descricao}
-                        onChange={(e) => setDescricao(e.target.value)}
+                        onChange={(e) => {
+                            removerErro("descricao")
+                            setDescricao(e.target.value)
+                        }}
                         fullWidth
                         variant="outlined"
                         InputLabelProps={{ style: inputStyle.label }}
                         InputProps={{ style: inputStyle.input }}
                         sx={inputStyle.sx}
+                        error={!!erros.descricao}
+                        helperText={erros.descricao}
                     />
 
                     <TextField
@@ -119,12 +157,17 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         type="date"
                         disabled={usuarioLogado.permissao === 'FUNC'}
                         value={dtInicio}
-                        onChange={(e) => setDtInicio(e.target.value)}
+                        onChange={(e) => {
+                            removerErro("dtInicio")
+                            setDtInicio(e.target.value)
+                        }}
                         fullWidth
                         variant="outlined"
                         InputLabelProps={{ style: inputStyle.label, shrink: true }}
                         InputProps={{ style: inputStyle.input }}
                         sx={inputStyle.sx}
+                        error={!!erros.dtInicio}
+                        helperText={erros.dtInicio}
                     />
 
                     <TextField
@@ -132,17 +175,25 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         type="date"
                         disabled={usuarioLogado.permissao === 'FUNC'}
                         value={dtFim}
-                        onChange={(e) => setDtFim(e.target.value)}
+                        onChange={(e) => {
+                            removerErro("dtFim")
+                            setDtFim(e.target.value)
+                        }}
                         fullWidth
                         variant="outlined"
                         InputLabelProps={{ style: inputStyle.label, shrink: true }}
                         InputProps={{ style: inputStyle.input }}
                         sx={inputStyle.sx}
+                        error={!!erros.dtFim}
+                        helperText={erros.dtFim}
                     />
 
                     <Select
                         value={fkResponsavel}
-                        onChange={(e) => setFkResponsavel(e.target.value)}
+                        onChange={(e) => {
+                            removerErro("titulo")
+                            setFkResponsavel(e.target.value)
+                        }}
                         disabled={usuarioLogado.permissao === 'FUNC'}
                         fullWidth
                         displayEmpty
@@ -150,6 +201,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                             ...inputStyle.sx,
                             color: '#FFF',
                         }}
+                        error={!!erros.fkResponsavel}
                         MenuProps={{
                             TransitionComponent: Grow,
                             PaperProps: {
