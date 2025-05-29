@@ -11,7 +11,6 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
 
     const [nome, setNome] = useState(usuario?.nome || '');
     const [email, setEmail] = useState(usuario?.email || '');
-    const [senha, setSenha] = useState(usuario?.senha || '');
     const [cargo, setCargo] = useState(usuario?.cargo || '');
     const [area, setArea] = useState(usuario?.area || '');
     const [permissao, setPermissao] = useState(usuario?.permissao || "#");
@@ -66,10 +65,6 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
         if (!nome.trim()) novosErros.nome = "Nome é obrigatório";
         if (!email.trim()) novosErros.email = "Email é obrigatório";
         else if (!emailRegex.test(email)) novosErros.email = "Formato de email inválido";
-
-        if (usuario != null && !senha.trim()) novosErros.senha = "Senha é obrigatória";
-        else if (usuario != null && senha.length < 6) novosErros.senha = "A senha deve ter pelo menos 6 dígitos";
-        
         if (!cargo.trim()) novosErros.cargo = "Cargo é obrigatório";
         if (!area.trim()) novosErros.area = "Área é obrigatória";
         if (mostrarPermissaoSelect && permissao === "#") novosErros.permissao = "Permissão é obrigatória";
@@ -125,26 +120,6 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                 error={!!erros.email}
                 helperText={erros.email}
             />
-
-            {/* {usuario == null && (
-                <TextField
-                    label="Senha"
-                    type="password"
-                    value={senha}
-                    onChange={(e) => {
-                        removerErro("senha")
-                        setSenha(e.target.value)
-                    }}
-                    fullWidth
-                    variant="outlined"
-                    autoComplete="off"
-                    InputLabelProps={{ style: inputStyle.label }}
-                    InputProps={{ style: inputStyle.input }}
-                    sx={inputStyle.sx}
-                    error={!!erros.senha}
-                    helperText={erros.senha}
-                />
-            )} */}
 
             {usuarioLogado.permissao !== 'FUNC' && (
                 <>

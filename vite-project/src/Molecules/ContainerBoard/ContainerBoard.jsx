@@ -1,8 +1,10 @@
-import { Alert, Divider, Snackbar, Stack } from "@mui/material";
+import { useState } from "react";
+import { Alert, Divider, Snackbar, Stack, InputAdornment, IconButton } from "@mui/material";
 import { ButtonMeu, LoginBack, LoginTitulo, InputMinha } from "./ContainerBoard.styles";
 import { useNavigate } from "react-router";
 import { handleSubmitLogin } from "../../Utils/UsePost";
 import React from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const ContainerBoard = () => {
   const navigate = useNavigate();
@@ -11,6 +13,7 @@ const ContainerBoard = () => {
   const [loading, setLoading] = React.useState(false);
   const [emailLogin, setEmailLogin] = React.useState("");
   const [senhaLogin, setSenhaLogin] = React.useState("");
+  const [showSenhaAtual, setShowSenhaAtual] = useState(false);
 
   return (
     <LoginBack>
@@ -62,8 +65,20 @@ const ContainerBoard = () => {
               },
               label: { color: 'white' },
             }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowSenhaAtual(!showSenhaAtual)}
+                    edge="end"
+                  >
+                    {showSenhaAtual ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
             label="Senha"
-            type="password"
+            type={showSenhaAtual ? "text" : "password"}
             value={senhaLogin}
             onChange={(e) => setSenhaLogin(e.target.value)}
           />

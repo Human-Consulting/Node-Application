@@ -298,12 +298,14 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                 <>
                     <Stack direction="row" spacing={2} justifyContent="center">
 
-                        {usuarioLogado.idUsuario == task.fkResponsavel ?
+                        {usuarioLogado.idUsuario == task.fkResponsavel && task.progresso < 100 ?
                             <Button fullWidth variant='outlined' color={comImpedimento ? 'error' : 'success'} onClick={(e) => {
                                 e.stopPropagation(); handleImpedimentoTask()
                             }}>
                                 {comImpedimento ? 'Remover Impedimento' : 'Acionar Impedimento'}</Button>
-                            : null}
+                            : usuarioLogado.idUsuario == task.fkResponsavel && task.progresso == 100 ?
+                            <Button fullWidth variant='outlined' color={'info'} onClick={(e) => e.stopPropagation()}>TAREFA FINALIZADA</Button>
+                        : null}
                         {usuarioLogado.permissao == 'FUNC' ? null :
                             <Button variant="contained" color="error" onClick={handleDeleteTask}>
                                 <DeleteIcon />
