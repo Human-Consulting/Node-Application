@@ -36,8 +36,6 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
     navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${tituloProjeto}/${Number(idProjeto)}`)
   }
 
-  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
-
   const [entidade, setEntidade] = useState({});
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -60,20 +58,20 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
       <TextDefault sx={{ mt: 2 }}>Carregando dados {entidade?.idEmpresa ? "da empresa" : "do projeto"}...</TextDefault>
     </Stack>
   );
-  
+
   const totalTarefas = entidade.areas?.length > 0 ? entidade.areas.reduce((total, area) => total + area.valor, 0) : 0;
 
   const renderIcon = () => {
 
     if (entidade.progresso == 100) {
       return (
-        <Check sx={{ border: 'solid #2196f3 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
+        <Check sx={{ border: 'solid green 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
       );
     }
 
     if (!entidade.comImpedimento) {
       return (
-        <Check sx={{ border: 'solid green 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
+        <Check sx={{ border: 'solid #2196f3 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
       );
     }
     if (entidade.comImpedimento && entidade.progresso < 50) {
@@ -109,15 +107,31 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
               </Stack>
 
               <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <div style={{ width: '50%', heigth: '50%', textAlign: 'center' }}>
-                  {renderIcon()}
-                </div>
+                {/* <div style={{ width: '50%', heigth: '50%', textAlign: 'center' }}> */}
+                {/* {renderIcon()} */}
+                {/* </div> */}
+                <Stack sx={{
+                  width: 'calc(200px * 0.6)',
+                  height: 'calc(200px * 0.6)',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: '15px',
+                  textAlign: 'center',
+                  borderRadius: '50%',
+                  borderColor: entidade.progresso == 100 ? '#4caf50' : entidade.comImpedimento ? '#f44336' : '#2196f3',
+                  borderWidth: '2px',
+                  borderStyle: 'solid',
+                  color: '#fff',
+                  fontSize: '1rem',
+                  fontWeight: 'bold'
+                }}>{entidade.progresso == 100 ? `${idProjeto ? "Projeto Finalizado" : "Projetos Finalizados"}` : entidade.comImpedimento ? "Projeto com Impedimento" : `${idProjeto ? "Projeto" : "Projetos"} em Andamento`}</Stack>
                 <RadialChart progresso={entidade.progresso}></RadialChart>
               </Stack>
 
               <Stack sx={{ bgcolor: '#101010', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
                 <Stack sx={{ alignItems: 'start' }}>
-                  <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Responsável</TextDefaultKpi>
+                  <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>{idProjeto ? "Responsável" : "Diretor"}</TextDefaultKpi>
                   <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.nomeResponsavel}</TextDefaultKpi>
                 </Stack>
                 <LensIcon sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></LensIcon>
@@ -126,10 +140,11 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
             <LineChart orcamento={entidade.orcamento} financeiros={entidade.financeiroResponseDtos} toogleModal={toogleModal} atualizarEntidade={atualizarEntidade}></LineChart>
           </Stack>
 
-          <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '40%', height: 'calc(100%)', padding: '1rem', justifyContent: 'space-between', gap: '2rem' }}>
-            <MinimalBarChart areas={entidade.areas} sx={{ flex: 1 }}></MinimalBarChart>
+          <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '40%', height: 'calc(100%)', padding: '1rem', justifyContent: 'space-between', gap: '1rem' }}>
 
             <Stack sx={{ gap: '2rem', flex: 1 }}>
+              <MinimalBarChart areas={entidade.areas} sx={{ flex: 1 }}></MinimalBarChart>
+              
               <Stack>
                 <TextDefault sx={{ color: '#eeeeee' }}>Áreas com mais tarefa</TextDefault>
                 <TextDefault sx={{ fontSize: '12px', fontWeight: '400' }}>Nos ultimos meses</TextDefault>

@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Alert, Divider, Snackbar, Stack, InputAdornment, IconButton } from "@mui/material";
+import { Alert, Divider, Snackbar, Stack, InputAdornment, IconButton, Modal } from "@mui/material";
 import { ButtonMeu, LoginBack, LoginTitulo, InputMinha } from "./ContainerBoard.styles";
 import { useNavigate } from "react-router";
 import { handleSubmitLogin } from "../../Utils/UsePost";
 import React from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-const ContainerBoard = () => {
+const ContainerBoard = ({ toggleModal }) => { 
   const navigate = useNavigate();
   const [responseMessage, setResponseMessage] = React.useState('');
   const [responseSucess, setResponseSucess] = React.useState('');
@@ -91,13 +91,12 @@ const ContainerBoard = () => {
       <Stack sx={{ gap: '0.5rem', alignItems: 'center' }}>
         <Divider sx={{ color: '#fff', background: '#fff', width: '100%' }} />
         <p style={{ fontSize: '16px' }}>
-          {' '}
-          <b onClick={() => console.log("Esqueci minha senha")} style={{ color: 'rgba(89,194,255,1)', cursor: 'pointer' }}>
+          <b onClick={() => toggleModal()} style={{ cursor: 'pointer' }}>
             Esqueci minha senha
           </b>
         </p>
       </Stack>
-    </LoginBack>
+    </LoginBack >
   );
 };
 

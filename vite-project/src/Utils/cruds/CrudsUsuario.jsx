@@ -199,6 +199,66 @@ export const putSenhaUsuario = async (modifiedUsuario, idUsuario) => {
     }
 };
 
+export const putEsqueciASenhaUsuario = async (modifiedUsuario, idUsuario) => {
+    try {
+        const formattedUsuario = JSON.stringify(modifiedUsuario);
+        console.log("Dados enviados oi:", formattedUsuario);
+
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/esqueciASenha/${idUsuario}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: formattedUsuario,
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            Swal.fire({
+                icon: "success",
+                position: "center",
+                backdrop: false,
+                timer: 1000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                customClass: {
+                    popup: "swalAlerta",
+                }
+            });
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: res.status,
+                position: "center",
+                backdrop: false,
+                timer: 1000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                text: data.message || "Erro",
+                customClass: {
+                    popup: "swalAlerta",
+                }
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        Swal.fire({
+            icon: "error",
+            title: "Erro",
+            position: "center",
+            backdrop: false,
+            timer: 1000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            text: error.message || "Algo deu errado!",
+            customClass: {
+                popup: "swalAlerta",
+            }
+        });
+    }
+};
+
 export const putCoresUsuario = async (modifiedUsuario, idUsuario) => {
     try {
         const formattedUsuario = JSON.stringify(modifiedUsuario);
@@ -395,6 +455,45 @@ export const getUsuario = async (idUsuario) => {
         });
         const usuario = await res.json();
         localStorage.setItem("usuario", JSON.stringify(usuario));
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error);
+        return null;
+    }
+}
+
+export const getIdUsuario = async (email) => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/emailExistente/${email}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log("Resposta do servidor:", res);
+        const response = await res.json();
+        
+        return response;
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error);
+        return null;
+    }
+}
+
+export const enviarCodigo = async (body) => {
+    try {
+        const formattedUsuario = JSON.stringify(body);
+
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/codigoEsqueciASenha`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: formattedUsuario
+        });
+        console.log("Resposta do servidor:", res);
+        const response = await res.json();
+        
+        return response;
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);
         return null;

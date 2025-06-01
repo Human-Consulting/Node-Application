@@ -10,6 +10,7 @@ import NextStep from './Molecules/NextStep/NextStep.jsx'
 import CentralTask from './Molecules/CentralTask/CentralTask.jsx'
 import Usuarios from './Molecules/Usuarios/Usuarios.jsx'
 import Dashboard from './Molecules/Dashboard/Dashboard.jsx'
+import LoginContainer from './Molecules/LoginContainer/LoginContainer.jsx'
 
 const router = createBrowserRouter([
   {
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Login/>
+    element: <LoginContainer/>
   }
 ]);
 
