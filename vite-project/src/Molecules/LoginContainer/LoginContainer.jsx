@@ -72,7 +72,7 @@ export default function LoginContainer() {
         entidade={"esqueciASenha"}
         form={
           isValid
-            ? <FormsEsqueciASenha id={id} />
+            ? <FormsEsqueciASenha id={id} toggleModal={toggleModal} />
             : codigo
               ? <FormsCodigo email={email} codigo={codigo} setCodigo={setCodigo} codigoValidade={codigoValidade} setCodigoValidade={setCodigoValidade} isValidTempo={isValidTempo} setIsValidTempo={setIsValidTempo} setIsValid={setIsValid} />
               : <FormsEmail setEmail={setEmail} setCodigo={setCodigo} setId={setId} setIsValidTempo={setIsValidTempo} setCodigoValidade={setCodigoValidade} />

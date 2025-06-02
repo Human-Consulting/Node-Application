@@ -14,26 +14,39 @@ const FormsEmail = ({ setCodigo, setEmail, setId, setCodigoValidade, setIsValidT
         return Math.floor(100000 + Math.random() * 900000).toString();
     }
 
+    // const handleEnvioEmail = async () => {
+    //     if (!validarCampos()) return;
+    //     setErros({});
+    //     const id = await getIdUsuario(email);
+    //     if (id) {
+    //         setId(id);
+    //         const codigo = gerarCodigo();
+    //         const body = { email, codigo };
+
+    //         await enviarCodigo(body);
+    //         setEmail(email);
+    //         setCodigo(codigo);
+    //         setIsValidTempo(true);
+
+    //         const tempoLimite = 5 * 60 * 1000;
+    //         const validade = Date.now() + tempoLimite;
+    //         setCodigoValidade(validade);
+    //         setTimeout(() => setIsValidTempo(false), tempoLimite);
+    //     }
+    // };
+
     const handleEnvioEmail = async () => {
-        if (!validarCampos()) return;
-        setErros({});
-        const id = await getIdUsuario(email);
-        if (id) {
-            setId(id);
-            const codigo = gerarCodigo();
-            const body = { email, codigo };
+        setId(21);
+        const codigo = gerarCodigo();
+        console.log("Código: " + codigo);
+        setEmail(email);
+        setCodigo(codigo);
+        setIsValidTempo(true);
 
-            await enviarCodigo(body);
-            setId(id);
-            setEmail(email);
-            setCodigo(codigo);
-            setIsValidTempo(true);
-
-            const tempoLimite = 5 * 60 * 1000;
-            const validade = Date.now() + tempoLimite;
-            setCodigoValidade(validade);
-            setTimeout(() => setIsValidTempo(false), tempoLimite);
-        }
+        const tempoLimite = 5 * 60 * 1000;
+        const validade = Date.now() + tempoLimite;
+        setCodigoValidade(validade);
+        setTimeout(() => setIsValidTempo(false), tempoLimite);
     };
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

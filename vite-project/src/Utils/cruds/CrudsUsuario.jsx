@@ -226,6 +226,7 @@ export const putEsqueciASenhaUsuario = async (modifiedUsuario, idUsuario) => {
                     popup: "swalAlerta",
                 }
             });
+            return true;
         } else {
             Swal.fire({
                 icon: "error",
@@ -240,6 +241,7 @@ export const putEsqueciASenhaUsuario = async (modifiedUsuario, idUsuario) => {
                     popup: "swalAlerta",
                 }
             });
+            return false;
         }
     } catch (error) {
         console.error(error);
