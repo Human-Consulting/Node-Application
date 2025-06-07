@@ -323,7 +323,7 @@ export const putCoresUsuario = async (modifiedUsuario, idUsuario) => {
 
 export const deleteUsuario = async (idUsuario, body) => {
     const formattedUsuario = JSON.stringify(body);
-    
+
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -473,7 +473,7 @@ export const getIdUsuario = async (email) => {
         });
         console.log("Resposta do servidor:", res);
         const response = await res.json();
-        
+
         return response;
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);
@@ -484,6 +484,7 @@ export const getIdUsuario = async (email) => {
 export const enviarCodigo = async (body) => {
     try {
         const formattedUsuario = JSON.stringify(body);
+        console.log("Dados enviados:", formattedUsuario);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/codigoEsqueciASenha`, {
             method: 'POST',
@@ -492,10 +493,35 @@ export const enviarCodigo = async (body) => {
             },
             body: formattedUsuario
         });
-        console.log("Resposta do servidor:", res);
-        const response = await res.json();
-        
-        return response;
+        if (res.ok) {
+            Swal.fire({
+                icon: "success",
+                position: "center",
+                backdrop: false,
+                text: "Código enviado com sucesso!",
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                customClass: {
+                    popup: "swalAlerta",
+                }
+            });
+            return true;
+        } else {
+            Swal.fire({
+                icon: "error",
+                position: "center",
+                backdrop: false,
+                timer: 1000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                text: "Erro ao enviar código. Tente novamente.",
+                customClass: {
+                    popup: "swalAlerta",
+                }
+            });
+            return false;
+        }
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);
         return null;
