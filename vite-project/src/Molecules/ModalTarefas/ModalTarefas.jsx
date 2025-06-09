@@ -24,7 +24,7 @@ const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
                         <ListItemText
                             primary={
                                 <Typography variant="subtitle1" fontWeight="bold" color={'text.paper'}>
-                                    {tarefa.descricao}
+                                    {tarefa.titulo}
                                 </Typography>
                             }
                             secondary={

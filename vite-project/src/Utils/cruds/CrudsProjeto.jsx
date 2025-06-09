@@ -101,7 +101,7 @@ export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
         const formattedProjeto = JSON.stringify(modifiedProjeto);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -157,7 +157,9 @@ export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
     }
 };
 
-export const deleteProjeto = async (idProjeto) => {
+export const deleteProjeto = async (idProjeto, body) => {
+    const formattedProjeto = JSON.stringify(body);
+
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -177,6 +179,7 @@ export const deleteProjeto = async (idProjeto) => {
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`, {
                 method: 'DELETE',
+                body: formattedProjeto,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`

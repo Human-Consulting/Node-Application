@@ -17,13 +17,23 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Chat from '../Chat/Chat';
 
 const MainContent = () => {
-  const { nomeEmpresa, idEmpresa } = useParams();
+  const { idEmpresa } = useParams();
 
   const [showLateralBar, setShowLateralBar] = useState(true);
   const [projetos, setProjetos] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [empresas, setEmpresas] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+  const stringFinal = usuarioLogado?.cores || "#606080|#8d7dca|#4e5e8c|true";
+
+  const [cor1, cor2, cor3, animateStr] = stringFinal.split("|");
+
+  const [color1, setColor1] = useState(cor1);
+  const [color2, setColor2] = useState(cor2);
+  const [color3, setColor3] = useState(cor3);
+  const [animate, setAnimate] = useState(animateStr === "true");
 
   const hideShowLateralBar = () => {
     setShowLateralBar(false);
@@ -53,7 +63,7 @@ const MainContent = () => {
 
   useEffect(() => {
     const carregarDados = async () => {
-      setLoading(true); 
+      setLoading(true);
       if (Number(idEmpresa) === 1) await atualizarEmpresas();
       else await atualizarProjetos();
       await buscarUsuarios();
@@ -74,22 +84,21 @@ const MainContent = () => {
       <LateralBar projetos={projetos} empresas={empresas} />
 
       <Routes>
-        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} projetos={projetos} empresas={empresas} usuarios={usuarios} />} />
+        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} projetos={projetos} empresas={empresas} usuarios={usuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate}/>} />
 
-        <Route path="/Roadmap/:descricaoProjeto/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} showTitle={true} />} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate}/>} />
 
-        <Route path="/Roadmap/:descricaoProjeto/:idProjeto/Tarefas/:idSprint/:index" element={<CentralTask toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} />} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto/Tarefas/:idSprint/:index" element={<CentralTask toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} color1={color1} color2={color2} color3={color3} animate={animate}/>} />
 
-        <Route path="/Usuarios" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} />} />
+        <Route path="/Usuarios" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} color1={color1} color2={color2} color3={color3} animate={animate}/>} />
 
-        <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
+        <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate}/>} />
+
+        <Route path="/Dash/:tituloProjeto/:idProjeto" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 
         <Route path="/Chat" element={<Chat toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
 
-
-        <Route path="/Dash/:descricaoProjeto/:idProjeto" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
-
-        <Route path="/next-step/:descricaoProjeto/:idProjeto" element={<NextStep toogleLateralBar={hideShowLateralBar} />} />
+        <Route path="/next-step/:tituloProjeto/:idProjeto" element={<NextStep toogleLateralBar={hideShowLateralBar} />} />
       </Routes>
 
       <LateralBarRight showLateralBar={showLateralBar} projetos={projetos} empresas={empresas} />

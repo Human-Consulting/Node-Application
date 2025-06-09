@@ -1,22 +1,22 @@
 import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './ProjectsCard.styles';
 import { Stack, Button } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CheckIcon from '@mui/icons-material/Check';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import { Block, Check, MoreVert } from '@mui/icons-material';
 
-function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas }) {
+function ProjectsCard({ item, toogleModal }) {
   const { nomeEmpresa, idEmpresa } = useParams();
   const navigate = useNavigate();
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+  const responsavelCard = item?.nomeDiretor || item?.nomeResponsavel || 'Responsável não registrado';
 
   let statusColor = '#08D13D';
   if (item) {
     if (item.progresso == 100) {
       statusColor = '#2196f3';
+      statusColor = '#08D13D';
     }
     else if (item.comImpedimento == 0) {
-      statusColor = '#08D13D';
+      statusColor = 'transparent';
     } else if (item.comImpedimento == 1 && item.progresso > 50) {
       statusColor = '#CED108';
     } else {
@@ -25,23 +25,24 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
   }
 
   const renderIconeStatusProjeto = () => {
-    if (item.progresso == 100) return (<CheckIcon sx={{ fontSize: '22px' }} />);
-    if (item.comImpedimento) return (<PriorityHighIcon sx={{ fontSize: '22px' }} />);
+    if (item.progresso == 100) return (<Check sx={{ fontSize: '22px' }} />);
+    if (item.comImpedimento) return (<Block sx={{ fontSize: '25px' }} />);
 
-    return (<CheckIcon sx={{ fontSize: '25px' }} />);
+    return null;
   };
 
   const handleOpenProject = async () => {
     idEmpresa == 1 ? navigate(`/Home/${item.nome}/${Number(item.idEmpresa)}`)
-      : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${item.descricao}/${Number(item.idProjeto)}`);
+      : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${item.titulo}/${Number(item.idProjeto)}`);
     //? Utilizar? 
     // : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/next-step/${item.descricao}/${Number(item.idProjeto)}`);
   }
+  console.log(item);
 
   return (
     <>
       {item ?
-        <BoxBody onClick={handleOpenProject} sx={{ border: `solid ${usuarioLogado.projetosVinculados.includes(item.idProjeto) ? 'white' : 'transparent'} 1px` }}>
+        <BoxBody onClick={handleOpenProject} sx={{ border: `solid ${usuarioLogado.projetosVinculados.includes(item.idProjeto) ? 'white' : 'transparent'} 2px` }}>
           <HeaderCard sx={{
             backgroundImage: `url(data:image/png;base64,${item.urlImagem})`,
             backgroundSize: 'cover',
@@ -49,8 +50,8 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
             backgroundRepeat: 'no-repeat',
           }} />
           <BodyCard>
-            <Title>{item?.descricao || item.nome}</Title>
-            <MoreVertIcon
+            <Title>{item?.titulo || item.nome}</Title>
+            <MoreVert
               onClick={(e) => {
                 e.stopPropagation();
                 toogleModal(item, idEmpresa == 1 ? 'empresa' : 'projeto');
@@ -69,7 +70,8 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
                 }
               }}
             />
-            <Subtitle>{item?.nomeResponsavel != null ? `Responsável: ${item.nomeResponsavel}` : item.nomeDiretor == null ? "Diretor não registrado" : `Diretor: ${item.nomeDiretor}`}</Subtitle>
+            {/* <Subtitle>{item?.nomeDiretor === null ? "Diretor não registrado." : item?.nomeDiretor !== null ? `Diretor: ${item?.nomeDiretor}` : item?.nomeResponsavel !== null ? `Responsável: ${item.nomeResponsavel}` : item.nomeResponsavel == null ? "Responsável não registrado" : null}</Subtitle> */}
+            <Subtitle>{responsavelCard}</Subtitle>
             <Subtitle><b>Orçamento:</b> R${item.orcamento}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
@@ -86,7 +88,7 @@ function ProjectsCard({ item, toogleModal, atualizarProjetos, atualizarEmpresas 
         <BoxBody onClick={() => toogleModal(null, idEmpresa == 1 ? 'empresa' : 'projeto')} sx={{ justifyContent: 'center', alignItems: 'center' }}>
           <Button
             variant="contained" >
-            {idEmpresa == 1 ? "CRIAR NOVA EMPRESA" : "CRIAR NOVO PROJETO"}
+            {idEmpresa == 1 ? "CRIAR EMPRESA" : "CRIAR PROJETO"}
           </Button>
         </BoxBody>}
     </>
