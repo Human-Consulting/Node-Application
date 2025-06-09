@@ -14,6 +14,7 @@ import Usuarios from '../Usuarios/Usuarios';
 import Dashboard from '../Dashboard/Dashboard';
 import { getEmpresas } from '../../Utils/cruds/CrudsEmpresa';
 import CircularProgress from '@mui/material/CircularProgress';
+import Chat from '../Chat/Chat';
 
 const MainContent = () => {
   const { idEmpresa } = useParams();
@@ -94,6 +95,8 @@ const MainContent = () => {
         <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate}/>} />
 
         <Route path="/Dash/:tituloProjeto/:idProjeto" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} />} />
+
+        <Route path="/Chat" element={<Chat toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
 
         <Route path="/next-step/:tituloProjeto/:idProjeto" element={<NextStep toogleLateralBar={hideShowLateralBar} />} />
       </Routes>

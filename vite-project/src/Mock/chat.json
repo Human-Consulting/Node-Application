@@ -1,0 +1,547 @@
+{
+  "chats": [
+    {
+      "id": "1",
+      "participants": [
+        {
+          "id": 1,
+          "name": "Samuel Luciano",
+          "avatarUrl": "https://i.pravatar.cc/150?img=1"
+        },
+        {
+          "id": 2,
+          "name": "Maria Souza",
+          "avatarUrl": "https://i.pravatar.cc/150?img=2"
+        }
+      ],
+      "messages": [
+        {
+          "id": 1,
+          "senderId": 1,
+          "message": "Oi Maria! Tudo certo por aí?",
+          "date": "09:00"
+        },
+        {
+          "id": 2,
+          "senderId": 2,
+          "message": "Bom dia! Tudo sim, e contigo?",
+          "date": "09:01"
+        },
+        {
+          "id": 3,
+          "senderId": 1,
+          "message": "Tranquilo. Já viu o novo layout?",
+          "date": "09:03"
+        },
+        {
+          "id": 4,
+          "senderId": 2,
+          "message": "Vi sim. Achei ótimo!",
+          "date": "09:04"
+        },
+        {
+          "id": 5,
+          "senderId": 2,
+          "message": "Mais alguma novidade?",
+          "date": "09:05"
+        },
+        {
+          "id": 6,
+          "senderId": 1,
+          "message": "Hoje sai a nova versão da API.",
+          "date": "09:06"
+        },
+        {
+          "id": 7,
+          "senderId": 1,
+          "message": "teste",
+          "date": "19:46"
+        },
+        {
+          "id": 8,
+          "senderId": 1,
+          "message": "teste",
+          "date": "19:46"
+        },
+        {
+          "id": 9,
+          "senderId": 1,
+          "message": "batata",
+          "date": "19:46"
+        },
+        {
+          "id": 10,
+          "senderId": 1,
+          "message": "teste",
+          "date": "20:01"
+        },
+        {
+          "id": 11,
+          "senderId": 1,
+          "message": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "date": "20:14"
+        }
+      ]
+    },
+    {
+      "id": "26",
+      "participants": [
+        {
+          "id": 1,
+          "name": "Samuel Luciano",
+          "avatarUrl": "https://i.pravatar.cc/150?img=1"
+        },
+        {
+          "id": 3,
+          "name": "João Pedro",
+          "avatarUrl": "https://i.pravatar.cc/150?img=3"
+        }
+      ],
+      "messages": [
+        {
+          "id": 1,
+          "senderId": 3,
+          "message": "E aí, Samuel! Já viu aquele bug da home?",
+          "date": "08:30"
+        },
+        {
+          "id": 2,
+          "senderId": 1,
+          "message": "Bom dia! Sim, to olhando agora.",
+          "date": "08:31"
+        },
+        {
+          "id": 3,
+          "senderId": 3,
+          "message": "Se precisar de log, me avisa.",
+          "date": "08:32"
+        },
+        {
+          "id": 4,
+          "senderId": 1,
+          "message": "Beleza. Parece que o hook tá quebrando no primeiro render.",
+          "date": "08:34"
+        },
+        {
+          "id": 5,
+          "senderId": 1,
+          "message": "vamo la",
+          "date": "19:46"
+        },
+        {
+          "id": 6,
+          "senderId": 1,
+          "message": "aiiii calica",
+          "date": "19:47"
+        },
+        {
+          "id": 7,
+          "senderId": 1,
+          "message": "toma",
+          "date": "19:47"
+        }
+      ]
+    },
+    {
+        "id": "2",
+        "participants": [
+          {
+            "id": 1,
+            "name": "Samuel Luciano",
+            "avatarUrl": "https://i.pravatar.cc/150?img=1"
+          },
+          {
+            "id": 3,
+            "name": "João Pedro",
+            "avatarUrl": "https://i.pravatar.cc/150?img=3"
+          }
+        ],
+        "messages": [
+          {
+            "id": 1,
+            "senderId": 3,
+            "message": "E aí, Samuel! Já viu aquele bug da home?",
+            "date": "08:30"
+          },
+          {
+            "id": 2,
+            "senderId": 1,
+            "message": "Bom dia! Sim, to olhando agora.",
+            "date": "08:31"
+          },
+          {
+            "id": 3,
+            "senderId": 3,
+            "message": "Se precisar de log, me avisa.",
+            "date": "08:32"
+          },
+          {
+            "id": 4,
+            "senderId": 1,
+            "message": "Beleza. Parece que o hook tá quebrando no primeiro render.",
+            "date": "08:34"
+          },
+          {
+            "id": 5,
+            "senderId": 1,
+            "message": "vamo la",
+            "date": "19:46"
+          },
+          {
+            "id": 6,
+            "senderId": 1,
+            "message": "aiiii calica",
+            "date": "19:47"
+          },
+          {
+            "id": 7,
+            "senderId": 1,
+            "message": "toma",
+            "date": "19:47"
+          }
+        ]
+      },
+      {
+        "id": "29",
+        "participants": [
+          {
+            "id": 1,
+            "name": "Samuel Luciano",
+            "avatarUrl": "https://i.pravatar.cc/150?img=1"
+          },
+          {
+            "id": 3,
+            "name": "João Pedro",
+            "avatarUrl": "https://i.pravatar.cc/150?img=3"
+          }
+        ],
+        "messages": [
+          {
+            "id": 1,
+            "senderId": 3,
+            "message": "E aí, Samuel! Já viu aquele bug da home?",
+            "date": "08:30"
+          },
+          {
+            "id": 2,
+            "senderId": 1,
+            "message": "Bom dia! Sim, to olhando agora.",
+            "date": "08:31"
+          },
+          {
+            "id": 3,
+            "senderId": 3,
+            "message": "Se precisar de log, me avisa.",
+            "date": "08:32"
+          },
+          {
+            "id": 4,
+            "senderId": 1,
+            "message": "Beleza. Parece que o hook tá quebrando no primeiro render.",
+            "date": "08:34"
+          },
+          {
+            "id": 5,
+            "senderId": 1,
+            "message": "vamo la",
+            "date": "19:46"
+          },
+          {
+            "id": 6,
+            "senderId": 1,
+            "message": "aiiii calica",
+            "date": "19:47"
+          },
+          {
+            "id": 7,
+            "senderId": 1,
+            "message": "toma",
+            "date": "19:47"
+          }
+        ]
+      },
+      {
+        "id": "34",
+        "participants": [
+          {
+            "id": 1,
+            "name": "Samuel Luciano",
+            "avatarUrl": "https://i.pravatar.cc/150?img=1"
+          },
+          {
+            "id": 3,
+            "name": "João Pedro",
+            "avatarUrl": "https://i.pravatar.cc/150?img=3"
+          }
+        ],
+        "messages": [
+          {
+            "id": 1,
+            "senderId": 3,
+            "message": "E aí, Samuel! Já viu aquele bug da home?",
+            "date": "08:30"
+          },
+          {
+            "id": 2,
+            "senderId": 1,
+            "message": "Bom dia! Sim, to olhando agora.",
+            "date": "08:31"
+          },
+          {
+            "id": 3,
+            "senderId": 3,
+            "message": "Se precisar de log, me avisa.",
+            "date": "08:32"
+          },
+          {
+            "id": 4,
+            "senderId": 1,
+            "message": "Beleza. Parece que o hook tá quebrando no primeiro render.",
+            "date": "08:34"
+          },
+          {
+            "id": 5,
+            "senderId": 1,
+            "message": "vamo la",
+            "date": "19:46"
+          },
+          {
+            "id": 6,
+            "senderId": 1,
+            "message": "aiiii calica",
+            "date": "19:47"
+          },
+          {
+            "id": 7,
+            "senderId": 1,
+            "message": "toma",
+            "date": "19:47"
+          }
+        ]
+      },
+      {
+        "id": "23",
+        "participants": [
+          {
+            "id": 1,
+            "name": "Samuel Luciano",
+            "avatarUrl": "https://i.pravatar.cc/150?img=1"
+          },
+          {
+            "id": 3,
+            "name": "João Pedro",
+            "avatarUrl": "https://i.pravatar.cc/150?img=3"
+          }
+        ],
+        "messages": [
+          {
+            "id": 1,
+            "senderId": 3,
+            "message": "E aí, Samuel! Já viu aquele bug da home?",
+            "date": "08:30"
+          },
+          {
+            "id": 2,
+            "senderId": 1,
+            "message": "Bom dia! Sim, to olhando agora.",
+            "date": "08:31"
+          },
+          {
+            "id": 3,
+            "senderId": 3,
+            "message": "Se precisar de log, me avisa.",
+            "date": "08:32"
+          },
+          {
+            "id": 4,
+            "senderId": 1,
+            "message": "Beleza. Parece que o hook tá quebrando no primeiro render.",
+            "date": "08:34"
+          },
+          {
+            "id": 5,
+            "senderId": 1,
+            "message": "vamo la",
+            "date": "19:46"
+          },
+          {
+            "id": 6,
+            "senderId": 1,
+            "message": "aiiii calica",
+            "date": "19:47"
+          },
+          {
+            "id": 7,
+            "senderId": 1,
+            "message": "toma",
+            "date": "19:47"
+          }
+        ]
+      },
+      {
+        "id": "21",
+        "participants": [
+          {
+            "id": 1,
+            "name": "Samuel Luciano",
+            "avatarUrl": "https://i.pravatar.cc/150?img=1"
+          },
+          {
+            "id": 3,
+            "name": "João Pedro",
+            "avatarUrl": "https://i.pravatar.cc/150?img=3"
+          }
+        ],
+        "messages": [
+          {
+            "id": 1,
+            "senderId": 3,
+            "message": "E aí, Samuel! Já viu aquele bug da home?",
+            "date": "08:30"
+          },
+          {
+            "id": 2,
+            "senderId": 1,
+            "message": "Bom dia! Sim, to olhando agora.",
+            "date": "08:31"
+          },
+          {
+            "id": 3,
+            "senderId": 3,
+            "message": "Se precisar de log, me avisa.",
+            "date": "08:32"
+          },
+          {
+            "id": 4,
+            "senderId": 1,
+            "message": "Beleza. Parece que o hook tá quebrando no primeiro render.",
+            "date": "08:34"
+          },
+          {
+            "id": 5,
+            "senderId": 1,
+            "message": "vamo la",
+            "date": "19:46"
+          },
+          {
+            "id": 6,
+            "senderId": 1,
+            "message": "aiiii calica",
+            "date": "19:47"
+          },
+          {
+            "id": 7,
+            "senderId": 1,
+            "message": "toma",
+            "date": "19:47"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "participants": [
+          {
+            "id": 1,
+            "name": "Samuel Luciano",
+            "avatarUrl": "https://i.pravatar.cc/150?img=1"
+          },
+          {
+            "id": 3,
+            "name": "João Pedro",
+            "avatarUrl": "https://i.pravatar.cc/150?img=3"
+          }
+        ],
+        "messages": [
+          {
+            "id": 1,
+            "senderId": 3,
+            "message": "E aí, Samuel! Já viu aquele bug da home?",
+            "date": "08:30"
+          },
+          {
+            "id": 2,
+            "senderId": 1,
+            "message": "Bom dia! Sim, to olhando agora.",
+            "date": "08:31"
+          },
+          {
+            "id": 3,
+            "senderId": 3,
+            "message": "Se precisar de log, me avisa.",
+            "date": "08:32"
+          },
+          {
+            "id": 4,
+            "senderId": 1,
+            "message": "Beleza. Parece que o hook tá quebrando no primeiro render.",
+            "date": "08:34"
+          },
+          {
+            "id": 5,
+            "senderId": 1,
+            "message": "vamo la",
+            "date": "19:46"
+          },
+          {
+            "id": 6,
+            "senderId": 1,
+            "message": "aiiii calica",
+            "date": "19:47"
+          },
+          {
+            "id": 7,
+            "senderId": 1,
+            "message": "toma",
+            "date": "19:47"
+          }
+        ]
+      },
+    {
+      "id": "3",
+      "participants": [
+        {
+          "id": 1,
+          "name": "Samuel Luciano",
+          "avatarUrl": "https://i.pravatar.cc/150?img=1"
+        },
+        {
+          "id": 4,
+          "name": "Luana Martins",
+          "avatarUrl": "https://i.pravatar.cc/150?img=4"
+        }
+      ],
+      "messages": [
+        {
+          "id": 1,
+          "senderId": 4,
+          "message": "Samuel, consegue revisar o cronograma?",
+          "date": "11:00"
+        },
+        {
+          "id": 2,
+          "senderId": 1,
+          "message": "Consigo sim!",
+          "date": "11:02"
+        },
+        {
+          "id": 3,
+          "senderId": 4,
+          "message": "Obrigada!",
+          "date": "11:03"
+        },
+        {
+          "id": 4,
+          "senderId": 1,
+          "message": "teste",
+          "date": "19:47"
+        },
+        {
+          "id": 5,
+          "senderId": 1,
+          "message": "teste",
+          "date": "19:53"
+        }
+      ]
+    }
+  ]
+}
