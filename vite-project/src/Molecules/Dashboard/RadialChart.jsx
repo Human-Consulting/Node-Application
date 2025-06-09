@@ -35,7 +35,7 @@ const RadialChart = ({ progresso }) => {
     labels: ['Progresso'],
   };
 
-  const series = [progresso];
+  const series = [progresso || 0];
 
   return (
     <div style={{width: '50%'}}>

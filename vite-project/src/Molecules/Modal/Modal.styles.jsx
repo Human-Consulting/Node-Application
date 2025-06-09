@@ -16,7 +16,7 @@ export const Backdrop = styled(Box)({
 
 export const ModalContent = styled(Box)({
     position: 'absolute',
-    width: 450,
+    width: '450px',
     backgroundColor: '#000',
     borderRadius: 8,
     paddingInline: 20,

@@ -26,7 +26,8 @@ const Linha = ({ usuario, toogleModal, atualizarUsuarios }) => {
     const temPermissaoDelete = validarPermissaoDelete();
 
     const handleDelete = async () => {
-        await deleteUsuario(usuario.idUsuario);
+        const bodyDelete = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
+        await deleteUsuario(usuario.idUsuario, bodyDelete);
         await atualizarUsuarios();
     };
 
@@ -39,18 +40,18 @@ const Linha = ({ usuario, toogleModal, atualizarUsuarios }) => {
             <td>{usuario.nome}</td>
             <td>{usuario.email}</td>
             <td>{usuario.area}</td>
-            <td>{usuario.permissao == 'FUNC' ? "TEAM MEMBER" : usuario.permissao}</td>
+            <td>{usuario.cargo}</td>
             {idEmpresa == 1 ? null :
                 <>
                     <td>{usuario.qtdTarefas}</td>
                     <td>{usuario.comImpedimento ? "Sim" : "Não"}</td>
                 </>}
             <td className="tdActions">
-                <button onClick={handleDelete} disabled={!temPermissaoDelete}>
-                    <DeleteIcon sx={{ color: '#00ffff' }} />
-                </button>
                 <button onClick={handleEditar} disabled={!temPermissaoPut}>
-                    <EditIcon color="primary" />
+                    <EditIcon />
+                </button>
+                <button onClick={handleDelete} disabled={!temPermissaoDelete}>
+                    <DeleteIcon />
                 </button>
             </td>
         </tr>

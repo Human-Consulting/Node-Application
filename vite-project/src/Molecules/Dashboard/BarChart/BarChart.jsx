@@ -36,7 +36,7 @@ const MinimalBarChart = ({ areas }) => {
       }
     },
     xaxis: {
-      categories: areas.map(area => area.nome),
+      categories: areas?.map(area => area.nome),
       labels: {
         style: {
           colors: '#fff'
@@ -63,7 +63,7 @@ const MinimalBarChart = ({ areas }) => {
   const series = [
     {
       name: 'Tarefas',
-      data: areas.map(area => area.valor)
+      data: areas?.map(area => area.valor)
     }
   ];
 

@@ -1,7 +1,6 @@
 import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './MiniProjectsCard.styles'
 import { Stack } from '@mui/material'
-import CheckIcon from '@mui/icons-material/Check';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import { Check, Block } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router';
 
 function MiniProjectsCard({ entidade }) {
@@ -9,11 +8,9 @@ function MiniProjectsCard({ entidade }) {
   let statusColor = '#08D13D';
   if (entidade) {
     if (entidade.progresso == 100) {
-      statusColor = '#2196f3';
-    }
-    else if (entidade.comImpedimento == false) {
       statusColor = '#08D13D';
-    } else if (entidade.comImpedimento == true && entidade.progresso > 50) {
+    }
+    else if (entidade.comImpedimento == true && entidade.progresso > 50) {
       statusColor = '#CED108';
     } else {
       statusColor = '#FF0707';
@@ -21,10 +18,9 @@ function MiniProjectsCard({ entidade }) {
   }
 
   const renderIconeStatus = () => {
-    if (entidade.progresso == 100) return (<CheckIcon sx={{ fontSize: '25px' }} />);
-    if (entidade.comImpedimento) return (<PriorityHighIcon sx={{ fontSize: '16px' }} />);
-
-    return (<CheckIcon sx={{ fontSize: '16px' }} />);
+    if (entidade.progresso == 100) return (<Check sx={{ fontSize: '22px' }} />);
+    if (entidade.comImpedimento) return (<Block sx={{ fontSize: '22px' }} />);
+    return null;
   };
 
   const { nomeEmpresa, idEmpresa } = useParams();
@@ -33,7 +29,7 @@ function MiniProjectsCard({ entidade }) {
 
   const handleOpenProject = () => {
     if (idEmpresa == 1) navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
-    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.descricao}/${Number(entidade.idProjeto)}`);
+    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.titulo}/${Number(entidade.idProjeto)}`);
   }
 
   return (
@@ -52,7 +48,7 @@ function MiniProjectsCard({ entidade }) {
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <Title>{entidade.nomeResponsavel || entidade.nomeDiretor}</Title>
             </Stack>
-            <Subtitle>{entidade.descricao || entidade.nome}</Subtitle>
+            <Subtitle>{entidade.titulo || entidade.nome}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
                 <Progress sx={{ width: `${entidade.progresso}%` }} />

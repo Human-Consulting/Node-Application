@@ -2,23 +2,25 @@ import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 
 
-export const MessageBody = styled(Box)({
-    minHeight: '50px',
-    maxHeight: 'auto',
-    background: '#eaeaea',
-    display: 'flex',
-    flexDirection: 'row',
-    borderRadius: '10px',
-    padding:   '0.7rem',
-    gap: '0.5rem'
-  });
+export const MessageBody = styled(Box)(({ isOwnMessage }) => ({
+  display: 'flex',
+  flexDirection: isOwnMessage ? 'row-reverse' : 'row',
+  alignItems: 'flex-start',
+  backgroundColor: '#ffffff',
+  borderRadius: '10px',
+  padding: '10px',
+  maxWidth: '80%',
+  wordBreak: 'break-word', // MUITO IMPORTANTE
+}));
 
-  export const MessageText = styled(Box)({
-    width: '100%',
-    minHeight: '50px',
-    maxHeight: 'auto',
-    color: '#000'
-  });
+export const MessageText = styled('p')({
+  margin: 0,
+  padding: '0 10px',
+  fontSize: '16px',
+  color: '#000',
+  wordBreak: 'break-word', // Evita overflow com palavras longas
+  whiteSpace: 'pre-wrap', // Preserva quebras de linha
+});
 
   export const MessageWrapper = styled(Box)(({ sent }) => ({
     maxWidth: '70%',

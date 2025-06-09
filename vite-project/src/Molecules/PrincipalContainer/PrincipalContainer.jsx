@@ -1,7 +1,6 @@
 import { HeaderContent, MidleCarrousel, PrincipalContainerStyled, TituloHeader } from './PrincipalContainer.styles'
 import { Stack, TextField, Button, Badge, Avatar } from '@mui/material'
 import ProjectsCard from '../ProjectsCard/ProjectsCard'
-import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient';
 import { useEffect, useState } from 'react';
 import Modal from '../Modal/Modal'
 import ModalTarefas from '../ModalTarefas/ModalTarefas'
@@ -10,8 +9,12 @@ import FormsEmpresa from './../Forms/FormsEmpresa.jsx';
 import { useNavigate, useParams } from 'react-router';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import ConstructionIcon from '@mui/icons-material/Construction';
+import ModalCores from '../ModalCores/ModalCores.jsx';
+import ColorLensIcon from '@mui/icons-material/ColorLens';
+import Shader from '../Shader/Shader.jsx';
 
-const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, empresas, usuarios }) => {
+const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setColor3, animate, setAnimate, toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, empresas, usuarios }) => {
 
   const navigate = useNavigate();
 
@@ -23,7 +26,7 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
   const [empresa, setEmpresa] = useState('');
   const [acao, setAcao] = useState('');
   const [listaFiltrada, setListaFiltrada] = useState([]);
-  
+
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
   if (!usuarioLogado.permissao.includes("CONSULTOR") && idEmpresa == 1) navigate(-1);
@@ -54,7 +57,7 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
 
   useEffect(() => {
     toogleLateralBar();
-    setListaFiltrada(idEmpresa == 1 ? empresas.slice(1) : projetos);
+    setListaFiltrada(idEmpresa == 1 && empresas.length > 1 ? empresas.slice(1) : projetos);
 
   }, [projetos, empresas, idEmpresa]);
 
@@ -69,38 +72,32 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
     navigate(`/Home/Empresas/${Number(1)}`);
   }
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorTarefa, setAnchorTarefa] = useState(null);
+  const [anchorCores, setAnchorCores] = useState(null);
 
-  const handleBadgeClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleBadgeClickTarefa = (event) => {
+    setAnchorTarefa(event.currentTarget);
   };
 
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
+  const handleBadgeClickCores = (event) => {
+    setAnchorCores(event.currentTarget);
   };
 
-  const openPopover = Boolean(anchorEl);
+  const handlePopoverCloseTarefa = () => {
+    setAnchorTarefa(null);
+  };
+
+  const handlePopoverCloseCores = () => {
+    setAnchorCores(null);
+  };
+
+  const openPopoverTarefas = Boolean(anchorTarefa);
+  const openPopoverCores = Boolean(anchorCores);
 
   return (
     <PrincipalContainerStyled>
       <HeaderContent>
-        <ShaderGradientCanvas
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 5,
-            pointerEvents: 'none'
-
-          }}
-        >
-
-          <ShaderGradient
-            control='query'
-            urlString='https://www.shadergradient.co/customize?animate=on&axesHelper=off&bgColor1=%23000000&bgColor2=%23000000&brightness=1.2&cAzimuthAngle=180&cDistance=2.8&cPolarAngle=80&cameraZoom=8.3&color1=%23606080&color2=%238d7dca&color3=%234e5e8c&destination=onCanvas&embedMode=off&envPreset=city&format=gif&fov=60&frameRate=10&gizmoHelper=hide&grain=on&lightType=3d&pixelDensity=2.4&positionX=-1.3&positionY=0&positionZ=0&range=enabled&rangeEnd=40&rangeStart=0&reflection=0.1&rotationX=40&rotationY=170&rotationZ=-60&shader=defaults&type=sphere&uAmplitude=1.7&uDensity=1.2&uFrequency=0&uSpeed=0.1&uStrength=2.1&uTime=8&wireframe=false&zoomOut=true'
-          />
-
-        </ShaderGradientCanvas>
-
+        <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={5} />
         <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6', alignItems: 'center' }}>
           <Avatar sx={{
             width: 56, height: 56, bgcolor: 'transparent',
@@ -143,10 +140,10 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
             }} />
           {
             !usuarioLogado.permissao.includes('CONSULTOR') ?
-              <Badge onClick={handleBadgeClick}
+              <Badge onClick={handleBadgeClickTarefa}
                 sx={{
                   '& .MuiBadge-badge': {
-                    fontSize: '1.5rem',
+                    fontSize: '1.25rem',
                     height: '26px',
                     width: '26px',
                     cursor: 'pointer'
@@ -157,22 +154,42 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
               : idEmpresa == 1 ?
                 <Button onClick={() => toogleModal(null, 'empresa')}
                   variant="contained">
-                  CRIAR NOVA EMPRESA
+                  CRIAR EMPRESA
                 </Button>
                 :
                 <Button onClick={() => toogleModal(null, 'projeto')}
                   variant="contained">
-                  CRIAR NOVO PROJETO
+                  CRIAR PROJETO
                 </Button>
           }
+          <ColorLensIcon onClick={handleBadgeClickCores}
+            sx={{
+              height: '40px',
+              width: '40px',
+              cursor: 'pointer'
+            }} />
 
         </Stack>
         <TituloHeader>{idEmpresa != 1 && usuarioLogado.permissao.includes('CONSULTOR') ? <ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px' }} onClick={handleOpenEmpresas} /> : null} {idEmpresa == 1 ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}</TituloHeader>
       </HeaderContent>
       <MidleCarrousel>
-        {listaFiltrada.length < 1 || listaFiltrada == null ? null : listaFiltrada.map(item => (
-          <ProjectsCard item={item} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} ></ProjectsCard>
-        ))}
+        {listaFiltrada?.length > 0 ? (
+          listaFiltrada.map(item => (
+            <ProjectsCard
+              key={item.id}
+              item={item}
+              toogleModal={toogleModal}
+              atualizarProjetos={atualizarProjetos}
+              atualizarEmpresas={atualizarEmpresas}
+            />
+          ))
+        ) : (!usuarioLogado.permissao.includes('CONSULTOR')) && (
+          <Stack sx={{ justifyContent: 'center', alignItems: 'center', marginTop: '2rem', width: '350%' }}>
+            <ConstructionIcon sx={{ fontSize: '5rem' }} />
+            Nenhum projeto encontrado!
+          </Stack>
+        )}
+
         {usuarioLogado.permissao.includes('CONSULTOR') ?
           <ProjectsCard toogleModal={toogleModal} ></ProjectsCard>
           : null}
@@ -187,9 +204,22 @@ const PrincipalContainer = ({ toogleLateralBar, atualizarProjetos, atualizarEmpr
       </Modal>
       <ModalTarefas
         tarefas={usuarioLogado.tarefasVinculadas}
-        open={openPopover}
-        anchorEl={anchorEl}
-        onClose={handlePopoverClose}
+        open={openPopoverTarefas}
+        anchorEl={anchorTarefa}
+        onClose={handlePopoverCloseTarefa}
+      />
+      <ModalCores
+        color1={color1}
+        setColor1={setColor1}
+        color2={color2}
+        setColor2={setColor2}
+        color3={color3}
+        setColor3={setColor3}
+        animate={animate}
+        setAnimate={setAnimate}
+        open={openPopoverCores}
+        anchorEl={anchorCores}
+        onClose={handlePopoverCloseCores}
       />
     </PrincipalContainerStyled>
 

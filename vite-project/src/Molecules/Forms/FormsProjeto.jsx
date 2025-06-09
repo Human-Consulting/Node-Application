@@ -8,10 +8,13 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmpresa }) => {
 
+    const [titulo, setTitulo] = useState(projeto?.titulo || "");
     const [descricao, setDescricao] = useState(projeto?.descricao || "");
     const [orcamento, setOrcamento] = useState(projeto?.orcamento || "");
-    const [fkResponsavel, setResponsavel] = useState(projeto?.idResponsavel || '0');
+    const [fkResponsavel, setResponsavel] = useState(projeto?.fkResponsavel || '#');
     const [urlImagem, setUrlImagem] = useState('');
+
+    const [erros, setErros] = useState({});
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -28,23 +31,40 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
         }
     };
 
+    const validarCampos = () => {
+        const novosErros = {};
+
+        if (!titulo.trim()) novosErros.titulo = "Título é obrigatório";
+        if (!descricao.trim()) novosErros.descricao = "Descrição é obrigatória";
+        if (!orcamento) novosErros.orcamento = "Orçamento é obrigatório";
+        if (!validarPermissaoFunc() && fkResponsavel === "#") novosErros.fkResponsavel = "Responsável é obrigatório";
+
+        setErros(novosErros);
+        return Object.keys(novosErros).length === 0;
+    };
+
     const handlePostProjeto = async () => {
-        const newProjeto = { fkEmpresa, descricao, orcamento, fkResponsavel, urlImagem };
+        if (!validarCampos()) return;
+        setErros({});
+        const newProjeto = { fkEmpresa, titulo, descricao, orcamento, fkResponsavel, urlImagem, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postProjeto(newProjeto, toogleModal);
         atualizarProjetos();
     };
 
     const handleDeleteProjeto = async () => {
         toogleModal();
-            await deleteProjeto(projeto.idProjeto);
-            await atualizarProjetos();
+        const bodyDelete = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao }
+        await deleteProjeto(projeto.idProjeto, bodyDelete);
+        await atualizarProjetos();
     }
 
     const handlePutProjeto = async () => {
-
+        if (!validarCampos()) return;
+        setErros({});
         const modifiedProjeto = {
             idEditor: usuarioLogado.idUsuario,
             permissaoEditor: usuarioLogado.permissao,
+            titulo,
             descricao,
             orcamento,
             fkResponsavel,
@@ -54,6 +74,21 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
         await atualizarProjetos();
     }
 
+    const validarPermissaoConsultor = () => {
+        return !usuarioLogado.permissao.includes('CONSULTOR')
+    }
+
+    const validarPermissaoFunc = () => {
+        return usuarioLogado.permissao == 'FUNC'
+    }
+
+    const removerErro = (campo) => {
+        setErros((prevErros) => {
+            const { [campo]: _, ...resto } = prevErros;
+            return resto;
+        });
+    };
+
     return (
         <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
             <Typography variant="h5" textAlign="center" mb={2}>
@@ -61,35 +96,63 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
             </Typography>
 
             <TextField
-                label="Descrição"
-                multiline
-                rows={3}
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
+                label="Título"
+                type="text"
+                disabled={validarPermissaoFunc()}
+                value={titulo}
+                onChange={(e) => {
+                    setTitulo(e.target.value)
+                    removerErro("titulo")}}
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
                 InputProps={{ style: inputStyle.input }}
                 sx={inputStyle.sx}
+                error={!!erros.titulo}
+                helperText={erros.titulo}
+            />
+            <TextField
+                label="Descrição"
+                multiline
+                rows={3}
+                disabled={validarPermissaoFunc()}
+                value={descricao}
+                onChange={(e) => {
+                    setDescricao(e.target.value)
+                    removerErro("descricao")}}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ style: inputStyle.label }}
+                InputProps={{ style: inputStyle.input }}
+                sx={inputStyle.sx}
+                error={!!erros.descricao}
+                helperText={erros.descricao}
             />
             <TextField
                 label="Orçamento"
                 type="number"
-                disabled={!usuarioLogado.permissao.includes('CONSULTOR')}
+                disabled={validarPermissaoConsultor()}
                 value={orcamento}
-                onChange={(e) => setOrcamento(e.target.value)}
+                onChange={(e) => {
+                    setOrcamento(e.target.value)
+                    removerErro("orcamento")}}
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
                 InputProps={{ style: inputStyle.input }}
                 sx={inputStyle.sx}
+                error={!!erros.orcamento}
+                helperText={erros.orcamento}
             />
 
             <Select
                 select
                 label="Responsável"
                 value={fkResponsavel}
-                onChange={(e) => setResponsavel(e.target.value)}
+                disabled={validarPermissaoFunc()}
+                onChange={(e) => {
+                    setResponsavel(e.target.value)
+                    removerErro("fkResponsavel")}}
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
@@ -110,8 +173,9 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                         }
                     }
                 }}
+                error={!!erros.fkResponsavel}
             >
-                <MenuItem value="0">Selecione o responsável</MenuItem>
+                <MenuItem value="#">Selecione o responsável</MenuItem>
                 {usuarios.map((usuario) => (
                     <MenuItem key={usuario.idUsuario} value={usuario.idUsuario}>
                         {usuario.nome}
@@ -130,7 +194,9 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                 <input
                     type="file"
                     hidden
-                    onChange={(e) => handleFileUpload(e.target.files[0])}
+                    onChange={(e) => {
+                        handleFileUpload(e.target.files[0])
+                        removerErro("hidde")}}
                 />
             </Button>
 

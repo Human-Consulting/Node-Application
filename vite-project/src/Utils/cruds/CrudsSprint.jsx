@@ -86,7 +86,7 @@ export const putSprint = async (modifiedSprint, idSprint) => {
         const formattedSprint = JSON.stringify(modifiedSprint);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/${idSprint}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -141,7 +141,9 @@ export const putSprint = async (modifiedSprint, idSprint) => {
     }
 };
 
-export const deleteSprint = async (idSprint) => {
+export const deleteSprint = async (idSprint, body) => {
+    const formattedSprint = JSON.stringify(body);
+
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -161,6 +163,7 @@ export const deleteSprint = async (idSprint) => {
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/${idSprint}`, {
                 method: 'DELETE',
+                body: formattedSprint,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
