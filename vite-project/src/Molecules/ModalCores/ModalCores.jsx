@@ -10,12 +10,13 @@ const ModalCores = ({ color1, setColor1, color2, setColor2, color3, setColor3, a
 
     const id = open ? 'tarefas-popover' : undefined;
     const [presetSelecionado, setPresetSelecionado] = useState('');
-    const [modoEdicao, setModoEdicao] = useState('preset');
 
 
     const handlePutCores = async () => {
         const coresData = `${color1}|${color2}|${color3}|${animate}`;
         await putCoresUsuario(coresData, usuarioLogado.idUsuario);
+        usuarioLogado.cores = coresData;
+        localStorage.setItem("usuario", JSON.stringify(usuarioLogado));
         onClose();
     }
 
@@ -47,8 +48,6 @@ const ModalCores = ({ color1, setColor1, color2, setColor2, color3, setColor3, a
             setPresetSelecionado(presetKey);
         }
     };
-
-    console.log(modoEdicao);
 
     return (
         <Popover

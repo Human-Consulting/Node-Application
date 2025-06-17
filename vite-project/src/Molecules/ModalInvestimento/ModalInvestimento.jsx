@@ -1,6 +1,5 @@
 import { Popover, List, ListItem, ListItemText, Typography, Button, Stack } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { Delete, Edit } from '@mui/icons-material';
 import { deleteInvestimento } from '../../Utils/cruds/CrudsInvestimento.jsx';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -66,8 +65,8 @@ const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal
                             />
                         </Stack>
                         <Stack sx={{ flexDirection: 'row', gap: 1 }}>
-                            <Button sx={{ borderWidth: '2px' }} variant="outlined" color='error' onClick={() => handleDeleteInvestimento(investimento.idInvestimento)}><DeleteIcon /></Button>
-                            <Button sx={{ borderWidth: '2px' }} variant="outlined" onClick={() => handleToogleModal(investimento)}><EditIcon /></Button>
+                            <Button sx={{ borderWidth: '2px' }} variant="outlined" color='error' onClick={() => handleDeleteInvestimento(investimento.idInvestimento)}><Delete /></Button>
+                            <Button sx={{ borderWidth: '2px' }} variant="outlined" onClick={() => handleToogleModal(investimento)}><Edit /></Button>
                         </Stack>
                     </ListItem>
                 ))}

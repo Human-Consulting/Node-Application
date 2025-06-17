@@ -2,47 +2,42 @@ import { Box, Button, InputBase } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const TextInput = styled('input')({
-    width: '75%',
-    height: '50px',
-    padding: '1rem'
- 
-  });
-  
+  width: '75%',
+  height: '50px',
+  padding: '1rem'
+});
 
 export const ContainerGeral = styled(Box)({
-  width: '80%',
+  width: '100%',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column',
-  backgroundColor: '#121212',
   fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
 });
 
 export const LateralMessage = styled(Box)({
-  width: '100%',
-  height: '15%',
-  backgroundColor: '#1f1f1f',
+  width: '20%',
+  width: '25%',
+  height: '100%',
+  background: '#0d0d0d',
   display: 'flex',
   flexDirection: 'column',
-  borderRight: '1px solid #333',
-  paddingTop: '10px',
+  borderRight: '1px solid #2e2e2e',
+  boxShadow: '2px 0 8px rgba(0,0,0,0.3)',
 });
 
 export const ContactItem = styled(Box)(({ active }) => ({
   display: 'flex',
-  flexDirection: 'column',
   alignItems: 'center',
-  flexShrink: 0,
-  padding: '0.5rem',
+  gap: '0.75rem',
+  padding: '0.6rem 1rem',
+  margin: '0.3rem 0.8rem',
+  borderRadius: '10px',
   cursor: 'pointer',
-  borderRadius: '8px',
-  margin: '4px 10px',
-  border: active ? '1px solid #36518c' : 'transparent',
-  color: active ? '#fff' : '#eee',
-  fontWeight: active ? 600 : 400,
-  transition: 'background-color 0.25s ease',
+  border: active ? '1px solid #3f5a88' : '1px solid transparent',
+  transition: 'all 0.2s ease',
   '&:hover': {
-    backgroundColor: active ? '#36518c' : '#333',
+    backgroundColor: '#333',
+    border: '1px solid #3f5a88',
   },
 }));
 
@@ -64,10 +59,29 @@ export const BackChat = styled(Box)({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: '#181818',
-  padding: '20px 24px',
   overflowY: 'auto',
   scrollBehavior: 'smooth',
+});
+
+export const Header = styled(Box)({
+  padding: '1rem 1rem',
+  borderBottom: '1px solid #333',
+  background: "linear-gradient(180deg, #151515 0%, #0d0d0d 100%)",
+  position: 'sticky',
+  top: 0,
+  zIndex: 20,
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginBottom: '1rem'
+});
+
+export const ItemHeader = styled(Box)({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: '0.75rem'
 });
 
 export const MessageWrapper = styled(Box)(({ sent }) => ({
@@ -79,6 +93,7 @@ export const MessageWrapper = styled(Box)(({ sent }) => ({
   lineHeight: 1.3,
   alignSelf: sent ? 'flex-end' : 'flex-start',
   textAlign: sent ? 'right' : 'left',
+  zIndex: 10
 }));
 
 export const MessageSender = styled('span')({
@@ -86,6 +101,7 @@ export const MessageSender = styled('span')({
   marginBottom: '4px',
   color: '#a1a1a1',
   userSelect: 'none',
+  zIndex: 10
 });
 
 export const MessageBox = styled(Box)(({ sent }) => ({
@@ -99,6 +115,7 @@ export const MessageBox = styled(Box)(({ sent }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: '10px',
+  zIndex: 10
 }));
 
 export const MessageTime = styled('span')({
@@ -106,6 +123,7 @@ export const MessageTime = styled('span')({
   color: '#777',
   marginTop: '2px',
   userSelect: 'none',
+  zIndex: 10
 });
 
 export const MessageAvatar = styled('img')({
@@ -114,12 +132,13 @@ export const MessageAvatar = styled('img')({
   borderRadius: '50%',
   objectFit: 'cover',
   boxShadow: '0 0 6px rgba(0,0,0,0.6)',
+  zIndex: 10
 });
 
 export const ChatInputContainer = styled(Box)({
   display: 'flex',
-  padding: '14px 24px',
-  backgroundColor: '#1e1e1e',
+  background: "linear-gradient(180deg, #151515 0%, #0d0d0d 100%)",
+  zIndex: 10,
   borderTop: '1px solid #333',
 });
 
@@ -127,15 +146,10 @@ export const ChatInput = styled(InputBase)({
   flex: 1,
   padding: '12px 16px',
   fontSize: '1rem',
-  borderRadius: '24px',
-  backgroundColor: '#2b2b2b',
   color: '#eee',
   '& .MuiInputBase-input::placeholder': {
-    color: '#777',
-  },
-  '&:focus-within': {
-    backgroundColor: '#3a3a3a',
-  },
+    color: '#FFF',
+  }
 });
 export const Scroll = styled(Box)({
   width: '100%',
@@ -143,19 +157,28 @@ export const Scroll = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   overflowY: 'scroll',
-  paddingRight: '1rem'
+  paddingRight: '1rem',
+  zIndex: 10,
+  '&::-webkit-scrollbar': {
+    width: '8px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: 'transparent',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: '#888',
+    borderRadius: '4px',
+  },
+  '&::-webkit-scrollbar-thumb:hover': {
+    background: '#aaa',
+  },
 
 });
 export const SendButton = styled(Button)({
-  marginLeft: '16px',
   padding: '12px 24px',
-  backgroundColor: '#28a745',
-  borderRadius: '24px',
-  color: 'white',
-  fontWeight: 600,
-  textTransform: 'none',
+  backgroundColor: 'transparent',
   '&:hover': {
-    backgroundColor: '#218838',
+    backgroundColor: '#1A4D7A',
   },
   '&:active': {
     backgroundColor: '#1e6c2f',
