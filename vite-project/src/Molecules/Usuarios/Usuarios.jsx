@@ -10,7 +10,7 @@ import SearchOffIcon from '@mui/icons-material/SearchOff';
 import FormsEditarSenhaUsuario from "../Forms/FormsEditarSenhaUsuario";
 import Shader from "../Shader/Shader";
 
-const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios, color1, color2, color3, animate }) => {
+const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios, color1, color2, color3, animate, telaAtual }) => {
 
   const navigate = useNavigate();
   const { idEmpresa, nomeEmpresa } = useParams();
@@ -45,6 +45,7 @@ const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios, color1, color
 
   useEffect(() => {
     toogleLateralBar();
+    telaAtual();
     setUsuariosFiltrados(usuarios);
   }, [usuarios]);
 

@@ -11,6 +11,7 @@ import Usuarios from './Molecules/Usuarios/Usuarios.jsx'
 import Dashboard from './Molecules/Dashboard/Dashboard.jsx'
 import LoginContainer from './Molecules/LoginContainer/LoginContainer.jsx'
 import Chat from './Molecules/Chat/Chat.jsx'
+import { WebSocketProvider } from './Utils/SocketIO/WebSocketProvider.jsx'
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <WebSocketProvider>
+      <RouterProvider router={router} />
+    </WebSocketProvider>
   </StrictMode>,
 )

@@ -18,7 +18,6 @@ const FormsEmail = ({ setCodigo, setEmail, setId, setCodigoValidade, setIsValidT
         if (!validarCampos()) return;
         setErros({});
         const id = await getIdUsuario(email);
-        console.log("ID do usuário:", id);
         if (id) {
             setId(id);
             const codigo = gerarCodigo();

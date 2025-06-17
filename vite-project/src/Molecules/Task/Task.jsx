@@ -10,7 +10,7 @@ import { Stack, Typography, Button } from '@mui/material';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import Shader from '../Shader/Shader';
 
-const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1, color2, color3, animate }) => {
+const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1, color2, color3, animate, telaAtual }) => {
 
   const { idProjeto, idEmpresa, nomeEmpresa, tituloProjeto } = useParams();
   const navigate = useNavigate();
@@ -39,6 +39,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
   useEffect(() => {
     atualizarSprints();
     toogleLateralBar();
+    telaAtual();
   }, [idProjeto]);
 
   const toogleModal = (entidade, post, id) => {
@@ -66,7 +67,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
         </SprintBody>
       </TaskBody>
 
-      <Modal showModal={showModal} fechar={toogleModal} acao={entidade == null ? null : acao} entidade={entidade}
+      <Modal showModal={showModal} fechar={toogleModal} acao={entidade == null ? null : acao == "task" ? "aumentar" : null} entidade={entidade}
         form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} idSprint={id} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
           : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} acao={null} />}
       >

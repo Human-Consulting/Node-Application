@@ -81,6 +81,7 @@ const ContainerBoard = ({ toggleModal }) => {
             type={showSenhaAtual ? "text" : "password"}
             value={senhaLogin}
             onChange={(e) => setSenhaLogin(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSubmitLogin(emailLogin, senhaLogin, navigate, setResponseMessage, setLoading)}
           />
           <ButtonMeu onClick={() => handleSubmitLogin(emailLogin, senhaLogin, navigate, setResponseMessage, setLoading)}>
             {loading ? 'Carregando' : 'Confirmar'}

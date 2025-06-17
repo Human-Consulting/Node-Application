@@ -22,7 +22,6 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
     const handlePostUsuario = async () => {
         if (!validarCampos()) return;
         setErros({});
-        console.log("passou nos campos");
         const newUsuario = { nome, email, cargo, area: area.toUpperCase(), permissao, fkEmpresa: idEmpresa, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         await postUsuario(newUsuario, toogleModal);
         atualizarUsuarios();

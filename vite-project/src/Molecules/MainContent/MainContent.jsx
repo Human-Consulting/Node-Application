@@ -20,10 +20,12 @@ const MainContent = () => {
   const { idEmpresa } = useParams();
 
   const [showLateralBar, setShowLateralBar] = useState(true);
+  const [diminuirLateralBar, setDiminuirLateralBar] = useState(false);
   const [projetos, setProjetos] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [empresas, setEmpresas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [telaAtual, setTelaAtual] = useState('Home');
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
   const stringFinal = usuarioLogado?.cores || "#606080|#8d7dca|#4e5e8c|true";
@@ -35,12 +37,20 @@ const MainContent = () => {
   const [color3, setColor3] = useState(cor3);
   const [animate, setAnimate] = useState(animateStr === "true");
 
-  const hideShowLateralBar = () => {
+  const hideLateralBar = () => {
     setShowLateralBar(false);
   }
 
   const ShowLateralBar = () => {
     setShowLateralBar(true);
+  }
+
+  const DiminuirLateralBar = () => {
+    setDiminuirLateralBar(true);
+  }
+
+  const toogleLateralBar = () => {
+    setDiminuirLateralBar(!diminuirLateralBar);
   }
 
   const atualizarProjetos = async () => {
@@ -81,24 +91,24 @@ const MainContent = () => {
   return (
     <BoxAltertive>
 
-      <LateralBar projetos={projetos} empresas={empresas} />
+      <LateralBar projetos={projetos} empresas={empresas} diminuirLateralBar={diminuirLateralBar} toogleLateralBar={toogleLateralBar} telaAtual={telaAtual} />
 
       <Routes>
-        <Route path="/" element={<PrincipalContainer toogleLateralBar={ShowLateralBar} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} projetos={projetos} empresas={empresas} usuarios={usuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate}/>} />
+        <Route path="/" element={<PrincipalContainer telaAtual={() => setTelaAtual("Home")} toogleLateralBar={ShowLateralBar} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} projetos={projetos} empresas={empresas} usuarios={usuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} />} />
 
-        <Route path="/Roadmap/:tituloProjeto/:idProjeto" element={<Task toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate}/>} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto" element={<Task telaAtual={() => setTelaAtual("Roadmap")} toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 
-        <Route path="/Roadmap/:tituloProjeto/:idProjeto/Tarefas/:idSprint/:index" element={<CentralTask toogleLateralBar={hideShowLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} color1={color1} color2={color2} color3={color3} animate={animate}/>} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto/Tarefas/:idSprint/:index" element={<CentralTask toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 
-        <Route path="/Usuarios" element={<Usuarios toogleLateralBar={hideShowLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} color1={color1} color2={color2} color3={color3} animate={animate}/>} />
+        <Route path="/Usuarios" element={<Usuarios telaAtual={() => setTelaAtual("Usuarios")} toogleLateralBar={hideLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 
-        <Route path="/Dash" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate}/>} />
+        <Route path="/Dash" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 
-        <Route path="/Dash/:tituloProjeto/:idProjeto" element={<Dashboard toogleLateralBar={hideShowLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} />} />
+        <Route path="/Dash/:tituloProjeto/:idProjeto" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 
-        <Route path="/Chat" element={<Chat toogleLateralBar={hideShowLateralBar} showTitle={true} />} />
+        <Route path="/Chat" element={<Chat telaAtual={() => setTelaAtual("Chat")} toogleLateralBar={hideLateralBar} color1={color1} color2={color2} color3={color3} animate={animate} usuarios={usuarios} />} />
 
-        <Route path="/next-step/:tituloProjeto/:idProjeto" element={<NextStep toogleLateralBar={hideShowLateralBar} />} />
+        <Route path="/next-step/:tituloProjeto/:idProjeto" element={<NextStep toogleLateralBar={hideLateralBar} />} />
       </Routes>
 
       <LateralBarRight showLateralBar={showLateralBar} projetos={projetos} empresas={empresas} />

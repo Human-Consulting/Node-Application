@@ -15,7 +15,7 @@ import Modal from '../Modal/Modal'
 import FormsInvestimento from '../Forms/FormsInvestimento'
 import Shader from '../Shader/Shader'
 
-const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animate }) => {
+const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animate, telaAtual }) => {
 
   const { idEmpresa, nomeEmpresa, tituloProjeto, idProjeto } = useParams();
 
@@ -25,6 +25,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
 
   useEffect(() => {
     toogleLateralBar();
+    telaAtual();
     atualizarEntidade();
   }, [idProjeto])
 

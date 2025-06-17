@@ -202,7 +202,6 @@ export const putSenhaUsuario = async (modifiedUsuario, idUsuario) => {
 export const putEsqueciASenhaUsuario = async (modifiedUsuario, idUsuario) => {
     try {
         const formattedUsuario = JSON.stringify(modifiedUsuario);
-        console.log("Dados enviados oi:", formattedUsuario);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/esqueciASenha/${idUsuario}`, {
             method: 'PATCH',
@@ -471,7 +470,6 @@ export const getIdUsuario = async (email) => {
                 'Content-Type': 'application/json'
             }
         });
-        console.log("Resposta do servidor:", res);
         const response = await res.json();
 
         return response;
@@ -484,7 +482,6 @@ export const getIdUsuario = async (email) => {
 export const enviarCodigo = async (body) => {
     try {
         const formattedUsuario = JSON.stringify(body);
-        console.log("Dados enviados:", formattedUsuario);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/codigoEsqueciASenha`, {
             method: 'POST',
