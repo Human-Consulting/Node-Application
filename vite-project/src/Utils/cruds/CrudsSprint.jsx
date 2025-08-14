@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
-import { getUsuario, getUsuarios } from "./CrudsUsuario";
-import { useParams } from "react-router";
+import { mostrarAlertaStatus } from "../SwalHelper";
+import { getUsuario } from "./CrudsUsuario";
+
 const token = JSON.parse(localStorage.getItem('token'));
 
 export const postSprint = async (newSprint) => {
@@ -17,49 +18,12 @@ export const postSprint = async (newSprint) => {
         });
 
         const data = await res.json();
+        mostrarAlertaStatus(res.status, "Sprint", "criada", data.message || "Dados enviados com sucesso!");
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Dados enviados com sucesso!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        if (res.ok) return data;
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Sprint", "criar", error.message);
     }
 };
 
@@ -72,8 +36,9 @@ export const getSprints = async (idProjeto) => {
                 'Authorization': `Bearer ${token}`
             }
         });
+
         const data = await res.json();
-        await getUsuario(JSON.parse(localStorage.getItem('usuario')).idUsuario);
+        await getUsuario(JSON.parse(localStorage.getItem('usuario')).idUsuario); // <-- Isso aqui realmente precisa estar aqui?
         return data;
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);
@@ -95,49 +60,11 @@ export const putSprint = async (modifiedSprint, idSprint) => {
         });
 
         const data = await res.json();
+        mostrarAlertaStatus(res.status, "Sprint", "editada", data.message || "Número de série em conflito!");
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Número de série em conflito!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Sprint", "editar", error.message);
     }
 };
 
@@ -167,51 +94,14 @@ export const deleteSprint = async (idSprint, body) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                },
+                }
             });
 
-            if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: "Sprint não encontrada!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            }
+            const data = await res.json();
+            mostrarAlertaStatus(res.status, "Sprint", "removida", data.message || "Sprint não encontrada!");
         }
     } catch (error) {
         console.error("Erro ao remover Sprint " + idSprint + ": ", error);
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Sprint", "remover", error.message);
     }
 };

@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import { mostrarAlertaStatus } from '../SwalHelper';
 
 const token = JSON.parse(localStorage.getItem('token'));
 
@@ -18,38 +19,15 @@ export const postMensagem = async (newMensagem) => {
         const data = await res.json();
 
         if (res.ok) {
+            mostrarAlertaStatus(res.status, "Mensagem", "enviada");
             return data;
         } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: "Erro ao mandar mensagem!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
+            mostrarAlertaStatus(res.status, "Mensagem", "enviar", "Erro ao mandar mensagem!");
             return false;
         }
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Mensagem", "enviar", error.message);
     }
 };
 
@@ -86,52 +64,17 @@ export const putMensagem = async (modifiedMensagem, idMensagem) => {
         const data = await res.json();
 
         if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
+            mostrarAlertaStatus(res.status, "Mensagem", "editada");
         } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
+            mostrarAlertaStatus(res.status, "Mensagem", "editar", data.message);
         }
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Mensagem", "editar", error.message);
     }
 };
 
 export const deleteMensagem = async (idMensagem, body) => {
-
     const formattedMensagem = JSON.stringify(body);
     try {
         const confirm = await Swal.fire({
@@ -159,48 +102,16 @@ export const deleteMensagem = async (idMensagem, body) => {
                 },
             });
 
+            const data = await res.json();
+
             if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
+                mostrarAlertaStatus(res.status, "Mensagem", "removida");
             } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: "Mensagem não encontrada!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
+                mostrarAlertaStatus(res.status, "Mensagem", "remover", data.message || "Mensagem não encontrada!");
             }
         }
     } catch (error) {
         console.error("Erro ao remover Mensagem " + idMensagem + ": ", error);
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Mensagem", "remover", error.message);
     }
 };

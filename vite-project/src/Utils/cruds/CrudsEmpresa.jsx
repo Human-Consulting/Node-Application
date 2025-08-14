@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import { mostrarAlertaStatus } from '../SwalHelper';
 
 const token = JSON.parse(localStorage.getItem('token'));
 
@@ -18,37 +19,14 @@ export const postEmpresa = async (newEmpresa) => {
         const data = await res.json();
 
         if (res.ok) {
+            mostrarAlertaStatus(res.status, "Empresa", "criada");
             return data;
         } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro ao adicionar Empresa!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
+            mostrarAlertaStatus(res.status, "Empresa", "criar", data.message);
         }
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Empresa", "criar", error.message);
     }
 };
 
@@ -102,53 +80,19 @@ export const putEmpresa = async (modifiedEmpresa, idEmpresa) => {
         const data = await res.json();
 
         if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
+            mostrarAlertaStatus(res.status, "Empresa", "editada");
         } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
+            mostrarAlertaStatus(res.status, "Empresa", "editar", data.message);
         }
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Empresa", "editar", error.message);
     }
 };
 
 export const deleteEmpresa = async (idEmpresa, body) => {
-
     const formattedEmpresa = JSON.stringify(body);
+
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -176,47 +120,14 @@ export const deleteEmpresa = async (idEmpresa, body) => {
             });
 
             if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
+                mostrarAlertaStatus(res.status, "Empresa", "removida");
             } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: "Empresa não encontrada!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
+                const data = await res.json();
+                mostrarAlertaStatus(res.status, "Empresa", "remover", data.message || "Empresa não encontrada!");
             }
         }
     } catch (error) {
         console.error("Erro ao remover Empresa " + idEmpresa + ": ", error);
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Empresa", "remover", error.message);
     }
 };

@@ -1,5 +1,7 @@
 import Swal from "sweetalert2";
 import { getUsuario } from "./CrudsUsuario";
+import { mostrarAlertaStatus } from "../SwalHelper";
+
 const token = JSON.parse(localStorage.getItem('token'));
 
 export const postTask = async (newTask) => {
@@ -16,49 +18,11 @@ export const postTask = async (newTask) => {
         });
 
         const data = await res.json();
-
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro ao adicionar task!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        mostrarAlertaStatus(res.status, "Tarefa", "criada", data.message);
+        if (res.ok) return data;
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Tarefa", "criar", error.message);
     }
 };
 
@@ -71,8 +35,9 @@ export const getTasks = async (idSprint) => {
                 'Authorization': `Bearer ${token}`
             }
         });
+
         const data = await res.json();
-        await getUsuario(JSON.parse(localStorage.getItem('usuario')).idUsuario);
+        await getUsuario(JSON.parse(localStorage.getItem('usuario')).idUsuario); // revisar se é necessário
         return data;
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);
@@ -94,49 +59,10 @@ export const putTask = async (modifiedTask, idTask) => {
         });
 
         const data = await res.json();
-
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro ao enviar modificação!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        mostrarAlertaStatus(res.status, "Tarefa", "editada", data.message || "Erro ao editar task.");
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Tarefa", "editar", error.message);
     }
 };
 
@@ -169,56 +95,22 @@ export const deleteTask = async (idTask, body) => {
                 },
             });
 
-            if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: "Task não encontrada!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            }
+            const data = await res.json();
+            mostrarAlertaStatus(res.status, "Tarefa", "removida", data.message || "Tarefa não encontrada.");
         }
     } catch (error) {
-        console.error("Erro ao remover task " + idTask + ": ", error);
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        console.error("Erro ao remover tarefa " + idTask + ": ", error);
+        mostrarAlertaStatus(500, "Tarefa", "remover", error.message);
     }
 };
 
 export const putImpedimento = async (idTarefa, body, comImpedimento) => {
     try {
         const confirm = await Swal.fire({
-            text: `${comImpedimento ? "Você tem certeza de que o impedimento foi finalizado?" : "Gostaria de editar o comentário atual? Ele será enviado ao responsável do projeto."}`,
+            text: `${comImpedimento
+                ? "Você tem certeza de que o impedimento foi finalizado?"
+                : "Gostaria de editar o comentário atual? Ele será enviado ao responsável do projeto."
+            }`,
             icon: "warning",
             showCancelButton: true,
             backdrop: false,
@@ -241,53 +133,13 @@ export const putImpedimento = async (idTarefa, body, comImpedimento) => {
                     'Authorization': `Bearer ${token}`
                 },
                 body: formattedBody
-
             });
 
             const data = await res.json();
-
-            if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: data.message || "Erro ao enviar modificação!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            }
+            mostrarAlertaStatus(res.status, "Tarefa", comImpedimento ? "liberada" : "atualizada", data.message);
         }
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Tarefa", comImpedimento ? "liberar" : "atualizar", error.message);
     }
 };

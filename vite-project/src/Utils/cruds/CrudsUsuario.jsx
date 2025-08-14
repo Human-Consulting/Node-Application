@@ -1,64 +1,24 @@
 import Swal from "sweetalert2";
+import { mostrarAlertaStatus } from "../SwalHelper";
+
 const token = JSON.parse(localStorage.getItem('token'));
 
 export const postUsuario = async (newUsuario, toogleModal) => {
     try {
-        const formattedUsuario = JSON.stringify(newUsuario);
-
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: formattedUsuario,
+            body: JSON.stringify(newUsuario),
         });
 
         const data = await res.json();
-
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            toogleModal && toogleModal();
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro ao cadastrar!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        mostrarAlertaStatus(res.status, "Usuário", "cadastrado", data.message);
+        if (res.ok && toogleModal) toogleModal();
     } catch (error) {
-        console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Usuário", "cadastrar", error.message);
     }
 };
 
@@ -71,8 +31,7 @@ export const getUsuarios = async (idEmpresa) => {
                 'Authorization': `Bearer ${token}`
             },
         });
-        const data = await res.json();
-        return data;
+        return await res.json();
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);
         return [];
@@ -81,248 +40,78 @@ export const getUsuarios = async (idEmpresa) => {
 
 export const putUsuario = async (modifiedUsuario, idUsuario) => {
     try {
-        const formattedUsuario = JSON.stringify(modifiedUsuario);
-
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: formattedUsuario,
+            body: JSON.stringify(modifiedUsuario),
         });
 
         const data = await res.json();
-
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        mostrarAlertaStatus(res.status, "Usuário", "editado", data.message);
     } catch (error) {
-        console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Usuário", "editar", error.message);
     }
 };
 
 export const putSenhaUsuario = async (modifiedUsuario, idUsuario) => {
     try {
-        const formattedUsuario = JSON.stringify(modifiedUsuario);
-
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/atualizarSenha/${idUsuario}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: formattedUsuario,
+            body: JSON.stringify(modifiedUsuario),
         });
 
         const data = await res.json();
-
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        mostrarAlertaStatus(res.status, "Senha", "atualizada", data.message);
     } catch (error) {
-        console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Senha", "atualizar", error.message);
     }
 };
 
 export const putEsqueciASenhaUsuario = async (modifiedUsuario, idUsuario) => {
     try {
-        const formattedUsuario = JSON.stringify(modifiedUsuario);
-
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/esqueciASenha/${idUsuario}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: formattedUsuario,
+            body: JSON.stringify(modifiedUsuario),
         });
 
         const data = await res.json();
-
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            return true;
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            return false;
-        }
+        mostrarAlertaStatus(res.status, "Senha", "redefinida", data.message);
+        return res.ok;
     } catch (error) {
-        console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Senha", "redefinir", error.message);
+        return false;
     }
 };
 
 export const putCoresUsuario = async (modifiedUsuario, idUsuario) => {
     try {
-        const formattedUsuario = JSON.stringify(modifiedUsuario);
-
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/atualizarCores/${idUsuario}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: formattedUsuario,
+            body: JSON.stringify(modifiedUsuario),
         });
 
         const data = await res.json();
-
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        mostrarAlertaStatus(res.status, "Preferências de cores", "atualizadas", data.message);
     } catch (error) {
-        console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Cores", "atualizar", error.message);
     }
 };
 
 export const deleteUsuario = async (idUsuario, body) => {
-    const formattedUsuario = JSON.stringify(body);
-
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -334,64 +123,23 @@ export const deleteUsuario = async (idUsuario, body) => {
             cancelButtonColor: "#ff4d4d",
             confirmButtonText: "Sim, deletar!",
             cancelButtonText: "Cancelar",
-            customClass: {
-                popup: "swalAlerta",
-            }
+            customClass: { popup: "swalAlerta" },
         });
 
         if (confirm.isConfirmed) {
             const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/${idUsuario}`, {
                 method: 'DELETE',
-                body: formattedUsuario,
+                body: JSON.stringify(body),
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
             });
 
-            if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: "Usuario não encontrada!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            }
+            mostrarAlertaStatus(res.status, "Usuário", "removido", "Usuário não encontrado!");
         }
     } catch (error) {
-        console.error("Erro ao remover Usuario " + idUsuario + ": ", error);
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Usuário", "remover", error.message);
     }
 };
 
@@ -400,10 +148,9 @@ export const uploadFile = async (file, toogleModal) => {
     formData.append("file", file);
 
     try {
-        const res = await fetch("${import.meta.env.VITE_ENDERECO_API}/usuarios/upload", {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/upload`, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: formData
@@ -419,29 +166,12 @@ export const uploadFile = async (file, toogleModal) => {
             timerProgressBar: true,
             showConfirmButton: false,
             text: data.message || (res.ok ? "Dados enviados com sucesso!" : "Erro ao cadastrar via upload!"),
-            customClass: {
-                popup: "swalAlerta",
-            }
+            customClass: { popup: "swalAlerta" },
         });
 
-        if (res.ok) {
-            toogleModal && toogleModal();
-        }
-
+        if (res.ok && toogleModal) toogleModal();
     } catch (error) {
-        console.error("Erro ao enviar arquivo: ", error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            text: error.message || "Erro ao cadastrar via upload!",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Upload", "realizar", error.message);
     }
 };
 
@@ -460,67 +190,43 @@ export const getUsuario = async (idUsuario) => {
         console.error("Erro ao buscar dados: ", error);
         return null;
     }
-}
+};
 
 export const getIdUsuario = async (email) => {
     try {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/emailExistente/${email}`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Content-Type': 'application/json' }
         });
-        const response = await res.json();
-
-        return response;
+        return await res.json();
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);
         return null;
     }
-}
+};
 
 export const enviarCodigo = async (body) => {
     try {
-        const formattedUsuario = JSON.stringify(body);
-
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/codigoEsqueciASenha`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: formattedUsuario
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
         });
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                text: "Código enviado com sucesso!",
-                timer: 1500,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            return true;
-        } else {
-            Swal.fire({
-                icon: "error",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: "Erro ao enviar código. Tente novamente.",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            return false;
-        }
+
+        Swal.fire({
+            icon: res.ok ? "success" : "error",
+            position: "center",
+            backdrop: false,
+            text: res.ok ? "Código enviado com sucesso!" : "Erro ao enviar código. Tente novamente.",
+            timer: 1500,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            customClass: { popup: "swalAlerta" },
+        });
+
+        return res.ok;
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);
         return null;
     }
-}
+};

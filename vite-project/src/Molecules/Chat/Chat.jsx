@@ -10,7 +10,8 @@ import Shader from "../Shader/Shader";
 import ModalUsuariosChat from "../ModalUsuariosChat/ModalUsuariosChat";
 import Modal from "../Modal/Modal";
 import FormsSala from "../Forms/FormsSala";
-import { useWebSocket } from '../../Utils/SocketIO/WebSocketProvider';
+import { io } from "socket.io-client";
+
 
 
 const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, usuarios }) => {
@@ -19,12 +20,17 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
   const [inputMessage, setInputMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [sala, setSala] = useState(null);
+  // const socket = io("localhost:3001");
+  const socket = new WebSocket("ws://localhost:8080/chat");
 
-  // const {
-  //   joinSala,
-  //   enviarMensagem,
-  //   subscribeToSala
-  // } = useWebSocket();
+  socket.onopen = () => {
+    console.log("Conectado ao WebSocket Java");
+    socket.send("Olá do front!");
+  };
+
+  socket.onmessage = (event) => {
+    console.log("Mensagem recebida:", event.data);
+  };
 
   const scrollRef = useRef(null);
 
@@ -37,6 +43,8 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
   const fetchChats = async () => {
     const salas = await getSalas(usuarioLogado.idUsuario);
     setSalas(salas);
+    console.log(salas);
+    salas.forEach(sala => socket.emit("createRoom", { sala }));
   };
 
   useEffect(() => {
@@ -57,23 +65,17 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
     return chat.participants.find(participant => participant.idUsuario === senderId);
   };
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
-    const now = new Date();
-    const mensagem = {
-      conteudo: inputMessage.trim(),
-      horario: new Date(now.getTime() - 3 * 60 * 60 * 1000).toISOString().split('.')[0],
-      fkSala: selectedChatId,
-      fkUsuario: usuarioLogado.idUsuario,
-    };
+    socket.emit('chat message', ({
+      room: selectedChat.nome, // nome da sala
+      message: inputMessage.trim(),
+      user: usuarioLogado.nome // ou ID
+    }));
 
-    const novaMensagem = await postMensagem(mensagem);
-    if (novaMensagem) {
-      setInputMessage("");
-      fetchChats();
-      // enviarMensagem(novaMensagem);
-    }
+    setInputMessage("");
   };
+
 
   const toogleModal = (sala) => {
     setSala(sala);
@@ -114,24 +116,33 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
     navigate(`/Home/${nomeEmpresa}/${idEmpresa}`)
   }
 
-  // useEffect(() => {
-  //   if (selectedChatId) {
-  //     joinSala(selectedChatId);
+  useEffect(() => {
+    // Emitir o evento para entrar na sala, com dados que backend espera
+    salas.forEach(sala => {
+      socket.emit("joinRoom", { nomeSala: sala.nome, fkSala: sala.idSala }, (resposta) => {
+        if (resposta.success) console.log(`Usuário ${usuarioLogado.nome} entrou na sala ${sala.nome}`);
+        else console.error('Erro ao entrar:', resposta.error);
+      });
+    });
 
-  //     subscribeToSala((msg) => {
-  //       setSalas(prevSalas => prevSalas.map(s => {
-  //         if (s.idSala === msg.fkSala) {
-  //           return {
-  //             ...s,
-  //             mensagens: [...s.mensagens, msg]
-  //           };
-  //         }
-  //         return s;
-  //       }));
-  //     });
-  //   }
-  // }, [selectedChatId]);
+    // Escutar mensagens da sala
+    socket.on("chat message", (msg) => {
+      setSalas(prevSalas => prevSalas.map(s => {
+        if (s.idSala === selectedChatId) {
+          return {
+            ...s,
+            mensagens: [...(s.mensagens || []), msg]
+          };
+        }
+        return s;
+      }));
+    });
 
+    // Sempre que o selectedChat mudar, limpar o listener antigo para não duplicar
+    return () => {
+      socket.off("chat message");
+    };
+  });
 
   return (
     <ContainerGeral>

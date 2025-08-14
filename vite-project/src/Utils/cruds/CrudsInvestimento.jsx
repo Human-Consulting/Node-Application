@@ -1,4 +1,6 @@
 import Swal from "sweetalert2";
+import { mostrarAlertaStatus } from '../SwalHelper';
+
 const token = JSON.parse(localStorage.getItem('token'));
 
 export const postInvestimento = async (newInvestimento) => {
@@ -15,49 +17,11 @@ export const postInvestimento = async (newInvestimento) => {
         });
 
         const data = await res.json();
+        mostrarAlertaStatus(res.status, "Investimento", "criado", data.message);
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1500,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro ao adicionar Investimento!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        return data;
     } catch (error) {
-        console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Investimento", "criar", error.message);
     }
 };
 
@@ -77,52 +41,19 @@ export const putInvestimento = async (modifiedInvestimento, idInvestimento) => {
         const data = await res.json();
 
         if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
+            mostrarAlertaStatus(res.status, "Investimento", "editado");
         } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1500,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
+            mostrarAlertaStatus(res.status, "Investimento", "editar", data.message);
         }
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Investimento", "editar", error.message);
     }
 };
 
 export const deleteInvestimento = async (idInvestimento, body) => {
     const formattedInvestimento = JSON.stringify(body);
+
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -149,48 +80,16 @@ export const deleteInvestimento = async (idInvestimento, body) => {
                 },
             });
 
+            const data = await res.json();
+
             if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
+                mostrarAlertaStatus(res.status, "Investimento", "removido");
             } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1500,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: "Investimento não encontrada!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
+                mostrarAlertaStatus(res.status, "Investimento", "remover", data.message || "Investimento não encontrado!");
             }
         }
     } catch (error) {
         console.error("Erro ao remover Investimento " + idInvestimento + ": ", error);
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            position: "center",
-            backdrop: false,
-            timer: 1500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
+        mostrarAlertaStatus(500, "Investimento", "remover", error.message);
     }
 };

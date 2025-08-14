@@ -7,12 +7,13 @@ import { useState } from 'react';
 
 const LateralBar = ({ projetos, empresas, diminuirLateralBar, toogleLateralBar, telaAtual }) => {
 
+    
     const [projetosFiltrados, setProjetosFiltrados] = useState(projetos);
     const [empresasFiltradas, setEmpresasFiltradas] = useState(empresas);
     const [filtroConcluido, setFiltroConcluido] = useState(false);
     const [filtroImpedimento, setFiltroImpedimento] = useState(false);
     const [menuRapidoAberto, setMenuRapidoAberto] = useState(true);
-
+    
     const { nomeEmpresa, idEmpresa } = useParams();
     const navigate = useNavigate()
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
