@@ -1,5 +1,5 @@
 import { HeaderContent, MidleCarrousel, PrincipalContainerStyled, TituloHeader } from './PrincipalContainer.styles'
-import { Stack, TextField, Button, Badge, Avatar } from '@mui/material'
+import { Stack, TextField, Button, Badge, Avatar, Tooltip } from '@mui/material'
 import ProjectsCard from '../ProjectsCard/ProjectsCard'
 import { useEffect, useState } from 'react';
 import Modal from '../Modal/Modal'
@@ -7,7 +7,7 @@ import ModalTarefas from '../ModalTarefas/ModalTarefas'
 import FormsProjeto from './../Forms/FormsProjeto.jsx';
 import FormsEmpresa from './../Forms/FormsEmpresa.jsx';
 import { useNavigate, useParams } from 'react-router';
-import { ArrowCircleLeftOutlined, Assignment, Construction, ColorLens } from '@mui/icons-material';
+import { ArrowCircleLeftOutlined, Assignment, Construction, ColorLens, Search } from '@mui/icons-material';
 import ModalCores from '../ModalCores/ModalCores.jsx';
 import Shader from '../Shader/Shader.jsx';
 
@@ -112,13 +112,13 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
             onChange={(e) => filtrar(e.target.value)}
             label=
             {idEmpresa == 1 ?
-              <span>Pesquisar por uma empresa...</span>
+              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search/> Pesquisar por uma empresa...</Stack>
               :
-              <span>Pesquisar um projeto da <strong style={{ color: '#90caf9' }}>{nomeEmpresa}</strong></span>
+              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}><Search/> Pesquisar um projeto da <Stack style={{ color: '#90caf9' }}>{nomeEmpresa}</Stack></Stack>
             }
 
             size="small"
-            sx={{ flex: 1 }}
+            sx={{ flex: 1, borderRadius: '10px', backgroundColor: '#1D1D1D' }}
             autoComplete="off"
             InputLabelProps={{
               sx: {
@@ -140,17 +140,19 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
             }} />
           {
             !usuarioLogado.permissao.includes('CONSULTOR') ?
-              <Badge onClick={handleBadgeClickTarefa}
-                sx={{
-                  '& .MuiBadge-badge': {
-                    fontSize: '1.25rem',
-                    height: '26px',
-                    width: '26px',
-                    cursor: 'pointer'
-                  }
-                }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
-                <Assignment sx={{ fontSize: 32, cursor: 'pointer' }} />
-              </Badge>
+              <Tooltip title="Tarefas abertas em seu nome.">
+                <Badge onClick={handleBadgeClickTarefa}
+                  sx={{
+                    '& .MuiBadge-badge': {
+                      fontSize: '1.25rem',
+                      height: '26px',
+                      width: '26px',
+                      cursor: 'pointer'
+                    }
+                  }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
+                  <Assignment sx={{ fontSize: 32, cursor: 'pointer' }} />
+                </Badge>
+              </Tooltip>
               : idEmpresa == 1 ?
                 <Button onClick={() => toogleModal(null, 'empresa')}
                   variant="contained">
@@ -162,12 +164,14 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
                   CRIAR PROJETO
                 </Button>
           }
-          <ColorLens onClick={handleBadgeClickCores}
-            sx={{
-              height: '40px',
-              width: '40px',
-              cursor: 'pointer'
-            }} />
+          <Tooltip title="Editar cor de fundo.">
+            <ColorLens onClick={handleBadgeClickCores}
+              sx={{
+                height: '40px',
+                width: '40px',
+                cursor: 'pointer'
+              }} />
+          </Tooltip>
 
         </Stack>
         <TituloHeader>{idEmpresa != 1 && usuarioLogado.permissao.includes('CONSULTOR') ? <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px' }} onClick={handleOpenEmpresas} /> : null} {idEmpresa == 1 ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}</TituloHeader>

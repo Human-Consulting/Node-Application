@@ -38,6 +38,8 @@ function ProjectsCard({ item, toogleModal }) {
     // : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/next-step/${item.descricao}/${Number(item.idProjeto)}`);
   }
 
+  console.log(item);
+
   return (
     <>
       {item ?

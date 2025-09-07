@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material'
 import { BoxAltertive } from './MainContent.styles';
 import LateralBar from '../LateralBar';
 import LateralBarRight from '../LateralBarRight/LateralBarRight';
@@ -13,8 +12,8 @@ import { getUsuarios } from '../../Utils/cruds/CrudsUsuario';
 import Usuarios from '../Usuarios/Usuarios';
 import Dashboard from '../Dashboard/Dashboard';
 import { getEmpresas } from '../../Utils/cruds/CrudsEmpresa';
-import CircularProgress from '@mui/material/CircularProgress';
 import Chat from '../Chat/Chat';
+import { Load } from '../../Utils/Load.jsx';
 
 const MainContent = () => {
   const { idEmpresa } = useParams();
@@ -81,12 +80,7 @@ const MainContent = () => {
     carregarDados();
   }, [idEmpresa])
 
-  if (loading) return (
-    <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-      <CircularProgress size={50} />
-      <h1 sx={{ mt: 2 }}>Carregando dados da empresa...</h1>
-    </Stack>
-  );
+  if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
 
   return (
     <BoxAltertive>

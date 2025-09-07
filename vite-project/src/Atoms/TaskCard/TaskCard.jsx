@@ -1,9 +1,10 @@
 import { BodyTarefa, NavTask, TaskCardBody } from './TaskCard.styles'
-import { Button, Select, Stack, MenuItem, Grow, Box } from '@mui/material'
+import { Button, Select, Stack, MenuItem, Grow, Box, Tooltip } from '@mui/material'
 import TarefasItem from '../TarefasItem/TarefasItem'
 import { useNavigate, useParams } from 'react-router'
 import { useEffect, useState } from 'react';
-import { CheckCircle, HourglassEmpty, Block, AllInclusive, MoreVert } from '@mui/icons-material';
+import { CalendarMonth, CheckCircle, HourglassEmpty, Block, AllInclusive, MoreVert } from '@mui/icons-material';
+import { getTempoRestante } from '../../Utils/getInfos';
 
 const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints }) => {
 
@@ -16,6 +17,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   const [tarefasFiltradas, setTarefasFiltradas] = useState([]);
 
   useEffect(() => {
+    console.log(sprint?.tarefas);
     setTarefasFiltradas(sprint?.tarefas);
   }, [sprint])
 
@@ -133,11 +135,18 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
               <TarefasItem tarefa={tarefa} toogleModal={handleOpenModalPutTask} atualizarProjetos={atualizarProjetos} atualizarSprints={atualizarSprints} ></TarefasItem>
             ))}
           </BodyTarefa>
-          <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', justifyContent: 'center', alignItems: 'center' }}>
+          <Stack sx={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center', borderTop: 'solid white 1px', paddingTop: '15px' }}>
             {usuarioLogado.permissao != 'FUNC' ?
               <Button size='medium' onClick={handleOpenModalPostTask} variant='contained'>CRIAR TAREFA</Button>
               : null}
-            <Button size='medium' onClick={handleOpenProject} variant='contained'>VER TAREFAS</Button>
+            {/* <Button size='medium' onClick={handleOpenProject} variant='contained'>VER TAREFAS</Button> */}
+            <Stack sx={{ flexDirection: 'row', gap:'15px', }}>
+              {sprint.progresso}%
+              {sprint.progresso < 100 && 
+              <Tooltip title={"Prazo: " + sprint.dtFim} placement="top">
+                <Stack sx={{ gap: '2px', alignItems: 'center', flexDirection: 'row' }}> <CalendarMonth sx={{ fontSize: '16px' }} />{getTempoRestante(sprint.dtFim)}</Stack>
+              </Tooltip>}
+            </Stack>
           </Stack>
         </>
         :

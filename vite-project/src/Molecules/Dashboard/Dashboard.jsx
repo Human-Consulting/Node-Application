@@ -3,17 +3,16 @@ import { DashKpi, ContainerBack, DashContainer, KpiContainer, TextDefault, TextD
 import LineChart from './LineChart/LineChart'
 import MinimalBarChart from './BarChart/BarChart'
 import AreaData from '../../Atoms/AreaData/AreaData'
-import LensIcon from '@mui/icons-material/Lens';
 import RadialChart from './RadialChart'
 import { useEffect, useState } from 'react'
 import { getEmpresaAtual } from '../../Utils/cruds/CrudsEmpresa'
 import { getProjetoAtual } from '../../Utils/cruds/CrudsProjeto'
 import { useNavigate, useParams } from 'react-router'
-import CircularProgress from '@mui/material/CircularProgress';
-import { ArrowCircleLeftOutlined, Check, Block } from '@mui/icons-material';
+import { ArrowCircleLeftOutlined, Check, Block, Lens } from '@mui/icons-material';
 import Modal from '../Modal/Modal'
 import FormsInvestimento from '../Forms/FormsInvestimento'
 import Shader from '../Shader/Shader'
+import { Load } from '../../Utils/Load'
 
 const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animate, telaAtual }) => {
 
@@ -53,13 +52,6 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
     investimento != null ? setInvestimento(investimento) : setInvestimento(null);
   };
 
-  if (loading) return (
-    <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-      <CircularProgress size={50} />
-      <TextDefault sx={{ mt: 2 }}>Carregando dados {entidade?.idEmpresa ? "da empresa" : "do projeto"}...</TextDefault>
-    </Stack>
-  );
-
   const totalTarefas = entidade.areas?.length > 0 ? entidade.areas.reduce((total, area) => total + area.valor, 0) : 0;
 
   const renderIcon = () => {
@@ -86,6 +78,8 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
     );
   };
 
+  if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
+
   return (
     <ContainerBack>
       {showTitle ?
@@ -104,7 +98,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
                   <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Total de {entidade?.idEmpresa ? "Projetos" : "Sprints"}</TextDefaultKpi>
                   <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.totalItens}</TextDefaultKpi>
                 </Stack>
-                <LensIcon sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></LensIcon>
+                <Lens sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></Lens>
               </Stack>
 
               <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -135,7 +129,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
                   <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>{idProjeto ? "Responsável" : "Diretor"}</TextDefaultKpi>
                   <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.nomeResponsavel}</TextDefaultKpi>
                 </Stack>
-                <LensIcon sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></LensIcon>
+                <Lens sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></Lens>
               </Stack>
             </DashKpi>
             <LineChart orcamento={entidade.orcamento} financeiros={entidade.financeiroResponseDtos} toogleModal={toogleModal} atualizarEntidade={atualizarEntidade}></LineChart>

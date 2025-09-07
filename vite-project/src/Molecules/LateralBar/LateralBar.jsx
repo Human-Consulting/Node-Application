@@ -1,4 +1,4 @@
-import { Chip, Stack, Typography } from '@mui/material'
+import { Chip, Stack, Tooltip, Typography } from '@mui/material'
 import { CardZone, ChipZone, DivisorOne, DivisorTwo, Header, Item, LateralNavBar, Title } from './LateralBar.styles'
 import { Home, Insights, Chat, Group, Widgets, ChevronRight, ChevronLeft, Logout, HourglassEmpty, CheckCircle, Block } from '@mui/icons-material';
 import ProjectsTypes from '../../Atoms/ProjectsTypes';
@@ -65,26 +65,35 @@ const LateralBar = ({ projetos, empresas, diminuirLateralBar, toogleLateralBar, 
     return (
         <LateralNavBar diminuido={diminuirLateralBar}>
             <Header>
-                <Logout onClick={handleExit} sx={{
-                    cursor: 'pointer',
-                    '&:hover': {
-                        backgroundColor: '#333'
-                    }
-                }} />
+                <Tooltip title="Sair">
+                    <Logout onClick={handleExit} sx={{
+                        cursor: 'pointer',
+                        '&:hover': {
+                            backgroundColor: '#333'
+                        }
+                    }} />
+                </Tooltip>
                 {diminuirLateralBar ? null : <Typography variant="h6" sx={{ fontFamily: "Bebas Neue" }}>Human Consulting</Typography>}
-                {diminuirLateralBar ? <ChevronRight onClick={toogleLateralBar} sx={{
-                    cursor: 'pointer',
-                    borderRadius: '50%',
-                    '&:hover': {
-                        backgroundColor: '#333'
-                    }
-                }} /> : <ChevronLeft onClick={toogleLateralBar} sx={{
-                    cursor: 'pointer',
-                    borderRadius: '50%',
-                    '&:hover': {
-                        backgroundColor: '#333'
-                    }
-                }} />}
+                {diminuirLateralBar ?
+                    <Tooltip title="Abrir lateral">
+                        <ChevronRight onClick={toogleLateralBar} sx={{
+                            cursor: 'pointer',
+                            borderRadius: '50%',
+                            '&:hover': {
+                                backgroundColor: '#333'
+                            }
+                        }} />
+                    </Tooltip>
+                    :
+                    <Tooltip title="Fechar lateral">
+                        <ChevronLeft onClick={toogleLateralBar} sx={{
+                            cursor: 'pointer',
+                            borderRadius: '50%',
+                            '&:hover': {
+                                backgroundColor: '#333'
+                            }
+                        }} />
+                    </Tooltip>}
             </Header>
             <DivisorOne>
                 <Item telaAtual={telaAtual} item="Home" diminuido={diminuirLateralBar} onClick={handleOpenHome}>

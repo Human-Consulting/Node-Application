@@ -9,6 +9,7 @@ import FormsSprint from '../Forms/FormsSprint';
 import { Stack, Typography, Button } from '@mui/material';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import Shader from '../Shader/Shader';
+import { Load } from '../../Utils/Load';
 
 const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1, color2, color3, animate, telaAtual }) => {
 
@@ -19,13 +20,16 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
   const [entidade, setEntidade] = useState(null);
   const [id, setId] = useState(null);
   const [acao, setAcao] = useState('');
+  const [loading, setLoading] = useState(true);
   const [sprintsList, setSprintsList] = useState([]);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const atualizarSprints = async () => {
+    setLoading(true);
     const sprints = await getSprints(idProjeto);
     setSprintsList(sprints);
+    setLoading(false);
   };
 
   const handleOpenProject = async () => {
@@ -48,6 +52,8 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
     setShowModal(!showModal);
     setId(id);
   };
+
+  if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
 
   return (
     <>

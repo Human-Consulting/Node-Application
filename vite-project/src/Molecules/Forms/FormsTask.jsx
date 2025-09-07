@@ -89,7 +89,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
 
     const handleAddCheckbox = () => {
         const newId = checkpoints.length + 1;
-        setCheckpoints([...checkpoints, { idCheckpoint: `${newId}`, descricao: `Nova opção ${newId}`, finalizado: false }]);
+        setCheckpoints([...checkpoints, { idCheckpoint: `${newId}`, descricao: '', finalizado: false }]);
     };
 
     const handleToggleCheckbox = (id) => {
@@ -260,10 +260,11 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                                                 checkedIcon={<CheckCircleIcon />}
                                             />
                                             <TextField
+                                                placeholder="Novo checkpoint"
                                                 value={cb.descricao}
                                                 onChange={(e) => handleLabelChange(cb.idCheckpoint, e.target.value)}
                                                 variant="standard"
-                                                sx={{ input: { color: '#FFF' } }}
+                                                sx={{width: `0.75`, input: {color: '#FFF'}}}
                                             />
                                         </Stack>
                                         <IconButton onClick={() => setCheckpoints(checkpoints.filter(c => c.idCheckpoint !== cb.idCheckpoint))} color="error">
@@ -304,8 +305,8 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                             }}>
                                 {comImpedimento ? 'Remover Impedimento' : 'Acionar Impedimento'}</Button>
                             : usuarioLogado.idUsuario == task.fkResponsavel && task.progresso == 100 ?
-                            <Button fullWidth variant='outlined' color={'info'} onClick={(e) => e.stopPropagation()}>TAREFA FINALIZADA</Button>
-                        : null}
+                                <Button fullWidth variant='outlined' color={'info'} onClick={(e) => e.stopPropagation()}>TAREFA FINALIZADA</Button>
+                                : null}
                         {usuarioLogado.permissao == 'FUNC' ? null :
                             <Button variant="contained" color="error" onClick={handleDeleteTask}>
                                 <DeleteIcon />
