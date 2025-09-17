@@ -1,7 +1,8 @@
 import Swal from "sweetalert2";
+import { showSwal } from "../SwalHelper"
 const token = JSON.parse(localStorage.getItem('token'));
 
-export const postProjeto = async (newProjeto, toogleModal) => {
+export const postProjeto = async (newProjeto) => {
     try {
         const formattedProjeto = JSON.stringify(newProjeto);
 
@@ -14,51 +15,11 @@ export const postProjeto = async (newProjeto, toogleModal) => {
             body: formattedProjeto,
         });
 
-        const data = await res.json();
+        showSwal(res.status, res.statusText);
+        return res.ok;
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            toogleModal && toogleModal();
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1500,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro ao adicionar Projeto!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
@@ -96,7 +57,7 @@ export const getProjetoAtual = async (idProjeto) => {
     }
 };
 
-export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
+export const putProjeto = async (modifiedProjeto, idProjeto) => {
     try {
         const formattedProjeto = JSON.stringify(modifiedProjeto);
 
@@ -109,51 +70,10 @@ export const putProjeto = async (modifiedProjeto, idProjeto, toogleModal) => {
             body: formattedProjeto,
         });
 
-        const data = await res.json();
-
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            toogleModal && toogleModal();
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1500,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        showSwal(res.status, res.statusText);
+        return res.ok;
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
@@ -186,48 +106,10 @@ export const deleteProjeto = async (idProjeto, body) => {
                 }
             });
 
-            if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1500,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: "Projeto não encontrada!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            }
+            showSwal(res.status, res.statusText);
+            return res.ok;
         }
     } catch (error) {
         console.error("Erro ao remover Projeto " + idProjeto + ": ", error);
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            position: "center",
-            backdrop: false,
-            timer: 1500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };

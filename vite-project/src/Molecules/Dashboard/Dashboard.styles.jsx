@@ -22,7 +22,7 @@ export const KpiContainer = styled(Box)({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    zIndex: 1000,
+    zIndex: 100,
     justifyContent: 'space-between',
 });
 

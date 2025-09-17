@@ -32,24 +32,27 @@ const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos,
         if (!validarCampos()) return;
         setErros({});
         const newSprint = { titulo, descricao, dtInicio, dtFim, fkProjeto, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
-        await postSprint(newSprint);
-        atualizarSprints();
-        atualizarProjetos();
-        toogleModal();
+        const response = await postSprint(newSprint);
+        if (response) {
+            atualizarSprints();
+            atualizarProjetos();
+            toogleModal();
+        }
     };
 
     const handleDeleteSprint = async () => {
-        toogleModal();
         const bodyDelete = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
-        await deleteSprint(sprint.idSprint, bodyDelete);
-        await atualizarSprints();
-        await atualizarProjetos();
+        const response = await deleteSprint(sprint.idSprint, bodyDelete);
+        if (response) {
+            await atualizarSprints();
+            await atualizarProjetos();
+            toogleModal();
+        }
     }
 
     const handlePutSprint = async () => {
         if (!validarCampos()) return;
         setErros({});
-        toogleModal();
         const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
         const modifiedSprint = {
@@ -60,9 +63,11 @@ const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos,
             dtInicio,
             dtFim
         }
-        await putSprint(modifiedSprint, sprint.idSprint);
-        atualizarSprints();
-        atualizarProjetos();
+        const response = await putSprint(modifiedSprint, sprint.idSprint);
+        if (response) {
+            atualizarSprints();
+            atualizarProjetos();
+        }
     }
 
     const removerErro = (campo) => {

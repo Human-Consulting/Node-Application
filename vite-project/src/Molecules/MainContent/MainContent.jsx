@@ -67,6 +67,7 @@ const MainContent = () => {
   const buscarUsuarios = async () => {
     const usuarios = await getUsuarios(Number(idEmpresa));
     setUsuarios(usuarios);
+    console.log(usuarios);
     setLoading(false);
   };
 
@@ -96,9 +97,9 @@ const MainContent = () => {
 
         <Route path="/Usuarios" element={<Usuarios telaAtual={() => setTelaAtual("Usuarios")} toogleLateralBar={hideLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 
-        <Route path="/Dash" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} />} />
+        <Route path="/Dash" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} usuarios={usuarios} />} />
 
-        <Route path="/Dash/:tituloProjeto/:idProjeto" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} />} />
+        <Route path="/Dash/:tituloProjeto/:idProjeto" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} usuarios={usuarios} />} />
 
         <Route path="/Chat" element={<Chat telaAtual={() => setTelaAtual("Chat")} toogleLateralBar={hideLateralBar} color1={color1} color2={color2} color3={color3} animate={animate} usuarios={usuarios} />} />
 

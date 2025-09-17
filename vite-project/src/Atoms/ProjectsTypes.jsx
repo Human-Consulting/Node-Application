@@ -46,8 +46,8 @@ const ProjectsTypes = ({ entidade, diminuirLateralBar, telaAtual }) => {
         {!diminuirLateralBar && (
           <SubTitle>
             {idEmpresa == 1
-              ? `Esta empresa está ${entidade.progresso}% concluída`
-              : `Este projeto está ${entidade.progresso}% concluído`}
+              ? `Esta empresa está ${Math.floor(entidade.progresso)}% concluída`
+              : `Este projeto está ${Math.floor(entidade.progresso)}% concluído`}
           </SubTitle>
         )}
       </Stack>

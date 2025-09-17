@@ -23,8 +23,11 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
         if (!validarCampos()) return;
         setErros({});
         const newUsuario = { nome, email, cargo, area: area.toUpperCase(), permissao, fkEmpresa: idEmpresa, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
-        await postUsuario(newUsuario, toogleModal);
-        atualizarUsuarios();
+        const response = await postUsuario(newUsuario);
+        if (response) {
+            atualizarUsuarios();
+            toogleModal();
+        }
     };
 
     const handlePutUsuario = async () => {
@@ -40,8 +43,11 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
             area: area.toUpperCase(),
             permissao
         }
-        await putUsuario(modifiedUsuario, usuario.idUsuario, toogleModal);
-        atualizarUsuarios();
+        const response = await putUsuario(modifiedUsuario, usuario.idUsuario);
+        if (response) {
+            atualizarUsuarios();
+            toogleModal();
+        }
     }
 
     const mostrarPermissaoSelect = (

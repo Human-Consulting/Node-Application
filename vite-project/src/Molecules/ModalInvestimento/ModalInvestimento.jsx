@@ -36,14 +36,14 @@ const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal
                 horizontal: 'left',
             }}
         >
-            <List sx={{ width: 400, height: 400, background: '#000' }}>
+            <List sx={{ width: 450, height: 450, background: '#000', padding: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
                 {usuarioLogado.permissao != 'FUNC' && !usuarioLogado.permissao.includes("CONSULTOR") && (
                     <ListItem sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                         <Button variant="contained" color='primary' onClick={() => handleToogleModal(null)}>Adicionar investimento</Button>
                     </ListItem>
                 )}
                 {investimentos.map((investimento, index) => (
-                    <ListItem key={index} sx={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#000' }}>
+                    <ListItem key={index} sx={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#1D1D1D', borderRadius: '16px' }}>
                         <Stack sx={{ flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
                             <ListItemText
                                 primary={
@@ -71,7 +71,7 @@ const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal
                     </ListItem>
                 ))}
                 {investimentos.length === 0 && (
-                    <Typography variant="body2" sx={{ p: 2 }}>
+                    <Typography variant="body2" sx={{ p: 2, textAlign: 'center' }}>
                         Nenhum investimento realizado ainda!
                     </Typography>
                 )}

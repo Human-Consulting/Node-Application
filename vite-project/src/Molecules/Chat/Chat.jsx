@@ -10,7 +10,7 @@ import Shader from "../Shader/Shader";
 import ModalUsuariosChat from "../ModalUsuariosChat/ModalUsuariosChat";
 import Modal from "../Modal/Modal";
 import FormsSala from "../Forms/FormsSala";
-import { useWebSocket } from '../../Utils/SocketIO/WebSocketProvider';
+// import { useWebSocket } from '../../Utils/SocketIO/WebSocketProvider';
 
 
 const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, usuarios }) => {

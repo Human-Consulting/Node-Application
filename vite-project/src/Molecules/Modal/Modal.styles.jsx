@@ -11,7 +11,7 @@ export const Backdrop = styled(Box)({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1300,
+    zIndex: 100,
 });
 
 export const ModalContent = styled(Box)({

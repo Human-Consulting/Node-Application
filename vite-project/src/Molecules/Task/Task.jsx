@@ -22,6 +22,8 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
   const [acao, setAcao] = useState('');
   const [loading, setLoading] = useState(true);
   const [sprintsList, setSprintsList] = useState([]);
+  const [dtInicio, setDtInicio] = useState(null);
+  const [dtFim, setDtFim] = useState(null);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -46,11 +48,13 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
     telaAtual();
   }, [idProjeto]);
 
-  const toogleModal = (entidade, post, id) => {
+  const toogleModal = (entidade, post, id, dtInicio, dtFim) => {
     setAcao(post);
     setEntidade(entidade);
     setShowModal(!showModal);
     setId(id);
+    setDtInicio(dtInicio);
+    setDtFim(dtFim);
   };
 
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
@@ -74,7 +78,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
       </TaskBody>
 
       <Modal showModal={showModal} fechar={toogleModal} acao={entidade == null ? null : acao == "task" ? "aumentar" : null} entidade={entidade}
-        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} idSprint={id} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
+        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} idSprint={id} dtInicioSprint={dtInicio} dtFimSprint={dtFim} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
           : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} acao={null} />}
       >
       </Modal>

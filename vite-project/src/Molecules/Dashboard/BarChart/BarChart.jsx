@@ -5,9 +5,8 @@ const MinimalBarChart = ({ areas }) => {
     chart: {
       type: 'bar',
       toolbar: {
-        show: false
+        show: false,
       },
-      background: 'transparent'
     },
     plotOptions: {
       bar: {
@@ -31,7 +30,7 @@ const MinimalBarChart = ({ areas }) => {
       strokeDashArray: 4,
       xaxis: {
         lines: {
-          show: false
+          show: true
         }
       }
     },
@@ -42,17 +41,15 @@ const MinimalBarChart = ({ areas }) => {
           colors: '#fff'
         }
       },
-      axisBorder: {
-        show: true
-      },
-      axisTicks: {
-        show: false
-      }
+      tickAmount: Math.max(...areas.map(a => a.valor)),
+      min: 0,
+      stepSize: 1
     },
     yaxis: {
       labels: {
         style: {
-          colors: '#fff'
+          colors: '#fff',
+          fontWeight: 600
         }
       }
     },
@@ -72,6 +69,7 @@ const MinimalBarChart = ({ areas }) => {
       style={{
         // background: 'linear-gradient(to right, #1F1F1F, #0f1125)',
         borderRadius: '1rem',
+        // background: '#22272B'
       }}
     >
       <Chart options={options} series={series} type="bar" height={300} width="100%" />

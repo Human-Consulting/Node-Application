@@ -1,10 +1,10 @@
 import { BodyTarefa, NavTask, TaskCardBody } from './TaskCard.styles'
-import { Button, Select, Stack, MenuItem, Grow, Box, Tooltip } from '@mui/material'
+import { Button, Select, Stack, MenuItem, Grow, Box, Tooltip, Popover, TextField } from '@mui/material'
 import TarefasItem from '../TarefasItem/TarefasItem'
 import { useNavigate, useParams } from 'react-router'
 import { useEffect, useState } from 'react';
-import { CalendarMonth, CheckCircle, HourglassEmpty, Block, AllInclusive, MoreVert } from '@mui/icons-material';
-import { getTempoRestante } from '../../Utils/getInfos';
+import { CalendarMonth, CheckCircle, HourglassEmpty, Block, AllInclusive, MoreVert, EmojiPeople, Search, NorthEast } from '@mui/icons-material';
+import { getNome, getTempoRestante } from '../../Utils/getInfos';
 
 const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints }) => {
 
@@ -15,6 +15,43 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const [tarefasFiltradas, setTarefasFiltradas] = useState([]);
+  const [usuarioFiltrado, setUsuarioFiltrado] = useState(null);
+  const [buscaTitulo, setBuscaTitulo] = useState("");
+
+
+  const [anchorUser, setAnchorUser] = useState(null);
+  const [anchorSearch, setAnchorSearch] = useState(null);
+
+  const usuarios = [
+    ...new Map(
+      sprint?.tarefas.map(t => [
+        t.responsavel.idUsuario,
+        { idUsuario: t.responsavel.idUsuario, nome: t.responsavel.nome }
+      ])
+    ).values()
+  ];
+
+  const handleOpenSearch = (event) => {
+    setAnchorSearch(event.currentTarget);
+  };
+
+  const handleCloseSearch = () => {
+    setAnchorSearch(null);
+    setBuscaTitulo("");
+  };
+
+  useEffect(() => {
+
+    if (buscaTitulo.trim() === "") {
+      setTarefasFiltradas(tarefasFiltradas);
+    } else {
+      setTarefasFiltradas(
+        sprint?.tarefas.filter(t =>
+          t.titulo.toLowerCase().includes(buscaTitulo.toLowerCase())
+        )
+      );
+    }
+  }, [buscaTitulo, sprint]);
 
   useEffect(() => {
     console.log(sprint?.tarefas);
@@ -26,7 +63,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   }
 
   const handleOpenModalPutTask = (task) => {
-    toogleTaskModal(task, 'task', null);
+    toogleTaskModal(task, 'task', null, sprint.dtInicio, sprint.dtFim);
   }
 
   const handleOpenModalPutSprint = () => {
@@ -34,7 +71,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   }
 
   const handleOpenModalPostTask = () => {
-    toogleTaskModal(null, 'task', sprint.idSprint);
+    toogleTaskModal(null, 'task', sprint.idSprint, sprint.dtInicio, sprint.dtFim);
   }
 
   const handleOpenModalPostSprint = () => {
@@ -42,6 +79,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   }
 
   const filterTarefas = (status) => {
+    setUsuarioFiltrado(null);
     switch (status) {
       case 'PENDENTES':
         setTarefasFiltradas(sprint.tarefas.filter((tarefa) => tarefa.progresso < 100));
@@ -59,6 +97,20 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
         break;
     }
   }
+
+  const handleOpenUserFilter = (event) => {
+    setAnchorUser(event.currentTarget);
+  };
+
+  const handleCloseUserFilter = () => {
+    setAnchorUser(null);
+  };
+
+  const filterByUsuario = (usuario) => {
+    setUsuarioFiltrado(usuario.nome);
+    setTarefasFiltradas(sprint.tarefas.filter(t => t.responsavel.idUsuario === usuario.idUsuario));
+    handleCloseUserFilter();
+  };
 
   const statusOptions = [
     { value: 'TODOS', icon: <AllInclusive />, label: 'Todos' },
@@ -78,11 +130,16 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
               fullWidth
               displayEmpty
               renderValue={(selected) => {
+                let retorno = null;
                 const option = statusOptions.find(opt => opt.value === selected);
-                return <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>{option?.icon}</Box>;
+                usuarioFiltrado == null ? retorno = <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>{option?.icon}</Box>
+                  : retorno =
+                  <Tooltip title={usuarioFiltrado} placement="top">
+                    <Stack sx={{ width: '25px', height: '25px', backgroundColor: 'white', color: 'black', borderRadius: '100%', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>{getNome(usuarioFiltrado)}</Stack>
+                  </Tooltip>;
+                return retorno;
               }}
               sx={{
-                color: '#FFF',
                 position: 'absolute',
                 left: '10px',
                 width: "fit-content"
@@ -108,9 +165,47 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
                   </Box>
                 </MenuItem>
               ))}
+              <MenuItem value="USUARIO" onClick={handleOpenUserFilter}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <EmojiPeople />
+                  Usuário
+                </Box>
+              </MenuItem>
             </Select>
-            {sprint.titulo}
+            <Stack sx={{
+              flexDirection: 'row', border: '1px solid transparent',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              transition: '0.3s',
+              gap: 1,
+              '&:hover': {
+                border: '1px solid #f0f0f0'
+              }
+            }}>
+              {sprint.titulo}
+              <NorthEast
+                onClick={handleOpenProject}
+                sx={{
+                  color: '#FFF',
 
+                }}
+              />
+            </Stack>
+            <Search
+              onClick={handleOpenSearch}
+              sx={{
+                color: '#FFF',
+                position: 'absolute',
+                right: '40px',
+                cursor: 'pointer',
+                transition: '0.3s',
+                border: '1px solid transparent',
+                borderRadius: '4px',
+                '&:hover': {
+                  border: '1px solid #f0f0f0'
+                }
+              }}
+            />
             <MoreVert
               onClick={(e) => {
                 e.stopPropagation();
@@ -140,12 +235,12 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
               <Button size='medium' onClick={handleOpenModalPostTask} variant='contained'>CRIAR TAREFA</Button>
               : null}
             {/* <Button size='medium' onClick={handleOpenProject} variant='contained'>VER TAREFAS</Button> */}
-            <Stack sx={{ flexDirection: 'row', gap:'15px', }}>
-              {sprint.progresso}%
-              {sprint.progresso < 100 && 
-              <Tooltip title={"Prazo: " + sprint.dtFim} placement="top">
-                <Stack sx={{ gap: '2px', alignItems: 'center', flexDirection: 'row' }}> <CalendarMonth sx={{ fontSize: '16px' }} />{getTempoRestante(sprint.dtFim)}</Stack>
-              </Tooltip>}
+            <Stack sx={{ flexDirection: 'row', gap: '15px', }}>
+              {Math.floor(sprint.progresso)}% de {sprint.tarefas.length}
+              {sprint.progresso < 100 &&
+                <Tooltip title={"Prazo: " + sprint.dtFim} placement="top">
+                  <Stack sx={{ gap: '2px', alignItems: 'center', flexDirection: 'row' }}> <CalendarMonth sx={{ fontSize: '16px' }} />{getTempoRestante(sprint.dtFim)}</Stack>
+                </Tooltip>}
             </Stack>
           </Stack>
         </>
@@ -159,6 +254,59 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
           </Button>
         </Stack>
       }
+      <Popover
+        open={Boolean(anchorUser)}
+        anchorEl={anchorUser}
+        onClose={handleCloseUserFilter}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      >
+        <Box sx={{ bgcolor: '#22272B', color: 'white', p: 1, borderRadius: 2 }}>
+          {usuarios.map(user => (
+            <MenuItem
+              key={user.idUsuario}
+              onClick={() => filterByUsuario(user)}
+              sx={{ color: '#fff' }}
+            >
+              {user.nome}
+            </MenuItem>
+          ))}
+        </Box>
+      </Popover>
+      <Popover
+        open={Boolean(anchorSearch)}
+        anchorEl={anchorSearch}
+        onClose={handleCloseSearch}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'right',
+        }}
+      >
+        <Box sx={{ bgcolor: '#22272B', color: 'white', p: 1, borderRadius: 2 }}>
+          <TextField
+            autoFocus
+            placeholder="Buscar tarefa..."
+            variant="outlined"
+            size="small"
+            value={buscaTitulo}
+            onChange={(e) => setBuscaTitulo(e.target.value)}
+            sx={{
+              input: { color: 'white' },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { borderColor: 'white' },
+                '&:hover fieldset': { borderColor: '#ccc' },
+                '&.Mui-focused fieldset': { borderColor: '#1976d2' }
+              }
+            }}
+          />
+        </Box>
+      </Popover>
     </TaskCardBody>
   )
 }

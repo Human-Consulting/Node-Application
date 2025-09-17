@@ -1,11 +1,13 @@
 import { TarefaBody, ProgressBar, Progress } from './TarefasItem.style'
-import { Stack, Tooltip } from '@mui/material'
+import { Box, Stack, Tooltip } from '@mui/material'
 import { Block, Check, CalendarMonth, MoreVert } from '@mui/icons-material';
 import { getNome, getTempoRestante } from '../../Utils/getInfos';
 
 const TarefasItem = ({ tarefa, toogleModal }) => {
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
+  const tempoRestante = getTempoRestante(tarefa.dtFim);
 
   const handleToogleModal = () => {
     const task = {
@@ -47,7 +49,7 @@ const TarefasItem = ({ tarefa, toogleModal }) => {
   };
 
   return (
-    <TarefaBody sx={{ border: `solid ${tarefa.responsavel.idUsuario == usuarioLogado.idUsuario ? '#FFF' : 'transparent'} 3px` }}>
+    <TarefaBody sx={{ border: `solid ${tempoRestante.includes("-") && tarefa.progresso < 100 ? "#f44336" : tarefa.responsavel.idUsuario == usuarioLogado.idUsuario ? '#FFF' : "transparent"} 3px` }}>
       <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
         <Stack sx={{ flexDirection: 'row', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
           <Tooltip title={tarefa.responsavel.nome} placement="top">
@@ -78,11 +80,11 @@ const TarefasItem = ({ tarefa, toogleModal }) => {
         <ProgressBar>
           <Progress sx={{ width: `${tarefa.progresso}%` }} />
         </ProgressBar>
-        <span>{tarefa.progresso}%</span>
+        <span>{Math.floor(tarefa.progresso)}%</span>
         {tarefa.progresso < 100 &&
-          <Tooltip title={"Prazo: " + tarefa.dtFim} placement="top">
+          <Tooltip title={"Prazo: " + tarefa.dtFim} placement="bottom">
             <Stack sx={{ flexDirection: 'row', alignItems: 'center', gap: 0.25 }}>
-              <CalendarMonth sx={{ fontSize: '16px' }} /> {getTempoRestante(tarefa.dtFim)}
+              <CalendarMonth sx={{ fontSize: 16 }} />{tempoRestante}
             </Stack>
           </Tooltip>}
       </Stack>
