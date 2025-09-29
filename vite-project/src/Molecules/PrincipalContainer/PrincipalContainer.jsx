@@ -10,6 +10,7 @@ import { useNavigate, useParams } from 'react-router';
 import { ArrowCircleLeftOutlined, Assignment, Construction, ColorLens, Search } from '@mui/icons-material';
 import ModalCores from '../ModalCores/ModalCores.jsx';
 import Shader from '../Shader/Shader.jsx';
+import { getNome } from '../../Utils/getInfos';
 
 const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setColor3, animate, setAnimate, toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, empresas, usuarios, telaAtual }) => {
 
@@ -56,7 +57,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
     toogleLateralBar();
     telaAtual();
     setListaFiltrada(idEmpresa == 1 && empresas.length > 1 ? empresas.slice(1) : projetos);
-
+    // setListaFiltrada(idEmpresa == 1 && empresas.length > 0 ? empresas : projetos);
   }, [projetos, empresas, idEmpresa]);
 
   const toogleModal = (entidade, acao) => {
@@ -97,24 +98,35 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
       <HeaderContent>
         <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={5} />
         <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6', alignItems: 'center' }}>
-          <Avatar sx={{
-            width: 56, height: 56, bgcolor: 'transparent'
-          }} src={`data:image/png;base64,${empresas[0]?.urlImagem || projetos[0]?.urlImagemEmpresa}`}
-            imgProps={{
-              style: {
-                objectFit: 'cover',
-                objectPosition: 'center',
-                width: '100%',
-                height: '100%',
-              }
-            }}></Avatar>
+          <Avatar
+            sx={{
+              width: 56,
+              height: 56,
+              fontWeight: "bold",
+              fontSize: "0.9rem",
+              color: "white",
+              backgroundColor: "#1D1D1D",
+              cursor: "pointer",
+              position: "relative",
+              backgroundPosition: "center",
+              transition: "0.52s ease",
+              "&:hover": {
+                backgroundImage: `url(data:image/png;base64,${empresas[0]?.urlImagem || projetos[0]?.urlImagemEmpresa})`,
+                backgroundSize: "cover",
+                color: "transparent", // esconde a letra no hover
+              },
+            }}
+          >
+            {getNome(usuarioLogado.nome)}
+          </Avatar>
+
           <TextField
             onChange={(e) => filtrar(e.target.value)}
             label=
             {idEmpresa == 1 ?
-              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search/> Pesquisar por uma empresa...</Stack>
+              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search /> Pesquisar por uma empresa...</Stack>
               :
-              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}><Search/> Pesquisar um projeto da <Stack style={{ color: '#90caf9' }}>{nomeEmpresa}</Stack></Stack>
+              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}><Search /> Pesquisar um projeto da <Stack style={{ color: '#90caf9' }}>{nomeEmpresa}</Stack></Stack>
             }
 
             size="small"

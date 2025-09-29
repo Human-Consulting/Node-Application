@@ -34,8 +34,6 @@ function ProjectsCard({ item, toogleModal }) {
   const handleOpenProject = async () => {
     idEmpresa == 1 ? navigate(`/Home/${item.nome}/${Number(item.idEmpresa)}`)
       : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${item.titulo}/${Number(item.idProjeto)}`);
-    //? Utilizar? 
-    // : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/next-step/${item.descricao}/${Number(item.idProjeto)}`);
   }
 
   console.log(item);

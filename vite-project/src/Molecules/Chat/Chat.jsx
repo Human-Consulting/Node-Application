@@ -51,7 +51,7 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
     }
   }, [selectedChatId, salas]);
 
-  const selectedChat = salas.find(chat => chat.idSala === selectedChatId);
+  const selectedChat = salas?.find(chat => chat.idSala === selectedChatId);
 
   const getSenderInfo = (chat, senderId) => {
     return chat.participants.find(participant => participant.idUsuario === senderId);

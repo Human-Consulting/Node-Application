@@ -1,6 +1,9 @@
 import Chart from 'react-apexcharts';
 
 const MinimalBarChart = ({ areas }) => {
+  const valores = areas?.map(a => a?.valor || 0) ?? [];
+  const categorias = areas?.map(a => a?.nome || '') ?? [];
+
   const options = {
     chart: {
       type: 'bar',
@@ -35,13 +38,13 @@ const MinimalBarChart = ({ areas }) => {
       }
     },
     xaxis: {
-      categories: areas?.map(area => area.nome),
+      categories: categorias,
       labels: {
         style: {
           colors: '#fff'
         }
       },
-      tickAmount: Math.max(...areas.map(a => a.valor)),
+      tickAmount: valores.length > 0 ? Math.max(...valores) : 0,
       min: 0,
       stepSize: 1
     },
@@ -60,7 +63,7 @@ const MinimalBarChart = ({ areas }) => {
   const series = [
     {
       name: 'Tarefas',
-      data: areas?.map(area => area.valor)
+      data: valores
     }
   ];
 

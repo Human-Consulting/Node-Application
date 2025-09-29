@@ -14,6 +14,10 @@ export const showSwal = (status, conteudo) => {
             icon = "success";
             title = "Criado!";
             break;
+        case 204:
+            icon = "success";
+            title = "Criado!";
+            break;
         case 400:
             icon = "warning";
             title = "Atenção!";
@@ -28,6 +32,10 @@ export const showSwal = (status, conteudo) => {
         case 404:
             icon = "error";
             title = "Não encontrado!";
+            break;
+        case 409:
+            icon = "error";
+            title = "Conflito encontrado!";
             break;
         case 500:
             icon = "error";

@@ -18,7 +18,9 @@ const AreaData = ({ usuario, area, valor, total }) => {
         <ProgressBar>
           <Progress sx={{ width: `${(valor * 100) / total}%` }} />
         </ProgressBar>
-        <TextDefault>{Math.floor((valor * 100) / total)}%</TextDefault>
+        <TextDefault>
+          {total > 0 ? Math.floor((valor * 100) / total) : 0}%
+        </TextDefault>
       </Stack>
     </AreaDataBox>
   )

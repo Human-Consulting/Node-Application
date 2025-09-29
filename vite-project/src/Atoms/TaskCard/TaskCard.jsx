@@ -172,14 +172,14 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
                 </Box>
               </MenuItem>
             </Select>
-            <Stack sx={{
+            <Stack sx={{ //? Onclick nesse cara pra abrir Backlog
               flexDirection: 'row', border: '1px solid transparent',
-              borderRadius: '4px',
               cursor: 'pointer',
-              transition: '0.3s',
+              transition: '0.2s',
+              paddingInline: 1,
               gap: 1,
               '&:hover': {
-                border: '1px solid #f0f0f0'
+                borderBottom: '1px solid #f0f0f0'
               }
             }}>
               {sprint.titulo}

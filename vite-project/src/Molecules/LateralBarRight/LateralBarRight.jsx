@@ -56,8 +56,8 @@ const LateralBarRight = ({ showLateralBar, projetos, empresas }) => {
           {caosList.length > 1 ? <SkipLeft onClick={handleLeftSkip} ><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft> : null}
           <Slide ref={carrousel}>
             {caosList.length > 0 ? caosList.map(entidade => (
-              <MiniProjectsCard entidade={entidade} />
-            )) : <MiniProjectsCard entidade={null} />}
+              <MiniProjectsCard entidade={entidade} tipo={"impedimento"} />
+            )) : <MiniProjectsCard entidade={null} tipo={"impedimento"} />}
           </Slide>
           {caosList.length > 1 ? <SkipRigth onClick={handleRightSkip}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth> : null}
         </MiniCarrousel>
@@ -74,8 +74,8 @@ const LateralBarRight = ({ showLateralBar, projetos, empresas }) => {
           {finalizadosList.length > 1 ? <SkipLeft onClick={handleLeftSkipTwo}><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft> : null}
           <Slide ref={carrouselTwo}>
             {finalizadosList.length > 0 ? finalizadosList.map(entidade => (
-              <MiniProjectsCard entidade={entidade} />
-            )) : <MiniProjectsCard entidade={null} />}
+              <MiniProjectsCard entidade={entidade} tipo={"finalizado"} />
+            )) : <MiniProjectsCard entidade={null} tipo={"finalizado"} />}
           </Slide>
           {finalizadosList.length > 1 ? <SkipRigth onClick={handleRightSkipTwo}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth> : null}
         </MiniCarrousel>

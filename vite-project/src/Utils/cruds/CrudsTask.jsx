@@ -15,7 +15,7 @@ export const postTask = async (newTask) => {
             },
             body: formattedTask,
         });
-        showSwal(res.status, res.statusText);
+        showSwal(res.status, res.message);
         return res.ok;
     } catch (error) {
         console.error(error);
