@@ -1,52 +1,49 @@
-
 import { useNavigate, useParams } from 'react-router';
-import TarefaMini from '../TarefaMini/TarefaMini';
-import { BackCentral, BodyTarefa, DoneContainer, MidleCarrousel } from './CentralTask.styles';
 import { useEffect, useState } from 'react';
 import { getTasks } from '../../Utils/cruds/CrudsTask';
-import Modal from '../Modal/Modal';
-import FormsTask from '../Forms/FormsTask';
-import { ArrowCircleLeftOutlined } from '@mui/icons-material';
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+
 import { getSprints } from '../../Utils/cruds/CrudsSprint';
-import { Typography, Button } from '@mui/material';
-import Shader from '../Shader/Shader';
+import { BackCentral, BodyTarefa, DoneContainer } from './CentralTask.styles';
 import HeaderFilter from '../../Atoms/HeaderFilter/HeaderFilter';
 import TarefasItem from '../../Atoms/TarefasItem/TarefasItem';
+import { Stack, Typography } from '@mui/material';
+import Modal from '../Modal/Modal';
+import FormsTask from '../Forms/FormsTask';
+import FormsSprint from '../Forms/FormsSprint';
 
-const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, color2, color3, animate }) => {
-
-  const { nomeEmpresa, idEmpresa, tituloProjeto, idProjeto, idSprint, index } = useParams();
-
-  console.log(idSprint, 111)
+const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
+  const { idSprint, idProjeto } = useParams();
   const navigate = useNavigate();
-  const acaoValue = "task";
 
-  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
-
-  const handleOpenProject = () => {
-    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Roadmap/${tituloProjeto}/${idProjeto}`);
-  }
-
-  const handleOpenDash = async () => {
-    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Dash/${tituloProjeto}/${Number(idProjeto)}`)
-  }
-
-  const [showModal, setShowModal] = useState(false);
-  const [task, setTask] = useState(null);
   const [tarefas, setTarefas] = useState([]);
-  const [tarefasFiltradas, setTarefasFiltradas] = useState([]);
-
+  const [showModal, setShowModal] = useState(false);
+  const [entidade, setEntidade] = useState(null);
+  const [id, setId] = useState(null);
+  const [acao, setAcao] = useState('');
+  const [tarefasAFazerFiltradas, setTarefasAFazerFiltradas] = useState([]);
+  const [tarefasEmDevFiltradas, setTarefasEmDevFiltradas] = useState([]);
+  const [tarefasConcluidasFiltradas, setTarefasConcluidasFiltradas] = useState([]);
 
   const atualizarSprints = async () => {
-    const sprints = await getSprints(idSprint);
-    setSprints(sprints);
+    await getSprints(idSprint);
   };
+
+    const toogleModal = (entidade, post, id) => {
+    setAcao(post);
+    setEntidade(entidade);
+    setShowModal(!showModal);
+    setId(id);
+  };
+
+
+    const handleOpenModalPutTask = (task) => {
+    toogleModal(task, 'task', null);
+  }
 
   const atualizarTasks = async () => {
     const tarefas = await getTasks(idSprint);
     setTarefas(tarefas);
-  console.log(tarefas)
-
   };
 
   useEffect(() => {
@@ -54,24 +51,95 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
     toogleLateralBar();
   }, []);
 
-  const toogleModal = (task) => {
-    setTask(task);
-    setShowModal(!showModal);
-  };
+  
+  const handleOpenProject = async () => {
+    navigate(-1)
+  }
 
+
+  useEffect(() => {
+    const aFazer = tarefas.filter((t) => t.progresso === 0 && !t.comImpedimento);
+    const emDev = tarefas.filter((t) => t.progresso > 0 && t.progresso < 100 && !t.comImpedimento);
+    const concluidas = tarefas.filter((t) => t.progresso === 100);
+
+    setTarefasAFazerFiltradas(aFazer);
+    setTarefasEmDevFiltradas(emDev);
+    setTarefasConcluidasFiltradas(concluidas);
+  }, [tarefas]);
 
   return (
-    <BackCentral>
-      <DoneContainer><HeaderFilter setTarefasFiltradas={setTarefasFiltradas} tarefaData={tarefas} titulo='A fazer'/> 
-        <BodyTarefa>
-            {tarefasFiltradas.map((tarefa, index) => (
-              <TarefasItem key={index} tarefa={tarefa}  atualizarProjetos={atualizarProjetos} atualizarSprints={atualizarSprints} ></TarefasItem>
-            ))}
-          </BodyTarefa></DoneContainer>
-      <DoneContainer><HeaderFilter setTarefasFiltradas={setTarefas} tarefaData={tarefas} titulo='Em desenvolvimento'/></DoneContainer>
-      <DoneContainer><HeaderFilter setTarefasFiltradas={setTarefas} tarefaData={tarefas} titulo='Concluido'/></DoneContainer>
-    </BackCentral>
-  )
-}
+  <Stack sx={{width: '100%', height: '100%', padding: '1.5rem', gap: '1rem'}}>
+ <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center',  fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject}/> - Central de tarefas</Typography>
+ <BackCentral>
 
-export default CentralTask 
+
+      <DoneContainer>
+        <HeaderFilter
+          titulo="A Fazer"
+          tarefaData={tarefas.filter((t) => t.progresso === 0 && !t.comImpedimento)}
+          setTarefasFiltradas={setTarefasAFazerFiltradas}
+        />
+        <BodyTarefa>
+          {tarefasAFazerFiltradas.map((tarefa, index) => (
+            <TarefasItem
+              key={index}
+              toogleModal={handleOpenModalPutTask}
+              tarefa={tarefa}
+              atualizarProjetos={atualizarProjetos}
+              atualizarSprints={atualizarSprints}
+            />
+          ))}
+        </BodyTarefa>
+      </DoneContainer>
+
+      {/* Coluna 2 */}
+      <DoneContainer>
+        <HeaderFilter
+          titulo="Em Desenvolvimento"
+          tarefaData={tarefas.filter((t) => t.progresso > 0 && t.progresso < 100 && !t.comImpedimento)}
+          setTarefasFiltradas={setTarefasEmDevFiltradas}
+        />
+        <BodyTarefa>
+          {tarefasEmDevFiltradas.map((tarefa, index) => (
+            <TarefasItem
+              key={index}
+               toogleModal={handleOpenModalPutTask}
+              tarefa={tarefa}
+              atualizarProjetos={atualizarProjetos}
+              atualizarSprints={atualizarSprints}
+            />
+          ))}
+        </BodyTarefa>
+      </DoneContainer>
+
+      {/* Coluna 3 */}
+      <DoneContainer>
+        <HeaderFilter
+          titulo="Concluído"
+          tarefaData={tarefas.filter((t) => t.progresso === 100)}
+          setTarefasFiltradas={setTarefasConcluidasFiltradas}
+        />
+        <BodyTarefa>
+          {tarefasConcluidasFiltradas.map((tarefa, index) => (
+            <TarefasItem
+              key={index}
+               toogleModal={handleOpenModalPutTask}
+              tarefa={tarefa}
+              atualizarProjetos={atualizarProjetos}
+              atualizarSprints={atualizarSprints}
+            />
+          ))}
+        </BodyTarefa>
+      </DoneContainer>
+    </BackCentral>
+       <Modal showModal={showModal} fechar={toogleModal} acao={entidade == null ? null : acao == "task" ? "aumentar" : null} entidade={entidade}
+            form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} idSprint={id} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
+              : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} acao={null} />}
+          >
+          </Modal>
+    </Stack>
+   
+  );
+};
+
+export default CentralTask;

@@ -4,12 +4,48 @@ import { styled } from '@mui/system';
 export const BackCentral = styled(Box)({
     width: 'calc(100% - 2rem)',
     height: '100%',
-    // background: "#0D0D0D",
+    display: 'flex',
+    overflow: 'hidden',
+    flexDirection: 'row',
+    gap: '1rem'
+});
+
+export const DoneContainer = styled(Box)({
+    padding: '1rem',
+    borderRadius: '10px',
+    flex: 1,
+    height: '100%',
+    background: "#1d1d1d",
     display: 'flex',
     overflow: 'hidden',
     flexDirection: 'column',
-    paddingInline: '1.5rem',
-    paddingBottom: '1.5rem',
+});
+
+export const BodyTarefa = styled(Box)({
+    height: '100%',
+    width: 'calc(100%)',
+    overflowY: 'auto',
+    maxHeight: '800px',
+    padding: '1rem 0rem',
+    gap: '2rem',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    scrollBehavior: 'smooth',
+
+    '&::-webkit-scrollbar': {
+        width: '8px',
+    },
+    '&::-webkit-scrollbar-track': {
+        background: 'transparent',
+    },
+    '&::-webkit-scrollbar-thumb': {
+        background: '#888',
+        borderRadius: '4px',
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+        background: '#aaa',
+    },
 });
 
 export const TituloHeader = styled('h1')({

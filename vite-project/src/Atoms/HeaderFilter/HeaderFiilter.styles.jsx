@@ -5,5 +5,5 @@ export const NavTask = styled(Box)({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
 });

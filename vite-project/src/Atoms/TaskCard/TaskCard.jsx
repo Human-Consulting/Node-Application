@@ -129,8 +129,8 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
             />
           </NavTask>
           <BodyTarefa>
-            {tarefasFiltradas.map((tarefa) => (
-              <TarefasItem tarefa={tarefa} toogleModal={handleOpenModalPutTask} atualizarProjetos={atualizarProjetos} atualizarSprints={atualizarSprints} ></TarefasItem>
+            {tarefasFiltradas.map((tarefa, index) => (
+              <TarefasItem key={index} index={index} tarefa={tarefa} toogleModal={handleOpenModalPutTask} atualizarProjetos={atualizarProjetos} atualizarSprints={atualizarSprints} ></TarefasItem>
             ))}
           </BodyTarefa>
           <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', justifyContent: 'center', alignItems: 'center' }}>
