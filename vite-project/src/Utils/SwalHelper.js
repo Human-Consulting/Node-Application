@@ -16,14 +16,13 @@ export const showSwal = (status, conteudo) => {
             break;
         case 204:
             icon = "success";
-            title = "Criado!";
+            title = "Sucesso!";
             break;
         case 400:
             icon = "warning";
             title = "Atenção!";
             text = "Verifique os dados informados.";
             break;
-        case 401:
         case 403:
             icon = "error";
             title = "Acesso negado!";
@@ -49,20 +48,10 @@ export const showSwal = (status, conteudo) => {
             break;
     }
 
-    if (status === 200 && conteudo === "atualizarUsuario") {
-        text = "Usuário atualizado com sucesso!";
-    }
-    if (status === 201 && conteudo === "criarProjeto") {
-        text = "Projeto criado com sucesso!";
-    }
-    if (status === 200 && conteudo === "excluirSprint") {
-        text = "Sprint excluída com sucesso!";
-    }
-
     return Swal.fire({
         icon,
         title,
-        text: conteudo || text,
+        text: conteudo,
         position: "center",
         backdrop: false,
         timer: 1500,

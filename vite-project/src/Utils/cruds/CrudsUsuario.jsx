@@ -15,7 +15,9 @@ export const postUsuario = async (newUsuario) => {
             body: formattedUsuario,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Usuário cadastrado!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -52,7 +54,9 @@ export const putUsuario = async (modifiedUsuario, idUsuario) => {
             body: formattedUsuario,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Informações atualizadas!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -72,7 +76,9 @@ export const putSenhaUsuario = async (modifiedUsuario, idUsuario) => {
             body: formattedUsuario,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Senha atualizada!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -91,7 +97,9 @@ export const putEsqueciASenhaUsuario = async (modifiedUsuario, idUsuario) => {
             body: formattedUsuario,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Senha atualizada!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -111,7 +119,9 @@ export const putCoresUsuario = async (modifiedUsuario, idUsuario) => {
             body: formattedUsuario,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Cores atualizadas!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -147,8 +157,15 @@ export const deleteUsuario = async (idUsuario, body) => {
                 },
             });
 
-            showSwal(res.status, res.statusText);
-        return res.ok;
+            let data = null;
+            try {
+                data = await res.json();
+            } catch {
+                // resposta sem JSON (ex: 204 No Content)
+            }
+
+            showSwal(res.status, data?.message || "Usuário removido!");
+            return res.status === 204;
         }
     } catch (error) {
         console.error("Erro ao remover Usuario " + idUsuario + ": ", error);
@@ -250,7 +267,9 @@ export const enviarCodigo = async (body) => {
             },
             body: formattedUsuario
         });
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message);
         return res.ok;
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);

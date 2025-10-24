@@ -15,7 +15,10 @@ export const postTask = async (newTask) => {
             },
             body: formattedTask,
         });
-        showSwal(res.status, res.message);
+
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Tarefa cadastrada!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -53,7 +56,9 @@ export const putTask = async (modifiedTask, idTask) => {
             body: formattedTask,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Informações atualizadas!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -89,8 +94,8 @@ export const deleteTask = async (idTask, body) => {
                 },
             });
 
-            showSwal(res.status, res.statusText);
-            return res.ok;
+            showSwal(res.status, "Tarefa removida com sucesso!");
+            return res.status == 204;
         }
     } catch (error) {
         console.error("Erro ao remover task " + idTask + ": ", error);
@@ -145,8 +150,15 @@ export const putImpedimento = async (task, body, idTask) => {
 
             });
 
-            showSwal(res.status, res.statusText);
-            return res.ok;
+            let data = null;
+            try {
+                data = await res.json();
+            } catch {
+                // resposta sem JSON (ex: 204 No Content)
+            }
+
+            showSwal(res.status, data?.message || "Tarefa removida!");
+            return res.status === 204;
         }
     } catch (error) {
         console.error(error);

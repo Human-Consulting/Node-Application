@@ -27,14 +27,14 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
 
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
-  if (!usuarioLogado.permissao.includes("CONSULTOR") && idEmpresa == 1) navigate(-1);
+  if (!usuarioLogado.permissao.includes("CONSULTOR") && (nomeEmpresa != usuarioLogado.nomeEmpresa)) navigate(-1);
 
   const filtrar = (texto) => {
     if (texto !== '') {
       const textoLower = texto.toLowerCase();
       let lista = [];
 
-      if (idEmpresa != 1) {
+      if (nomeEmpresa != "Empresas") {
         lista = projetos.filter(projeto => {
           const palavras = (projeto.descricao ?? '').toLowerCase().split(' ');
           return palavras.some(palavra => palavra.startsWith(textoLower));
@@ -49,16 +49,16 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
       setListaFiltrada(lista);
 
     } else {
-      setListaFiltrada(idEmpresa == 1 ? empresas : projetos);
+      setListaFiltrada(npmeEmpresa == "Empresas" ? empresas : projetos);
     }
   }
 
   useEffect(() => {
     toogleLateralBar();
     telaAtual();
-    setListaFiltrada(idEmpresa == 1 && empresas.length > 1 ? empresas.slice(1) : projetos);
-    // setListaFiltrada(idEmpresa == 1 && empresas.length > 0 ? empresas : projetos);
-  }, [projetos, empresas, idEmpresa]);
+    // setListaFiltrada(idEmpresa == 1 && empresas.length > 1 ? empresas.slice(1) : projetos);
+    setListaFiltrada(nomeEmpresa == "Empresas" && empresas.length > 0 ? empresas : projetos);
+  }, [projetos, empresas, idEmpresa, nomeEmpresa]);
 
   const toogleModal = (entidade, acao) => {
     setAcao(acao);
@@ -113,7 +113,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
               "&:hover": {
                 backgroundImage: `url(data:image/png;base64,${empresas[0]?.urlImagem || projetos[0]?.urlImagemEmpresa})`,
                 backgroundSize: "cover",
-                color: "transparent", // esconde a letra no hover
+                color: "transparent",
               },
             }}
           >
@@ -123,7 +123,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
           <TextField
             onChange={(e) => filtrar(e.target.value)}
             label=
-            {idEmpresa == 1 ?
+            {nomeEmpresa == "Empresas" ?
               <Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search /> Pesquisar por uma empresa...</Stack>
               :
               <Stack sx={{ flexDirection: 'row', gap: 0.5 }}><Search /> Pesquisar um projeto da <Stack style={{ color: '#90caf9' }}>{nomeEmpresa}</Stack></Stack>
@@ -165,7 +165,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
                   <Assignment sx={{ fontSize: 32, cursor: 'pointer' }} />
                 </Badge>
               </Tooltip>
-              : idEmpresa == 1 ?
+              : nomeEmpresa == "Empresas" ?
                 <Button onClick={() => toogleModal(null, 'empresa')}
                   variant="contained">
                   CRIAR EMPRESA
@@ -186,7 +186,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
           </Tooltip>
 
         </Stack>
-        <TituloHeader>{idEmpresa != 1 && usuarioLogado.permissao.includes('CONSULTOR') ? <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px' }} onClick={handleOpenEmpresas} /> : null} {idEmpresa == 1 ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}</TituloHeader>
+        <TituloHeader>{nomeEmpresa != "Empresas" && usuarioLogado.permissao.includes('CONSULTOR') ? <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px' }} onClick={handleOpenEmpresas} /> : null} {nomeEmpresa == "Empresas" ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}</TituloHeader>
       </HeaderContent>
       <MidleCarrousel>
         {listaFiltrada?.length > 0 ? (

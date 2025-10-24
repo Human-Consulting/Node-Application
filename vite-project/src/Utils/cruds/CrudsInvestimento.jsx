@@ -15,7 +15,9 @@ export const postInvestimento = async (newInvestimento) => {
             body: formattedInvestimento,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message);
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -35,7 +37,9 @@ export const putInvestimento = async (modifiedInvestimento, idInvestimento) => {
             body: formattedInvestimento,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message);
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -70,8 +74,8 @@ export const deleteInvestimento = async (idInvestimento, body) => {
                 },
             });
 
-           showSwal(res.status, res.statusText);
-        return res.ok;
+            showSwal(res.status, "Investimento removido com sucesso!");
+            return res.status == 204;
         }
     } catch (error) {
         console.error("Erro ao remover Investimento " + idInvestimento + ": ", error);

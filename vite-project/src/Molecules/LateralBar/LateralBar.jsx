@@ -113,7 +113,7 @@ const LateralBar = ({ projetos, empresas, diminuirLateralBar, toogleLateralBar, 
                     }
 
                 </Item>
-                {idEmpresa != 1 ?
+                {nomeEmpresa != 'Empresas' ?
                     <>
                         <Item telaAtual={telaAtual} item="Dash" diminuido={diminuirLateralBar} onClick={handleOpenDash}>
                             <Insights />
@@ -158,12 +158,11 @@ const LateralBar = ({ projetos, empresas, diminuirLateralBar, toogleLateralBar, 
                         )}
 
                         <CardZone sx={{ marginInline: diminuirLateralBar ? '-15px' : 0 }}>
-                            {idEmpresa != 1 && projetosFiltrados.length > 0 ? projetosFiltrados.map(projeto => (
+                            {nomeEmpresa != 'Empresas' && projetosFiltrados.length > 0 ? projetosFiltrados.map(projeto => (
                                 <ProjectsTypes key={projeto.idProjeto} entidade={projeto} diminuirLateralBar={diminuirLateralBar} telaAtual={telaAtual} />
                             ))
                                 :
                                 empresasFiltradas.length > 0 ? empresasFiltradas
-                                    .filter(empresa => empresa.idEmpresa != 1)
                                     .map(empresa => (
                                         <ProjectsTypes key={empresa.idEmpresa} entidade={empresa} diminuirLateralBar={diminuirLateralBar} />
                                     )) : null
@@ -176,21 +175,21 @@ const LateralBar = ({ projetos, empresas, diminuirLateralBar, toogleLateralBar, 
                             <Stack sx={{ padding: '5px', border: 'solid #FFD700 2px', borderRadius: '50%' }}>
                                 <HourglassEmpty sx={{ fontSize: '24px' }} />
                             </Stack>
-                            {diminuirLateralBar ? null : "Ativos:"} {idEmpresa === 1 ? empresas.filter(p => p.progresso < 100 && !p.comImpedimento).length : projetos.filter(p => p.progresso < 100 && !p.comImpedimento).length}
+                            {diminuirLateralBar ? null : "Ativos:"} {nomeEmpresa === 'Empresas' ? empresas.filter(p => p.progresso < 100 && !p.comImpedimento).length : projetos.filter(p => p.progresso < 100 && !p.comImpedimento).length}
                         </Typography>
 
                         <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <Stack sx={{ padding: '5px', border: 'solid #2e7d32 2px', borderRadius: '50%' }}>
                                 <CheckCircle sx={{ fontSize: '24px' }} />
                             </Stack>
-                            {diminuirLateralBar ? null : "Concluídos:"} {idEmpresa === 1 ? empresas.filter(p => p.progresso === 100).length : projetos.filter(p => p.progresso === 100).length}
+                            {diminuirLateralBar ? null : "Concluídos:"} {nomeEmpresa === 'Empresas' ? empresas.filter(p => p.progresso === 100).length : projetos.filter(p => p.progresso === 100).length}
                         </Typography>
 
                         <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <Stack sx={{ padding: '5px', border: 'solid #D32F2F 2px', borderRadius: '50%' }}>
                                 <Block sx={{ fontSize: '24px' }} />
                             </Stack>
-                            {diminuirLateralBar ? null : "Com Impedimento:"} {idEmpresa === 1 ? empresas.filter(p => p.comImpedimento).length : projetos.filter(p => p.comImpedimento).length}
+                            {diminuirLateralBar ? null : "Com Impedimento:"} {nomeEmpresa === 'Empresas' ? empresas.filter(p => p.comImpedimento).length : projetos.filter(p => p.comImpedimento).length}
                         </Typography>
                     </Stack>
                 }

@@ -16,7 +16,7 @@ import Chat from '../Chat/Chat';
 import { Load } from '../../Utils/Load.jsx';
 
 const MainContent = () => {
-  const { idEmpresa } = useParams();
+  const { idEmpresa, nomeEmpresa } = useParams();
 
   const [showLateralBar, setShowLateralBar] = useState(true);
   const [diminuirLateralBar, setDiminuirLateralBar] = useState(false);
@@ -67,19 +67,18 @@ const MainContent = () => {
   const buscarUsuarios = async () => {
     const usuarios = await getUsuarios(Number(idEmpresa));
     setUsuarios(usuarios);
-    console.log(usuarios);
     setLoading(false);
   };
 
   useEffect(() => {
     const carregarDados = async () => {
       setLoading(true);
-      if (Number(idEmpresa) === 1) await atualizarEmpresas();
+      if (nomeEmpresa == "Empresas") await atualizarEmpresas();
       else await atualizarProjetos();
       await buscarUsuarios();
     };
     carregarDados();
-  }, [idEmpresa])
+  }, [idEmpresa, nomeEmpresa])
 
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
 

@@ -18,7 +18,7 @@ export const postEmpresa = async (newEmpresa) => {
 
         const data = await res.json();
 
-        showSwal(res.status, res.statusText);
+        showSwal(res.status, data.message || "Empresa cadastrada!");
         if (res.ok) return data;
     } catch (error) {
         console.error(error);
@@ -72,7 +72,9 @@ export const putEmpresa = async (modifiedEmpresa, idEmpresa) => {
             body: formattedEmpresa,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Informações atualizadas!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -108,8 +110,15 @@ export const deleteEmpresa = async (idEmpresa, body) => {
                 },
             });
 
-            showSwal(res.status, res.statusText);
-            return res.ok;
+            let data = null;
+            try {
+                data = await res.json();
+            } catch {
+                // resposta sem JSON (ex: 204 No Content)
+            }
+
+            showSwal(res.status, data?.message || "Empresa removida!");
+            return res.status === 204;
         }
     } catch (error) {
         console.error("Erro ao remover Empresa " + idEmpresa + ": ", error);

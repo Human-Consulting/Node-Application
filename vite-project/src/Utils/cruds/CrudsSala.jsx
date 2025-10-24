@@ -18,7 +18,7 @@ export const postSala = async (newSala) => {
 
         const data = await res.json();
 
-        showSwal(res.status, res.statusText);
+        showSwal(res.status, data.message);
         return res.ok ? data : false;
     } catch (error) {
         console.error(error);
@@ -55,7 +55,9 @@ export const putSala = async (modifiedSala, idSala) => {
             body: formattedSala,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+        
+        showSwal(res.status, data.message);
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -91,7 +93,9 @@ export const deleteSala = async (idSala, body) => {
                 },
             });
 
-            showSwal(res.status, res.statusText);
+            const data = await res.json();
+            
+            showSwal(res.status, data.message);
         return res.ok;
         }
     } catch (error) {

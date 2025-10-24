@@ -16,7 +16,9 @@ export const postSprint = async (newSprint) => {
             body: formattedSprint,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Sprint cadastrada!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -54,7 +56,9 @@ export const putSprint = async (modifiedSprint, idSprint) => {
             body: formattedSprint,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Informações atualizadas!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -90,8 +94,15 @@ export const deleteSprint = async (idSprint, body) => {
                 },
             });
 
-            showSwal(res.status, res.statusText);
-        return res.ok;
+            let data = null;
+            try {
+                data = await res.json();
+            } catch {
+                // resposta sem JSON (ex: 204 No Content)
+            }
+
+            showSwal(res.status, data?.message || "Sprint removida!");
+            return res.status === 204;
         }
     } catch (error) {
         console.error("Erro ao remover Sprint " + idSprint + ": ", error);

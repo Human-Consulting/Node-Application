@@ -15,7 +15,9 @@ export const postProjeto = async (newProjeto) => {
             body: formattedProjeto,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Projeto cadastrado!");
         return res.ok;
 
     } catch (error) {
@@ -70,7 +72,9 @@ export const putProjeto = async (modifiedProjeto, idProjeto) => {
             body: formattedProjeto,
         });
 
-        showSwal(res.status, res.statusText);
+        const data = await res.json();
+
+        showSwal(res.status, data.message || "Informações atualizadas!");
         return res.ok;
     } catch (error) {
         console.error(error);
@@ -106,8 +110,16 @@ export const deleteProjeto = async (idProjeto, body) => {
                 }
             });
 
-            showSwal(res.status, res.statusText);
-            return res.ok;
+            let data = null;
+            try {
+                data = await res.json();
+            } catch {
+                // resposta sem JSON (ex: 204 No Content)
+            }
+
+            showSwal(res.status, data?.message || "Projeto removido!");
+            return res.status === 204;
+
         }
     } catch (error) {
         console.error("Erro ao remover Projeto " + idProjeto + ": ", error);

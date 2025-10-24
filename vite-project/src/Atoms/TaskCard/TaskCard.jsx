@@ -54,7 +54,6 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   }, [buscaTitulo, sprint]);
 
   useEffect(() => {
-    console.log(sprint?.tarefas);
     setTarefasFiltradas(sprint?.tarefas);
   }, [sprint])
 

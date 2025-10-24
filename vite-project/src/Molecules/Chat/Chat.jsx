@@ -37,6 +37,8 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
   const fetchChats = async () => {
     const salas = await getSalas(usuarioLogado.idUsuario);
     setSalas(salas);
+    console.log("Salas")
+    console.log(salas);
   };
 
   useEffect(() => {

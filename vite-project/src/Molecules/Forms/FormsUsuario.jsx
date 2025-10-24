@@ -193,7 +193,7 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                             <MenuItem key="#" value="#">
                                 Selecione a permissão
                             </MenuItem>
-                            {idEmpresa == 1 ? (
+                            {usuarioLogado.permissao.includes('CONSULTOR') ? (
                                 [
                                     <MenuItem key="CONSULTOR_DIRETOR" value="CONSULTOR_DIRETOR">Diretor</MenuItem>,
                                     <MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>
@@ -206,9 +206,9 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                                     ]
                                 ) : qtdUsuarios >= 1 && !diretor ? (
                                     [
+                                        <MenuItem key="DIRETOR" value="DIRETOR">Diretor</MenuItem>,
                                         <MenuItem key="GESTOR" value="GESTOR">Gestão</MenuItem>,
-                                        <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>,
-                                        <MenuItem key="DIRETOR" value="DIRETOR">Diretor</MenuItem>
+                                        <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
                                     ]
                                 ) : (
                                     <MenuItem key="DIRETOR" value="DIRETOR">Diretor</MenuItem>

@@ -32,11 +32,9 @@ function ProjectsCard({ item, toogleModal }) {
   };
 
   const handleOpenProject = async () => {
-    idEmpresa == 1 ? navigate(`/Home/${item.nome}/${Number(item.idEmpresa)}`)
+    nomeEmpresa == "Empresas" ? navigate(`/Home/${item.nome}/${Number(item.idEmpresa)}`)
       : navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${item.titulo}/${Number(item.idProjeto)}`);
   }
-
-  console.log(item);
 
   return (
     <>
@@ -53,7 +51,7 @@ function ProjectsCard({ item, toogleModal }) {
             <MoreVert
               onClick={(e) => {
                 e.stopPropagation();
-                toogleModal(item, idEmpresa == 1 ? 'empresa' : 'projeto');
+                toogleModal(item, nomeEmpresa == 'Empresas' ? 'empresa' : 'projeto');
               }}
               sx={{
                 color: '#FFF',
@@ -69,7 +67,6 @@ function ProjectsCard({ item, toogleModal }) {
                 }
               }}
             />
-            {/* <Subtitle>{item?.nomeDiretor === null ? "Diretor não registrado." : item?.nomeDiretor !== null ? `Diretor: ${item?.nomeDiretor}` : item?.nomeResponsavel !== null ? `Responsável: ${item.nomeResponsavel}` : item.nomeResponsavel == null ? "Responsável não registrado" : null}</Subtitle> */}
             <Subtitle>{responsavelCard}</Subtitle>
             <Subtitle><b>Orçamento:</b> R${item.orcamento}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -84,10 +81,10 @@ function ProjectsCard({ item, toogleModal }) {
           </StatusCircle>
         </BoxBody>
         :
-        <BoxBody onClick={() => toogleModal(null, idEmpresa == 1 ? 'empresa' : 'projeto')} sx={{ justifyContent: 'center', alignItems: 'center' }}>
+        <BoxBody onClick={() => toogleModal(null, nomeEmpresa == "Empresas" ? 'empresa' : 'projeto')} sx={{ justifyContent: 'center', alignItems: 'center' }}>
           <Button
             variant="contained" >
-            {idEmpresa == 1 ? "CRIAR EMPRESA" : "CRIAR PROJETO"}
+            {nomeEmpresa == "Empresas" ? "CRIAR EMPRESA" : "CRIAR PROJETO"}
           </Button>
         </BoxBody>}
     </>

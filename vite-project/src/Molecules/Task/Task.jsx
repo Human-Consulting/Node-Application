@@ -68,7 +68,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
           : <Stack sx={{ marginTop: '1.5rem' }} />}
         <SprintBody>
 
-          {sprintsList.map((sprint, index) => (
+          {sprintsList.length > 0 && sprintsList.map((sprint, index) => (
             <TaskCard toogleTaskModal={toogleModal} sprint={sprint} index={index + 1} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} idEmpresa={idEmpresa} />
           ))}
           {usuarioLogado.permissao != 'FUNC' ?
