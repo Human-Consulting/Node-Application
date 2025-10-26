@@ -55,18 +55,18 @@ const MainContent = () => {
   const atualizarProjetos = async () => {
     const projetos = await getProjetos(Number(idEmpresa));
     setEmpresas([]);
-    setProjetos(projetos);
+    setProjetos(projetos.content || []);
   };
 
   const atualizarEmpresas = async () => {
     const empresas = await getEmpresas();
-    setEmpresas(empresas);
+    setEmpresas(empresas.content || []);
     setProjetos([]);
   };
 
   const buscarUsuarios = async () => {
     const usuarios = await getUsuarios(Number(idEmpresa));
-    setUsuarios(usuarios);
+    setUsuarios(usuarios.content || []);
     setLoading(false);
   };
 

@@ -43,6 +43,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
   const atualizarEntidade = async () => {
     const entidadeData = idProjeto ? await getProjetoAtual(idProjeto) : await getEmpresaAtual(idEmpresa);
     setEntidade(entidadeData);
+    console.log(entidade);
     setLoading(false);
   }
 

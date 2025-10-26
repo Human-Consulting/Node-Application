@@ -157,8 +157,8 @@ export const putImpedimento = async (task, body, idTask) => {
                 // resposta sem JSON (ex: 204 No Content)
             }
 
-            showSwal(res.status, data?.message || "Tarefa removida!");
-            return res.status === 204;
+            showSwal(res.status, data?.message || "Impedimento atualizado!");
+            return res.ok;
         }
     } catch (error) {
         console.error(error);

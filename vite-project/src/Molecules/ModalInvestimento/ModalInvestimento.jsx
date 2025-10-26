@@ -37,7 +37,7 @@ const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal
             }}
         >
             <List sx={{ width: 450, height: 450, background: '#000', padding: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                {usuarioLogado.permissao != 'FUNC' && !usuarioLogado.permissao.includes("CONSULTOR") && (
+                {usuarioLogado.permissao != 'FUNC' && (
                     <ListItem sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                         <Button variant="contained" color='primary' onClick={() => handleToogleModal(null)}>Adicionar investimento</Button>
                     </ListItem>

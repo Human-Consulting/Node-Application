@@ -85,9 +85,10 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         };
         const response = await putImpedimento(modifiedTask, body, task.idTarefa);
         if (response) {
-            setComImpedimento(!comImpedimento);
-            atualizarProjetos();
+            // setComImpedimento(!comImpedimento);
+            toogleModal();
             atualizarSprints();
+            atualizarProjetos();
         }
     }
 
@@ -108,7 +109,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
             checkpoints
         };
         await putTask(modifiedTask, task.idTarefa);
-        // toogleModal();
+        toogleModal();
         atualizarSprints();
         atualizarProjetos();
     };

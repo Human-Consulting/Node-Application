@@ -9,16 +9,16 @@ import { TituloHeader } from '../PrincipalContainer/PrincipalContainer.styles';
 import { useParams } from 'react-router';
 
 const LateralBarRight = ({ showLateralBar, projetos, empresas }) => {
-  const { idEmpresa } = useParams();
+  const { idEmpresa, nomeEmpresa } = useParams();
   if (!showLateralBar) return null;
 
   let idx = 0
   let idxTwo = 0
   const carrousel = useRef(null)
   const carrouselTwo = useRef(null)
-  const caosList = projetos.length > 0 || empresas.length > 0 ? idEmpresa != 1 ? projetos.filter(item => item.comImpedimento == true) : empresas.filter(item => item.comImpedimento == true) : [];
-  const noneList = projetos.length > 0 || empresas.length > 0 ? idEmpresa != 1 ? projetos.filter(item => item.progresso != 100) : empresas.filter(item => item.progresso != 100) : [];
-  const finalizadosList = projetos.length > 0 || empresas.length > 0 ? idEmpresa != 1 ? projetos.filter(item => item.progresso == 100) : empresas.filter(item => item.progresso == 100) : [];
+  const caosList = projetos.length > 0 || empresas.length > 0 ? nomeEmpresa != 'Empresas' ? projetos.filter(item => item.comImpedimento == true) : empresas.filter(item => item.comImpedimento == true) : [];
+  const noneList = projetos.length > 0 || empresas.length > 0 ? nomeEmpresa != 'Empresas' ? projetos.filter(item => item.progresso != 100) : empresas.filter(item => item.progresso != 100) : [];
+  const finalizadosList = projetos.length > 0 || empresas.length > 0 ? nomeEmpresa != 'Empresas' ? projetos.filter(item => item.progresso == 100) : empresas.filter(item => item.progresso == 100) : [];
 
   const handleRightSkip = () => {
     if (idx < caosList.length - 1) {
