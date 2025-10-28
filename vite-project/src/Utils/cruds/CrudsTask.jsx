@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import { showSwal } from "../SwalHelper"
 import { getUsuario } from "./CrudsUsuario";
 const token = JSON.parse(localStorage.getItem('token'));
 
@@ -17,48 +18,10 @@ export const postTask = async (newTask) => {
 
         const data = await res.json();
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro ao adicionar task!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        showSwal(res.status, data.message || "Tarefa cadastrada!");
+        return res.ok;
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
@@ -95,48 +58,10 @@ export const putTask = async (modifiedTask, idTask) => {
 
         const data = await res.json();
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro ao enviar modificação!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        showSwal(res.status, data.message || "Informações atualizadas!");
+        return res.ok;
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
@@ -169,57 +94,27 @@ export const deleteTask = async (idTask, body) => {
                 },
             });
 
-            if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: "Task não encontrada!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            }
+            showSwal(res.status, "Tarefa removida com sucesso!");
+            return res.status == 204;
         }
     } catch (error) {
         console.error("Erro ao remover task " + idTask + ": ", error);
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
-export const putImpedimento = async (idTarefa, body, comImpedimento) => {
+export const putImpedimento = async (task, body, idTask) => {
     try {
-        const confirm = await Swal.fire({
-            text: `${comImpedimento ? "Você tem certeza de que o impedimento foi finalizado?" : "Gostaria de editar o comentário atual? Ele será enviado ao responsável do projeto."}`,
+        let confirm;
+
+        confirm = await Swal.fire({
+            text: task.comImpedimento ? "Você tem certeza de que o impedimento foi finalizado? Comente sobre a solução!" : "Gostaria de editar o comentário atual? Ele será enviado ao responsável do projeto.",
             icon: "warning",
+            input: "textarea",
+            inputValue: task.comentario || "",
+            inputPlaceholder: "Digite seu comentário...",
+            inputAttributes: {
+                'aria-label': 'Digite seu comentário',
+            },
             showCancelButton: true,
             backdrop: false,
             confirmButtonColor: "#D32F2F",
@@ -228,13 +123,24 @@ export const putImpedimento = async (idTarefa, body, comImpedimento) => {
             cancelButtonText: "Voltar",
             customClass: {
                 popup: "swalAlerta",
+            },
+            preConfirm: (value) => {
+                if (!value.trim()) {
+                    Swal.showValidationMessage("O comentário não pode estar vazio");
+                    return false;
+                }
+                return value;
             }
         });
 
         if (confirm.isConfirmed) {
+            if (task.comentario != confirm.value) {
+                task.comentario = confirm.value;
+                putTask(task, idTask);
+            }
             const formattedBody = JSON.stringify(body);
 
-            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/impedimento/${idTarefa}`, {
+            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/tarefas/impedimento/${idTask}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -244,50 +150,17 @@ export const putImpedimento = async (idTarefa, body, comImpedimento) => {
 
             });
 
-            const data = await res.json();
-
-            if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: data.message || "Erro ao enviar modificação!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
+            let data = null;
+            try {
+                data = await res.json();
+            } catch {
+                // resposta sem JSON (ex: 204 No Content)
             }
+
+            showSwal(res.status, data?.message || "Impedimento atualizado!");
+            return res.ok;
         }
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };

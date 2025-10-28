@@ -1,32 +1,58 @@
-import { ImageBox, ProjectsTypesBox, SubTitle, Title } from './ProjectTypes.styles'
-import { Stack } from '@mui/material'
-import { useNavigate, useParams } from 'react-router'
+import { ImageBox, ProjectsTypesBox, SubTitle, Title } from './ProjectTypes.styles';
+import { Stack } from '@mui/material';
+import { useNavigate, useParams } from 'react-router';
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 
-const ProjectsTypes = ({ entidade }) => {
-
-  const { nomeEmpresa, idEmpresa } = useParams();
-
-  const navigate = useNavigate()
+const ProjectsTypes = ({ entidade, diminuirLateralBar, telaAtual }) => {
+  const { nomeEmpresa, idEmpresa, idProjeto } = useParams();
+  const navigate = useNavigate();
 
   const handleOpenProject = () => {
-    if (idEmpresa == 1) navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
-    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.titulo}/${Number(entidade.idProjeto)}`);
-  }
+    if (idEmpresa == 1) {
+      navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
+    } else {
+      navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.titulo}/${Number(entidade.idProjeto)}`);
+    }
+  };
+
+  const renderImagem = () => {
+    if (!entidade.urlImagem) {
+      return (
+        <Stack
+          sx={{
+            width: 42,
+            height: 42,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#1a1a1a',
+            borderRadius: '8px'
+          }}
+        >
+          <ImageNotSupportedIcon sx={{ fontSize: 24, color: '#999' }} />
+        </Stack>
+      );
+    }
+
+    return <ImageBox src={`data:image/png;base64,${entidade.urlImagem}`} />;
+  };
 
   return (
-    <ProjectsTypesBox onClick={handleOpenProject}>
-      {entidade.urlImagem == null ? <ImageNotSupportedIcon/> : <ImageBox src={`data:image/png;base64,${entidade.urlImagem}`} />}
+    <ProjectsTypesBox diminuido={diminuirLateralBar} onClick={handleOpenProject} idAtual={idProjeto} idItem={entidade?.idProjeto}>
+      {renderImagem()}
       <Stack sx={{ justifyContent: 'space-between', maxWidth: '80%' }}>
-        <Title>
+        <Title diminuido={diminuirLateralBar}>
           {entidade.titulo || entidade.nome}
         </Title>
-        <SubTitle>
-          {idEmpresa == 1 ? `Esta empresa está ${entidade.progresso}% concluída` : `Este projeto está ${entidade.progresso}% concluido`}
-        </SubTitle>
+        {!diminuirLateralBar && (
+          <SubTitle>
+            {idEmpresa == 1
+              ? `Esta empresa está ${Math.floor(entidade.progresso)}% concluída`
+              : `Este projeto está ${Math.floor(entidade.progresso)}% concluído`}
+          </SubTitle>
+        )}
       </Stack>
     </ProjectsTypesBox>
-  )
-}
+  );
+};
 
-export default ProjectsTypes
+export default ProjectsTypes;

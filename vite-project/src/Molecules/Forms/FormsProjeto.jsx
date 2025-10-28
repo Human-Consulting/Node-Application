@@ -47,15 +47,20 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
         if (!validarCampos()) return;
         setErros({});
         const newProjeto = { fkEmpresa, titulo, descricao, orcamento, fkResponsavel, urlImagem, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
-        await postProjeto(newProjeto, toogleModal);
-        atualizarProjetos();
+        const response = await postProjeto(newProjeto);
+        if (response) {
+            toogleModal();
+            atualizarProjetos();
+        }
     };
 
     const handleDeleteProjeto = async () => {
-        toogleModal();
         const bodyDelete = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao }
-        await deleteProjeto(projeto.idProjeto, bodyDelete);
-        await atualizarProjetos();
+        const response = await deleteProjeto(projeto.idProjeto, bodyDelete);
+        if (response) {
+            toogleModal();
+            await atualizarProjetos();
+        }
     }
 
     const handlePutProjeto = async () => {
@@ -70,8 +75,11 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
             fkResponsavel,
             urlImagem
         }
-        await putProjeto(modifiedProjeto, projeto.idProjeto, toogleModal);
-        await atualizarProjetos();
+        const response = await putProjeto(modifiedProjeto, projeto.idProjeto);
+        if (response) {
+            toogleModal();
+            await atualizarProjetos();
+        }
     }
 
     const validarPermissaoConsultor = () => {
@@ -102,7 +110,8 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                 value={titulo}
                 onChange={(e) => {
                     setTitulo(e.target.value)
-                    removerErro("titulo")}}
+                    removerErro("titulo")
+                }}
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
@@ -119,7 +128,8 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                 value={descricao}
                 onChange={(e) => {
                     setDescricao(e.target.value)
-                    removerErro("descricao")}}
+                    removerErro("descricao")
+                }}
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
@@ -135,7 +145,8 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                 value={orcamento}
                 onChange={(e) => {
                     setOrcamento(e.target.value)
-                    removerErro("orcamento")}}
+                    removerErro("orcamento")
+                }}
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
@@ -152,7 +163,8 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                 disabled={validarPermissaoFunc()}
                 onChange={(e) => {
                     setResponsavel(e.target.value)
-                    removerErro("fkResponsavel")}}
+                    removerErro("fkResponsavel")
+                }}
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
@@ -196,7 +208,8 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                     hidden
                     onChange={(e) => {
                         handleFileUpload(e.target.files[0])
-                        removerErro("hidde")}}
+                        removerErro("hidde")
+                    }}
                 />
             </Button>
 

@@ -7,15 +7,19 @@ import { useState } from 'react';
 const ModalCores = ({ color1, setColor1, color2, setColor2, color3, setColor3, animate, setAnimate, open, anchorEl, onClose }) => {
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+    const [tempColor1, setTempColor1] = useState(color1);
+    const [tempColor2, setTempColor2] = useState(color2);
+    const [tempColor3, setTempColor3] = useState(color3);
+    const [tempAnimate, setTempAnimate] = useState(animate);
 
     const id = open ? 'tarefas-popover' : undefined;
     const [presetSelecionado, setPresetSelecionado] = useState('');
-    const [modoEdicao, setModoEdicao] = useState('preset');
-
 
     const handlePutCores = async () => {
         const coresData = `${color1}|${color2}|${color3}|${animate}`;
         await putCoresUsuario(coresData, usuarioLogado.idUsuario);
+        usuarioLogado.cores = coresData;
+        localStorage.setItem("usuario", JSON.stringify(usuarioLogado));
         onClose();
     }
 
@@ -48,14 +52,15 @@ const ModalCores = ({ color1, setColor1, color2, setColor2, color3, setColor3, a
         }
     };
 
-    console.log(modoEdicao);
-
     return (
         <Popover
             id={id}
             open={open}
             anchorEl={anchorEl}
-            onClose={onClose}
+            onClose={() => {
+                handleResetPutCores();
+                onClose();
+            }}
             anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',

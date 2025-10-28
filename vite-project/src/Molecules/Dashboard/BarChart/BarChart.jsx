@@ -1,13 +1,15 @@
 import Chart from 'react-apexcharts';
 
 const MinimalBarChart = ({ areas }) => {
+  const valores = areas?.map(a => a?.valor || 0) ?? [];
+  const categorias = areas?.map(a => a?.nome || '') ?? [];
+
   const options = {
     chart: {
       type: 'bar',
       toolbar: {
-        show: false
+        show: false,
       },
-      background: 'transparent'
     },
     plotOptions: {
       bar: {
@@ -31,28 +33,26 @@ const MinimalBarChart = ({ areas }) => {
       strokeDashArray: 4,
       xaxis: {
         lines: {
-          show: false
+          show: true
         }
       }
     },
     xaxis: {
-      categories: areas?.map(area => area.nome),
+      categories: categorias,
       labels: {
         style: {
           colors: '#fff'
         }
       },
-      axisBorder: {
-        show: true
-      },
-      axisTicks: {
-        show: false
-      }
+      tickAmount: valores.length > 0 ? Math.max(...valores) : 0,
+      min: 0,
+      stepSize: 1
     },
     yaxis: {
       labels: {
         style: {
-          colors: '#fff'
+          colors: '#fff',
+          fontWeight: 600
         }
       }
     },
@@ -63,7 +63,7 @@ const MinimalBarChart = ({ areas }) => {
   const series = [
     {
       name: 'Tarefas',
-      data: areas?.map(area => area.valor)
+      data: valores
     }
   ];
 
@@ -72,6 +72,7 @@ const MinimalBarChart = ({ areas }) => {
       style={{
         // background: 'linear-gradient(to right, #1F1F1F, #0f1125)',
         borderRadius: '1rem',
+        // background: '#22272B'
       }}
     >
       <Chart options={options} series={series} type="bar" height={300} width="100%" />

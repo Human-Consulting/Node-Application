@@ -9,8 +9,9 @@ import FormsSprint from '../Forms/FormsSprint';
 import { Stack, Typography, Button } from '@mui/material';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import Shader from '../Shader/Shader';
+import { Load } from '../../Utils/Load';
 
-const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1, color2, color3, animate }) => {
+const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1, color2, color3, animate, telaAtual }) => {
 
   const { idProjeto, idEmpresa, nomeEmpresa, tituloProjeto } = useParams();
   const navigate = useNavigate();
@@ -19,13 +20,18 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
   const [entidade, setEntidade] = useState(null);
   const [id, setId] = useState(null);
   const [acao, setAcao] = useState('');
+  const [loading, setLoading] = useState(true);
   const [sprintsList, setSprintsList] = useState([]);
+  const [dtInicio, setDtInicio] = useState(null);
+  const [dtFim, setDtFim] = useState(null);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
   const atualizarSprints = async () => {
+    setLoading(true);
     const sprints = await getSprints(idProjeto);
     setSprintsList(sprints);
+    setLoading(false);
   };
 
   const handleOpenProject = async () => {
@@ -39,14 +45,19 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
   useEffect(() => {
     atualizarSprints();
     toogleLateralBar();
+    telaAtual();
   }, [idProjeto]);
 
-  const toogleModal = (entidade, post, id) => {
+  const toogleModal = (entidade, post, id, dtInicio, dtFim) => {
     setAcao(post);
     setEntidade(entidade);
     setShowModal(!showModal);
     setId(id);
+    setDtInicio(dtInicio);
+    setDtFim(dtFim);
   };
+
+  if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
 
   return (
     <>
@@ -57,7 +68,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
           : <Stack sx={{ marginTop: '1.5rem' }} />}
         <SprintBody>
 
-          {sprintsList.map((sprint, index) => (
+          {sprintsList.length > 0 && sprintsList.map((sprint, index) => (
             <TaskCard toogleTaskModal={toogleModal} sprint={sprint} index={index + 1} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} idEmpresa={idEmpresa} />
           ))}
           {usuarioLogado.permissao != 'FUNC' ?
@@ -66,8 +77,8 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
         </SprintBody>
       </TaskBody>
 
-      <Modal showModal={showModal} fechar={toogleModal} acao={entidade == null ? null : acao} entidade={entidade}
-        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} idSprint={id} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
+      <Modal showModal={showModal} fechar={toogleModal} acao={entidade == null ? null : acao == "task" ? "aumentar" : null} entidade={entidade}
+        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} idSprint={id} dtInicioSprint={dtInicio} dtFimSprint={dtFim} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
           : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} acao={null} />}
       >
       </Modal>

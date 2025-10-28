@@ -60,6 +60,7 @@ button:focus-visible {
   width: fit-content;
   padding: 1em;
   border-radius: 50px;
+  z-index: 1500;
 }
 
 @media (prefers-color-scheme: light) {

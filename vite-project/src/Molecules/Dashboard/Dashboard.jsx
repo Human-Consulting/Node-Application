@@ -3,19 +3,18 @@ import { DashKpi, ContainerBack, DashContainer, KpiContainer, TextDefault, TextD
 import LineChart from './LineChart/LineChart'
 import MinimalBarChart from './BarChart/BarChart'
 import AreaData from '../../Atoms/AreaData/AreaData'
-import LensIcon from '@mui/icons-material/Lens';
 import RadialChart from './RadialChart'
 import { useEffect, useState } from 'react'
 import { getEmpresaAtual } from '../../Utils/cruds/CrudsEmpresa'
 import { getProjetoAtual } from '../../Utils/cruds/CrudsProjeto'
 import { useNavigate, useParams } from 'react-router'
-import CircularProgress from '@mui/material/CircularProgress';
-import { ArrowCircleLeftOutlined, Check, Block } from '@mui/icons-material';
+import { ArrowCircleLeftOutlined, Check, Block, Lens } from '@mui/icons-material';
 import Modal from '../Modal/Modal'
 import FormsInvestimento from '../Forms/FormsInvestimento'
 import Shader from '../Shader/Shader'
+import { Load } from '../../Utils/Load'
 
-const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animate }) => {
+const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animate, telaAtual, usuarios }) => {
 
   const { idEmpresa, nomeEmpresa, tituloProjeto, idProjeto } = useParams();
 
@@ -25,6 +24,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
 
   useEffect(() => {
     toogleLateralBar();
+    telaAtual();
     atualizarEntidade();
   }, [idProjeto])
 
@@ -43,7 +43,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
   const atualizarEntidade = async () => {
     const entidadeData = idProjeto ? await getProjetoAtual(idProjeto) : await getEmpresaAtual(idEmpresa);
     setEntidade(entidadeData);
-
+    console.log(entidade);
     setLoading(false);
   }
 
@@ -51,13 +51,6 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
     setShowModal(!showModal);
     investimento != null ? setInvestimento(investimento) : setInvestimento(null);
   };
-
-  if (loading) return (
-    <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-      <CircularProgress size={50} />
-      <TextDefault sx={{ mt: 2 }}>Carregando dados {entidade?.idEmpresa ? "da empresa" : "do projeto"}...</TextDefault>
-    </Stack>
-  );
 
   const totalTarefas = entidade.areas?.length > 0 ? entidade.areas.reduce((total, area) => total + area.valor, 0) : 0;
 
@@ -85,6 +78,8 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
     );
   };
 
+  if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
+
   return (
     <ContainerBack>
       {showTitle ?
@@ -99,11 +94,10 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
           <Stack sx={{ justifyContent: 'space-between', gap: '3rem', flex: 1 }}>
             <DashKpi>
               <Stack sx={{ bgcolor: '#101010', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
-                <Stack sx={{ alignItems: 'start' }}>
-                  <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Total de {entidade?.idEmpresa ? "Projetos" : "Sprints"}</TextDefaultKpi>
+                <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                  <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Total de {entidade?.idEmpresa ? "Projetos:" : "Sprints:"}</TextDefaultKpi>
                   <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.totalItens}</TextDefaultKpi>
                 </Stack>
-                <LensIcon sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></LensIcon>
               </Stack>
 
               <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -130,11 +124,10 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
               </Stack>
 
               <Stack sx={{ bgcolor: '#101010', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
-                <Stack sx={{ alignItems: 'start' }}>
-                  <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>{idProjeto ? "Responsável" : "Diretor"}</TextDefaultKpi>
+                <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                  <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>{idProjeto ? "Responsável:" : "Diretor:"}</TextDefaultKpi>
                   <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.nomeResponsavel}</TextDefaultKpi>
                 </Stack>
-                <LensIcon sx={{ fontSize: '2.5rem', color: '#d4d4d4' }}></LensIcon>
               </Stack>
             </DashKpi>
             <LineChart orcamento={entidade.orcamento} financeiros={entidade.financeiroResponseDtos} toogleModal={toogleModal} atualizarEntidade={atualizarEntidade}></LineChart>
@@ -142,18 +135,18 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
 
           <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '40%', height: 'calc(100%)', padding: '1rem', justifyContent: 'space-between', gap: '1rem' }}>
 
-            <Stack sx={{ gap: '2rem', flex: 1 }}>
-              <MinimalBarChart areas={entidade.areas} sx={{ flex: 1 }}></MinimalBarChart>
-              
+            <Stack sx={{ flex: 1, justifyContent: 'space-between' }}>
               <Stack>
-                <TextDefault sx={{ color: '#eeeeee' }}>Áreas com mais tarefa</TextDefault>
-                <TextDefault sx={{ fontSize: '12px', fontWeight: '400' }}>Nos ultimos meses</TextDefault>
+                <TextDefault sx={{ color: '#eeeeee' }}>Tarefas por Área</TextDefault>
+                <MinimalBarChart areas={entidade.areas} sx={{ flex: 1 }}></MinimalBarChart>
               </Stack>
 
+              <TextDefault sx={{ color: '#eeeeee' }}>Tarefas por Usuário</TextDefault>
+
               <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }} >
-                {entidade.areas?.length ? (
-                  entidade.areas.slice(0, 3).map((area, index) => (
-                    <AreaData key={index} area={area.nome} valor={area.valor} total={totalTarefas} />
+                {usuarios?.length ? (
+                  usuarios.slice(0, 3).map((usuario, index) => (
+                    <AreaData key={index} usuario={usuario.nome} area={usuario.area} valor={usuario.qtdTarefas} total={totalTarefas} />
                   ))
                 ) : (
                   null

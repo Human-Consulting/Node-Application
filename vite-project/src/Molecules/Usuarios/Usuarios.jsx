@@ -4,13 +4,12 @@ import Modal from "../Modal/Modal";
 import Tabela from "../Tabela/Tabela";
 import { UsuariosBody } from './Usuarios.styles'
 import { Box, Typography, Button, TextField, Stack } from '@mui/material';
-import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import { useNavigate, useParams } from "react-router";
-import SearchOffIcon from '@mui/icons-material/SearchOff';
 import FormsEditarSenhaUsuario from "../Forms/FormsEditarSenhaUsuario";
 import Shader from "../Shader/Shader";
+import { ArrowCircleLeftOutlined, Search, SearchOff } from '@mui/icons-material'
 
-const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios, color1, color2, color3, animate }) => {
+const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios, color1, color2, color3, animate, telaAtual }) => {
 
   const navigate = useNavigate();
   const { idEmpresa, nomeEmpresa } = useParams();
@@ -20,6 +19,7 @@ const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios, color1, color
   const [editarUsuario, setEditarUsuario] = useState(false);
   const [idUsuarioEditar, setIdUsuarioEditar] = useState(null);
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -44,8 +44,11 @@ const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios, color1, color
   }
 
   useEffect(() => {
+    setLoading(true);
     toogleLateralBar();
+    telaAtual();
     setUsuariosFiltrados(usuarios);
+    setLoading(false);
   }, [usuarios]);
 
   const toogleModal = (usuario) => {
@@ -59,16 +62,19 @@ const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios, color1, color
       setIdUsuarioEditar(id || null);
   }
 
+  if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
+
   return (
     <UsuariosBody style={{ position: 'relative', zIndex: 0 }}>
 
       <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={-1} />
-      <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idEmpresa == 1 ? "Human Consulting" : nomeEmpresa} - Gerenciamento de Usuários</Typography>
+      <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idEmpresa == 1 ? "Human Consulting" : nomeEmpresa} - Gerenciamento de Usuários</Typography>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, borderBottom: 'solid white 1px' }}>
         <TextField
           onChange={(e) => filtrarUsuarios(e.target.value)}
-          label="Buscar usuário..."
+          label={<Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search/> Buscar usuário...</Stack>}
+          sx={{ flex: 1 }}
           size="large"
           autoComplete="off"
           InputLabelProps={{
@@ -96,7 +102,7 @@ const Usuarios = ({ toogleLateralBar, usuarios, atualizarUsuarios, color1, color
       ) :
         <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '50%', gap: 2 }}>
           <Stack sx={{ alignItems: 'center' }}>
-            <SearchOffIcon sx={{ fontSize: '5rem' }} />
+            <SearchOff sx={{ fontSize: '5rem' }} />
             Nenhum usuário encontrado!
           </Stack>
           {usuarioLogado.permissao == "FUNC" ? null : <Button onClick={() => toogleModal(null)} variant="contained" color="primary">Adicionar Usuário</Button>}

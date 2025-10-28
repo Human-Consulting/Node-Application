@@ -5,7 +5,7 @@ export const AreaDataBox = styled(Box)({
     height: '100px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px'
+    gap: 6,
 });
 
 export const TextDefault = styled('p')({
@@ -20,13 +20,12 @@ export const Number = styled('p')({
 
 export const ProgressBar = styled('div')({
     height: '10px',
-    width: '100%',
+    width: '70%',
     backgroundColor: '#474747',
     borderRadius: '2px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'start'
-    
 })
 
 export const Progress = styled('div')({

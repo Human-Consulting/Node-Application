@@ -6,29 +6,31 @@ import { useParams } from 'react-router';
 
 const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) => {
 
+  
   const { idProjeto } = useParams();
-
+  
   const [anchorEl, setAnchorEl] = useState(null);
-
+  
   const handleBadgeClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
-
+  
   const openPopover = Boolean(anchorEl);
-
+  
   const mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-
+  
   const totaisPorMes = Array(12).fill(0);
-
-
+  
+  
   financeiros?.forEach(financeiro => {
     const data = new Date(financeiro.dtInvestimento);
     const mes = !isNaN(data.getTime()) ? data.getUTCMonth() : null;
-
+    
+    console.log(financeiros);
     if (mes !== null) {
       totaisPorMes[mes] += financeiro.valor || 0;
     }

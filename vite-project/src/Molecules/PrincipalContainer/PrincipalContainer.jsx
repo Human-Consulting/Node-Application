@@ -1,5 +1,5 @@
 import { HeaderContent, MidleCarrousel, PrincipalContainerStyled, TituloHeader } from './PrincipalContainer.styles'
-import { Stack, TextField, Button, Badge, Avatar } from '@mui/material'
+import { Stack, TextField, Button, Badge, Avatar, Tooltip } from '@mui/material'
 import ProjectsCard from '../ProjectsCard/ProjectsCard'
 import { useEffect, useState } from 'react';
 import Modal from '../Modal/Modal'
@@ -7,14 +7,12 @@ import ModalTarefas from '../ModalTarefas/ModalTarefas'
 import FormsProjeto from './../Forms/FormsProjeto.jsx';
 import FormsEmpresa from './../Forms/FormsEmpresa.jsx';
 import { useNavigate, useParams } from 'react-router';
-import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import ConstructionIcon from '@mui/icons-material/Construction';
+import { ArrowCircleLeftOutlined, Assignment, Construction, ColorLens, Search } from '@mui/icons-material';
 import ModalCores from '../ModalCores/ModalCores.jsx';
-import ColorLensIcon from '@mui/icons-material/ColorLens';
 import Shader from '../Shader/Shader.jsx';
+import { getNome } from '../../Utils/getInfos';
 
-const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setColor3, animate, setAnimate, toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, empresas, usuarios }) => {
+const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setColor3, animate, setAnimate, toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, empresas, usuarios, telaAtual }) => {
 
   const navigate = useNavigate();
 
@@ -29,14 +27,14 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
 
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
-  if (!usuarioLogado.permissao.includes("CONSULTOR") && idEmpresa == 1) navigate(-1);
+  if (!usuarioLogado.permissao.includes("CONSULTOR") && (nomeEmpresa != usuarioLogado.nomeEmpresa)) navigate(-1);
 
   const filtrar = (texto) => {
     if (texto !== '') {
       const textoLower = texto.toLowerCase();
       let lista = [];
 
-      if (idEmpresa != 1) {
+      if (nomeEmpresa != "Empresas") {
         lista = projetos.filter(projeto => {
           const palavras = (projeto.descricao ?? '').toLowerCase().split(' ');
           return palavras.some(palavra => palavra.startsWith(textoLower));
@@ -51,15 +49,16 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
       setListaFiltrada(lista);
 
     } else {
-      setListaFiltrada(idEmpresa == 1 ? empresas : projetos);
+      setListaFiltrada(npmeEmpresa == "Empresas" ? empresas : projetos);
     }
   }
 
   useEffect(() => {
     toogleLateralBar();
-    setListaFiltrada(idEmpresa == 1 && empresas.length > 1 ? empresas.slice(1) : projetos);
-
-  }, [projetos, empresas, idEmpresa]);
+    telaAtual();
+    // setListaFiltrada(idEmpresa == 1 && empresas.length > 1 ? empresas.slice(1) : projetos);
+    setListaFiltrada(nomeEmpresa == "Empresas" && empresas.length > 0 ? empresas : projetos);
+  }, [projetos, empresas, idEmpresa, nomeEmpresa]);
 
   const toogleModal = (entidade, acao) => {
     setAcao(acao);
@@ -99,26 +98,39 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
       <HeaderContent>
         <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={5} />
         <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6', alignItems: 'center' }}>
-          <Avatar sx={{
-            width: 56, height: 56, bgcolor: 'transparent',
-            '& img': {
-              objectFit: 'cover',
-              objectPosition: 'center',
-              width: '100%',
-              height: '100%',
-            }
-          }} src={`data:image/png;base64,${empresas[0]?.urlImagem || projetos[0]?.urlImagemEmpresa}`}></Avatar>
+          <Avatar
+            sx={{
+              width: 56,
+              height: 56,
+              fontWeight: "bold",
+              fontSize: "0.9rem",
+              color: "white",
+              backgroundColor: "#1D1D1D",
+              cursor: "pointer",
+              position: "relative",
+              backgroundPosition: "center",
+              transition: "0.52s ease",
+              "&:hover": {
+                backgroundImage: `url(data:image/png;base64,${empresas[0]?.urlImagem || projetos[0]?.urlImagemEmpresa})`,
+                backgroundSize: "cover",
+                color: "transparent",
+              },
+            }}
+          >
+            {getNome(usuarioLogado.nome)}
+          </Avatar>
+
           <TextField
             onChange={(e) => filtrar(e.target.value)}
             label=
-            {idEmpresa == 1 ?
-              <span>Pesquisar por uma empresa...</span>
+            {nomeEmpresa == "Empresas" ?
+              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search /> Pesquisar por uma empresa...</Stack>
               :
-              <span>Pesquisar um projeto da <strong style={{ color: '#90caf9' }}>{nomeEmpresa}</strong></span>
+              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}><Search /> Pesquisar um projeto da <Stack style={{ color: '#90caf9' }}>{nomeEmpresa}</Stack></Stack>
             }
 
             size="small"
-            sx={{ flex: 1 }}
+            sx={{ flex: 1, borderRadius: '10px', backgroundColor: '#1D1D1D' }}
             autoComplete="off"
             InputLabelProps={{
               sx: {
@@ -140,18 +152,20 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
             }} />
           {
             !usuarioLogado.permissao.includes('CONSULTOR') ?
-              <Badge onClick={handleBadgeClickTarefa}
-                sx={{
-                  '& .MuiBadge-badge': {
-                    fontSize: '1.25rem',
-                    height: '26px',
-                    width: '26px',
-                    cursor: 'pointer'
-                  }
-                }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
-                <AssignmentIcon sx={{ fontSize: 32, cursor: 'pointer' }} />
-              </Badge>
-              : idEmpresa == 1 ?
+              <Tooltip title="Tarefas abertas em seu nome.">
+                <Badge onClick={handleBadgeClickTarefa}
+                  sx={{
+                    '& .MuiBadge-badge': {
+                      fontSize: '1.25rem',
+                      height: '26px',
+                      width: '26px',
+                      cursor: 'pointer'
+                    }
+                  }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
+                  <Assignment sx={{ fontSize: 32, cursor: 'pointer' }} />
+                </Badge>
+              </Tooltip>
+              : nomeEmpresa == "Empresas" ?
                 <Button onClick={() => toogleModal(null, 'empresa')}
                   variant="contained">
                   CRIAR EMPRESA
@@ -162,15 +176,17 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
                   CRIAR PROJETO
                 </Button>
           }
-          <ColorLensIcon onClick={handleBadgeClickCores}
-            sx={{
-              height: '40px',
-              width: '40px',
-              cursor: 'pointer'
-            }} />
+          <Tooltip title="Editar cor de fundo.">
+            <ColorLens onClick={handleBadgeClickCores}
+              sx={{
+                height: '40px',
+                width: '40px',
+                cursor: 'pointer'
+              }} />
+          </Tooltip>
 
         </Stack>
-        <TituloHeader>{idEmpresa != 1 && usuarioLogado.permissao.includes('CONSULTOR') ? <ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px' }} onClick={handleOpenEmpresas} /> : null} {idEmpresa == 1 ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}</TituloHeader>
+        <TituloHeader>{nomeEmpresa != "Empresas" && usuarioLogado.permissao.includes('CONSULTOR') ? <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px' }} onClick={handleOpenEmpresas} /> : null} {nomeEmpresa == "Empresas" ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}</TituloHeader>
       </HeaderContent>
       <MidleCarrousel>
         {listaFiltrada?.length > 0 ? (
@@ -185,7 +201,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
           ))
         ) : (!usuarioLogado.permissao.includes('CONSULTOR')) && (
           <Stack sx={{ justifyContent: 'center', alignItems: 'center', marginTop: '2rem', width: '350%' }}>
-            <ConstructionIcon sx={{ fontSize: '5rem' }} />
+            <Construction sx={{ fontSize: '5rem' }} />
             Nenhum projeto encontrado!
           </Stack>
         )}

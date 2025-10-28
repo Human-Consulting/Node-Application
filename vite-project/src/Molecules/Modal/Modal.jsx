@@ -54,7 +54,7 @@ const Modal = ({ showModal, fechar, form, acao, entidade, etapaAtual }) => {
   return (
     <Zoom in={showModal}>
       <Backdrop>
-        <ModalContent ref={modalRef} sx={{ width: `${acao === "task" ? "950px" : "450px"}` }}>
+        <ModalContent ref={modalRef} sx={{ width: `${acao === "aumentar" ? "950px" : acao === "aumentar1" ? "600px" : "450px"}` }}>
           <DragHandle onMouseDown={handleDragStart} />
           <Box display="flex" justifyContent={renderIconeStatus() !== null ? "space-between" : "flex-end"} alignItems="center">
             {renderIconeStatus()}

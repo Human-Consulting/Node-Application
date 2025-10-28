@@ -1,33 +1,33 @@
 import Swal from "sweetalert2";
-import { getUsuario, getUsuarios } from "./CrudsUsuario";
 import { showSwal } from "../SwalHelper"
+
 const token = JSON.parse(localStorage.getItem('token'));
 
-export const postSprint = async (newSprint) => {
+export const postSala = async (newSala) => {
     try {
-        const formattedSprint = JSON.stringify(newSprint);
+        const formattedSala = JSON.stringify(newSala);
 
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/salas`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: formattedSprint,
+            body: formattedSala,
         });
 
         const data = await res.json();
 
-        showSwal(res.status, data.message || "Sprint cadastrada!");
-        return res.ok;
+        showSwal(res.status, data.message);
+        return res.ok ? data : false;
     } catch (error) {
         console.error(error);
     }
 };
 
-export const getSprints = async (idProjeto) => {
+export const getSalas = async (idUsuario) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/buscarPorProjeto/${idProjeto}`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/salas/porUsuario/${idUsuario}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -35,7 +35,6 @@ export const getSprints = async (idProjeto) => {
             }
         });
         const data = await res.json();
-        await getUsuario(JSON.parse(localStorage.getItem('usuario')).idUsuario);
         return data;
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);
@@ -43,31 +42,31 @@ export const getSprints = async (idProjeto) => {
     }
 };
 
-export const putSprint = async (modifiedSprint, idSprint) => {
+export const putSala = async (modifiedSala, idSala) => {
     try {
-        const formattedSprint = JSON.stringify(modifiedSprint);
+        const formattedSala = JSON.stringify(modifiedSala);
 
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/${idSprint}`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/salas/${idSala}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: formattedSprint,
+            body: formattedSala,
         });
 
         const data = await res.json();
-
-        showSwal(res.status, data.message || "Informações atualizadas!");
+        
+        showSwal(res.status, data.message);
         return res.ok;
     } catch (error) {
         console.error(error);
     }
 };
 
-export const deleteSprint = async (idSprint, body) => {
-    const formattedSprint = JSON.stringify(body);
+export const deleteSala = async (idSala, body) => {
 
+    const formattedSala = JSON.stringify(body);
     try {
         const confirm = await Swal.fire({
             title: "Tem certeza?",
@@ -85,26 +84,21 @@ export const deleteSprint = async (idSprint, body) => {
         });
 
         if (confirm.isConfirmed) {
-            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/${idSprint}`, {
+            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/salas/${idSala}`, {
                 method: 'DELETE',
-                body: formattedSprint,
+                body: formattedSala,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
             });
 
-            let data = null;
-            try {
-                data = await res.json();
-            } catch {
-                // resposta sem JSON (ex: 204 No Content)
-            }
-
-            showSwal(res.status, data?.message || "Sprint removida!");
-            return res.status === 204;
+            const data = await res.json();
+            
+            showSwal(res.status, data.message);
+        return res.ok;
         }
     } catch (error) {
-        console.error("Erro ao remover Sprint " + idSprint + ": ", error);
+        console.error("Erro ao remover Sala " + idSala + ": ", error);
     }
 };

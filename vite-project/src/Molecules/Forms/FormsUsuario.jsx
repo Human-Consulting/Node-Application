@@ -22,10 +22,12 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
     const handlePostUsuario = async () => {
         if (!validarCampos()) return;
         setErros({});
-        console.log("passou nos campos");
         const newUsuario = { nome, email, cargo, area: area.toUpperCase(), permissao, fkEmpresa: idEmpresa, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
-        await postUsuario(newUsuario, toogleModal);
-        atualizarUsuarios();
+        const response = await postUsuario(newUsuario);
+        if (response) {
+            atualizarUsuarios();
+            toogleModal();
+        }
     };
 
     const handlePutUsuario = async () => {
@@ -41,8 +43,11 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
             area: area.toUpperCase(),
             permissao
         }
-        await putUsuario(modifiedUsuario, usuario.idUsuario, toogleModal);
-        atualizarUsuarios();
+        const response = await putUsuario(modifiedUsuario, usuario.idUsuario);
+        if (response) {
+            atualizarUsuarios();
+            toogleModal();
+        }
     }
 
     const mostrarPermissaoSelect = (
@@ -188,7 +193,7 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                             <MenuItem key="#" value="#">
                                 Selecione a permissão
                             </MenuItem>
-                            {idEmpresa == 1 ? (
+                            {usuarioLogado.permissao.includes('CONSULTOR') ? (
                                 [
                                     <MenuItem key="CONSULTOR_DIRETOR" value="CONSULTOR_DIRETOR">Diretor</MenuItem>,
                                     <MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>
@@ -201,9 +206,9 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                                     ]
                                 ) : qtdUsuarios >= 1 && !diretor ? (
                                     [
+                                        <MenuItem key="DIRETOR" value="DIRETOR">Diretor</MenuItem>,
                                         <MenuItem key="GESTOR" value="GESTOR">Gestão</MenuItem>,
-                                        <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>,
-                                        <MenuItem key="DIRETOR" value="DIRETOR">Diretor</MenuItem>
+                                        <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
                                     ]
                                 ) : (
                                     <MenuItem key="DIRETOR" value="DIRETOR">Diretor</MenuItem>

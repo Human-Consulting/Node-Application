@@ -9,16 +9,16 @@ import { TituloHeader } from '../PrincipalContainer/PrincipalContainer.styles';
 import { useParams } from 'react-router';
 
 const LateralBarRight = ({ showLateralBar, projetos, empresas }) => {
-  const { idEmpresa } = useParams();
+  const { idEmpresa, nomeEmpresa } = useParams();
   if (!showLateralBar) return null;
 
   let idx = 0
   let idxTwo = 0
   const carrousel = useRef(null)
   const carrouselTwo = useRef(null)
-  const caosList = projetos.length > 0 || empresas.length > 0 ? idEmpresa != 1 ? projetos.filter(item => item.comImpedimento == true) : empresas.filter(item => item.comImpedimento == true) : [];
-  const noneList = projetos.length > 0 || empresas.length > 0 ? idEmpresa != 1 ? projetos.filter(item => item.progresso != 100) : empresas.filter(item => item.progresso != 100) : [];
-  const finalizadosList = projetos.length > 0 || empresas.length > 0 ? idEmpresa != 1 ? projetos.filter(item => item.progresso == 100) : empresas.filter(item => item.progresso == 100) : [];
+  const caosList = projetos.length > 0 || empresas.length > 0 ? nomeEmpresa != 'Empresas' ? projetos.filter(item => item.comImpedimento == true) : empresas.filter(item => item.comImpedimento == true) : [];
+  const noneList = projetos.length > 0 || empresas.length > 0 ? nomeEmpresa != 'Empresas' ? projetos.filter(item => item.progresso != 100) : empresas.filter(item => item.progresso != 100) : [];
+  const finalizadosList = projetos.length > 0 || empresas.length > 0 ? nomeEmpresa != 'Empresas' ? projetos.filter(item => item.progresso == 100) : empresas.filter(item => item.progresso == 100) : [];
 
   const handleRightSkip = () => {
     if (idx < caosList.length - 1) {
@@ -56,8 +56,8 @@ const LateralBarRight = ({ showLateralBar, projetos, empresas }) => {
           {caosList.length > 1 ? <SkipLeft onClick={handleLeftSkip} ><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft> : null}
           <Slide ref={carrousel}>
             {caosList.length > 0 ? caosList.map(entidade => (
-              <MiniProjectsCard entidade={entidade} />
-            )) : <MiniProjectsCard entidade={null} />}
+              <MiniProjectsCard entidade={entidade} tipo={"impedimento"} />
+            )) : <MiniProjectsCard entidade={null} tipo={"impedimento"} />}
           </Slide>
           {caosList.length > 1 ? <SkipRigth onClick={handleRightSkip}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth> : null}
         </MiniCarrousel>
@@ -74,8 +74,8 @@ const LateralBarRight = ({ showLateralBar, projetos, empresas }) => {
           {finalizadosList.length > 1 ? <SkipLeft onClick={handleLeftSkipTwo}><ArrowLeftIcon sx={{ color: '#000' }} /></SkipLeft> : null}
           <Slide ref={carrouselTwo}>
             {finalizadosList.length > 0 ? finalizadosList.map(entidade => (
-              <MiniProjectsCard entidade={entidade} />
-            )) : <MiniProjectsCard entidade={null} />}
+              <MiniProjectsCard entidade={entidade} tipo={"finalizado"} />
+            )) : <MiniProjectsCard entidade={null} tipo={"finalizado"} />}
           </Slide>
           {finalizadosList.length > 1 ? <SkipRigth onClick={handleRightSkipTwo}><ArrowRightIcon sx={{ color: '#000' }} /></SkipRigth> : null}
         </MiniCarrousel>

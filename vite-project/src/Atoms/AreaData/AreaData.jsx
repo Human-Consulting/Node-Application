@@ -1,20 +1,27 @@
-import PropTypes from 'prop-types'
 import { AreaDataBox, Number, Progress, ProgressBar, TextDefault } from './AreaData.styles'
-import { Stack } from '@mui/material'
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { Stack, Tooltip } from '@mui/material'
+import { getNome } from "../../Utils/getInfos"
 
-const AreaData = ({ area, valor, total }) => {
-  
+const AreaData = ({ usuario, area, valor, total }) => {
+
   return (
     <AreaDataBox>
-      <Stack sx={{ flexDirection: 'row', gap: '4px', alignItems: 'center' }}><AccountBoxIcon /><TextDefault>{area}</TextDefault></Stack>
+      <Stack sx={{ flexDirection: 'row', gap: 1, alignItems: 'center' }}>
+        <Tooltip title={usuario} placement="top">
+          <Stack sx={{ width: '25px', height: '25px', backgroundColor: 'white', color: 'black', borderRadius: '100%', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>{getNome(usuario)}</Stack>
+        </Tooltip>
+        <TextDefault>{area}</TextDefault>
+      </Stack>
 
-      <Stack sx={{ justifyContent: 'center' }}><Number>{valor} tarefas</Number></Stack>
-      <ProgressBar>
-      <Progress sx={{ width: `${(valor * 100) / total}%` }} />
-
-      </ProgressBar>
-
+      <Stack sx={{ justifyContent: 'center' }}><Number>{valor} {valor == 1 ? "tarefa" : "tarefas"}</Number></Stack>
+      <Stack sx={{ flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+        <ProgressBar>
+          <Progress sx={{ width: `${(valor * 100) / total}%` }} />
+        </ProgressBar>
+        <TextDefault>
+          {total > 0 ? Math.floor((valor * 100) / total) : 0}%
+        </TextDefault>
+      </Stack>
     </AreaDataBox>
   )
 }

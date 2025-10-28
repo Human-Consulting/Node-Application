@@ -7,5 +7,8 @@ export default defineConfig({
   server: {
     host: true, // ou '0.0.0.0'
     port: 5173,
+  },
+  define: {
+    global: {}
   }
 })

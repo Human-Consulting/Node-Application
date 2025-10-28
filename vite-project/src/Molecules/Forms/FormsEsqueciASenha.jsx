@@ -37,7 +37,6 @@ const FormsEditarSenhaUsuario = ({ id, toggleModal }) => {
 
         const body = {senhaAtualizada};
         const resposta = await putEsqueciASenhaUsuario(body, id);
-        console.log("Resposta do servidor:", resposta);
         if (resposta) {
             toggleModal();
             setSenhaAtualizada('');

@@ -9,7 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, idSprint }) => {
+const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, idSprint, dtInicioSprint, dtFimSprint }) => {
     const [titulo, setTitulo] = useState(task?.titulo || "");
     const [descricao, setDescricao] = useState(task?.descricao || "");
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
@@ -28,7 +28,27 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         if (!descricao.trim()) novosErros.descricao = "Descrição é obrigatória";
         if (!dtInicio.trim()) novosErros.dtInicio = "Data de início é obrigatória";
         if (!dtFim.trim()) novosErros.dtFim = "Data de finalização é obrigatória";
-        if (!fkResponsavel) novosErros.dtFim = "Responsável é obrigatório";
+        if (!fkResponsavel) novosErros.fkResponsavel = "Responsável é obrigatório";
+
+        if (dtInicio && dtFim) {
+            const inicio = new Date(dtInicio);
+            const fim = new Date(dtFim);
+            const inicioSprint = new Date(dtInicioSprint);
+            const fimSprint = new Date(dtFimSprint);
+
+            if (inicio > fim) {
+                novosErros.dtFim = "Data de finalização deve ser depois da data de início";
+            }
+
+            if (inicio < inicioSprint) {
+                novosErros.dtInicio = `Data de início deve ser após o início da sprint (${dtInicioSprint})`;
+            }
+
+            if (fim > fimSprint) {
+                novosErros.dtFim = `Data de finalização deve ser antes do fim da sprint (${dtFimSprint})`;
+            }
+        }
+
 
         setErros(novosErros);
         return Object.keys(novosErros).length === 0;
@@ -41,19 +61,35 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         setErros({});
 
         const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, comentario, fkResponsavel, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
-        await postTask(newTask);
-        toogleModal();
-        atualizarSprints();
-        atualizarProjetos();
+        const response = await postTask(newTask);
+        if (response) {
+            toogleModal();
+            atualizarSprints();
+            atualizarProjetos();
+        }
     };
 
     const handleImpedimentoTask = async () => {
         const body = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao }
-        toogleModal();
-        await putImpedimento(task.idTarefa, body, comImpedimento);
-        setComImpedimento(!comImpedimento);
-        atualizarProjetos();
-        atualizarSprints();
+        const modifiedTask = {
+            idEditor: usuarioLogado.idUsuario,
+            permissaoEditor: usuarioLogado.permissao,
+            titulo,
+            descricao,
+            dtInicio,
+            dtFim,
+            comImpedimento,
+            comentario,
+            fkResponsavel,
+            checkpoints
+        };
+        const response = await putImpedimento(modifiedTask, body, task.idTarefa);
+        if (response) {
+            // setComImpedimento(!comImpedimento);
+            toogleModal();
+            atualizarSprints();
+            atualizarProjetos();
+        }
     }
 
     const handlePutTask = async () => {
@@ -79,17 +115,18 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     };
 
     const handleDeleteTask = async () => {
-        toogleModal();
         const bodyDelete = { idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
-        await deleteTask(task.idTarefa, bodyDelete);
-        atualizarProjetos();
-        atualizarSprints();
-
+        const response = await deleteTask(task.idTarefa, bodyDelete);
+        if (response) {
+            toogleModal();
+            atualizarProjetos();
+            atualizarSprints();
+        }
     };
 
     const handleAddCheckbox = () => {
         const newId = checkpoints.length + 1;
-        setCheckpoints([...checkpoints, { idCheckpoint: `${newId}`, descricao: `Nova opção ${newId}`, finalizado: false }]);
+        setCheckpoints([...checkpoints, { idCheckpoint: `${newId}`, descricao: '', finalizado: false }]);
     };
 
     const handleToggleCheckbox = (id) => {
@@ -146,7 +183,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         fullWidth
                         variant="outlined"
                         InputLabelProps={{ style: inputStyle.label }}
-                        InputProps={{ style: inputStyle.input }}
+                        InputProps={{ style: { ...inputStyle.input, paddingRight: '5px' } }}
                         sx={inputStyle.sx}
                         error={!!erros.descricao}
                         helperText={erros.descricao}
@@ -191,7 +228,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                     <Select
                         value={fkResponsavel}
                         onChange={(e) => {
-                            removerErro("titulo")
+                            removerErro("fkResponsavel")
                             setFkResponsavel(e.target.value)
                         }}
                         disabled={usuarioLogado.permissao === 'FUNC'}
@@ -234,7 +271,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
 
                         <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="start" gap={2} flex='1' maxHeight="100%" >
 
-                            <Stack display="flex" flexDirection="column" alignItems="start" overflow={'auto'} width="100%" gap={2} height="16rem" maxHeight="16rem" sx={{
+                            <Stack display="flex" flexDirection="column" alignItems="start" overflow={'auto'} width="100%" gap={2} height="16rem" maxHeight="16rem" paddingRight='5px' sx={{
                                 '&::-webkit-scrollbar': {
                                     width: '8px',
                                 },
@@ -260,10 +297,32 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                                                 checkedIcon={<CheckCircleIcon />}
                                             />
                                             <TextField
+                                                placeholder="Novo checkpoint"
                                                 value={cb.descricao}
                                                 onChange={(e) => handleLabelChange(cb.idCheckpoint, e.target.value)}
                                                 variant="standard"
-                                                sx={{ input: { color: '#FFF' } }}
+                                                multiline
+                                                maxRows={3}
+                                                sx={{
+                                                    flex: 1,
+                                                    input: { color: '#FFF' },
+                                                    textarea: {
+                                                        color: '#FFF',
+                                                        '&::-webkit-scrollbar': {
+                                                            width: '8px',
+                                                        },
+                                                        '&::-webkit-scrollbar-track': {
+                                                            background: '#1D1D1D',
+                                                        },
+                                                        '&::-webkit-scrollbar-thumb': {
+                                                            background: '#888',
+                                                            borderRadius: '4px',
+                                                        },
+                                                        '&::-webkit-scrollbar-thumb:hover': {
+                                                            background: '#aaa',
+                                                        },
+                                                    }
+                                                }}
                                             />
                                         </Stack>
                                         <IconButton onClick={() => setCheckpoints(checkpoints.filter(c => c.idCheckpoint !== cb.idCheckpoint))} color="error">
@@ -304,8 +363,8 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                             }}>
                                 {comImpedimento ? 'Remover Impedimento' : 'Acionar Impedimento'}</Button>
                             : usuarioLogado.idUsuario == task.fkResponsavel && task.progresso == 100 ?
-                            <Button fullWidth variant='outlined' color={'info'} onClick={(e) => e.stopPropagation()}>TAREFA FINALIZADA</Button>
-                        : null}
+                                <Button fullWidth variant='outlined' color={'info'} onClick={(e) => e.stopPropagation()}>TAREFA FINALIZADA</Button>
+                                : null}
                         {usuarioLogado.permissao == 'FUNC' ? null :
                             <Button variant="contained" color="error" onClick={handleDeleteTask}>
                                 <DeleteIcon />

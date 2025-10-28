@@ -1,20 +1,17 @@
-import { Chip, Stack } from '@mui/material'
-import { CardZone, ChipZone, DivisorOne, DivisorTwo, LateralNavBar, Title } from './LateralBar.styles'
-import HomeIcon from '@mui/icons-material/Home';
-import InsightsIcon from '@mui/icons-material/Insights';
-import GroupIcon from '@mui/icons-material/Group';
-import WidgetsIcon from '@mui/icons-material/Widgets';
+import { Chip, Stack, Tooltip, Typography } from '@mui/material'
+import { CardZone, ChipZone, DivisorOne, DivisorTwo, Header, Item, LateralNavBar, Title } from './LateralBar.styles'
+import { Home, Insights, Chat, Group, Widgets, ChevronRight, ChevronLeft, Logout, HourglassEmpty, CheckCircle, Block } from '@mui/icons-material';
 import ProjectsTypes from '../../Atoms/ProjectsTypes';
 import { useNavigate, useParams } from 'react-router';
-import { Button } from '@mui/material';
 import { useState } from 'react';
 
-const LateralBar = ({ projetos, empresas }) => {
+const LateralBar = ({ projetos, empresas, diminuirLateralBar, toogleLateralBar, telaAtual }) => {
 
-    const [projetosFiltrados, setProjetosFiltrados] = useState(projetos);
-    const [empresasFiltradas, setEmpresasFiltradas] = useState(empresas);
+    const [projetosFiltrados, setProjetosFiltrados] = useState(projetos || []);
+    const [empresasFiltradas, setEmpresasFiltradas] = useState(empresas || []);
     const [filtroConcluido, setFiltroConcluido] = useState(false);
     const [filtroImpedimento, setFiltroImpedimento] = useState(false);
+    const [menuRapidoAberto, setMenuRapidoAberto] = useState(true);
 
     const { nomeEmpresa, idEmpresa } = useParams();
     const navigate = useNavigate()
@@ -31,6 +28,10 @@ const LateralBar = ({ projetos, empresas }) => {
 
     const handleOpenDash = () => {
         navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Dash`);
+    }
+
+    const handleOpenChat = () => {
+        navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Chat`);
     }
 
     const handleExit = () => {
@@ -57,63 +58,142 @@ const LateralBar = ({ projetos, empresas }) => {
         }
     }
 
-    return (
-        <LateralNavBar>
-            <DivisorOne>
-                <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }} onClick={handleOpenHome}>
-                    <HomeIcon sx={{ color: '#ffff' }} />
-                    <Title>
-                        Home
-                    </Title>
-                </Stack>
-                {idEmpresa != 1 ?
-                    <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }} onClick={handleOpenDash}>
-                        <InsightsIcon sx={{ color: '#ffff' }} />
-                        <Title>
-                            Dashboard Geral
-                        </Title>
+    const toggleMenuRapido = () => {
+        setMenuRapidoAberto(!menuRapidoAberto);
+    }
 
-                    </Stack>
+    return (
+        <LateralNavBar diminuido={diminuirLateralBar}>
+            <Header>
+                <Tooltip title="Sair">
+                    <Logout onClick={handleExit} sx={{
+                        cursor: 'pointer',
+                        '&:hover': {
+                            backgroundColor: '#333'
+                        }
+                    }} />
+                </Tooltip>
+                {diminuirLateralBar ? null : <Typography variant="h6" sx={{ fontFamily: "Bebas Neue" }}>Human Consulting</Typography>}
+                {diminuirLateralBar ?
+                    <Tooltip title="Abrir lateral">
+                        <ChevronRight onClick={toogleLateralBar} sx={{
+                            cursor: 'pointer',
+                            borderRadius: '50%',
+                            '&:hover': {
+                                backgroundColor: '#333'
+                            }
+                        }} />
+                    </Tooltip>
+                    :
+                    <Tooltip title="Fechar lateral">
+                        <ChevronLeft onClick={toogleLateralBar} sx={{
+                            cursor: 'pointer',
+                            borderRadius: '50%',
+                            '&:hover': {
+                                backgroundColor: '#333'
+                            }
+                        }} />
+                    </Tooltip>}
+            </Header>
+            <DivisorOne>
+                <Item telaAtual={telaAtual} item="Home" diminuido={diminuirLateralBar} onClick={handleOpenHome}>
+                    <Home />
+                    {diminuirLateralBar ? null :
+                        <Title>
+                            Home
+                        </Title>
+                    }
+                </Item>
+                <Item telaAtual={telaAtual} item="Chat" diminuido={diminuirLateralBar} onClick={handleOpenChat}>
+                    <Chat />
+                    {diminuirLateralBar ? null :
+                        <Title>
+                            Chat
+                        </Title>
+                    }
+
+                </Item>
+                {nomeEmpresa != 'Empresas' ?
+                    <>
+                        <Item telaAtual={telaAtual} item="Dash" diminuido={diminuirLateralBar} onClick={handleOpenDash}>
+                            <Insights />
+                            {diminuirLateralBar ? null :
+                                <Title>
+                                    Dashboard Geral
+                                </Title>
+                            }
+                        </Item>
+                    </>
                     : null}
-                <Stack sx={{ cursor: 'pointer', padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center', width: '100%', height: 'calc(100% / 2)', borderRadius: '10px', backgroundColor: '#0d0d0d' }} onClick={handleOpenUsuarios}>
-                    <GroupIcon sx={{ color: '#ffff' }} />
-                    <Title>
-                        Gerenciamento de Usuários
-                    </Title>
-                </Stack>
+                <Item telaAtual={telaAtual} item="Usuarios" diminuido={diminuirLateralBar} onClick={handleOpenUsuarios}>
+                    <Group />
+                    {diminuirLateralBar ? null :
+                        <Title>
+                            Gerenciamento de Usuários
+                        </Title>
+                    }
+                </Item>
 
             </DivisorOne>
             <DivisorTwo>
-                <ChipZone>
-                    <Stack sx={{ padding: '0rem 1rem', gap: '0.5rem', flexDirection: 'row', alignItems: 'center' }}>
-                        <WidgetsIcon sx={{ color: '#ffff' }} />
-                        <Title>Menu Rápido</Title>
-                    </Stack>
-                    <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', width: '100%' }}>
-                        <Chip sx={{ backgroundColor: '#1D1D1D', color: '#fff', fontSize: '12px', }}
-                            label="Todos" onClick={() => handleClick('todos')} />
-                        
-                        <Chip sx={{ backgroundColor: filtroConcluido ? '#2e7d32' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
-                            label="Concluídos" onClick={() => handleClick('concluido')} />
-                        
-                        <Chip sx={{ backgroundColor: filtroImpedimento ? '#D32F2F' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
-                            label="Impedídos" onClick={() => handleClick('impedido')} />
-                    </Stack>
+                <Item diminuido={diminuirLateralBar} sx={{ height: 'fit-content', padding: diminuirLateralBar ? '1rem' : '1rem 1rem 1rem 0' }} onClick={toggleMenuRapido}>
+                    <Widgets />
+                    {!diminuirLateralBar && (<Title style={{ flex: 1 }}>Menu Rápido</Title>)}
+                    {menuRapidoAberto ? <ChevronLeft sx={{ transform: 'rotate(90deg)' }} /> : <ChevronLeft sx={{ transform: 'rotate(-90deg)' }} />}
+                </Item>
 
-                </ChipZone>
-                <CardZone>
-                    {idEmpresa != 1 && projetosFiltrados.length > 0 ? projetosFiltrados.map(projeto => (
-                        <ProjectsTypes entidade={projeto} />
-                    ))
-                        :
-                        empresasFiltradas.length > 0 ? empresasFiltradas.filter(empresa => empresa.idEmpresa != 1).map(empresa => (
-                            <ProjectsTypes entidade={empresa} />
-                        )) : null
-                    }
-                </CardZone>
-                <Stack>
-                    <Button variant='outlined' sx={{ position: 'absolute', bottom: '5%', left: '1rem' }} onClick={handleExit}>Sair</Button>
-                </Stack>
+                {menuRapidoAberto ? (
+                    <>
+                        {!diminuirLateralBar && (
+                            <ChipZone>
+                                <Chip sx={{ backgroundColor: '#1D1D1D', color: '#fff', fontSize: '12px' }}
+                                    label="Todos" onClick={() => handleClick('todos')} />
+
+                                <Chip sx={{ backgroundColor: filtroConcluido ? '#2e7d32' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
+                                    label="Concluídos" onClick={() => handleClick('concluido')} />
+
+                                <Chip sx={{ backgroundColor: filtroImpedimento ? '#D32F2F' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
+                                    label="Impedidos" onClick={() => handleClick('impedido')} />
+                            </ChipZone>
+                        )}
+
+                        <CardZone sx={{ marginInline: diminuirLateralBar ? '-15px' : 0 }}>
+                            {nomeEmpresa != 'Empresas' && projetosFiltrados.length > 0 ? projetosFiltrados.map(projeto => (
+                                <ProjectsTypes key={projeto.idProjeto} entidade={projeto} diminuirLateralBar={diminuirLateralBar} telaAtual={telaAtual} />
+                            ))
+                                :
+                                empresasFiltradas.length > 0 ? empresasFiltradas
+                                    .map(empresa => (
+                                        <ProjectsTypes key={empresa.idEmpresa} entidade={empresa} diminuirLateralBar={diminuirLateralBar} />
+                                    )) : null
+                            }
+                        </CardZone>
+                    </>
+                ) :
+                    <Stack sx={{ display: 'flex', flex: 1, gap: '1.5rem', marginInline: '-5px', alignItems: diminuirLateralBar ? 'center' : 'start' }}>
+                        <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <Stack sx={{ padding: '5px', border: 'solid #FFD700 2px', borderRadius: '50%' }}>
+                                <HourglassEmpty sx={{ fontSize: '24px' }} />
+                            </Stack>
+                            {diminuirLateralBar ? null : "Ativos:"} {nomeEmpresa === 'Empresas' ? empresas.filter(p => p.progresso < 100 && !p.comImpedimento).length : projetos.filter(p => p.progresso < 100 && !p.comImpedimento).length}
+                        </Typography>
+
+                        <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <Stack sx={{ padding: '5px', border: 'solid #2e7d32 2px', borderRadius: '50%' }}>
+                                <CheckCircle sx={{ fontSize: '24px' }} />
+                            </Stack>
+                            {diminuirLateralBar ? null : "Concluídos:"} {nomeEmpresa === 'Empresas' ? empresas.filter(p => p.progresso === 100).length : projetos.filter(p => p.progresso === 100).length}
+                        </Typography>
+
+                        <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <Stack sx={{ padding: '5px', border: 'solid #D32F2F 2px', borderRadius: '50%' }}>
+                                <Block sx={{ fontSize: '24px' }} />
+                            </Stack>
+                            {diminuirLateralBar ? null : "Com Impedimento:"} {nomeEmpresa === 'Empresas' ? empresas.filter(p => p.comImpedimento).length : projetos.filter(p => p.comImpedimento).length}
+                        </Typography>
+                    </Stack>
+                }
+
             </DivisorTwo>
         </LateralNavBar>
     )

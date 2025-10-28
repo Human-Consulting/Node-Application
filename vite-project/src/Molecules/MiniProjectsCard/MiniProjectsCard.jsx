@@ -3,7 +3,7 @@ import { Stack } from '@mui/material'
 import { Check, Block } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router';
 
-function MiniProjectsCard({ entidade }) {
+function MiniProjectsCard({ entidade, tipo }) {
 
   let statusColor = '#08D13D';
   if (entidade) {
@@ -60,10 +60,17 @@ function MiniProjectsCard({ entidade }) {
           </StatusCircle>
 
         </BoxBody>
+        : tipo == "impedimento" ?
+        <BoxBody>
+          <BodyCard sx={{ top: '25%', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+            <Title>Projetos voando 🚀</Title>
+          </BodyCard>
+
+        </BoxBody>
         :
         <BoxBody>
-          <BodyCard sx={{ top: '25%', justifyContent: 'center', alignItems: 'center' }}>
-            <Title>Sem dados.</Title>
+          <BodyCard sx={{ top: '25%', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+            <Title>Projeto em andamento.</Title>
           </BodyCard>
 
         </BoxBody>

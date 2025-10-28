@@ -1,7 +1,8 @@
 import Swal from "sweetalert2";
+import { showSwal } from "../SwalHelper"
 const token = JSON.parse(localStorage.getItem('token'));
 
-export const postUsuario = async (newUsuario, toogleModal) => {
+export const postUsuario = async (newUsuario) => {
     try {
         const formattedUsuario = JSON.stringify(newUsuario);
 
@@ -16,49 +17,10 @@ export const postUsuario = async (newUsuario, toogleModal) => {
 
         const data = await res.json();
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            toogleModal && toogleModal();
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro ao cadastrar!",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        showSwal(res.status, data.message || "Usuário cadastrado!");
+        return res.ok;
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
@@ -94,48 +56,10 @@ export const putUsuario = async (modifiedUsuario, idUsuario) => {
 
         const data = await res.json();
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        showSwal(res.status, data.message || "Informações atualizadas!");
+        return res.ok;
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
@@ -154,55 +78,16 @@ export const putSenhaUsuario = async (modifiedUsuario, idUsuario) => {
 
         const data = await res.json();
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        showSwal(res.status, data.message || "Senha atualizada!");
+        return res.ok;
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
 export const putEsqueciASenhaUsuario = async (modifiedUsuario, idUsuario) => {
     try {
         const formattedUsuario = JSON.stringify(modifiedUsuario);
-        console.log("Dados enviados oi:", formattedUsuario);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/esqueciASenha/${idUsuario}`, {
             method: 'PATCH',
@@ -214,50 +99,10 @@ export const putEsqueciASenhaUsuario = async (modifiedUsuario, idUsuario) => {
 
         const data = await res.json();
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            return true;
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            return false;
-        }
+        showSwal(res.status, data.message || "Senha atualizada!");
+        return res.ok;
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
@@ -276,48 +121,10 @@ export const putCoresUsuario = async (modifiedUsuario, idUsuario) => {
 
         const data = await res.json();
 
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: res.status,
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: data.message || "Erro",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-        }
+        showSwal(res.status, data.message || "Cores atualizadas!");
+        return res.ok;
     } catch (error) {
         console.error(error);
-        Swal.fire({
-            icon: "error",
-            title: "Erro",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
@@ -350,49 +157,18 @@ export const deleteUsuario = async (idUsuario, body) => {
                 },
             });
 
-            if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: res.status,
-                    position: "center",
-                    backdrop: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    text: "Usuario não encontrada!",
-                    customClass: {
-                        popup: "swalAlerta",
-                    }
-                });
+            let data = null;
+            try {
+                data = await res.json();
+            } catch {
+                // resposta sem JSON (ex: 204 No Content)
             }
+
+            showSwal(res.status, data?.message || "Usuário removido!");
+            return res.status === 204;
         }
     } catch (error) {
         console.error("Erro ao remover Usuario " + idUsuario + ": ", error);
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            position: "center",
-            backdrop: false,
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            text: error.message || "Algo deu errado!",
-            customClass: {
-                popup: "swalAlerta",
-            }
-        });
     }
 };
 
@@ -471,7 +247,6 @@ export const getIdUsuario = async (email) => {
                 'Content-Type': 'application/json'
             }
         });
-        console.log("Resposta do servidor:", res);
         const response = await res.json();
 
         return response;
@@ -484,7 +259,6 @@ export const getIdUsuario = async (email) => {
 export const enviarCodigo = async (body) => {
     try {
         const formattedUsuario = JSON.stringify(body);
-        console.log("Dados enviados:", formattedUsuario);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/usuarios/codigoEsqueciASenha`, {
             method: 'POST',
@@ -493,35 +267,10 @@ export const enviarCodigo = async (body) => {
             },
             body: formattedUsuario
         });
-        if (res.ok) {
-            Swal.fire({
-                icon: "success",
-                position: "center",
-                backdrop: false,
-                text: "Código enviado com sucesso!",
-                timer: 1500,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            return true;
-        } else {
-            Swal.fire({
-                icon: "error",
-                position: "center",
-                backdrop: false,
-                timer: 1000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                text: "Erro ao enviar código. Tente novamente.",
-                customClass: {
-                    popup: "swalAlerta",
-                }
-            });
-            return false;
-        }
+        const data = await res.json();
+
+        showSwal(res.status, data.message);
+        return res.ok;
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);
         return null;
