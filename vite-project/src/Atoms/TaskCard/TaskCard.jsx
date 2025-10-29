@@ -58,7 +58,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   }, [sprint])
 
   const handleOpenProject = () => {
-    navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${descricaoProjeto}/${idProjeto}/Tarefas/${sprint.idSprint}/${index}`);
+    navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${descricaoProjeto}/${idProjeto}/Backlog/${sprint.titulo}/${sprint.idSprint}/${index}`);
   }
 
   const handleOpenModalPutTask = (task) => {
@@ -180,10 +180,11 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
               '&:hover': {
                 borderBottom: '1px solid #f0f0f0'
               }
-            }}>
+            }}
+            onClick={handleOpenProject}>
               {sprint.titulo}
               <NorthEast
-                onClick={handleOpenProject}
+                
                 sx={{
                   color: '#FFF',
 
