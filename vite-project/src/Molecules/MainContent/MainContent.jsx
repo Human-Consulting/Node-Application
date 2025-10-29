@@ -92,7 +92,7 @@ const MainContent = () => {
 
         <Route path="/Roadmap/:tituloProjeto/:idProjeto" element={<Task telaAtual={() => setTelaAtual("Roadmap")} toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} showTitle={true} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 
-        <Route path="/Roadmap/:tituloProjeto/:idProjeto/Tarefas/:idSprint/:index" element={<CentralTask toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} color1={color1} color2={color2} color3={color3} animate={animate} />} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto/Backlog/:tituloSprint/:idSprint/:index" element={<CentralTask toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 
         <Route path="/Usuarios" element={<Usuarios telaAtual={() => setTelaAtual("Usuarios")} toogleLateralBar={hideLateralBar} usuarios={usuarios} atualizarUsuarios={buscarUsuarios} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 

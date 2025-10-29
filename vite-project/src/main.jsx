@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         element: <Task />,
         children: [
           {
-            path: "Tarefas/:idSprint/:index", 
+            path: "Backlog/:tituloSprint/:idSprint/:index", 
             element: <CentralTask />,
           }
         ]
