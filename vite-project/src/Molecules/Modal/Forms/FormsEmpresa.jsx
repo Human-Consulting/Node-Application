@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { useState } from "react";
-import { postEmpresa, putEmpresa, deleteEmpresa } from '../../Utils/cruds/CrudsEmpresa.jsx';
+import { postEmpresa, putEmpresa, deleteEmpresa } from '../../../Utils/cruds/CrudsEmpresa.jsx';
 import { Box, Button, TextField, Typography, Stack } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import SendIcon from '@mui/icons-material/Send';

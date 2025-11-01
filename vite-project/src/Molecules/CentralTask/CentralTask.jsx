@@ -9,8 +9,8 @@ import HeaderFilter from '../../Atoms/HeaderFilter/HeaderFilter';
 import TarefasItem from '../../Atoms/TarefasItem/TarefasItem';
 import { Stack, Typography } from '@mui/material';
 import Modal from '../Modal/Modal';
-import FormsTask from '../Forms/FormsTask';
-import FormsSprint from '../Forms/FormsSprint';
+import FormsTask from '../Modal/Forms/FormsTask';
+import FormsSprint from '../Modal/Forms/FormsSprint';
 import Shader from '../Shader/Shader';
 
 const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, color2, color3, animate }) => {
@@ -25,6 +25,9 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
   const [tarefasAFazerFiltradas, setTarefasAFazerFiltradas] = useState([]);
   const [tarefasEmDevFiltradas, setTarefasEmDevFiltradas] = useState([]);
   const [tarefasConcluidasFiltradas, setTarefasConcluidasFiltradas] = useState([]);
+  const [tarefasAFazer, setTarefasAFazer] = useState([]);
+  const [tarefasEmDev, setTarefasEmDev] = useState([]);
+  const [tarefasConcluidas, setTarefasConcluidas] = useState([]);
 
   const atualizarSprints = async () => {
     await getSprints(idSprint);
@@ -54,18 +57,20 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
 
 
   const handleOpenProject = async () => {
-    navigate(-1)
+    navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${tituloProjeto}/${Number(idProjeto)}`);
   }
-
 
   useEffect(() => {
     const aFazer = tarefas.filter((t) => t.progresso === 0);
     const emDev = tarefas.filter((t) => t.progresso > 0 && t.progresso < 100);
     const concluidas = tarefas.filter((t) => t.progresso === 100);
 
+    setTarefasAFazer(aFazer);
     setTarefasAFazerFiltradas(aFazer);
+    setTarefasEmDev(emDev);
     setTarefasEmDevFiltradas(emDev);
     setTarefasConcluidasFiltradas(concluidas);
+    setTarefasConcluidas(concluidas);
   }, [tarefas]);
 
   return (
@@ -76,7 +81,8 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
         <DoneContainer>
           <HeaderFilter
             titulo="A Fazer"
-            tarefaData={tarefas.filter((t) => t.progresso === 0 && !t.comImpedimento)}
+            todasTarefas={tarefasAFazer}
+            tarefaData={tarefasAFazerFiltradas}
             setTarefasFiltradas={setTarefasAFazerFiltradas}
             usuarios={usuarios}
           />
@@ -96,7 +102,8 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
         <DoneContainer>
           <HeaderFilter
             titulo="Em Desenvolvimento"
-            tarefaData={tarefas.filter((t) => t.progresso > 0 && t.progresso < 100 && !t.comImpedimento)}
+            todasTarefas={tarefasEmDev}
+            tarefaData={tarefasEmDevFiltradas}
             setTarefasFiltradas={setTarefasEmDevFiltradas}
             usuarios={usuarios}
           />
@@ -116,7 +123,8 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
         <DoneContainer>
           <HeaderFilter
             titulo="Concluído"
-            tarefaData={tarefas.filter((t) => t.progresso === 100)}
+            todasTarefas={tarefasConcluidas}
+            tarefaData={tarefasConcluidasFiltradas}
             setTarefasFiltradas={setTarefasConcluidasFiltradas}
             usuarios={usuarios}
           />

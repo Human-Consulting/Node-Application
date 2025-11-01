@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { Avatar, Box, InputAdornment, Stack, TextField, Typography } from "@mui/material";
-import { BackChat, ContainerGeral, LateralMessage, Scroll, TextInput, ChatInputContainer, ContactItem, ChatInput, SendButton, Header, ItemHeader } from "./Chat.styles";
+import { BackChat, ContainerGeral, LateralMessage, Scroll, ChatInputContainer, ContactItem, ChatInput, SendButton, Header, ItemHeader } from "./Chat.styles";
 import ChatMessage from "../../Atoms/ChatMessage/ChatMessage";
-import { Send, People, ChevronLeft, AddComment, Search, ChatBubbleOutline, AttachFile, ArrowCircleLeftOutlined, Settings } from '@mui/icons-material';
+import { Send, AddComment, Search, ChatBubbleOutline, ArrowCircleLeftOutlined, Settings } from '@mui/icons-material';
 import { getSalas } from "../../Utils/cruds/CrudsSala";
 import { postMensagem } from "../../Utils/cruds/CrudsMensagem";
 import { useNavigate, useParams } from "react-router";
 import Shader from "../Shader/Shader";
-import ModalUsuariosChat from "../ModalUsuariosChat/ModalUsuariosChat";
+import ModalUsuariosChat from "../Modais/ModalUsuariosChat/ModalUsuariosChat";
 import Modal from "../Modal/Modal";
-import FormsSala from "../Forms/FormsSala";
+import FormsSala from "../Modal/Forms/FormsSala";
 // import { useWebSocket } from '../../Utils/SocketIO/WebSocketProvider';
 
 
@@ -37,8 +37,6 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
   const fetchChats = async () => {
     const salas = await getSalas(usuarioLogado.idUsuario);
     setSalas(salas);
-    console.log("Salas")
-    console.log(salas);
   };
 
   useEffect(() => {

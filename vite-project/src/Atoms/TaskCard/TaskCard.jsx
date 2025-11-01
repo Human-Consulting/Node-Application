@@ -18,7 +18,6 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   const [usuarioFiltrado, setUsuarioFiltrado] = useState(null);
   const [buscaTitulo, setBuscaTitulo] = useState("");
 
-
   const [anchorUser, setAnchorUser] = useState(null);
   const [anchorSearch, setAnchorSearch] = useState(null);
 
@@ -41,7 +40,6 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   };
 
   useEffect(() => {
-
     if (buscaTitulo.trim() === "") {
       setTarefasFiltradas(tarefasFiltradas);
     } else {
@@ -173,12 +171,13 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
             </Select>
             <Stack sx={{ //? Onclick nesse cara pra abrir Backlog
               flexDirection: 'row', border: '1px solid transparent',
+              borderRadius: '10px',
               cursor: 'pointer',
               transition: '0.2s',
-              paddingInline: 1,
+              padding: '0.5rem',
               gap: 1,
               '&:hover': {
-                borderBottom: '1px solid #f0f0f0'
+                border: '1px solid #f0f0f0'
               }
             }}
             onClick={handleOpenProject}>

@@ -1,6 +1,6 @@
 import { Popover, List, ListItem, ListItemText, Typography, Button, Stack } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import { deleteInvestimento } from '../../Utils/cruds/CrudsInvestimento.jsx';
+import { deleteInvestimento } from '../../../Utils/cruds/CrudsInvestimento.jsx';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { postTask, putTask, deleteTask, putImpedimento } from '../../Utils/cruds/CrudsTask.jsx';
-import { Stack, Button, TextField, Select, MenuItem, Typography, Box, Grow } from '@mui/material';
+import { postTask, putTask, deleteTask, putImpedimento } from '../../../Utils/cruds/CrudsTask.jsx';
+import { Stack, Button, TextField, Select, MenuItem, Typography, Box, Grow, FormLabel } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
@@ -60,7 +60,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         if (!validarCampos()) return;
         setErros({});
 
-        const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, comentario, fkResponsavel, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
+        const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, comentario, fkResponsavel, checkpoints, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         const response = await postTask(newTask);
         if (response) {
             toogleModal();
@@ -85,7 +85,6 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         };
         const response = await putImpedimento(modifiedTask, body, task.idTarefa);
         if (response) {
-            // setComImpedimento(!comImpedimento);
             toogleModal();
             atualizarSprints();
             atualizarProjetos();
@@ -174,7 +173,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         label="Descrição"
                         multiline
                         disabled={usuarioLogado.permissao === 'FUNC'}
-                        rows={3}
+                        rows={6}
                         value={descricao}
                         onChange={(e) => {
                             removerErro("descricao")
@@ -189,41 +188,44 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         helperText={erros.descricao}
                     />
 
-                    <TextField
-                        label="Data de Início"
-                        type="date"
-                        disabled={usuarioLogado.permissao === 'FUNC'}
-                        value={dtInicio}
-                        onChange={(e) => {
-                            removerErro("dtInicio")
-                            setDtInicio(e.target.value)
-                        }}
-                        fullWidth
-                        variant="outlined"
-                        InputLabelProps={{ style: inputStyle.label, shrink: true }}
-                        InputProps={{ style: inputStyle.input }}
-                        sx={inputStyle.sx}
-                        error={!!erros.dtInicio}
-                        helperText={erros.dtInicio}
-                    />
+                    <Stack sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
 
-                    <TextField
-                        label="Data Final"
-                        type="date"
-                        disabled={usuarioLogado.permissao === 'FUNC'}
-                        value={dtFim}
-                        onChange={(e) => {
-                            removerErro("dtFim")
-                            setDtFim(e.target.value)
-                        }}
-                        fullWidth
-                        variant="outlined"
-                        InputLabelProps={{ style: inputStyle.label, shrink: true }}
-                        InputProps={{ style: inputStyle.input }}
-                        sx={inputStyle.sx}
-                        error={!!erros.dtFim}
-                        helperText={erros.dtFim}
-                    />
+                        <TextField
+                            label="Data de Início"
+                            type="date"
+                            disabled={usuarioLogado.permissao === 'FUNC'}
+                            value={dtInicio}
+                            onChange={(e) => {
+                                removerErro("dtInicio")
+                                setDtInicio(e.target.value)
+                            }}
+                            fullWidth
+                            variant="outlined"
+                            InputLabelProps={{ style: inputStyle.label, shrink: true }}
+                            InputProps={{ style: inputStyle.input }}
+                            sx={inputStyle.sx}
+                            error={!!erros.dtInicio}
+                            helperText={erros.dtInicio}
+                        />
+
+                        <TextField
+                            label="Data Final"
+                            type="date"
+                            disabled={usuarioLogado.permissao === 'FUNC'}
+                            value={dtFim}
+                            onChange={(e) => {
+                                removerErro("dtFim")
+                                setDtFim(e.target.value)
+                            }}
+                            fullWidth
+                            variant="outlined"
+                            InputLabelProps={{ style: inputStyle.label, shrink: true }}
+                            InputProps={{ style: inputStyle.input }}
+                            sx={inputStyle.sx}
+                            error={!!erros.dtFim}
+                            helperText={erros.dtFim}
+                        />
+                    </Stack>
 
                     <Select
                         value={fkResponsavel}
@@ -259,101 +261,96 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                             </MenuItem>
                         ))}
                     </Select>
-
-                    {task == null ? (
-                        <Button variant="contained" color="primary" endIcon={<SendIcon />} onClick={handlePostTask}>
-                            Enviar
-                        </Button>
-                    ) : null}
                 </Box>
-                {task == null ? null :
-                    <>
+                <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="start" gap={2} flex='1' maxHeight="100%" >
 
-                        <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="start" gap={2} flex='1' maxHeight="100%" >
+                    <Stack display="flex" flexDirection="column" alignItems="start" overflow={'auto'} width="100%" gap={2} height="16rem" maxHeight="16rem" paddingRight='5px' sx={{
+                        '&::-webkit-scrollbar': {
+                            width: '8px',
+                        },
+                        '&::-webkit-scrollbar-track': {
+                            background: 'transparent',
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            background: '#888',
+                            borderRadius: '4px',
+                        },
+                        '&::-webkit-scrollbar-thumb:hover': {
+                            background: '#aaa',
+                        },
+                    }}>
 
-                            <Stack display="flex" flexDirection="column" alignItems="start" overflow={'auto'} width="100%" gap={2} height="16rem" maxHeight="16rem" paddingRight='5px' sx={{
-                                '&::-webkit-scrollbar': {
-                                    width: '8px',
-                                },
-                                '&::-webkit-scrollbar-track': {
-                                    background: 'transparent',
-                                },
-                                '&::-webkit-scrollbar-thumb': {
-                                    background: '#888',
-                                    borderRadius: '4px',
-                                },
-                                '&::-webkit-scrollbar-thumb:hover': {
-                                    background: '#aaa',
-                                },
-                            }}>
-
-                                {checkpoints.map(cb => (
-                                    <Box key={cb.idCheckpoint} display="flex" backgroundColor="#22272B" gap={1} width="100%">
-                                        <Stack direction="row" alignItems="center" flex='1'>
-                                            <Checkbox
-                                                checked={cb.finalizado}
-                                                onChange={() => handleToggleCheckbox(cb.idCheckpoint)}
-                                                icon={<CheckCircleOutlinedIcon />}
-                                                checkedIcon={<CheckCircleIcon />}
-                                            />
-                                            <TextField
-                                                placeholder="Novo checkpoint"
-                                                value={cb.descricao}
-                                                onChange={(e) => handleLabelChange(cb.idCheckpoint, e.target.value)}
-                                                variant="standard"
-                                                multiline
-                                                maxRows={3}
-                                                sx={{
-                                                    flex: 1,
-                                                    input: { color: '#FFF' },
-                                                    textarea: {
-                                                        color: '#FFF',
-                                                        '&::-webkit-scrollbar': {
-                                                            width: '8px',
-                                                        },
-                                                        '&::-webkit-scrollbar-track': {
-                                                            background: '#1D1D1D',
-                                                        },
-                                                        '&::-webkit-scrollbar-thumb': {
-                                                            background: '#888',
-                                                            borderRadius: '4px',
-                                                        },
-                                                        '&::-webkit-scrollbar-thumb:hover': {
-                                                            background: '#aaa',
-                                                        },
-                                                    }
-                                                }}
-                                            />
-                                        </Stack>
-                                        <IconButton onClick={() => setCheckpoints(checkpoints.filter(c => c.idCheckpoint !== cb.idCheckpoint))} color="error">
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </Box>
-                                ))}
-
-                                <IconButton onClick={handleAddCheckbox} color="primary">
-                                    <AddIcon />
+                        <FormLabel sx={{ color: '#ccc', mb: 1 }}>Checkpoints</FormLabel>
+                        {checkpoints.map(cb => (
+                            <Box key={cb.idCheckpoint} display="flex" backgroundColor="#22272B" gap={1} width="100%">
+                                <Stack direction="row" alignItems="center" flex='1'>
+                                    <Checkbox
+                                        checked={cb.finalizado}
+                                        onChange={() => handleToggleCheckbox(cb.idCheckpoint)}
+                                        icon={<CheckCircleOutlinedIcon />}
+                                        checkedIcon={<CheckCircleIcon />}
+                                    />
+                                    <TextField
+                                        placeholder="Novo checkpoint"
+                                        value={cb.descricao}
+                                        onChange={(e) => handleLabelChange(cb.idCheckpoint, e.target.value)}
+                                        variant="standard"
+                                        multiline
+                                        maxRows={3}
+                                        sx={{
+                                            flex: 1,
+                                            input: { color: '#FFF' },
+                                            textarea: {
+                                                color: '#FFF',
+                                                '&::-webkit-scrollbar': {
+                                                    width: '8px',
+                                                },
+                                                '&::-webkit-scrollbar-track': {
+                                                    background: '#1D1D1D',
+                                                },
+                                                '&::-webkit-scrollbar-thumb': {
+                                                    background: '#888',
+                                                    borderRadius: '4px',
+                                                },
+                                                '&::-webkit-scrollbar-thumb:hover': {
+                                                    background: '#aaa',
+                                                },
+                                            }
+                                        }}
+                                    />
+                                </Stack>
+                                <IconButton onClick={() => setCheckpoints(checkpoints.filter(c => c.idCheckpoint !== cb.idCheckpoint))} color="error">
+                                    <DeleteIcon />
                                 </IconButton>
-                            </Stack>
+                            </Box>
+                        ))}
 
-                            <TextField
-                                label="Comentário"
-                                multiline
-                                disabled={usuarioLogado.idUsuario != task.fkResponsavel}
-                                rows={4.5}
-                                value={comentario}
-                                onChange={(e) => setComentario(e.target.value)}
-                                fullWidth
-                                variant="outlined"
-                                InputLabelProps={{ style: inputStyle.label }}
-                                InputProps={{ style: inputStyle.input }}
-                                sx={{ ...inputStyle.sx, height: "calc((3.5rem * 2) + 1.5rem)" }}
-                            />
-                        </Box>
-                    </>}
+                        <IconButton onClick={handleAddCheckbox} color="primary">
+                            <AddIcon />
+                        </IconButton>
+                    </Stack>
+
+                    <TextField
+                        label="Comentário"
+                        multiline
+                        disabled={task && usuarioLogado.idUsuario !== task.fkResponsavel}
+                        rows={4.5}
+                        value={comentario}
+                        onChange={(e) => setComentario(e.target.value)}
+                        fullWidth
+                        variant="outlined"
+                        InputLabelProps={{ style: inputStyle.label }}
+                        InputProps={{ style: inputStyle.input }}
+                        sx={{ ...inputStyle.sx, height: "calc((3.5rem * 2) + 1.5rem)" }}
+                    />
+                </Box>
 
             </Stack>
-            {task == null ? null :
+            {task == null ?
+                <Button variant="contained" color="primary" endIcon={<SendIcon />} onClick={handlePostTask}>
+                    Enviar
+                </Button>
+                :
                 <>
                     <Stack direction="row" spacing={2} justifyContent="center">
 

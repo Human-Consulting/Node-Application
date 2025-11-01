@@ -1,5 +1,5 @@
 import "./Linha.css"
-import { deleteUsuario } from "../../Utils/cruds/CrudsUsuario"
+import { deleteUsuario } from "../../../Utils/cruds/CrudsUsuario"
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from "react-router";

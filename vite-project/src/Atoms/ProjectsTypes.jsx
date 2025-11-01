@@ -8,7 +8,7 @@ const ProjectsTypes = ({ entidade, diminuirLateralBar, telaAtual }) => {
   const navigate = useNavigate();
 
   const handleOpenProject = () => {
-    if (idEmpresa == 1) {
+    if (nomeEmpresa == 'Empresas') {
       navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
     } else {
       navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.titulo}/${Number(entidade.idProjeto)}`);
@@ -45,7 +45,7 @@ const ProjectsTypes = ({ entidade, diminuirLateralBar, telaAtual }) => {
         </Title>
         {!diminuirLateralBar && (
           <SubTitle>
-            {idEmpresa == 1
+            {nomeEmpresa == 'Empresas'
               ? `Esta empresa está ${Math.floor(entidade.progresso)}% concluída`
               : `Este projeto está ${Math.floor(entidade.progresso)}% concluído`}
           </SubTitle>

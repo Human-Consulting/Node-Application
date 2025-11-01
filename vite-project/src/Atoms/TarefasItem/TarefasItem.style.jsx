@@ -15,6 +15,7 @@ export const TarefaBody = styled(Box)({
 export const ProgressBar = styled('div')({
     height: '10px',
     width: '70%',
+    flex: 1,
     backgroundColor: '#474747',
     borderRadius: '2px',
     overflow: 'hidden',

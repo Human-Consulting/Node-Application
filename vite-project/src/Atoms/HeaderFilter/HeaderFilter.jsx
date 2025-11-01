@@ -4,8 +4,7 @@ import { NavTask } from './HeaderFilter.styles';
 import { useState } from 'react';
 import { getNome } from '../../Utils/getInfos';
 
-const HeaderFilter = ({ tarefaData, titulo, setTarefasFiltradas, usuarios }) => {
-  const [selected, setSelected] = useState('TODOS');
+const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, usuarios }) => {
   const [usuarioFiltrado, setUsuarioFiltrado] = useState(null);
   const [buscaTitulo, setBuscaTitulo] = useState("");
 
@@ -19,15 +18,14 @@ const HeaderFilter = ({ tarefaData, titulo, setTarefasFiltradas, usuarios }) => 
 
   const filterTarefas = (status) => {
     setUsuarioFiltrado(null);
-    setSelected(status);
 
     switch (status) {
       case 'IMPEDIDOS':
         setTarefasFiltradas(tarefaData.filter((tarefa) => tarefa.comImpedimento === true));
         break;
 
-      default:
-        setTarefasFiltradas(tarefaData);
+      case 'TODOS':
+        setTarefasFiltradas(todasTarefas);
         break;
     }
   };

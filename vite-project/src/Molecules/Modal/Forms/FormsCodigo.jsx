@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Box, Button, TextField, Typography, Stack } from '@mui/material';
 import { Send, Restore } from '@mui/icons-material';
-import { enviarCodigo } from "../../Utils/Cruds/CrudsUsuario.jsx";
+import { enviarCodigo } from "../../../Utils/Cruds/CrudsUsuario.jsx";
 
 const FormsCodigo = ({ email, codigo, setCodigo, setIsValid, codigoValidade, setCodigoValidade, isValidTempo, setIsValidTempo }) => {
 

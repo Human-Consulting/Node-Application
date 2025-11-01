@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { postUsuario, putUsuario } from '../../Utils/cruds/CrudsUsuario.jsx';
+import { postUsuario, putUsuario } from '../../../Utils/cruds/CrudsUsuario.jsx';
 import { useParams } from "react-router";
 import { Box, Button, TextField, Typography, Stack, MenuItem, Grow, Select } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";

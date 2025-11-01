@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const LateralNavBar = styled(Box)(({ diminuido }) => ({
@@ -26,7 +26,7 @@ export const DivisorOne = styled(Box)({
     padding: '0 0 0.5rem 0',
 });
 
-export const DivisorTwo = styled(Box)(({ diminuido }) => ({
+export const DivisorTwo = styled(Box)(({
     backgroundColor: '#0d0d0d',
     display: 'flex',
     flexDirection: 'column',
@@ -42,9 +42,9 @@ export const ChipZone = styled(Box)({
     flexWrap: 'wrap',
 });
 
-export const CardZone = styled(Box)(({ diminuido }) => ({
+export const CardZone = styled(Box)(({
     overflowY: 'auto',
-    maxHeight: '50%',
+    maxHeight: '60%',
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',

@@ -76,14 +76,16 @@ const TarefasItem = ({ tarefa, toogleModal }) => {
           />
         </Stack>
       </Stack>
-      <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-        <ProgressBar>
-          <Progress sx={{ width: `${tarefa.progresso}%` }} />
-        </ProgressBar>
-        <span>{Math.floor(tarefa.progresso)}%</span>
+      <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 0.5 }}>
+        <Stack sx={{ flexDirection: 'row', width: '100%', alignItems: 'center', gap: 0.5 }}>
+          <ProgressBar>
+            <Progress sx={{ width: `${tarefa.progresso}%` }} />
+          </ProgressBar>
+          <span>{Math.floor(tarefa.progresso)}%</span>
+        </Stack>
         {tarefa.progresso < 100 &&
           <Tooltip title={"Prazo: " + tarefa.dtFim} placement="bottom">
-            <Stack sx={{ flexDirection: 'row', alignItems: 'center', gap: 0.25 }}>
+            <Stack sx={{ flexDirection: 'row', justifyContent: 'end', alignItems: 'center', gap: 0.25, width: '30%' }}>
               <CalendarMonth sx={{ fontSize: 16 }} />{tempoRestante}
             </Stack>
           </Tooltip>}

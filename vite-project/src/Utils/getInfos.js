@@ -9,13 +9,15 @@ export const getTempoRestante = (dtFim) => {
   const hoje = new Date();
   const dataAlvo = new Date(dtFim);
 
-  // Zera horas p/ evitar problemas de horário
-  hoje.setHours(0, 0, 0, 0);
-  dataAlvo.setHours(0, 0, 0, 0);
+  // Zera usando UTC pra evitar erro de timezone
+  hoje.setUTCHours(0, 0, 0, 0);
+  dataAlvo.setUTCHours(0, 0, 0, 0);
 
-  const diffMs = dataAlvo - hoje;
-  const diffDias = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  // Diferença em dias inteiros
+  const diffMs = dataAlvo.getTime() - hoje.getTime();
+  const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
+  // Casos específicos
   if (diffDias < 0) {
     return `-${Math.abs(diffDias)}d`;
   }

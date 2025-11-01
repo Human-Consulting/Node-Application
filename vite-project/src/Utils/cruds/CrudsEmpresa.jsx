@@ -25,16 +25,26 @@ export const postEmpresa = async (newEmpresa) => {
     }
 };
 
-export const getEmpresas = async () => {
+export const getEmpresas = async (page, size, nome) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/empresas`, {
+        const url = nome != null
+            ? `/empresas?page=${page}&size=${size}&nome=${nome}`
+            : `/empresas?page=${page}&size=${size}`;
+
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}${url}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
         });
-        const data = await res.json();
+        if (!res.ok) throw new Error('Erro ao buscar empresas');
+        let data = null;
+        try {
+            data = await res.json();
+        } catch {
+            // resposta sem JSON (ex: 204 No Content)
+        }
         return data;
     } catch (error) {
         console.error("Erro ao buscar dados: ", error);

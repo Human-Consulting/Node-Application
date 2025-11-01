@@ -5,12 +5,12 @@ export const LateralNavBar = styled(Box)({
     width: '300px',
     minWidth: '300px',
     maxWidth: '350px',
-    height: '100%',
     background: '#0d0d0d',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     flexDirection: 'column',
+    zIndex: 5,
 });
 
 export const MiniCarrousel = styled('div')({
@@ -24,8 +24,7 @@ export const MiniCarrousel = styled('div')({
     position: 'relative',
     flexShrink: '0',
     scrollbarColor: 'hidden',
-    overflowX:'hidden'
-
+    overflowX:'hidden',
 });
 
 export const Slide = styled('div')({
@@ -51,45 +50,23 @@ export const KpiFinalizados = styled('div')({
 
 });
 
-export const SkipRigth = styled('button')({
-    width: '42px',
-    height: '42px',
+export const SkipButton = styled('button')(({ lado }) => ({
+    width: '35px',
+    height: '35px',
+    padding: '0',
     backgroundColor: '#1D1D1D',
-    border: 'solid #DDD 1px',
+    border: 'solid #DDD 2px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '100px',
     position: 'absolute',
-    top: '50%',
-    right: '-5%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: '100',
-    cursor: 'pointer',      
-    outline: 'none',          
-    '&:focus': {
-        outline: 'none' 
-    }
-});
-
-export const SkipLeft = styled('button')({
-    width: '42px',
-    height: '42px',
-    backgroundColor: '#1D1D1D',
-    border: 'solid #DDD 1px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '100px',
-    position: 'absolute',
-    top: '50%',
-    left: '10%',
-    transform: 'translate(-50%, -50%)',
+    top: '45%',
+    left: lado == 'esquerda' ? '3%' : 'auto',
+    right: lado == 'direita' ? '3%' : 'auto',
     zIndex:  '100',
     cursor: 'pointer',
     '&:focus': {
         outline: 'none' 
     }
-
-    
-});
+}));

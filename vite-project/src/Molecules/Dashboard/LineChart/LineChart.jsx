@@ -1,7 +1,7 @@
 import Chart from 'react-apexcharts';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
-import ModalInvestimento from '../../ModalInvestimento/ModalInvestimento';
+import ModalInvestimento from '../../Modais/ModalInvestimento/ModalInvestimento';
 import { useParams } from 'react-router';
 
 const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) => {
@@ -30,7 +30,6 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
     const data = new Date(financeiro.dtInvestimento);
     const mes = !isNaN(data.getTime()) ? data.getUTCMonth() : null;
     
-    console.log(financeiros);
     if (mes !== null) {
       totaisPorMes[mes] += financeiro.valor || 0;
     }

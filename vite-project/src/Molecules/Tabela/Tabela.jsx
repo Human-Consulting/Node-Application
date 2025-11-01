@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import Linha from "../Linha/Linha";
+import Linha from "./Linha/Linha";
 import "./Tabela.css"
 
 const Tabela = ({ usuarios, toogleModal, atualizarUsuarios }) => {

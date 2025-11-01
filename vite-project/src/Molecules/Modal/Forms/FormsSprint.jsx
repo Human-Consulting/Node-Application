@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { postSprint, putSprint, deleteSprint } from '../../Utils/cruds/CrudsSprint.jsx';
+import { postSprint, putSprint, deleteSprint } from '../../../Utils/cruds/CrudsSprint.jsx';
 import { Box, Button, TextField, Typography, Stack } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import DeleteIcon from '@mui/icons-material/Delete';
