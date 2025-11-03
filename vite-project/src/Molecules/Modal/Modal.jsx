@@ -30,7 +30,7 @@ const Modal = ({ showModal, fechar, form, acao, entidade, etapaAtual }) => {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
   };
-      const {componente} = useWarningValidator(entidade?.comImpedimento, entidade?.dtFim)
+      const {Componente} = useWarningValidator(entidade?.comImpedimento, entidade?.dtFim)
   
 
   return (

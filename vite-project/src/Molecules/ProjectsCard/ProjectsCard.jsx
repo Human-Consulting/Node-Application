@@ -12,7 +12,7 @@ function ProjectsCard({ item, toogleModal }) {
 
 
 
-     const {componente} = useWarningValidator(item?.comImpedimento, item?.dtFim)
+     const {Componente} = useWarningValidator(item?.comImpedimento, item?.dtFim)
 
      console.log(item, 333)
  
@@ -66,7 +66,7 @@ function ProjectsCard({ item, toogleModal }) {
             </Stack>
           </BodyCard>
           <StatusCircle  >
-            {componente}
+            {Componente}
           </StatusCircle>
         </BoxBody>
         :

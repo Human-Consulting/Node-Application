@@ -6,7 +6,7 @@ import { useWarningValidator } from '../../Utils/useWarning';
 
 function MiniProjectsCard({ entidade }) {
 
-    const {componente} = useWarningValidator(entidade?.comImpedimento, entidade?.dtFim)
+    const {Componente} = useWarningValidator(entidade?.comImpedimento, entidade?.dtFim)
 
   const { nomeEmpresa, idEmpresa } = useParams();
 
@@ -41,7 +41,7 @@ function MiniProjectsCard({ entidade }) {
             </Stack>
           </BodyCard>
           <StatusCircle >
-            {componente}
+            {Componente}
           </StatusCircle>
 
         </BoxBody>

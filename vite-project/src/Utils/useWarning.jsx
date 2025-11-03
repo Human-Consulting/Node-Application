@@ -39,3 +39,4 @@ export const useWarningValidator = (impedimento, dataFinal) => {
 
   return { cor, Icon, Componente };
 };
+

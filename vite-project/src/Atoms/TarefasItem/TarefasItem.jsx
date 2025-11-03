@@ -55,7 +55,7 @@ console.log(tarefa)
     toogleModal(task);
   }
   
-const {componente} = useWarningValidator(tarefa?.comImpedimento, tarefa?.dtFim);
+const {Componente} = useWarningValidator(tarefa?.comImpedimento, tarefa?.dtFim);
 
 
 
@@ -93,7 +93,7 @@ const {componente} = useWarningValidator(tarefa?.comImpedimento, tarefa?.dtFim);
        { extractLetters((tarefa?.responsavel?.nome).toUpperCase())}
         </Avatar>
         <Stack sx={{ flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
-          {componente}
+          {Componente}
           <MoreVert
             onClick={(e) => {
               e.stopPropagation();
