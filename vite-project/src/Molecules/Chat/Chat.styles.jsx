@@ -15,7 +15,6 @@ export const ContainerGeral = styled(Box)({
 });
 
 export const LateralMessage = styled(Box)({
-  width: '20%',
   width: '25%',
   height: '100%',
   background: '#0d0d0d',

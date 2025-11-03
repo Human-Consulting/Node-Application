@@ -6,8 +6,6 @@ export const MessageBody = styled(Box)(({ isOwnMessage }) => ({
   display: 'flex',
   flexDirection: isOwnMessage ? 'row-reverse' : 'row',
   alignItems: 'flex-start',
-  backgroundColor: '#ffffff',
-  // backgroundColor: isOwnMessage ? '#084B8A' : '#2C2F33',
   backgroundColor: isOwnMessage ? '#1A4D7A' : '#2C2F33',
   borderRadius: '10px',
   padding: '10px',
