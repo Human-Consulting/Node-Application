@@ -2,6 +2,7 @@ import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Sub
 import { Stack, Button } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Block, Check, MoreVert } from '@mui/icons-material';
+import { useWarningValidator } from '../../Utils/useWarning';
 
 function ProjectsCard({ item, toogleModal }) {
   const { nomeEmpresa, idEmpresa } = useParams();
@@ -9,27 +10,12 @@ function ProjectsCard({ item, toogleModal }) {
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
   const responsavelCard = item?.nomeDiretor || item?.nomeResponsavel || 'Responsável não registrado';
 
-  let statusColor = '#08D13D';
-  if (item) {
-    if (item.progresso == 100) {
-      statusColor = '#2196f3';
-      statusColor = '#08D13D';
-    }
-    else if (item.comImpedimento == 0) {
-      statusColor = 'transparent';
-    } else if (item.comImpedimento == 1 && item.progresso > 50) {
-      statusColor = '#CED108';
-    } else {
-      statusColor = '#FF0707';
-    }
-  }
 
-  const renderIconeStatusProjeto = () => {
-    if (item.progresso == 100) return (<Check sx={{ fontSize: '22px' }} />);
-    if (item.comImpedimento) return (<Block sx={{ fontSize: '25px' }} />);
 
-    return null;
-  };
+     const {componente} = useWarningValidator(item?.comImpedimento, item?.dtFim)
+
+     console.log(item, 333)
+ 
 
   const handleOpenProject = async () => {
     idEmpresa == 1 ? navigate(`/Home/${item.nome}/${Number(item.idEmpresa)}`)
@@ -79,8 +65,8 @@ function ProjectsCard({ item, toogleModal }) {
               <Subtitle>{item.progresso}%</Subtitle>
             </Stack>
           </BodyCard>
-          <StatusCircle sx={{ border: `5px solid ${statusColor}` }}>
-            {renderIconeStatusProjeto()}
+          <StatusCircle  >
+            {componente}
           </StatusCircle>
         </BoxBody>
         :

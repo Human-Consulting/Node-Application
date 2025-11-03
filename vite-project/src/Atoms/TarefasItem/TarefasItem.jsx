@@ -2,6 +2,7 @@ import { TarefaBody, ProgressBar, Progress } from './TarefasItem.style'
 import { Avatar, Stack } from '@mui/material'
 import { Block, Check, MoreVert } from '@mui/icons-material';
 import { useEffect } from 'react';
+import { useWarningValidator } from '../../Utils/useWarning';
 
 const TarefasItem = ({ tarefa, toogleModal, index }) => {
 
@@ -12,11 +13,8 @@ const TarefasItem = ({ tarefa, toogleModal, index }) => {
       return '#1D1D1D';  
     }
   }
-console.log(getRandomColor)
 
 
-console.log(getRandomColor()); 
-console.log(getRandomColor());
   function extractLetters(str) {
     const isValidSpacing = /^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/.test(str);
 
@@ -57,29 +55,8 @@ console.log(tarefa)
     toogleModal(task);
   }
   
+const {componente} = useWarningValidator(tarefa?.comImpedimento, tarefa?.dtFim);
 
-
-  const renderIconeStatusTarefa = () => {
-
-    if (tarefa.progresso == 100) {
-      return (
-        <Check sx={{ border: 'solid #2196f3 3px', borderRadius: '50%', fontSize: '25px' }} />
-      )
-    }
-
-    if (tarefa.comImpedimento && tarefa.progresso < 50) {
-      return (
-        <Block sx={{ border: 'solid #F44336 2px', borderRadius: '50%', fontSize: '25px' }} />
-      );
-    }
-
-    if (tarefa.comImpedimento) {
-      return (
-        <Block sx={{ border: 'solid orange 2px', borderRadius: '50%', fontSize: '25px' }} />
-      );
-    }
-    return null;
-  };
 
 
   return (
@@ -116,7 +93,7 @@ console.log(tarefa)
        { extractLetters((tarefa?.responsavel?.nome).toUpperCase())}
         </Avatar>
         <Stack sx={{ flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
-          {renderIconeStatusTarefa()}
+          {componente}
           <MoreVert
             onClick={(e) => {
               e.stopPropagation();

@@ -58,8 +58,8 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
 
 
   useEffect(() => {
-    const aFazer = tarefas.filter((t) => t.progresso === 0 && !t.comImpedimento);
-    const emDev = tarefas.filter((t) => t.progresso > 0 && t.progresso < 100 && !t.comImpedimento);
+    const aFazer = tarefas.filter((t) => t.progresso === 0 );
+    const emDev = tarefas.filter((t) => t.progresso > 0 && t.progresso < 100 );
     const concluidas = tarefas.filter((t) => t.progresso === 100);
 
     setTarefasAFazerFiltradas(aFazer);
@@ -76,7 +76,7 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
       <DoneContainer>
         <HeaderFilter
           titulo="A Fazer"
-          tarefaData={tarefas.filter((t) => t.progresso === 0 && !t.comImpedimento)}
+          tarefaData={tarefas.filter((t) => t.progresso === 0 )}
           setTarefasFiltradas={setTarefasAFazerFiltradas}
         />
         <BodyTarefa>
@@ -92,11 +92,10 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos }) => {
         </BodyTarefa>
       </DoneContainer>
 
-      {/* Coluna 2 */}
       <DoneContainer>
         <HeaderFilter
           titulo="Em Desenvolvimento"
-          tarefaData={tarefas.filter((t) => t.progresso > 0 && t.progresso < 100 && !t.comImpedimento)}
+          tarefaData={tarefas.filter((t) => t.progresso > 0 && t.progresso < 100 )}
           setTarefasFiltradas={setTarefasEmDevFiltradas}
         />
         <BodyTarefa>

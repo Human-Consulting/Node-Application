@@ -2,26 +2,11 @@ import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Sub
 import { Stack } from '@mui/material'
 import { Check, Block } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router';
+import { useWarningValidator } from '../../Utils/useWarning';
 
 function MiniProjectsCard({ entidade }) {
 
-  let statusColor = '#08D13D';
-  if (entidade) {
-    if (entidade.progresso == 100) {
-      statusColor = '#08D13D';
-    }
-    else if (entidade.comImpedimento == true && entidade.progresso > 50) {
-      statusColor = '#CED108';
-    } else {
-      statusColor = '#FF0707';
-    }
-  }
-
-  const renderIconeStatus = () => {
-    if (entidade.progresso == 100) return (<Check sx={{ fontSize: '22px' }} />);
-    if (entidade.comImpedimento) return (<Block sx={{ fontSize: '22px' }} />);
-    return null;
-  };
+    const {componente} = useWarningValidator(entidade?.comImpedimento, entidade?.dtFim)
 
   const { nomeEmpresa, idEmpresa } = useParams();
 
@@ -55,8 +40,8 @@ function MiniProjectsCard({ entidade }) {
               </ProgressBar>
             </Stack>
           </BodyCard>
-          <StatusCircle sx={{ border: `3px solid ${statusColor}` }}>
-            {renderIconeStatus()}
+          <StatusCircle >
+            {componente}
           </StatusCircle>
 
         </BoxBody>

@@ -14,6 +14,7 @@ import { ArrowCircleLeftOutlined, Check, Block } from '@mui/icons-material';
 import Modal from '../Modal/Modal'
 import FormsInvestimento from '../Forms/FormsInvestimento'
 import Shader from '../Shader/Shader'
+import { useWarningValidator } from '../../Utils/useWarning'
 
 const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animate, telaAtual }) => {
 
@@ -48,6 +49,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
     setLoading(false);
   }
 
+  const {cor} = useWarningValidator(entidade.comImpedimento, entidade.dtFim)
   const toogleModal = (investimento) => {
     setShowModal(!showModal);
     investimento != null ? setInvestimento(investimento) : setInvestimento(null);
@@ -62,29 +64,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
 
   const totalTarefas = entidade.areas?.length > 0 ? entidade.areas.reduce((total, area) => total + area.valor, 0) : 0;
 
-  const renderIcon = () => {
-
-    if (entidade.progresso == 100) {
-      return (
-        <Check sx={{ border: 'solid green 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
-      );
-    }
-
-    if (!entidade.comImpedimento) {
-      return (
-        <Check sx={{ border: 'solid #2196f3 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
-      );
-    }
-    if (entidade.comImpedimento && entidade.progresso < 50) {
-      return (
-        <Block sx={{ border: 'solid red 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
-      );
-    }
-
-    return (
-      <Block sx={{ border: 'solid orange 2px', borderRadius: '50%', fontSize: `${200 * 0.6}px` }} />
-    );
-  };
+  
 
   return (
     <ContainerBack>
@@ -108,25 +88,24 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, animat
               </Stack>
 
               <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                {/* <div style={{ width: '50%', heigth: '50%', textAlign: 'center' }}> */}
-                {/* {renderIcon()} */}
-                {/* </div> */}
+                <div style={{ width: '100px', heigth: '100px', textAlign: 'center' }}> 
+                 </div>
                 <Stack sx={{
-                  width: 'calc(200px * 0.6)',
-                  height: 'calc(200px * 0.6)',
+                  width: 'calc(175px * 0.6)',
+                  height: 'calc(175px * 0.6)',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  borderRadius: '15px',
                   textAlign: 'center',
                   borderRadius: '50%',
-                  borderColor: entidade.progresso == 100 ? '#4caf50' : entidade.comImpedimento ? '#f44336' : '#2196f3',
+                  borderColor: cor,
                   borderWidth: '2px',
                   borderStyle: 'solid',
                   color: '#fff',
-                  fontSize: '1rem',
-                  fontWeight: 'bold'
-                }}>{entidade.progresso == 100 ? `${idProjeto ? "Projeto Finalizado" : "Projetos Finalizados"}` : entidade.comImpedimento ? "Projeto com Impedimento" : `${idProjeto ? "Projeto" : "Projetos"} em Andamento`}</Stack>
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold',
+                  padding: '3rem'
+                }}>{entidade.progresso == 100 ? `"Finalizado"}` : entidade.comImpedimento ? "Com Impedimento" : `Em Andamento`}</Stack>
                 <RadialChart progresso={entidade.progresso}></RadialChart>
               </Stack>
 
