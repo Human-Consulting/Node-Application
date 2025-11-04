@@ -29,8 +29,35 @@ export const getUsuarios = async (idEmpresa, page, size, nome) => {
         const url = nome != null
             ? `/usuarios/buscarPorEmpresa/${idEmpresa}?page=${page}&size=${size}&nome=${nome}`
             : `/usuarios/buscarPorEmpresa/${idEmpresa}?page=${page}&size=${size}`;
-        
-            const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}${url}`, {
+
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}${url}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        if (!res.ok) throw new Error('Erro ao buscar usuários');
+        let data = null;
+        try {
+            data = await res.json();
+        } catch {
+            // resposta sem JSON (ex: 204 No Content)
+        }
+        return data;
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error);
+        return null;
+    }
+};
+
+export const getUsuariosResponsaveis = async (idEmpresa, page, size) => {
+    try {
+        const url = `/usuarios/buscarResponsaveisPorEmpresa/${idEmpresa}?page=${page}&size=${size}`;
+        console.log(url);
+
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}${url}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

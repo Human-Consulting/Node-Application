@@ -8,13 +8,15 @@ import { Checkbox, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import SelectUsuarios from "../../Modais/SelectUsuarios/SelectUsuarios.jsx";
 
-const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, idSprint, dtInicioSprint, dtFimSprint }) => {
+const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, sizeUsuarios, pagesUsuarios, atualizarUsuarios, idSprint, dtInicioSprint, dtFimSprint }) => {
     const [titulo, setTitulo] = useState(task?.titulo || "");
     const [descricao, setDescricao] = useState(task?.descricao || "");
     const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
     const [dtFim, setDtFim] = useState(task?.dtFim || "");
-    const [fkResponsavel, setFkResponsavel] = useState(task?.fkResponsavel || '#');
+    const [responsavel, setResponsavel] = useState(task?.responsavel || {});
+    const [fkResponsavel, setFkResponsavel] = useState(task?.responsavel?.idUsuario || '#');
     const [comentario, setComentario] = useState(task?.comentario || "");
     const [comImpedimento, setComImpedimento] = useState(task?.comImpedimento);
     const [checkpoints, setCheckpoints] = useState(task?.checkpoints || []);
@@ -28,7 +30,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         if (!descricao.trim()) novosErros.descricao = "Descrição é obrigatória";
         if (!dtInicio.trim()) novosErros.dtInicio = "Data de início é obrigatória";
         if (!dtFim.trim()) novosErros.dtFim = "Data de finalização é obrigatória";
-        if (!fkResponsavel) novosErros.fkResponsavel = "Responsável é obrigatório";
+        if (!fkResponsavel || fkResponsavel == '#') novosErros.fkResponsavel = "Responsável é obrigatório";
 
         if (dtInicio && dtFim) {
             const inicio = new Date(dtInicio);
@@ -226,41 +228,20 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                             helperText={erros.dtFim}
                         />
                     </Stack>
-
-                    <Select
-                        value={fkResponsavel}
+                    <SelectUsuarios
+                        usuarios={usuarios}
+                        sizeUsuarios={sizeUsuarios}
+                        pagesUsuarios={pagesUsuarios}
+                        atualizarUsuarios={atualizarUsuarios}
+                        responsavel={responsavel}
+                        fkResponsavel={fkResponsavel}
                         onChange={(e) => {
                             removerErro("fkResponsavel")
                             setFkResponsavel(e.target.value)
                         }}
                         disabled={usuarioLogado.permissao === 'FUNC'}
-                        fullWidth
-                        displayEmpty
-                        sx={{
-                            ...inputStyle.sx,
-                            color: '#FFF',
-                        }}
                         error={!!erros.fkResponsavel}
-                        MenuProps={{
-                            TransitionComponent: Grow,
-                            PaperProps: {
-                                sx: {
-                                    backgroundColor: '#22272B',
-                                    color: '#fff',
-                                    borderRadius: 2,
-                                    mt: 1,
-                                    maxHeight: 200,
-                                }
-                            }
-                        }}
-                    >
-                        <MenuItem value="#">Selecione o responsável</MenuItem>
-                        {usuarios.map((usuario) => (
-                            <MenuItem key={usuario.idUsuario} value={usuario.idUsuario}>
-                                {usuario.nome}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                         />
                 </Box>
                 <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="start" gap={2} flex='1' maxHeight="100%" >
 
@@ -333,7 +314,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                     <TextField
                         label="Comentário"
                         multiline
-                        disabled={task && usuarioLogado.idUsuario !== task.fkResponsavel}
+                        disabled={task && usuarioLogado.idUsuario !== task.responsavel.idUsuario}
                         rows={4.5}
                         value={comentario}
                         onChange={(e) => setComentario(e.target.value)}
@@ -354,12 +335,12 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                 <>
                     <Stack direction="row" spacing={2} justifyContent="center">
 
-                        {usuarioLogado.idUsuario == task.fkResponsavel && task.progresso < 100 ?
+                        {usuarioLogado.idUsuario == task.responsavel.idUsuario && task.progresso < 100 ?
                             <Button fullWidth variant='outlined' color={comImpedimento ? 'error' : 'success'} onClick={(e) => {
                                 e.stopPropagation(); handleImpedimentoTask()
                             }}>
                                 {comImpedimento ? 'Remover Impedimento' : 'Acionar Impedimento'}</Button>
-                            : usuarioLogado.idUsuario == task.fkResponsavel && task.progresso == 100 ?
+                            : usuarioLogado.idUsuario == task.responsavel.idUsuario && task.progresso == 100 ?
                                 <Button fullWidth variant='outlined' color={'info'} onClick={(e) => e.stopPropagation()}>TAREFA FINALIZADA</Button>
                                 : null}
                         {usuarioLogado.permissao == 'FUNC' ? null :
@@ -367,7 +348,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                                 <DeleteIcon />
                             </Button>
                         }
-                        {usuarioLogado.idUsuario == task.fkResponsavel ?
+                        {usuarioLogado.idUsuario == task.responsavel.idUsuario ?
                             <Button sx={{ flex: 1 }} variant="contained" color="primary" onClick={handlePutTask}>
                                 <SendIcon />
                             </Button>

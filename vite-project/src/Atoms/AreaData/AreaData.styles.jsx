@@ -6,11 +6,18 @@ export const AreaDataBox = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     gap: 6,
+    border: 'solid #fff 2px',
+    borderRadius: '10px',
+    padding: '0.5rem'
 });
 
 export const TextDefault = styled('p')({
     fontSize: '14px',
-    fontWeight: 600
+    fontWeight: 600,
+    maxWidth: '150px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
 });
 
 export const Number = styled('p')({

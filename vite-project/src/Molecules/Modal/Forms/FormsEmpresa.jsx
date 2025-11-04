@@ -97,9 +97,11 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas }) => {
             nome,
             urlImagem
         }
-        toogleModal();
-        await putEmpresa(modifiedEmpresa, empresa.idEmpresa);
-        await atualizarEmpresas();
+        const response = await putEmpresa(modifiedEmpresa, empresa.idEmpresa);
+        if (response) {
+            toogleModal();
+            await atualizarEmpresas();
+        }
     }
 
     const removerErro = (campo) => {

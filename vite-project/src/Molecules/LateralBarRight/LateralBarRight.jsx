@@ -21,7 +21,7 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
 
   const caosList = kpis?.impedidos || [];
   const noneList = kpis?.totalAndamento || 0;
-  const finalizadosList = kpis?.finalizados || [];
+  const finalizadosList = kpis?.finalizadas || [];
 
   const handleRightSkip = () => {
     if (idx < caosList.length - 1) {

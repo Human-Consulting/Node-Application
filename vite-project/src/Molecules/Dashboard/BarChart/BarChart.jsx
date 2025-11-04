@@ -44,9 +44,8 @@ const MinimalBarChart = ({ areas }) => {
           colors: '#fff'
         }
       },
-      tickAmount: valores.length > 0 ? Math.max(...valores) : 0,
       min: 0,
-      stepSize: 1
+      stepSize: 5
     },
     yaxis: {
       labels: {

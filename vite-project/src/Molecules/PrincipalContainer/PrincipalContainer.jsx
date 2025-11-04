@@ -48,6 +48,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
     toogleLateralBar();
     telaAtual();
     setListaFiltrada(nomeEmpresa == "Empresas" && empresas.length > 0 ? empresas : projetos);
+    console.log(projetos);
   }, [projetos, empresas, idEmpresa, nomeEmpresa, pagesEmpresas, pagesProjetos]);
 
   useEffect(() => {
@@ -220,7 +221,8 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
       <Modal
         showModal={showModal}
         fechar={toogleModal}
-        form={acao == 'projeto' ? <FormsProjeto projeto={projeto} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} usuarios={usuarios} fkEmpresa={idEmpresa} />
+        entidade={acao == 'projeto' ? projeto : empresa}
+        form={acao == 'projeto' ? <FormsProjeto projeto={projeto} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} fkEmpresa={idEmpresa} />
           :
           <FormsEmpresa empresa={empresa} toogleModal={toogleModal} atualizarEmpresas={atualizarEmpresas} />}
       >

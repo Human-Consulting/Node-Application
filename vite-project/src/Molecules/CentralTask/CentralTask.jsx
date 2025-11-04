@@ -1,22 +1,27 @@
 import { useNavigate, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { getTasks } from '../../Utils/cruds/CrudsTask';
-import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import { ArrowCircleLeftOutlined, CalendarMonth, ColorLens, MoreVert } from '@mui/icons-material';
 
-import { getSprints } from '../../Utils/cruds/CrudsSprint';
+import { getSprint, getSprints } from '../../Utils/cruds/CrudsSprint';
 import { BackCentral, BodyTarefa, DoneContainer } from './CentralTask.styles';
 import HeaderFilter from '../../Atoms/HeaderFilter/HeaderFilter';
 import TarefasItem from '../../Atoms/TarefasItem/TarefasItem';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Button, Tooltip, Badge } from '@mui/material';
 import Modal from '../Modal/Modal';
 import FormsTask from '../Modal/Forms/FormsTask';
 import FormsSprint from '../Modal/Forms/FormsSprint';
 import Shader from '../Shader/Shader';
+import { Load } from '../../Utils/Load';
+import ModalTarefas from '../Modais/ModalTarefas/ModalTarefas';
+import ModalCores from '../Modais/ModalCores/ModalCores';
 
-const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, color2, color3, animate }) => {
+const CentralTask = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, atualizarUsuarios, atualizarProjetos, color1, color2, color3, setColor1, setColor2, setColor3, animate, setAnimate }) => {
   const { idProjeto, idEmpresa, nomeEmpresa, tituloProjeto, tituloSprint, idSprint } = useParams();
   const navigate = useNavigate();
 
+
+  const [sprint, setSprint] = useState(null);
   const [tarefas, setTarefas] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [entidade, setEntidade] = useState(null);
@@ -29,32 +34,70 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
   const [tarefasEmDev, setTarefasEmDev] = useState([]);
   const [tarefasConcluidas, setTarefasConcluidas] = useState([]);
 
-  const atualizarSprints = async () => {
-    await getSprints(idSprint);
+  const [loading, setLoading] = useState(true);
+
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
+  const [anchorTarefa, setAnchorTarefa] = useState(null);
+  const [anchorCores, setAnchorCores] = useState(null);
+
+  const handleBadgeClickTarefa = (event) => {
+    setAnchorTarefa(event.currentTarget);
   };
+
+  const handleBadgeClickCores = (event) => {
+    setAnchorCores(event.currentTarget);
+  };
+
+  const handlePopoverCloseTarefa = () => {
+    setAnchorTarefa(null);
+  };
+
+  const handlePopoverCloseCores = () => {
+    setAnchorCores(null);
+  };
+
+  const openPopoverTarefas = Boolean(anchorTarefa);
+  const openPopoverCores = Boolean(anchorCores);
 
   const toogleModal = (entidade, post, id) => {
     setAcao(post);
     setEntidade(entidade);
+    console.log(entidade);
     setShowModal(!showModal);
     setId(id);
   };
 
-
   const handleOpenModalPutTask = (task) => {
-    toogleModal(task, 'task', null);
+    toogleModal(task, 'task', null, sprint.dtInicio, sprint.dtFim);
   }
 
-  const atualizarTasks = async () => {
-    const tarefas = await getTasks(idSprint);
-    setTarefas(tarefas);
+  const handleOpenModalPutSprint = () => {
+    toogleModal(sprint, 'sprint', null);
+  }
+
+  const handleOpenModalPostTask = () => {
+    toogleModal(null, 'task', sprint.idSprint, sprint.dtInicio, sprint.dtFim);
+  }
+
+  const atualizarSprint = async () => {
+    setLoading(true);
+    const sprintRetornada = await getSprint(idSprint);
+    setSprint(sprintRetornada);
+    setLoading(false);
   };
 
   useEffect(() => {
-    atualizarTasks();
-    toogleLateralBar();
-  }, []);
+  if (sprint) {
+    console.log("Sprint mudou:", sprint);
+    setTarefas(sprint.tarefas || []);
+  }
+}, [sprint]);
 
+  useEffect(() => {
+    atualizarSprint();
+    toogleLateralBar();
+  }, [idSprint]);
 
   const handleOpenProject = async () => {
     navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${tituloProjeto}/${Number(idProjeto)}`);
@@ -73,10 +116,50 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
     setTarefasConcluidas(concluidas);
   }, [tarefas]);
 
+  if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
+
   return (
     <Stack sx={{ width: '100%', height: '100%', padding: '1.5rem', gap: '1rem' }}>
       <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={0} />
-      <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue", zIndex: 2 }}><ArrowCircleLeftOutlinedIcon sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} /> { tituloProjeto } - { tituloSprint } - Backlog</Typography>
+      <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue", zIndex: 2 }}>
+        <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} /> {tituloProjeto} - {tituloSprint} - Backlog
+        <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
+          <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenModalPostTask}>Criar tarefa</Button>
+          <Tooltip title="Tarefas abertas em seu nome.">
+            <Badge onClick={handleBadgeClickTarefa}
+              sx={{
+                '& .MuiBadge-badge': {
+                  fontSize: '1.25rem',
+                  height: '26px',
+                  width: '26px',
+                  cursor: 'pointer'
+                }
+              }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
+              <CalendarMonth sx={{ fontSize: 32, cursor: 'pointer' }} />
+            </Badge>
+          </Tooltip>
+          <Tooltip title="Editar cor de fundo.">
+            <ColorLens onClick={handleBadgeClickCores}
+              sx={{
+                height: '40px',
+                width: '40px',
+                cursor: 'pointer'
+              }} />
+          </Tooltip>
+          <Tooltip title="Editar sprint">
+            <MoreVert
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenModalPutSprint();
+              }}
+              sx={{
+                color: '#FFF',
+                cursor: 'pointer'
+              }}
+            />
+          </Tooltip>
+        </Stack>
+      </Typography>
       <BackCentral>
         <DoneContainer>
           <HeaderFilter
@@ -85,6 +168,7 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
             tarefaData={tarefasAFazerFiltradas}
             setTarefasFiltradas={setTarefasAFazerFiltradas}
             usuarios={usuarios}
+            idProjeto={idProjeto}
           />
           <BodyTarefa>
             {tarefasAFazerFiltradas.map((tarefa, index) => (
@@ -93,7 +177,7 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
                 toogleModal={handleOpenModalPutTask}
                 tarefa={tarefa}
                 atualizarProjetos={atualizarProjetos}
-                atualizarSprints={atualizarSprints}
+                atualizarSprints={atualizarSprint}
               />
             ))}
           </BodyTarefa>
@@ -114,7 +198,7 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
                 toogleModal={handleOpenModalPutTask}
                 tarefa={tarefa}
                 atualizarProjetos={atualizarProjetos}
-                atualizarSprints={atualizarSprints}
+                atualizarSprints={atualizarSprint}
               />
             ))}
           </BodyTarefa>
@@ -135,19 +219,38 @@ const CentralTask = ({ toogleLateralBar, usuarios, atualizarProjetos, color1, co
                 toogleModal={handleOpenModalPutTask}
                 tarefa={tarefa}
                 atualizarProjetos={atualizarProjetos}
-                atualizarSprints={atualizarSprints}
+                atualizarSprints={atualizarSprint}
               />
             ))}
           </BodyTarefa>
         </DoneContainer>
       </BackCentral>
-      <Modal showModal={showModal} fechar={toogleModal} acao={entidade == null ? null : acao == "task" ? "aumentar" : null} entidade={entidade}
-        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} idSprint={id} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
-          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} acao={null} />}
+      <Modal showModal={showModal} fechar={toogleModal} acao={acao == "task" ? "aumentar" : null} entidade={entidade}
+        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={pagesUsuarios} atualizarUsuarios={atualizarUsuarios} idSprint={id} dtInicioSprint={sprint?.dtInicio} dtFimSprint={sprint?.dtFim} atualizarSprints={atualizarSprint} atualizarProjetos={atualizarProjetos} />
+          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprint} atualizarProjetos={atualizarProjetos} acao={null} />}
       >
       </Modal>
-    </Stack>
 
+      <ModalTarefas
+        tarefas={usuarioLogado.tarefasVinculadas}
+        open={openPopoverTarefas}
+        anchorEl={anchorTarefa}
+        onClose={handlePopoverCloseTarefa}
+      />
+      <ModalCores
+        color1={color1}
+        setColor1={setColor1}
+        color2={color2}
+        setColor2={setColor2}
+        color3={color3}
+        setColor3={setColor3}
+        animate={animate}
+        setAnimate={setAnimate}
+        open={openPopoverCores}
+        anchorEl={anchorCores}
+        onClose={handlePopoverCloseCores}
+      />
+    </Stack>
   );
 };
 

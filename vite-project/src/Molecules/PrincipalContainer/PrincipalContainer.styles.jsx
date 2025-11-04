@@ -5,13 +5,13 @@ export const PrincipalContainerStyled = styled(Box)({
     flex: 1,
     backgroundColor: '#0D0D0D',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
 });
 
 export const HeaderContent = styled(Box)({
     position: 'relative',
-    width: '100%',
     height: '300px',
+    height: '30%',
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
@@ -22,11 +22,9 @@ export const MidleCarrousel = styled(Box)({
     overflowX: 'hidden',
     overflowY: 'auto',
     height: '400px',
-    minHeight: 'fit-content',
-    minHeight: '400px',
+    flex: 1,
     padding: '1rem 1rem 2rem 1rem',
     scrollBehavior: 'smooth',
-    zIndex: 6,
 
     '&::-webkit-scrollbar': {
         width: '8px',

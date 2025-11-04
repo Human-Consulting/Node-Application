@@ -36,7 +36,7 @@ export const BodyTarefa = styled(Box)({
     scrollBehavior: 'smooth',
 
     '&::-webkit-scrollbar': {
-        width: '8px',
+        width: '4px',
     },
     '&::-webkit-scrollbar-track': {
         background: 'transparent',

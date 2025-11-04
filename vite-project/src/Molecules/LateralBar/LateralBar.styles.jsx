@@ -5,7 +5,6 @@ export const LateralNavBar = styled(Box)(({ diminuido }) => ({
     width: diminuido ? '100px' : '300px',
     minWidth: diminuido ? '100px' : '300px',
     maxWidth: diminuido ? '100px' : '350px',
-    height: '100vh',
     backgroundColor: '#000000',
     display: 'flex',
     flexDirection: 'column',
@@ -23,7 +22,7 @@ export const DivisorOne = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
-    padding: '0 0 0.5rem 0',
+    marginBottom: '0.5rem',
 });
 
 export const DivisorTwo = styled(Box)(({
@@ -31,7 +30,7 @@ export const DivisorTwo = styled(Box)(({
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',
-    padding: '1rem',
+    paddingInline: '1rem',
     flex: 1,
 }));
 
@@ -44,7 +43,7 @@ export const ChipZone = styled(Box)({
 
 export const CardZone = styled(Box)(({
     overflowY: 'auto',
-    maxHeight: '60%',
+    maxHeight: '50%',
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',
@@ -66,12 +65,11 @@ export const CardZone = styled(Box)(({
 export const Item = styled(Box)(({ telaAtual, item, diminuido }) => ({
     display: 'flex',
     cursor: 'pointer',
-    padding: '1rem',
+    padding: '0.5rem 1rem 0.5rem 1rem',
     gap: '0.75rem',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: diminuido ? 'center' : 'start',
-    width: '100%',
     borderRadius: '10px',
     backgroundColor: '#0d0d0d',
     transition: 'background 0.2s',
@@ -83,7 +81,7 @@ export const Item = styled(Box)(({ telaAtual, item, diminuido }) => ({
 }));
 
 export const Title = styled('p')({
-    fontWeight: 500,
-    fontSize: '14px',
+    fontWeight: 600,
+    fontSize: '13px',
     color: '#fff',
 });

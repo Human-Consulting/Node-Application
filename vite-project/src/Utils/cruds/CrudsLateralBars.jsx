@@ -3,10 +3,10 @@ const token = JSON.parse(localStorage.getItem('token'));
 export const getKpis = async (entidade, idEmpresa) => {
   try {
 
-    const url = entidade == "projetos" ? 
-    `${import.meta.env.VITE_ENDERECO_API}/projetos/kpis/${idEmpresa}`
-    :
-    `${import.meta.env.VITE_ENDERECO_API}/empresas/kpis`
+    const url = entidade == "projetos" ?
+      `${import.meta.env.VITE_ENDERECO_API}/projetos/kpis/${idEmpresa}`
+      :
+      `${import.meta.env.VITE_ENDERECO_API}/empresas/kpis`
 
     const res = await fetch(url, {
       method: "GET",
@@ -21,7 +21,7 @@ export const getKpis = async (entidade, idEmpresa) => {
     try {
       return await res.json();
     } catch {
-      return null; // caso 204 ou sem corpo
+      return []; // caso 204 ou sem corpo
     }
   } catch (error) {
     console.error("Erro ao buscar KPIs:", error);
@@ -39,10 +39,10 @@ export const getMenuRapido = async (entidade, idEmpresa, page, size, nome, imped
     if (impedidos != null) params.append("impedidos", impedidos);
     if (concluidos != null) params.append("concluidos", concluidos);
 
-    const url = entidade == "projetos" ? 
-    `${import.meta.env.VITE_ENDERECO_API}/projetos/menuRapido/${idEmpresa}?${params.toString()}`
-    :
-    `${import.meta.env.VITE_ENDERECO_API}/empresas/menuRapido?${params.toString()}`
+    const url = entidade == "projetos" ?
+      `${import.meta.env.VITE_ENDERECO_API}/projetos/menuRapido/${idEmpresa}?${params.toString()}`
+      :
+      `${import.meta.env.VITE_ENDERECO_API}/empresas/menuRapido?${params.toString()}`
 
     const res = await fetch(url, {
       method: "GET",
@@ -57,7 +57,7 @@ export const getMenuRapido = async (entidade, idEmpresa, page, size, nome, imped
     try {
       return await res.json();
     } catch {
-      return null; // caso 204 ou sem corpo
+      return []; // caso 204 ou sem corpo
     }
   } catch (error) {
     console.error("Erro ao buscar Menu Rápido:", error);

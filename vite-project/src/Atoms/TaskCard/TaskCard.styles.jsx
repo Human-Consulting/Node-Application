@@ -8,20 +8,18 @@ export const TaskCardBody = styled(Box)({
     borderRadius: '10px',
     flexShrink: 0,
     scrollSnapAlign: 'center',
-    margin: '0 50px',
     alignItems: 'center',
     gap: '2rem',
     padding: '1rem',
+    maxHeight: '100%'
 });
 export const TitleTarefa = styled('h2')({
     fontSize: '34px'
 });
 
 export const BodyTarefa = styled(Box)({
-    height: '100%',
     width: 'calc(100% + 1rem)',
     overflowY: 'auto',
-    maxHeight: '300px',
     gap: '2rem',
     display: 'flex',
     flexDirection: 'column',

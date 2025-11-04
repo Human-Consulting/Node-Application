@@ -13,7 +13,7 @@ import { Load } from '../../Utils/Load';
 import ModalTarefas from '../Modais/ModalTarefas/ModalTarefas';
 import ModalCores from '../Modais/ModalCores/ModalCores';
 
-const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1, color2, color3, setColor1, setColor2, setColor3, animate, setAnimate, telaAtual }) => {
+const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pagesUsuarios, atualizarUsuarios, color1, color2, color3, setColor1, setColor2, setColor3, animate, setAnimate, telaAtual }) => {
 
   const { idProjeto, idEmpresa, nomeEmpresa, tituloProjeto } = useParams();
   const navigate = useNavigate();
@@ -87,8 +87,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
     <>
       <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={0} />
       <TaskBody>
-        {showTitle ?
-          <Typography variant="h3" mt={3} sx={{ display: 'flex', alignItems: 'center', position: 'fixed', fontFamily: "Bebas Neue" }}>
+          <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue" }}>
             <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{tituloProjeto} - Roadmap
             <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
               <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenDash}>Ir para Dashboard</Button>
@@ -115,7 +114,6 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
               </Tooltip>
             </Stack>
           </Typography>
-          : <Stack sx={{ marginTop: '1.5rem' }} />}
         <SprintBody>
 
           {sprintsList.length > 0 && sprintsList.map((sprint, index) => (
@@ -128,7 +126,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, showTitle, color1
       </TaskBody>
 
       <Modal showModal={showModal} fechar={toogleModal} acao={acao == "task" ? "aumentar" : null} entidade={entidade}
-        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} idSprint={id} dtInicioSprint={dtInicio} dtFimSprint={dtFim} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
+        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={pagesUsuarios} atualizarUsuarios={atualizarUsuarios} idSprint={id} dtInicioSprint={dtInicio} dtFimSprint={dtFim} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
           : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} acao={null} />}
       >
       </Modal>

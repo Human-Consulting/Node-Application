@@ -7,8 +7,9 @@ export const TaskBody = styled(Box)({
   overflowY: 'hidden',
   display: 'flex',
   flexDirection: 'column',
-  paddingInline: '1.5rem',
+  padding: '1.5rem',
   zIndex: 2,
+  gap: '1rem',
 
   '&::-webkit-scrollbar': {
     height: '7px',
@@ -31,7 +32,6 @@ export const SprintBody = styled(Box)({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'start',
-  boxSizing: 'padding-box',
-  marginTop: '125px',
-  paddingRight: '1.5rem',
+  gap: '5rem',
+  height: '90%'
 })

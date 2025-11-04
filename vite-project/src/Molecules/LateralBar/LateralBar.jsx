@@ -168,7 +168,7 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                     <>
                         {!diminuirLateralBar && (
                             <ChipZone>
-                                <Chip sx={{ backgroundColor: filtroConcluido ? '#2e7d32' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
+                                <Chip sx={{ backgroundColor: filtroConcluido ? '#1976d2' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
                                     label="Concluídos" onClick={() => handleClick('concluido')} />
 
                                 <Chip sx={{ backgroundColor: filtroImpedimento ? '#D32F2F' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
@@ -186,8 +186,7 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                         <Stack
                             direction="row"
                             justifyContent="center"
-                            alignItems="center"
-                            sx={{ marginTop: '0', width: '100%' }}
+                            alignItems="space-between"
                         >
                             {diminuirLateralBar ? (
                                 <Stack direction="row" spacing={1} alignItems="center">

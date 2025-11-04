@@ -37,7 +37,7 @@ const ProjectsTypes = ({ entidade, diminuirLateralBar, telaAtual }) => {
   };
 
   return (
-    <ProjectsTypesBox diminuido={diminuirLateralBar} onClick={handleOpenProject} idAtual={idProjeto} idItem={entidade?.idProjeto}>
+    <ProjectsTypesBox progresso={entidade.progresso == 100} diminuido={diminuirLateralBar} onClick={handleOpenProject} idAtual={idProjeto} idItem={entidade?.idProjeto}>
       {renderImagem()}
       <Stack sx={{ justifyContent: 'space-between', maxWidth: '80%' }}>
         <Title diminuido={diminuirLateralBar}>

@@ -89,34 +89,33 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
         </>
         : null}
       <KpiContainer>
-        {showTitle ? <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', position: 'relative', fontFamily: "Bebas Neue" }}>
-          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ? 
-          // <Button variant='contained' sx={{ cursor: 'pointer', position: 'absolute', right: 0 }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button>
-          <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
-                        <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button>
-                        <Tooltip title="Tarefas abertas em seu nome.">
-                          <Badge onClick={handleBadgeClickTarefa}
-                            sx={{
-                              '& .MuiBadge-badge': {
-                                fontSize: '1.25rem',
-                                height: '26px',
-                                width: '26px',
-                                cursor: 'pointer'
-                              }
-                            }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
-                            <CalendarMonth sx={{ fontSize: 32, cursor: 'pointer' }} />
-                          </Badge>
-                        </Tooltip>
-                        <Tooltip title="Editar cor de fundo.">
-                          <ColorLens onClick={handleBadgeClickCores}
-                            sx={{
-                              height: '40px',
-                              width: '40px',
-                              cursor: 'pointer'
-                            }} />
-                        </Tooltip>
-                      </Stack>
-         : null}</Typography> : <Stack sx={{ marginTop: '1.5rem' }} />}
+        {showTitle ? <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue", zIndex: 2 }}>
+          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ?
+            <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
+              <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button>
+              <Tooltip title="Tarefas abertas em seu nome.">
+                <Badge onClick={handleBadgeClickTarefa}
+                  sx={{
+                    '& .MuiBadge-badge': {
+                      fontSize: '1.25rem',
+                      height: '26px',
+                      width: '26px',
+                      cursor: 'pointer'
+                    }
+                  }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
+                  <CalendarMonth sx={{ fontSize: 32, cursor: 'pointer' }} />
+                </Badge>
+              </Tooltip>
+              <Tooltip title="Editar cor de fundo.">
+                <ColorLens onClick={handleBadgeClickCores}
+                  sx={{
+                    height: '40px',
+                    width: '40px',
+                    cursor: 'pointer'
+                  }} />
+              </Tooltip>
+            </Stack>
+            : null}</Typography> : <Stack sx={{ marginTop: '1.5rem' }} />}
 
         <DashContainer>
           <Stack sx={{ justifyContent: 'space-between', gap: '3rem', flex: 1 }}>
@@ -128,24 +127,10 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
                 </Stack>
               </Stack>
 
-              <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <Stack sx={{
-                  width: 'calc(200px * 0.6)',
-                  height: 'calc(200px * 0.6)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: '15px',
-                  textAlign: 'center',
-                  borderRadius: '50%',
-                  borderColor: entidade.progresso == 100 ? '#4caf50' : entidade.comImpedimento ? '#f44336' : '#2196f3',
-                  borderWidth: '2px',
-                  borderStyle: 'solid',
-                  color: '#fff',
-                  fontSize: '1rem',
-                  fontWeight: 'bold'
-                }}>{entidade.progresso == 100 ? `${idProjeto ? "Projeto Finalizado" : "Projetos Finalizados"}` : entidade.comImpedimento ? "Projeto com Impedimento" : `${idProjeto ? "Projeto" : "Projetos"} em Andamento`}</Stack>
-                <RadialChart progresso={entidade.progresso}></RadialChart>
+              <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                
+                {entidade.comImpedimento && <RadialChart comImpedimento={entidade.comImpedimento} progresso={100}></RadialChart>}
+                <RadialChart comImpedimento={null} progresso={entidade.progresso}></RadialChart>
               </Stack>
 
               <Stack sx={{ bgcolor: '#101010', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
@@ -171,7 +156,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
               <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }} >
                 {usuarios?.length ? (
                   usuarios.slice(0, 3).map((usuario, index) => (
-                    <AreaData key={index} usuario={usuario.nome} area={usuario.area} valor={usuario.qtdTarefas} total={totalTarefas} />
+                    <AreaData key={index} usuario={usuario} total={totalTarefas} />
                   ))
                 ) : (
                   null

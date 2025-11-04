@@ -1,6 +1,6 @@
 import { Box, styled } from "@mui/material";
 
-export const ProjectsTypesBox = styled(Box)(({ diminuido, idAtual, idItem }) => ({
+export const ProjectsTypesBox = styled(Box)(({ diminuido, idAtual, idItem, finalizado }) => ({
   width: '100%',
   height: 'fit-content',
   display: 'flex',
@@ -16,7 +16,9 @@ export const ProjectsTypesBox = styled(Box)(({ diminuido, idAtual, idItem }) => 
   transition: 'background 0.2s',
   '&:hover': {
     backgroundColor: '#1a1a1a',
-  }
+  },
+  opacity: finalizado ? 0.25 : 1,
+  transition: "opacity 0.3s ease"
 }));
 
 export const ImageBox = styled('img')({

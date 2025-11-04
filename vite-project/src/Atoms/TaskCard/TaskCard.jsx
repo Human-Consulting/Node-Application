@@ -3,7 +3,7 @@ import { Button, Select, Stack, MenuItem, Grow, Box, Tooltip, Popover, TextField
 import TarefasItem from '../TarefasItem/TarefasItem'
 import { useNavigate, useParams } from 'react-router'
 import { useEffect, useState } from 'react';
-import { CalendarMonth, CheckCircle, HourglassEmpty, Block, AllInclusive, MoreVert, EmojiPeople, Search, NorthEast } from '@mui/icons-material';
+import { CalendarMonth, CheckCircle, HourglassEmpty, Block, AllInclusive, MoreVert, EmojiPeople, Search, NorthEast, Close } from '@mui/icons-material';
 import { getNome, getTempoRestante } from '../../Utils/getInfos';
 
 const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints }) => {
@@ -17,6 +17,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   const [tarefasFiltradas, setTarefasFiltradas] = useState([]);
   const [usuarioFiltrado, setUsuarioFiltrado] = useState(null);
   const [buscaTitulo, setBuscaTitulo] = useState("");
+  const [onSearch, setOnSearch] = useState(false);
 
   const [anchorUser, setAnchorUser] = useState(null);
   const [anchorSearch, setAnchorSearch] = useState(null);
@@ -32,12 +33,18 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
 
   const handleOpenSearch = (event) => {
     setAnchorSearch(event.currentTarget);
+    setOnSearch(true);
   };
 
   const handleCloseSearch = () => {
     setAnchorSearch(null);
-    setBuscaTitulo("");
+    // setBuscaTitulo("");
   };
+
+  const clearSearch = () => {
+    setTarefasFiltradas(sprint?.tarefas);
+    setOnSearch(false);
+  }
 
   useEffect(() => {
     if (buscaTitulo.trim() === "") {
@@ -169,7 +176,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
                 </Box>
               </MenuItem>
             </Select>
-            <Stack sx={{ //? Onclick nesse cara pra abrir Backlog
+            <Stack sx={{
               flexDirection: 'row', border: '1px solid transparent',
               borderRadius: '10px',
               cursor: 'pointer',
@@ -190,7 +197,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
                 }}
               />
             </Stack>
-            <Search
+            {/* <Search
               onClick={handleOpenSearch}
               sx={{
                 color: '#FFF',
@@ -204,7 +211,38 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
                   border: '1px solid #f0f0f0'
                 }
               }}
-            />
+            /> */}
+            <Search
+                    onClick={handleOpenSearch}
+                    sx={{
+                      color: '#FFF',
+                      position: 'absolute',
+                      right: `${onSearch ? '70px' : '40px'}`,
+                      cursor: 'pointer',
+                      transition: '0.3s',
+                      border: '1px solid transparent',
+                      borderRadius: '4px',
+                      '&:hover': {
+                        border: '1px solid #f0f0f0'
+                      }
+                    }}
+                  />
+                  <Close
+                    onClick={clearSearch}
+                    sx={{
+                      color: '#FFF',
+                      position: 'absolute',
+                      right: '40px',
+                      cursor: 'pointer',
+                      transition: '0.3s',
+                      border: '1px solid transparent',
+                      borderRadius: '4px',
+                      display: `${onSearch ? 'unset' : 'none'}`,
+                      '&:hover': {
+                        border: '1px solid #f0f0f0'
+                      }
+                    }}
+                  />
             <MoreVert
               onClick={(e) => {
                 e.stopPropagation();
@@ -233,7 +271,6 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
             {usuarioLogado.permissao != 'FUNC' ?
               <Button size='medium' onClick={handleOpenModalPostTask} variant='contained'>CRIAR TAREFA</Button>
               : null}
-            {/* <Button size='medium' onClick={handleOpenProject} variant='contained'>VER TAREFAS</Button> */}
             <Stack sx={{ flexDirection: 'row', gap: '15px', }}>
               {Math.floor(sprint.progresso)}% de {sprint.tarefas.length}
               {sprint.progresso < 100 &&

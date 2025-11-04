@@ -41,11 +41,8 @@ const Linha = ({ usuario, toogleModal, atualizarUsuarios }) => {
             <td>{usuario.email}</td>
             <td>{usuario.area}</td>
             <td>{usuario.cargo}</td>
-            {idEmpresa == 1 ? null :
-                <>
-                    <td>{usuario.qtdTarefas}</td>
-                    <td>{usuario.comImpedimento ? "Sim" : "Não"}</td>
-                </>}
+            {/* <td>{usuario.qtdTarefas}</td> */}
+            {/* <td>{usuario.comImpedimento ? "Sim" : "Não"}</td> */}
             <td className="tdActions">
                 <button onClick={handleEditar} disabled={!temPermissaoPut}>
                     <EditIcon />

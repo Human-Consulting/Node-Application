@@ -67,6 +67,7 @@ const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos,
         if (response) {
             atualizarSprints();
             atualizarProjetos();
+            toogleModal();
         }
     }
 

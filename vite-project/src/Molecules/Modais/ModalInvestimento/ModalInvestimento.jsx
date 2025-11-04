@@ -43,12 +43,12 @@ const ModalInvestimento = ({ investimentos, open, anchorEl, onClose, toogleModal
                     </ListItem>
                 )}
                 {investimentos.map((investimento, index) => (
-                    <ListItem key={index} sx={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#1D1D1D', borderRadius: '16px' }}>
+                    <ListItem key={index} sx={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#101010', borderRadius: '16px', transition: '0.2s', "&:hover": { background: '#181818' } }}>
                         <Stack sx={{ flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
                             <ListItemText
                                 primary={
                                     <Typography variant="subtitle1" fontWeight="bold" color="#fff">
-                                        Descrição: {investimento.descricao || 'Sem descrição'}
+                                        {investimento.descricao || 'Sem descrição'}
                                     </Typography>
                                 }
                                 secondary={

@@ -38,14 +38,19 @@ const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
     const getCorDia = (dia) => {
         const data = dayjs(`${anoAtual}-${mesAtual + 1}-${dia}`);
         const tarefasDoDia = tarefas.filter(t => dayjs(t.dtFim).isSame(data, "day"));
-
-        if (tarefasDoDia.length === 0) return "#1a1a1a";
-        const temImpedimento = tarefasDoDia.some(t => t.comImpedimento);
-        if (!temImpedimento) return "#007bff";
-
         const hoje = dayjs();
+
+        const temImpedimento = tarefasDoDia.some(t => t.comImpedimento);
+
+        if (!temImpedimento) {
+            // if (data.isSame(hoje, 'day') && !temImpedimento) return "#888";
+            if (tarefasDoDia.length === 0) return "#1a1a1a";
+            return "#007bff";
+        }
+
         const diasRestantes = data.diff(hoje, "day");
         if (diasRestantes <= 7) return "#d32f2f";
+
         return "#fbc02d";
     };
 
@@ -66,6 +71,8 @@ const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
         const sprintTitulo = tarefa.sprint.titulo;
         const idSprint = tarefa.sprint.idSprint;
 
+        onClose();
+
         navigate(
             `/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${descricaoProjeto}/${idProjeto}/Backlog/${sprintTitulo}/${idSprint}/${index}`
         );
@@ -81,7 +88,6 @@ const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             PaperProps={{
                 sx: {
-                    width: 400,
                     width: 750,
                     maxHeight: 350,
                     overflow: "hidden",

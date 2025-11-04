@@ -24,7 +24,6 @@ const Usuarios = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, atu
   const [totalPages, setTotalPages] = useState(pagesUsuarios || 0);
   const [pageSize, setPageSize] = useState(sizeUsuarios || 10);
 
-
   const [page, setPage] = useState(0);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
@@ -49,7 +48,6 @@ const Usuarios = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, atu
 
   useEffect(() => {
     setLoading(true);
-    // setTotalPages(pagesUsuarios);
     toogleLateralBar();
     telaAtual();
     setUsuariosFiltrados(usuarios);
@@ -132,7 +130,7 @@ const Usuarios = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, atu
       }
       <Modal showModal={showModal} fechar={toogleModal} editarSenhaUsuario={toogleEditarSenhaUsuario} editarUsuario={editarUsuario}
         form={editarUsuario ? <FormsEditarSenhaUsuario idUsuario={idUsuarioEditar} atualizarUsuarios={atualizarUsuarios} editarSenhaUsuario={toogleEditarSenhaUsuario} /> : <FormsUsuario diretor={usuariosFiltrados.length > 0 && (
-          usuariosFiltrados.some(usuario => usuario.permissao === 'DIRETOR'))} usuario={usuario} toogleModal={toogleModal} atualizarUsuarios={atualizarUsuarios} fkEmpresa={idEmpresa} qtdUsuarios={usuarios.length} editarSenhaUsuario={toogleEditarSenhaUsuario} />}
+          usuariosFiltrados.some(usuario => usuario.permissao.includes('DIRETOR')))} usuario={usuario} toogleModal={toogleModal} atualizarUsuarios={atualizarUsuarios} fkEmpresa={idEmpresa} qtdUsuarios={usuarios.length} editarSenhaUsuario={toogleEditarSenhaUsuario} />}
       >
       </Modal>
     </UsuariosBody >

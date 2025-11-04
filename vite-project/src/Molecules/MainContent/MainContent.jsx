@@ -68,18 +68,21 @@ const MainContent = () => {
     setProjetos(projetosRetornados?.content || []);
     setSizeProjetos(projetosRetornados?.pageSize || 10);
     setTotalPagesProjetos(projetosRetornados?.totalPages || 1);
+    atualizarLaterais({idEmpresa});
   };
 
   const atualizarEmpresas = async (page = 0, nome = null) => {
+    console.log("Atualizando empresssasa")
     const empresasRetornadas = await getEmpresas(page, 10, nome);
     setProjetos([]);
     setEmpresas(empresasRetornadas?.content || []);
     setSizeEmpresas(empresasRetornadas?.pageSize || 10);
     setTotalPagesEmpresas(empresasRetornadas?.totalPages || 1);
+    atualizarLaterais({ idEmpresa: null });
   };
 
 
-  const buscarUsuarios = async (page = 0, size = 5, nome = null) => {
+  const buscarUsuarios = async (page = 0, size = 4, nome = null) => {
     const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, size, nome);
     setUsuarios(usuariosRetornados?.content || []);
     setSizeUsuarios(usuariosRetornados?.pageSize || 10);
@@ -89,7 +92,7 @@ const MainContent = () => {
 
   const atualizarLaterais = async ({ idEmpresa = null, page = 0, nome = null, impedidos = null, concluidos = null,
   }) => {
-    const entidade = nomeEmpresa == 'Empresas' ? 'empresas' : 'projetos';
+    const entidade = nomeEmpresa === 'Empresas' ? 'empresas' : 'projetos';
     const kpiRetornadas = await getKpis(entidade, idEmpresa);
     setKpis(kpiRetornadas);
     const menuRapidoRetornados = await getMenuRapido(entidade, idEmpresa, page, 10, nome, impedidos, concluidos);
@@ -117,9 +120,9 @@ const MainContent = () => {
       <Routes>
         <Route path="/" element={<PrincipalContainer telaAtual={() => setTelaAtual("Home")} toogleLateralBar={ShowLateralBar} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} projetos={projetos} pagesProjetos={totalPagesProjetos} empresas={empresas} pagesEmpresas={totalPagesEmpresas} usuarios={usuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} />} />
 
-        <Route path="/Roadmap/:tituloProjeto/:idProjeto" element={<Task telaAtual={() => setTelaAtual("Roadmap")} toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} showTitle={true} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} />} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto" element={<Task telaAtual={() => setTelaAtual("Roadmap")} toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} />} />
 
-        <Route path="/Roadmap/:tituloProjeto/:idProjeto/Backlog/:tituloSprint/:idSprint/:index" element={<CentralTask toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} color1={color1} color2={color2} color3={color3} animate={animate} />} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto/Backlog/:tituloSprint/:idSprint/:index" element={<CentralTask toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} />} />
 
         <Route path="/Usuarios" element={<Usuarios telaAtual={() => setTelaAtual("Usuarios")} toogleLateralBar={hideLateralBar} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 

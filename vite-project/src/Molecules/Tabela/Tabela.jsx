@@ -1,9 +1,7 @@
-import { useParams } from "react-router";
 import Linha from "./Linha/Linha";
 import "./Tabela.css"
 
 const Tabela = ({ usuarios, toogleModal, atualizarUsuarios }) => {
-    const { idEmpresa } = useParams();
 
     return (
         <div className="table-container">
@@ -15,11 +13,8 @@ const Tabela = ({ usuarios, toogleModal, atualizarUsuarios }) => {
                         <th>Área</th>
                         <th>Cargo</th>
                         {/* <th>Permissão</th> */}
-                        {idEmpresa == 1 ? null :
-                            <>
-                                <th>Tarefas</th>
-                                <th>Impedimento</th>
-                            </>}
+                        {/* <th>Tarefas</th> */}
+                        {/* <th>Impedimento</th> */}
                         <th>Ações</th>
                     </tr>
                 </thead>
