@@ -55,7 +55,7 @@ function ProjectsCard({ item, toogleModal }) {
               <Subtitle>{item.progresso}%</Subtitle>
             </Stack>
           </BodyCard>
-          <StatusCircle //  sx={{ border: `5px solid ${statusColor}` }}
+          <StatusCircle
           >
             {useWarningValidator(item)}
           </StatusCircle>
