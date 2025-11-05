@@ -25,8 +25,8 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   const usuarios = [
     ...new Map(
       sprint?.tarefas.map(t => [
-        t.responsavel.idUsuario,
-        { idUsuario: t.responsavel.idUsuario, nome: t.responsavel.nome }
+        t?.responsavel?.idUsuario,
+        { idUsuario: t?.responsavel?.idUsuario, nome: t?.responsavel?.nome }
       ])
     ).values()
   ];
@@ -110,8 +110,13 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   };
 
   const filterByUsuario = (usuario) => {
-    setUsuarioFiltrado(usuario.nome);
-    setTarefasFiltradas(sprint.tarefas.filter(t => t.responsavel.idUsuario === usuario.idUsuario));
+    if (usuario == "#") {
+      setUsuarioFiltrado("?");
+      setTarefasFiltradas(sprint.tarefas.filter(t => t?.responsavel === null));
+    } else {
+      setUsuarioFiltrado(usuario.nome);
+      setTarefasFiltradas(sprint.tarefas.filter(t => t?.responsavel?.idUsuario === usuario.idUsuario));
+    }
     handleCloseUserFilter();
   };
 
@@ -186,22 +191,22 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
                 border: '1px solid #f0f0f0'
               }
             }}
-            onClick={handleOpenProject}>
+              onClick={handleOpenProject}>
               {sprint.titulo}
               <NorthEast
-                
+
                 sx={{
                   color: '#FFF',
 
                 }}
               />
             </Stack>
-            {/* <Search
+            <Search
               onClick={handleOpenSearch}
               sx={{
                 color: '#FFF',
                 position: 'absolute',
-                right: '40px',
+                right: `${onSearch ? '70px' : '40px'}`,
                 cursor: 'pointer',
                 transition: '0.3s',
                 border: '1px solid transparent',
@@ -210,38 +215,23 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
                   border: '1px solid #f0f0f0'
                 }
               }}
-            /> */}
-            <Search
-                    onClick={handleOpenSearch}
-                    sx={{
-                      color: '#FFF',
-                      position: 'absolute',
-                      right: `${onSearch ? '70px' : '40px'}`,
-                      cursor: 'pointer',
-                      transition: '0.3s',
-                      border: '1px solid transparent',
-                      borderRadius: '4px',
-                      '&:hover': {
-                        border: '1px solid #f0f0f0'
-                      }
-                    }}
-                  />
-                  <Close
-                    onClick={clearSearch}
-                    sx={{
-                      color: '#FFF',
-                      position: 'absolute',
-                      right: '40px',
-                      cursor: 'pointer',
-                      transition: '0.3s',
-                      border: '1px solid transparent',
-                      borderRadius: '4px',
-                      display: `${onSearch ? 'unset' : 'none'}`,
-                      '&:hover': {
-                        border: '1px solid #f0f0f0'
-                      }
-                    }}
-                  />
+            />
+            <Close
+              onClick={clearSearch}
+              sx={{
+                color: '#FFF',
+                position: 'absolute',
+                right: '40px',
+                cursor: 'pointer',
+                transition: '0.3s',
+                border: '1px solid transparent',
+                borderRadius: '4px',
+                display: `${onSearch ? 'unset' : 'none'}`,
+                '&:hover': {
+                  border: '1px solid #f0f0f0'
+                }
+              }}
+            />
             <MoreVert
               onClick={(e) => {
                 e.stopPropagation();
@@ -299,6 +289,13 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
         }}
       >
         <Box sx={{ bgcolor: '#22272B', color: 'white', p: 1, borderRadius: 2 }}>
+          <MenuItem
+            key={"#"}
+            onClick={() => filterByUsuario("#")}
+            sx={{ color: '#fff' }}
+          >
+            {"Não atribuídas"}
+          </MenuItem>
           {usuarios.map(user => (
             <MenuItem
               key={user.idUsuario}
@@ -309,6 +306,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
             </MenuItem>
           ))}
         </Box>
+
       </Popover>
       <Popover
         open={Boolean(anchorSearch)}
