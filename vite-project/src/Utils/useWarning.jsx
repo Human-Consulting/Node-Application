@@ -1,23 +1,19 @@
 import { Block, HourglassEmpty } from "@mui/icons-material";
+import { getDiffDias } from "./getInfos";
 
 export const useWarningValidator = (item) => {
     if (!item) return null;
     const comImpedimento = item.comImpedimento;
     const dtFim = item.dtFim;
     const progresso = item.progresso;
-    const hoje = new Date();
-    const final = new Date(dtFim);
-    const diffMs = final - hoje;
-    const diffDias = diffMs / (1000 * 60 * 60 * 24);
+    const diffDias = getDiffDias(dtFim);
 
     let cor, Icon;
 
     if (!comImpedimento && diffDias > 0) return null;
 
-    if (comImpedimento || (diffDias <= 0 && progresso < 100)) {
+    if (comImpedimento || (diffDias < 0 && progresso < 100)) {
         cor = "#ff1744";
-        // cor = "#28a745";
-        // Icon = Check;
         Icon = Block;
     }
     // if (diffDias <= 0 && progresso < 100) {

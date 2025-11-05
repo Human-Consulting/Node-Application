@@ -38,7 +38,6 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
 
   const handleCloseSearch = () => {
     setAnchorSearch(null);
-    // setBuscaTitulo("");
   };
 
   const clearSearch = () => {

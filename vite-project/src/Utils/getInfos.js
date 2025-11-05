@@ -6,16 +6,7 @@ export const getNome = (nome) => {
 }
 
 export const getTempoRestante = (dtFim) => {
-  const hoje = new Date();
-  const dataAlvo = new Date(dtFim);
-
-  hoje.setUTCHours(0, 0, 0, 0);
-  dataAlvo.setUTCHours(0, 0, 0, 0);
-  // hoje.setHours(0, 0, 0, 0);
-  // dataAlvo.setHours(0, 0, 0, 0);
-
-  const diffMs = dataAlvo.getTime() - hoje.getTime();
-  const diffDias = Math.round(diffMs / (1000 * 60 * 60 * 24)) + 1;
+  const diffDias = getDiffDias(dtFim);
 
   if (diffDias < 0) {
     return `-${Math.abs(diffDias)}d`;
@@ -46,3 +37,16 @@ export const getTempoRestante = (dtFim) => {
   const anos = Math.floor(diffDias / 365);
   return `${anos}a`;
 };
+
+export const getDiffDias = (dtFim) => {
+  const hoje = new Date();
+  const dataAlvo = new Date(dtFim);
+  hoje.setHours(0, 0, 0, 0);
+  dataAlvo.setHours(0, 0, 0, 0);
+
+  console.log("hoje: " + hoje.getTime());
+  console.log("dataAlvo: " + dataAlvo.getTime());
+  const diffMs = dataAlvo.getTime() - hoje.getTime();
+
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+}
