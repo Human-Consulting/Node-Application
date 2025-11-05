@@ -4,7 +4,7 @@ import { CheckCircleOutline, ArrowBackIos, ArrowForwardIos } from '@mui/icons-ma
 import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 
-const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
+const ModalTarefas = ({ tarefas = [], open, anchorEl, onClose }) => {
     const navigate = useNavigate();
 
     const id = open ? 'tarefas-popover' : undefined;
@@ -37,10 +37,10 @@ const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
 
     const getCorDia = (dia) => {
         const data = dayjs(`${anoAtual}-${mesAtual + 1}-${dia}`);
-        const tarefasDoDia = tarefas.filter(t => dayjs(t.dtFim).isSame(data, "day"));
+        const tarefasDoDia = tarefas?.filter(t => dayjs(t.dtFim).isSame(data, "day"));
         const hoje = dayjs();
 
-        const temImpedimento = tarefasDoDia.some(t => t.comImpedimento);
+        const temImpedimento = tarefasDoDia?.some(t => t.comImpedimento);
 
         if (!temImpedimento) {
             // if (data.isSame(hoje, 'day') && !temImpedimento) return "#888";
@@ -48,10 +48,7 @@ const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
             return "#007bff";
         }
 
-        const diasRestantes = data.diff(hoje, "day");
-        if (diasRestantes <= 7) return "#d32f2f";
-
-        return "#fbc02d";
+        return "#d32f2f";
     };
 
     const tarefasFiltradas = diaSelecionado
@@ -216,9 +213,9 @@ const ModalTarefas = ({ tarefas, open, anchorEl, onClose }) => {
                         </ListItem>
                     ))
                 ) : (
-                    <Stack alignItems="center" justifyContent="center" sx={{ p: 2, color: "#90caf9" }}>
-                        <CheckCircleOutline sx={{ fontSize: 40, mb: 1 }} />
-                        <Typography variant="body2">Nenhuma tarefa para esse dia!</Typography>
+                    <Stack alignItems="center" justifyContent="center" sx={{ height: '100%', p: 2, color: "#90caf9" }}>
+                        <CheckCircleOutline sx={{ fontSize: 40, mb: 1, border: 'solid #1976d2 3px', borderRadius: '50%' }} />
+                        <Typography variant="body2">Nenhuma tarefa pendente!</Typography>
                     </Stack>
                 )}
             </List>

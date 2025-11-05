@@ -172,7 +172,7 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                                     label="Concluídos" onClick={() => handleClick('concluido')} />
 
                                 <Chip sx={{ backgroundColor: filtroImpedimento ? '#D32F2F' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
-                                    label={`Impedidos ${caosList > 0 && `(${caosList})`}`} onClick={() => handleClick('impedido')} />
+                                    label={`Impedidos ${caosList > 0 ? `(${caosList})` : ''}`} onClick={() => handleClick('impedido')} />
                                 <Chip sx={{ backgroundColor: '#1D1D1D', color: '#fff' }}
                                     label={<Search sx={{ fontSize: '16px' }} />} onClick={handleOpenSearch} />
                             </ChipZone>
