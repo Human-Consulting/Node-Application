@@ -18,6 +18,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -46,9 +47,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -58,8 +61,18 @@ button:focus-visible {
   background-color: #000;
   color: var(--fontLight);
   width: fit-content;
-  padding: 1em;
+  padding: 1rem;
   border-radius: 50px;
+  z-index: 1500;
+
+}
+.swalValidation {
+  background-color: #000;
+  color: var(--fontLight);
+  padding: 1rem;
+  border: solid #F5C2C2 1px;
+  margin-top: 10px;
+  border-radius: 8px;
   z-index: 1500;
 }
 
@@ -68,9 +81,11 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }

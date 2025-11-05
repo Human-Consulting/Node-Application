@@ -1,6 +1,6 @@
 import {styled } from "@mui/material";
 
-export const BoxBody = styled('div')({
+export const BoxBody = styled('div')(({ finalizado }) => ({
     width: '200px',
     height: '175px',
     background: '#1d1d1d',
@@ -11,7 +11,9 @@ export const BoxBody = styled('div')({
     flexShrink: 0,
     position: 'relative',
     cursor: 'pointer',
-});
+    opacity: finalizado ? 0.25 : 1,
+  transition: "opacity 0.3s ease"
+}));
 
 export const StatusCircle = styled('div')({
     display: 'flex',
@@ -22,7 +24,10 @@ export const StatusCircle = styled('div')({
     width: '32px',
     position: 'absolute',
     right: '-22px',
-    top: '-14px'
+    top: '-14px',
+    right: '0',
+    top: '0',
+    zIndex: 6
 
 })
 export const Title = styled('p')({
@@ -41,7 +46,7 @@ export const HeaderCard = styled('div')({
     height: '50%',
     width: '100%',
     backgroundColor: '#1d1d1d',
-    zIndex: '30',
+    zIndex: '5',
     position: 'absolute',
     top: '0%',
     right: '0%',
@@ -66,7 +71,7 @@ export const BodyCard = styled('div')({
 })
 export const ProgressBar = styled('div')({
     height: '10px',
-    width: '100%',
+    width: '70%',
     backgroundColor: '#474747',
     borderRadius: '2px',
     overflow: 'hidden',

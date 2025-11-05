@@ -2,26 +2,46 @@ import { AreaDataBox, Number, Progress, ProgressBar, TextDefault } from './AreaD
 import { Stack, Tooltip } from '@mui/material'
 import { getNome } from "../../Utils/getInfos"
 
-const AreaData = ({ usuario, area, valor, total }) => {
+const AreaData = ({ usuario, total }) => {
+
+  const percentual = total > 0 ? Math.floor((usuario.qtdTarefas / total) * 100) : 0;
 
   return (
     <AreaDataBox>
       <Stack sx={{ flexDirection: 'row', gap: 1, alignItems: 'center' }}>
-        <Tooltip title={usuario} placement="top">
-          <Stack sx={{ width: '25px', height: '25px', backgroundColor: 'white', color: 'black', borderRadius: '100%', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>{getNome(usuario)}</Stack>
+        <Tooltip title={usuario.nome} placement="top">
+          <Stack sx={{
+            width: 25,
+            height: 25,
+            backgroundColor: 'white',
+            color: 'black',
+            borderRadius: '50%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontWeight: 'bold',
+            fontSize: '0.75rem',
+            flexShrink: 0, // evita deformar se o container apertar
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }}>{getNome(usuario.nome)}</Stack>
         </Tooltip>
-        <TextDefault>{area}</TextDefault>
+        <TextDefault>{usuario.area}</TextDefault>
       </Stack>
 
-      <Stack sx={{ justifyContent: 'center' }}><Number>{valor} {valor == 1 ? "tarefa" : "tarefas"}</Number></Stack>
-      <Stack sx={{ flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+      <Stack sx={{ justifyContent: 'center' }}>
+        <TextDefault>{usuario.cargo}</TextDefault>
+        <Number>{usuario.qtdTarefas} {usuario.qtdTarefas == 1 ? "tarefa" : "tarefas"}</Number>
+        </Stack>
+      {/* <Stack sx={{ flexDirection: 'row', alignItems: 'center', gap: 1 }}>
         <ProgressBar>
           <Progress sx={{ width: `${(valor * 100) / total}%` }} />
         </ProgressBar>
         <TextDefault>
-          {total > 0 ? Math.floor((valor * 100) / total) : 0}%
+          {percentual}%
         </TextDefault>
-      </Stack>
+      </Stack> */}
     </AreaDataBox>
   )
 }

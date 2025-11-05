@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { useState } from "react";
-import { postEmpresa, putEmpresa, deleteEmpresa } from '../../Utils/cruds/CrudsEmpresa.jsx';
+import { postEmpresa, putEmpresa, deleteEmpresa } from '../../../Utils/cruds/CrudsEmpresa.jsx';
 import { Box, Button, TextField, Typography, Stack } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import SendIcon from '@mui/icons-material/Send';
@@ -97,9 +97,11 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas }) => {
             nome,
             urlImagem
         }
-        toogleModal();
-        await putEmpresa(modifiedEmpresa, empresa.idEmpresa);
-        await atualizarEmpresas();
+        const response = await putEmpresa(modifiedEmpresa, empresa.idEmpresa);
+        if (response) {
+            toogleModal();
+            await atualizarEmpresas();
+        }
     }
 
     const removerErro = (campo) => {

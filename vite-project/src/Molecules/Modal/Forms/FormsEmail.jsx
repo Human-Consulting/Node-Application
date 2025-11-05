@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, Button, TextField, Stack } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import { Send } from '@mui/icons-material';
-import { getIdUsuario, enviarCodigo } from "../../Utils/Cruds/CrudsUsuario.jsx";
+import { getIdUsuario, enviarCodigo } from "../../../Utils/Cruds/CrudsUsuario.jsx";
 
 const FormsEmail = ({ setCodigo, setEmail, setId, setCodigoValidade, setIsValidTempo }) => {
 

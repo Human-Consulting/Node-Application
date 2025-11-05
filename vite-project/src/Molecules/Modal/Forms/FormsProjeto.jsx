@@ -1,18 +1,32 @@
-import { useState } from "react";
-import { deleteProjeto, postProjeto, putProjeto } from '../../Utils/cruds/CrudsProjeto.jsx';
-import { Box, Button, TextField, Typography, Stack, MenuItem, Grow, Select } from '@mui/material';
+import { useEffect, useState } from "react";
+import { deleteProjeto, postProjeto, putProjeto } from '../../../Utils/cruds/CrudsProjeto.jsx';
+import { Box, Button, TextField, Typography, Stack } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import SendIcon from '@mui/icons-material/Send';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import SelectUsuarios from "../../Modais/SelectUsuarios/SelectUsuarios.jsx";
+import { getUsuariosResponsaveis } from "../../../Utils/cruds/CrudsUsuario.jsx";
 
-const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmpresa }) => {
+const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, fkEmpresa }) => {
+
+    const [usuarios, setUsuarios] = useState([]);
+    const [sizeUsuarios, setSizeUsuarios] = useState(5);
+    const [pagesUsuarios, setTotalPagesUsuarios] = useState(1);
 
     const [titulo, setTitulo] = useState(projeto?.titulo || "");
     const [descricao, setDescricao] = useState(projeto?.descricao || "");
     const [orcamento, setOrcamento] = useState(projeto?.orcamento || "");
-    const [fkResponsavel, setResponsavel] = useState(projeto?.fkResponsavel || '#');
+    const [responsavel, setResponsavel] = useState(projeto?.responsavel || {});
+    const [fkResponsavel, setFkResponsavel] = useState(projeto?.responsavel?.idUsuario || '#');
     const [urlImagem, setUrlImagem] = useState('');
+
+    const buscarUsuarios = async (page = 0, size = 4) => {
+        const usuariosRetornados = await getUsuariosResponsaveis(Number(fkEmpresa), page, size);
+        setUsuarios(usuariosRetornados?.content || []);
+        setSizeUsuarios(usuariosRetornados?.pageSize || 10);
+        setTotalPagesUsuarios(usuariosRetornados?.totalPages || 1);
+    };
 
     const [erros, setErros] = useState({});
 
@@ -97,6 +111,10 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
         });
     };
 
+    useEffect(() => {
+        buscarUsuarios();
+    }, [])
+
     return (
         <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
             <Typography variant="h5" textAlign="center" mb={2}>
@@ -156,7 +174,8 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                 helperText={erros.orcamento}
             />
 
-            <Select
+
+            {/* <Select
                 select
                 label="Responsável"
                 value={fkResponsavel}
@@ -193,7 +212,21 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, usuarios, fkEmp
                         {usuario.nome}
                     </MenuItem>
                 ))}
-            </Select>
+            </Select> */}
+            <SelectUsuarios
+                usuarios={usuarios}
+                sizeUsuarios={sizeUsuarios}
+                pagesUsuarios={pagesUsuarios}
+                atualizarUsuarios={buscarUsuarios}
+                responsavel={responsavel}
+                fkResponsavel={fkResponsavel}
+                onChange={(e) => {
+                    removerErro("fkResponsavel")
+                    setFkResponsavel(e.target.value)
+                }}
+                disabled={usuarioLogado.permissao === 'FUNC'}
+                error={!!erros.fkResponsavel}
+            />
 
             <Button
                 variant="contained"

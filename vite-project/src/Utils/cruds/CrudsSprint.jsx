@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { getUsuario, getUsuarios } from "./CrudsUsuario";
+import { getUsuario } from "./CrudsUsuario";
 import { showSwal } from "../SwalHelper"
 const token = JSON.parse(localStorage.getItem('token'));
 
@@ -28,6 +28,24 @@ export const postSprint = async (newSprint) => {
 export const getSprints = async (idProjeto) => {
     try {
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/buscarPorProjeto/${idProjeto}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await res.json();
+        await getUsuario(JSON.parse(localStorage.getItem('usuario')).idUsuario);
+        return data;
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error);
+        return [];
+    }
+};
+
+export const getSprint = async (idSprint) => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/sprints/${idSprint}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

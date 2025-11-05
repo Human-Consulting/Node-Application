@@ -1,7 +1,7 @@
 import { Popover, Box, TextField, Button, Stack, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
-import { inputStyle } from "../Forms/Forms.styles.jsx";
+import { inputStyle } from "../../Modal/Forms/Forms.styles.jsx";
 import { Send, Restore } from '@mui/icons-material';
-import { putCoresUsuario } from '../../Utils/cruds/CrudsUsuario.jsx';
+import { putCoresUsuario } from '../../../Utils/cruds/CrudsUsuario.jsx';
 import { useState } from 'react';
 
 const ModalCores = ({ color1, setColor1, color2, setColor2, color3, setColor3, animate, setAnimate, open, anchorEl, onClose }) => {

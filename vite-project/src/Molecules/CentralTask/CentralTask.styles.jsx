@@ -7,16 +7,16 @@ export const BackCentral = styled(Box)({
     display: 'flex',
     overflow: 'hidden',
     gap: '1rem',
-    overflow: 'scroll',
-    overflowY: 'hidden',
-    zIndex: 2,
+    overflow: 'hidden',
+    zIndex: 0,
 });
 
 export const DoneContainer = styled(Box)({
-    padding: '1rem',
+    padding: '0.5rem',
     borderRadius: '10px',
     flex: 1,
     height: "fit-content",
+    maxHeight: '100%',
     background: "#101010",
     display: 'flex',
     overflow: 'hidden',
@@ -25,10 +25,10 @@ export const DoneContainer = styled(Box)({
 
 export const BodyTarefa = styled(Box)({
     height: '100%',
-    width: 'calc(100%)',
     overflowY: 'auto',
     maxHeight: '800px',
-    padding: '1rem 0rem',
+    padding: '0.5rem',
+    padding: '1rem',
     gap: '2rem',
     display: 'flex',
     flexDirection: 'column',
@@ -36,7 +36,7 @@ export const BodyTarefa = styled(Box)({
     scrollBehavior: 'smooth',
 
     '&::-webkit-scrollbar': {
-        width: '8px',
+        width: '4px',
     },
     '&::-webkit-scrollbar-track': {
         background: 'transparent',
@@ -48,13 +48,4 @@ export const BodyTarefa = styled(Box)({
     '&::-webkit-scrollbar-thumb:hover': {
         background: '#aaa',
     },
-});
-
-export const NavTask = styled(Box)({
-    height: '50px',
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: 'solid red 1px'
 });

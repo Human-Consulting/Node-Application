@@ -1,6 +1,6 @@
 import { Box, styled } from "@mui/material";
 
-export const TarefaBody = styled(Box)({
+export const TarefaBody = styled(Box)(({ inclui, finalizado }) => ({
     width: '100%',
     display: 'flex',
     fontSize: '14px',
@@ -10,18 +10,22 @@ export const TarefaBody = styled(Box)({
     justifyContent: 'center',
     background: '#22272B',
     borderRadius: '10px',
-});
+    border: `solid ${inclui ? '#FFF' : "transparent"} 3px`,// tempoRestante.includes("-") && tarefa.progresso < 100 ? "#f44336" : 
+    opacity: finalizado ? 0.25 : 1,
+    transition: "opacity 0.3s ease"
+}));
 
 export const ProgressBar = styled('div')({
     height: '10px',
     width: '70%',
+    flex: 1,
     backgroundColor: '#474747',
     borderRadius: '2px',
     overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'start'
-    
+
 })
 
 export const Progress = styled('div')({

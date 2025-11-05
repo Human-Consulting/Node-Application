@@ -14,5 +14,6 @@ export const NavTask = styled(Box)({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
+    padding: '1rem'
 });

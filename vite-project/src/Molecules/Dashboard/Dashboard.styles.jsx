@@ -9,7 +9,8 @@ export const ContainerBack = styled(Box)({
     position: 'relative',
     overflowY: 'hidden',
     display: 'flex',
-    paddingInline: '1.5rem',
+    // paddingInline: '1.5rem',
+    padding: '1.5rem',
 });
 
 export const Title = styled('p')({

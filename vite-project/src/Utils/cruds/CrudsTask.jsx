@@ -123,6 +123,7 @@ export const putImpedimento = async (task, body, idTask) => {
             cancelButtonText: "Voltar",
             customClass: {
                 popup: "swalAlerta",
+                validationMessage: "swalValidation"
             },
             preConfirm: (value) => {
                 if (!value.trim()) {

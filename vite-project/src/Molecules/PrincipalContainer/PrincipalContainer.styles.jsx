@@ -5,29 +5,48 @@ export const PrincipalContainerStyled = styled(Box)({
     flex: 1,
     backgroundColor: '#0D0D0D',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
 });
+
 export const HeaderContent = styled(Box)({
     position: 'relative',
-    width: '100%',
-    height: '400px',
+    height: '300px',
+    height: '30%',
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
-    padding: '2rem 1rem',
+    padding: '1rem',
     justifyContent: 'space-between',
 });
 export const MidleCarrousel = styled(Box)({
     overflowX: 'hidden',
     overflowY: 'auto',
     height: '400px',
-    minHeight: '400px',
+    flex: 1,
+    padding: '1rem 1rem 2rem 1rem',
+    scrollBehavior: 'smooth',
+
+    '&::-webkit-scrollbar': {
+        width: '8px',
+    },
+    '&::-webkit-scrollbar-track': {
+        background: 'transparent',
+    },
+    '&::-webkit-scrollbar-thumb': {
+        background: '#888',
+        borderRadius: '4px',
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+        background: '#aaa',
+    },
+});
+
+export const CardsList = styled(Box)({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
     gap: '3rem',
-    padding: '0rem 2rem 5rem 1rem',
+})
 
-});
 export const InputSearch = styled('input')({
     flex: 1,
     height: '42px',
@@ -55,5 +74,5 @@ export const TituloHeader = styled('h1')({
     fontFamily: "Bebas Neue",
     fontWeight: 400,
     fontSize: '70px',
-    color: '#fff'
+    color: '#fff',
 })

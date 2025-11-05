@@ -1,45 +1,73 @@
+import { Block } from '@mui/icons-material';
 import Chart from 'react-apexcharts';
-import { TextDefault } from './Dashboard.styles';
 
-const RadialChart = ({ progresso }) => {
+const RadialChart = ({ comImpedimento, progresso }) => {
+  const isBlocked = !!comImpedimento;
+
   const options = {
     chart: {
       type: 'radialBar',
       background: 'transparent',
+      sparkline: { enabled: true }
     },
     plotOptions: {
       radialBar: {
         hollow: {
-          size: '80%',
+          size: '70%',
         },
         track: {
           background: '#2E2E38',
         },
         dataLabels: {
-          show: true,
+          show: !isBlocked,
           name: {
-            offsetY: -15,
             color: '#ccc',
-            fontSize: '16px'
+            fontSize: '14px',
+            offsetY: -10,
           },
           value: {
             color: '#00E396',
-            fontSize: '24px',
+            fontSize: '20px',
             fontWeight: 'bold',
-            offsetY: 10
-          }
-        }
-      }
+            offsetY: 10,
+          },
+        },
+      },
     },
-    colors: ['#00E396'],
+    colors: [isBlocked ? '#FF1744' : '#00E396'],
     labels: ['Progresso'],
   };
 
-  const series = [progresso || 0];
+  const series = [isBlocked ? 100 : (progresso || 0)];
 
   return (
-    <div style={{width: '50%'}}>
-      <Chart options={options} series={series} type="radialBar" height={150} />
+    <div
+      style={{
+        width: '120px',
+        height: '120px',
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Chart
+        options={options}
+        series={series}
+        type="radialBar"
+        height={150}
+        width={150}
+      />
+
+      {isBlocked && (
+        <Block
+          sx={{
+            color: '#FF1744',
+            fontSize: 80,
+            position: 'absolute',
+          }}
+        />
+      )}
     </div>
   );
 };

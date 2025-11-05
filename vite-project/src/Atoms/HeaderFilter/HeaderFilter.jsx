@@ -1,16 +1,18 @@
-import { Block, AllInclusive, CheckCircle, HourglassEmpty, EmojiPeople, Search } from '@mui/icons-material';
+import { Block, AllInclusive, CheckCircle, HourglassEmpty, EmojiPeople, Search, Close } from '@mui/icons-material';
 import { Box, Grow, MenuItem, Select, Stack, Popover, TextField, Tooltip } from '@mui/material';
 import { NavTask } from './HeaderFilter.styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getNome } from '../../Utils/getInfos';
 
-const HeaderFilter = ({ tarefaData, titulo, setTarefasFiltradas, usuarios }) => {
-  const [selected, setSelected] = useState('TODOS');
+const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, usuarios, idProjeto }) => {
   const [usuarioFiltrado, setUsuarioFiltrado] = useState(null);
   const [buscaTitulo, setBuscaTitulo] = useState("");
 
   const [anchorUser, setAnchorUser] = useState(null);
   const [anchorSearch, setAnchorSearch] = useState(null);
+  const [onSearch, setOnSearch] = useState(false);
+
+  // const usuariosProjeto = usuarios.filter(projeto => projeto.idProjeto == idProjeto).usuarios;
 
   const statusOptions = [
     { value: 'TODOS', icon: <AllInclusive />, label: 'Todos' },
@@ -19,15 +21,14 @@ const HeaderFilter = ({ tarefaData, titulo, setTarefasFiltradas, usuarios }) => 
 
   const filterTarefas = (status) => {
     setUsuarioFiltrado(null);
-    setSelected(status);
 
     switch (status) {
       case 'IMPEDIDOS':
         setTarefasFiltradas(tarefaData.filter((tarefa) => tarefa.comImpedimento === true));
         break;
 
-      default:
-        setTarefasFiltradas(tarefaData);
+      case 'TODOS':
+        setTarefasFiltradas(todasTarefas);
         break;
     }
   };
@@ -42,11 +43,12 @@ const HeaderFilter = ({ tarefaData, titulo, setTarefasFiltradas, usuarios }) => 
 
   const handleOpenSearch = (event) => {
     setAnchorSearch(event.currentTarget);
+    setOnSearch(true);
   };
 
   const handleCloseSearch = () => {
     setAnchorSearch(null);
-    setBuscaTitulo("");
+    // setBuscaTitulo("");
   };
 
   const filterByUsuario = (usuario) => {
@@ -54,6 +56,19 @@ const HeaderFilter = ({ tarefaData, titulo, setTarefasFiltradas, usuarios }) => 
     setTarefasFiltradas(tarefaData.filter(t => t.responsavel.idUsuario === usuario.idUsuario));
     handleCloseUserFilter();
   };
+
+  useEffect(() => {
+    setTarefasFiltradas(
+      tarefaData.filter(t =>
+        t.titulo.toLowerCase().includes(buscaTitulo.toLowerCase())
+      )
+    );
+  }, [buscaTitulo]);
+
+  const clearSearch = () => {
+    setTarefasFiltradas(todasTarefas);
+    setOnSearch(false);
+  }
 
   return (
     <NavTask>
@@ -75,7 +90,9 @@ const HeaderFilter = ({ tarefaData, titulo, setTarefasFiltradas, usuarios }) => 
         sx={{
           position: 'absolute',
           left: '10px',
-          width: "fit-content"
+          width: 'fit-content',
+          border: 'none'
+
         }}
         MenuProps={{
           TransitionComponent: Grow,
@@ -111,11 +128,27 @@ const HeaderFilter = ({ tarefaData, titulo, setTarefasFiltradas, usuarios }) => 
         sx={{
           color: '#FFF',
           position: 'absolute',
+          right: `${onSearch ? '40px' : '10px'}`,
+          cursor: 'pointer',
+          transition: '0.3s',
+          border: '1px solid transparent',
+          borderRadius: '4px',
+          '&:hover': {
+            border: '1px solid #f0f0f0'
+          }
+        }}
+      />
+      <Close
+        onClick={clearSearch}
+        sx={{
+          color: '#FFF',
+          position: 'absolute',
           right: '10px',
           cursor: 'pointer',
           transition: '0.3s',
           border: '1px solid transparent',
           borderRadius: '4px',
+          display: `${onSearch ? 'unset' : 'none'}`,
           '&:hover': {
             border: '1px solid #f0f0f0'
           }

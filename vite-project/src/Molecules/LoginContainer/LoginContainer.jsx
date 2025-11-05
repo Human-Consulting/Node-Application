@@ -4,10 +4,10 @@ import { Container, LoginTitulo } from '../ContainerBoard/ContainerBoard.styles'
 import { ContainerFrase, IconeSample } from './LoginContainer.styles'
 import { Stack } from '@mui/material'
 import Modal from "../../Molecules/Modal/Modal.jsx";
-import FormsEmail from '../../Molecules/Forms/FormsEmail.jsx';
-import FormsEsqueciASenha from '../../Molecules/Forms/FormsEsqueciASenha.jsx';
-import FormsCodigo from '../../Molecules/Forms/FormsCodigo.jsx';
-import { useEffect, useState } from "react";
+import FormsEmail from '../../Molecules/Modal/Forms/FormsEmail.jsx';
+import FormsEsqueciASenha from '../../Molecules/Modal/Forms/FormsEsqueciASenha.jsx';
+import FormsCodigo from '../../Molecules/Modal/Forms/FormsCodigo.jsx';
+import { useState } from "react";
 
 export default function LoginContainer() {
 

@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 
-export const BoxBody = styled('div')({
+export const BoxBody = styled('div')(({ inclui, finalizado }) => ({
     width: '100%',
     minWidth: '250px',
     maxWidth: '400px',
@@ -14,7 +14,11 @@ export const BoxBody = styled('div')({
     position: 'relative',
     marginTop: '1rem',
     cursor: 'pointer',
-});
+    border: `solid ${inclui ? 'white' : 'transparent'} 2px`,
+    opacity: finalizado ? 0.25 : 1,
+    transition: "opacity 0.3s ease"
+
+}));
 
 export const StatusCircle = styled('div')({
     display: 'flex',
@@ -25,7 +29,10 @@ export const StatusCircle = styled('div')({
     width: '42px',
     position: 'absolute',
     right: '-34px',
-    top: '-14px'
+    top: '-14px',
+    right: '0',
+    top: '0',
+    zIndex: 10
 })
 export const Title = styled('p')({
     fontWeight: 500,
@@ -50,7 +57,7 @@ export const HeaderCard = styled('div')({
     height: '50%',
     width: '100%',
     backgroundColor: '#1d1d1d',
-    zIndex: '30',
+    zIndex: '6',
     borderRadius: '10px 10px 0px 0px',
     overflow: 'hidden',
     backgroundSize: 'cover'
@@ -75,7 +82,7 @@ export const ProgressBar = styled('div')({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'start'
-    
+
 })
 
 export const Progress = styled('div')({
@@ -83,6 +90,5 @@ export const Progress = styled('div')({
     backgroundColor: '#36518c',
     borderRadius: '2px',
 })
-      
-      
-      
+
+

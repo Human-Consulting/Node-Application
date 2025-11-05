@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { useState } from "react";
-import { postSala, putSala, deleteSala } from '../../Utils/cruds/CrudsSala.jsx';
+import { postSala, putSala, deleteSala } from '../../../Utils/cruds/CrudsSala.jsx';
 import { Box, Button, TextField, Typography, Stack } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import { Send, AttachFile, Logout } from '@mui/icons-material';
@@ -33,11 +33,9 @@ const FormsSala = ({ sala, toogleModal, usuarios, atualizarSalas }) => {
         const novosErros = {};
 
         if (!nome.trim()) novosErros.nome = "Nome é obrigatório";
-
         if (novosParticipantes.length < 1) novosErros.novosParticipantes = "Necessários participantes"
-
         setErros(novosErros);
-        return Object.keys(novosErros).length === 0;
+        return Object.keys(novosErros).length > 0;
     };
 
     const handlePostSala = async () => {

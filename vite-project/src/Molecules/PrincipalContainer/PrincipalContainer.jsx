@@ -1,23 +1,22 @@
-import { HeaderContent, MidleCarrousel, PrincipalContainerStyled, TituloHeader } from './PrincipalContainer.styles'
-import { Stack, TextField, Button, Badge, Avatar, Tooltip } from '@mui/material'
+import { HeaderContent, MidleCarrousel, PrincipalContainerStyled, TituloHeader, CardsList } from './PrincipalContainer.styles'
 import ProjectsCard from '../ProjectsCard/ProjectsCard'
 import { useEffect, useState } from 'react';
 import Modal from '../Modal/Modal'
-import ModalTarefas from '../ModalTarefas/ModalTarefas'
-import FormsProjeto from './../Forms/FormsProjeto.jsx';
-import FormsEmpresa from './../Forms/FormsEmpresa.jsx';
+import ModalTarefas from '../Modais/ModalTarefas/ModalTarefas.jsx'
+import FormsProjeto from '../Modal/Forms/FormsProjeto.jsx';
+import FormsEmpresa from '../Modal/Forms/FormsEmpresa.jsx';
 import { useNavigate, useParams } from 'react-router';
-import { ArrowCircleLeftOutlined, Assignment, Construction, ColorLens, Search } from '@mui/icons-material';
-import ModalCores from '../ModalCores/ModalCores.jsx';
+import { Stack, TextField, Button, Badge, Avatar, Tooltip, Pagination } from '@mui/material'
+import { ArrowCircleLeftOutlined, Construction, ColorLens, Search, CalendarMonth } from '@mui/icons-material';
+import ModalCores from '../Modais/ModalCores/ModalCores.jsx';
 import Shader from '../Shader/Shader.jsx';
 import { getNome } from '../../Utils/getInfos';
 
-const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setColor3, animate, setAnimate, toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, empresas, usuarios, telaAtual }) => {
+const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setColor3, animate, setAnimate, toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, pagesProjetos, empresas, pagesEmpresas, usuarios, telaAtual }) => {
 
   const navigate = useNavigate();
 
   const { nomeEmpresa, idEmpresa } = useParams();
-
 
   const [showModal, setShowModal] = useState(false);
   const [projeto, setProjeto] = useState('');
@@ -25,40 +24,36 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
   const [acao, setAcao] = useState('');
   const [listaFiltrada, setListaFiltrada] = useState([]);
 
+  const [totalPages, setTotalPages] = useState((nomeEmpresa == 'Empresas' ? pagesEmpresas : pagesProjetos) || 0);
+
+  const [page, setPage] = useState(0);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
   if (!usuarioLogado.permissao.includes("CONSULTOR") && (nomeEmpresa != usuarioLogado.nomeEmpresa)) navigate(-1);
 
-  const filtrar = (texto) => {
+  const filtrar = async (texto) => {
     if (texto !== '') {
       const textoLower = texto.toLowerCase();
-      let lista = [];
 
-      if (nomeEmpresa != "Empresas") {
-        lista = projetos.filter(projeto => {
-          const palavras = (projeto.descricao ?? '').toLowerCase().split(' ');
-          return palavras.some(palavra => palavra.startsWith(textoLower));
-        });
-
-      } else {
-        lista = empresas.filter(empresa => {
-          const palavras = (empresa.nome ?? '').toLowerCase().split(' ');
-          return palavras.some(palavra => palavra.startsWith(textoLower));
-        });
-      }
-      setListaFiltrada(lista);
+      if (nomeEmpresa != "Empresas") await atualizarProjetos(0, textoLower);
+      else await atualizarEmpresas(0, textoLower);
 
     } else {
-      setListaFiltrada(npmeEmpresa == "Empresas" ? empresas : projetos);
+      if (nomeEmpresa != "Empresas") await atualizarProjetos(0);
+      else await atualizarEmpresas(0);
     }
   }
 
   useEffect(() => {
     toogleLateralBar();
     telaAtual();
-    // setListaFiltrada(idEmpresa == 1 && empresas.length > 1 ? empresas.slice(1) : projetos);
     setListaFiltrada(nomeEmpresa == "Empresas" && empresas.length > 0 ? empresas : projetos);
-  }, [projetos, empresas, idEmpresa, nomeEmpresa]);
+    console.log(projetos);
+  }, [projetos, empresas, idEmpresa, nomeEmpresa, pagesEmpresas, pagesProjetos]);
+
+  useEffect(() => {
+    nomeEmpresa == 'Empresas' ? atualizarEmpresas(page) : atualizarProjetos(page);
+  }, [page])
 
   const toogleModal = (entidade, acao) => {
     setAcao(acao);
@@ -96,7 +91,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
   return (
     <PrincipalContainerStyled>
       <HeaderContent>
-        <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={5} />
+        <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={1} />
         <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6', alignItems: 'center' }}>
           <Avatar
             sx={{
@@ -150,32 +145,31 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
                 }
               }
             }} />
-          {
-            !usuarioLogado.permissao.includes('CONSULTOR') ?
-              <Tooltip title="Tarefas abertas em seu nome.">
-                <Badge onClick={handleBadgeClickTarefa}
-                  sx={{
-                    '& .MuiBadge-badge': {
-                      fontSize: '1.25rem',
-                      height: '26px',
-                      width: '26px',
-                      cursor: 'pointer'
-                    }
-                  }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
-                  <Assignment sx={{ fontSize: 32, cursor: 'pointer' }} />
-                </Badge>
-              </Tooltip>
-              : nomeEmpresa == "Empresas" ?
-                <Button onClick={() => toogleModal(null, 'empresa')}
-                  variant="contained">
-                  CRIAR EMPRESA
-                </Button>
-                :
-                <Button onClick={() => toogleModal(null, 'projeto')}
-                  variant="contained">
-                  CRIAR PROJETO
-                </Button>
+          {usuarioLogado.permissao.includes('CONSULTOR') &
+            nomeEmpresa == "Empresas" ?
+            <Button onClick={() => toogleModal(null, 'empresa')}
+              variant="contained">
+              CRIAR EMPRESA
+            </Button>
+            :
+            <Button onClick={() => toogleModal(null, 'projeto')}
+              variant="contained">
+              CRIAR PROJETO
+            </Button>
           }
+          <Tooltip title="Tarefas abertas em seu nome.">
+            <Badge onClick={handleBadgeClickTarefa}
+              sx={{
+                '& .MuiBadge-badge': {
+                  fontSize: '1.25rem',
+                  height: '26px',
+                  width: '26px',
+                  cursor: 'pointer'
+                }
+              }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
+              <CalendarMonth sx={{ fontSize: 32, cursor: 'pointer' }} />
+            </Badge>
+          </Tooltip>
           <Tooltip title="Editar cor de fundo.">
             <ColorLens onClick={handleBadgeClickCores}
               sx={{
@@ -184,36 +178,51 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
                 cursor: 'pointer'
               }} />
           </Tooltip>
-
         </Stack>
-        <TituloHeader>{nomeEmpresa != "Empresas" && usuarioLogado.permissao.includes('CONSULTOR') ? <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px' }} onClick={handleOpenEmpresas} /> : null} {nomeEmpresa == "Empresas" ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}</TituloHeader>
+        <TituloHeader>{nomeEmpresa != "Empresas" && usuarioLogado.permissao.includes('CONSULTOR') ?
+          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenEmpresas} /> : null}
+          {nomeEmpresa == "Empresas" ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}
+        </TituloHeader>
       </HeaderContent>
       <MidleCarrousel>
-        {listaFiltrada?.length > 0 ? (
-          listaFiltrada.map(item => (
-            <ProjectsCard
-              key={item.id}
-              item={item}
-              toogleModal={toogleModal}
-              atualizarProjetos={atualizarProjetos}
-              atualizarEmpresas={atualizarEmpresas}
-            />
-          ))
-        ) : (!usuarioLogado.permissao.includes('CONSULTOR')) && (
-          <Stack sx={{ justifyContent: 'center', alignItems: 'center', marginTop: '2rem', width: '350%' }}>
-            <Construction sx={{ fontSize: '5rem' }} />
-            Nenhum projeto encontrado!
-          </Stack>
-        )}
+        <CardsList>
+          {listaFiltrada?.length > 0 ? (
+            listaFiltrada.map(item => (
+              <ProjectsCard
+                key={item.id}
+                item={item}
+                toogleModal={toogleModal}
+              />
+            ))
+          ) : (!usuarioLogado.permissao.includes('CONSULTOR')) && (
+            <Stack sx={{ justifyContent: 'center', alignItems: 'center', marginTop: '2rem', width: '350%' }}>
+              <Construction sx={{ fontSize: '5rem' }} />
+              Nenhum projeto encontrado!
+            </Stack>
+          )}
+          {usuarioLogado.permissao.includes('CONSULTOR') ?
+            <ProjectsCard toogleModal={toogleModal} ></ProjectsCard>
+            : null}
+        </CardsList>
 
-        {usuarioLogado.permissao.includes('CONSULTOR') ?
-          <ProjectsCard toogleModal={toogleModal} ></ProjectsCard>
-          : null}
+        <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ marginTop: '2rem' }}>
+          <Pagination
+            count={totalPages}
+            page={page + 1}
+            onChange={(e, value) => setPage(value - 1)}
+            color="primary"
+            siblingCount={1}
+            boundaryCount={1}
+            sx={{ "& .MuiPaginationItem-root": { color: "#fff" } }}
+          />
+        </Stack>
       </MidleCarrousel>
+
       <Modal
         showModal={showModal}
         fechar={toogleModal}
-        form={acao == 'projeto' ? <FormsProjeto projeto={projeto} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} usuarios={usuarios} fkEmpresa={idEmpresa} />
+        entidade={acao == 'projeto' ? projeto : empresa}
+        form={acao == 'projeto' ? <FormsProjeto projeto={projeto} toogleModal={toogleModal} atualizarProjetos={atualizarProjetos} fkEmpresa={idEmpresa} />
           :
           <FormsEmpresa empresa={empresa} toogleModal={toogleModal} atualizarEmpresas={atualizarEmpresas} />}
       >
@@ -242,4 +251,4 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
   )
 }
 
-export default PrincipalContainer
+export default PrincipalContainer;

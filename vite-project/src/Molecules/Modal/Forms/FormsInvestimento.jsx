@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { postInvestimento, putInvestimento } from '../../Utils/cruds/CrudsInvestimento.jsx';
+import { postInvestimento, putInvestimento } from '../../../Utils/cruds/CrudsInvestimento.jsx';
 import { Box, Button, TextField, Typography, Stack } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import SendIcon from '@mui/icons-material/Send';

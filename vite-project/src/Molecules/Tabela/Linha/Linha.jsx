@@ -1,5 +1,5 @@
 import "./Linha.css"
-import { deleteUsuario } from "../../Utils/cruds/CrudsUsuario"
+import { deleteUsuario } from "../../../Utils/cruds/CrudsUsuario"
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from "react-router";
@@ -41,11 +41,8 @@ const Linha = ({ usuario, toogleModal, atualizarUsuarios }) => {
             <td>{usuario.email}</td>
             <td>{usuario.area}</td>
             <td>{usuario.cargo}</td>
-            {idEmpresa == 1 ? null :
-                <>
-                    <td>{usuario.qtdTarefas}</td>
-                    <td>{usuario.comImpedimento ? "Sim" : "Não"}</td>
-                </>}
+            {/* <td>{usuario.qtdTarefas}</td> */}
+            {/* <td>{usuario.comImpedimento ? "Sim" : "Não"}</td> */}
             <td className="tdActions">
                 <button onClick={handleEditar} disabled={!temPermissaoPut}>
                     <EditIcon />

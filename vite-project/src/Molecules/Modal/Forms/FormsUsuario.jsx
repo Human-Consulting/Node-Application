@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { postUsuario, putUsuario } from '../../Utils/cruds/CrudsUsuario.jsx';
+import { postUsuario, putUsuario } from '../../../Utils/cruds/CrudsUsuario.jsx';
 import { useParams } from "react-router";
 import { Box, Button, TextField, Typography, Stack, MenuItem, Grow, Select } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
@@ -7,13 +7,14 @@ import SendIcon from '@mui/icons-material/Send';
 
 const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsuarios, editarSenhaUsuario }) => {
 
-    const { idEmpresa } = useParams();
+    const { idEmpresa, nomeEmpresa } = useParams();
 
     const [nome, setNome] = useState(usuario?.nome || '');
     const [email, setEmail] = useState(usuario?.email || '');
     const [cargo, setCargo] = useState(usuario?.cargo || '');
     const [area, setArea] = useState(usuario?.area || '');
     const [permissao, setPermissao] = useState(usuario?.permissao || "#");
+    console.log(usuario);
 
     const [erros, setErros] = useState({});
 
@@ -50,14 +51,38 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
         }
     }
 
+    // const mostrarPermissaoSelect = (
+    //     (usuario == null && usuarioLogado.permissao != 'FUNC') ||
+    //     (usuario != null && (
+    //         usuarioLogado.permissao.includes('DIRETOR') ||
+    //         usuarioLogado.permissao.includes('CONSULTOR') ||
+    //         (usuarioLogado.permissao === 'GESTOR' && ['GESTOR', 'FUNC'].includes(usuario.permissao))
+    //     ))
+    // )// && usuario?.permissao !== 'DIRETOR';
     const mostrarPermissaoSelect = (
-        (usuario == null && usuarioLogado.permissao != 'FUNC') ||
-        (usuario != null && (
-            usuarioLogado.permissao.includes('DIRETOR') ||
-            usuarioLogado.permissao.includes('CONSULTOR') ||
-            (usuarioLogado.permissao === 'GESTOR' && ['GESTOR', 'FUNC'].includes(usuario.permissao))
-        ))
-    ) && usuario?.permissao !== 'DIRETOR';
+        // Se está criando um novo usuário (usuario == null)
+        (usuario == null && usuarioLogado.permissao !== 'FUNC') ||
+
+        // Se está editando um usuário existente
+        (usuario != null && (() => {
+            const perm = usuarioLogado.permissao;
+            const target = usuario.permissao;
+
+            if (perm.includes('DIRETOR'))
+                return !target.includes('DIRETOR'); // diretor não pode mexer em outro diretor
+
+            if (perm.includes('CONSULTOR_DIRETOR'))
+                return ['GESTOR', 'CONSULTOR', 'FUNC'].includes(target);
+
+            if (perm.includes('CONSULTOR'))
+                return true; // consultor pode tudo
+
+            if (perm === 'GESTOR')
+                return ['GESTOR', 'FUNC'].includes(target);
+
+            return false;
+        })())
+    );
 
     const handleEditarSenhaUsuario = () => {
         editarSenhaUsuario(usuario.idUsuario);
@@ -193,27 +218,29 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                             <MenuItem key="#" value="#">
                                 Selecione a permissão
                             </MenuItem>
-                            {usuarioLogado.permissao.includes('CONSULTOR') ? (
+                            {usuarioLogado.permissao.includes('CONSULTOR') && (
                                 [
-                                    <MenuItem key="CONSULTOR_DIRETOR" value="CONSULTOR_DIRETOR">Diretor</MenuItem>,
-                                    <MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>
+                                    !diretor && ([
+                                        <MenuItem key="CONSULTOR_DIRETOR" value="CONSULTOR_DIRETOR">Diretor</MenuItem>
+                                    ]),
+                                        <MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>
+                                ]
+                            )}
+                            {qtdUsuarios > 0 && diretor ? (
+                                [
+                                    <MenuItem key="GESTOR" value="GESTOR">Gestor</MenuItem>,
+                                    <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
+                                ]
+                            ) : !diretor ? (
+                                [
+                                    // <MenuItem key="DIRETOR" value="DIRETOR">DiretorOi</MenuItem>,
+                                    <MenuItem key="GESTOR" value="GESTOR">Gestor</MenuItem>,
+                                    <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
                                 ]
                             ) : (
-                                qtdUsuarios >= 1 && diretor ? (
-                                    [
-                                        <MenuItem key="GESTOR" value="GESTOR">Gestão</MenuItem>,
-                                        <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
-                                    ]
-                                ) : qtdUsuarios >= 1 && !diretor ? (
-                                    [
-                                        <MenuItem key="DIRETOR" value="DIRETOR">Diretor</MenuItem>,
-                                        <MenuItem key="GESTOR" value="GESTOR">Gestão</MenuItem>,
-                                        <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
-                                    ]
-                                ) : (
-                                    <MenuItem key="DIRETOR" value="DIRETOR">Diretor</MenuItem>
-                                )
-                            )}
+                                <MenuItem key="DIRETOR" value="DIRETOR">Diretoroi</MenuItem>
+                            )
+                            }
                         </Select>
                     )}
                 </>
