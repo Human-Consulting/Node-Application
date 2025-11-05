@@ -29,7 +29,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
   const [page, setPage] = useState(0);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
-  if (!usuarioLogado.permissao.includes("CONSULTOR") && (nomeEmpresa != usuarioLogado.nomeEmpresa)) navigate(-1);
+  if (!usuarioLogado?.permissao?.includes("CONSULTOR") && (nomeEmpresa != usuarioLogado?.nomeEmpresa)) navigate(-1);
 
   const filtrar = async (texto) => {
     if (texto !== '') {
@@ -145,7 +145,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
                 }
               }
             }} />
-          {usuarioLogado.permissao.includes('CONSULTOR') &
+          {usuarioLogado?.permissao?.includes('CONSULTOR') &
             nomeEmpresa == "Empresas" ?
             <Button onClick={() => toogleModal(null, 'empresa')}
               variant="contained">
@@ -179,7 +179,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
               }} />
           </Tooltip>
         </Stack>
-        <TituloHeader>{nomeEmpresa != "Empresas" && usuarioLogado.permissao.includes('CONSULTOR') ?
+        <TituloHeader>{nomeEmpresa != "Empresas" && usuarioLogado?.permissao?.includes('CONSULTOR') ?
           <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenEmpresas} /> : null}
           {nomeEmpresa == "Empresas" ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}
         </TituloHeader>
@@ -194,13 +194,13 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
                 toogleModal={toogleModal}
               />
             ))
-          ) : (!usuarioLogado.permissao.includes('CONSULTOR')) && (
+          ) : (!usuarioLogado?.permissao?.includes('CONSULTOR')) && (
             <Stack sx={{ justifyContent: 'center', alignItems: 'center', marginTop: '2rem', width: '350%' }}>
               <Construction sx={{ fontSize: '5rem' }} />
               Nenhum projeto encontrado!
             </Stack>
           )}
-          {usuarioLogado.permissao.includes('CONSULTOR') ?
+          {usuarioLogado?.permissao?.includes('CONSULTOR') ?
             <ProjectsCard toogleModal={toogleModal} ></ProjectsCard>
             : null}
         </CardsList>
