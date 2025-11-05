@@ -1,4 +1,5 @@
 export const getNome = (nome) => {
+  if (!nome) return "??";
   const partes = nome.split(" ");
   const primeiraLetraPrimeiroNome = partes[0][0];
   const primeiraLetraUltimoNome = partes[partes.length - 1][0];
@@ -44,8 +45,6 @@ export const getDiffDias = (dtFim) => {
   hoje.setHours(0, 0, 0, 0);
   dataAlvo.setHours(0, 0, 0, 0);
 
-  console.log("hoje: " + hoje.getTime());
-  console.log("dataAlvo: " + dataAlvo.getTime());
   const diffMs = dataAlvo.getTime() - hoje.getTime();
 
   return Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;

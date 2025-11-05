@@ -27,10 +27,10 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         const novosErros = {};
 
         if (!titulo.trim()) novosErros.titulo = "Título é obrigatório";
-        if (!descricao.trim()) novosErros.descricao = "Descrição é obrigatória";
+        // if (!descricao.trim()) novosErros.descricao = "Descrição é obrigatória";
         if (!dtInicio.trim()) novosErros.dtInicio = "Data de início é obrigatória";
         if (!dtFim.trim()) novosErros.dtFim = "Data de finalização é obrigatória";
-        if (!fkResponsavel || fkResponsavel == '#') novosErros.fkResponsavel = "Responsável é obrigatório";
+        // if (!fkResponsavel || fkResponsavel == '#') novosErros.fkResponsavel = "Responsável é obrigatório";
 
         if (dtInicio && dtFim) {
             const inicio = new Date(dtInicio);
@@ -61,8 +61,12 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     const handlePostTask = async () => {
         if (!validarCampos()) return;
         setErros({});
+        let newFkResponsavel;
 
-        const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, comentario, fkResponsavel, checkpoints, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
+        if (fkResponsavel == "#") newFkResponsavel = null;
+        else newFkResponsavel = fkResponsavel;
+
+        const newTask = { fkSprint: idSprint, titulo, descricao, dtInicio, dtFim, comentario, fkResponsavel: newFkResponsavel, checkpoints, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         const response = await postTask(newTask);
         if (response) {
             toogleModal();
@@ -96,6 +100,10 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
     const handlePutTask = async () => {
         if (!validarCampos()) return;
         setErros({});
+        let newFkResponsavel;
+
+        if (fkResponsavel == "#") newFkResponsavel = null;
+        else newFkResponsavel = fkResponsavel;
 
         const modifiedTask = {
             idEditor: usuarioLogado.idUsuario,
@@ -106,13 +114,15 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
             dtFim,
             comImpedimento,
             comentario,
-            fkResponsavel,
+            fkResponsavel: newFkResponsavel,
             checkpoints
         };
-        await putTask(modifiedTask, task.idTarefa);
-        toogleModal();
-        atualizarSprints();
-        atualizarProjetos();
+        const response = await putTask(modifiedTask, task.idTarefa);
+        if (response) {
+            toogleModal();
+            atualizarSprints();
+            atualizarProjetos();
+        }
     };
 
     const handleDeleteTask = async () => {
@@ -241,7 +251,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         }}
                         disabled={usuarioLogado.permissao === 'FUNC'}
                         error={!!erros.fkResponsavel}
-                         />
+                    />
                 </Box>
                 <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="start" gap={2} flex='1' maxHeight="100%" >
 
@@ -314,7 +324,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                     <TextField
                         label="Comentário"
                         multiline
-                        disabled={task && usuarioLogado.idUsuario !== task.responsavel.idUsuario}
+                        disabled={task && usuarioLogado.idUsuario !== fkResponsavel}
                         rows={4.5}
                         value={comentario}
                         onChange={(e) => setComentario(e.target.value)}
@@ -335,12 +345,12 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                 <>
                     <Stack direction="row" spacing={2} justifyContent="center">
 
-                        {usuarioLogado.idUsuario == task.responsavel.idUsuario && task.progresso < 100 ?
+                        {usuarioLogado.idUsuario == fkResponsavel && task.progresso < 100 ?
                             <Button fullWidth variant='outlined' color={comImpedimento ? 'error' : 'success'} onClick={(e) => {
                                 e.stopPropagation(); handleImpedimentoTask()
                             }}>
                                 {comImpedimento ? 'Remover Impedimento' : 'Acionar Impedimento'}</Button>
-                            : usuarioLogado.idUsuario == task.responsavel.idUsuario && task.progresso == 100 ?
+                            : usuarioLogado.idUsuario == fkResponsavel && task.progresso == 100 ?
                                 <Button fullWidth variant='outlined' color={'info'} onClick={(e) => e.stopPropagation()}>TAREFA FINALIZADA</Button>
                                 : null}
                         {usuarioLogado.permissao == 'FUNC' ? null :
@@ -348,7 +358,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                                 <DeleteIcon />
                             </Button>
                         }
-                        {usuarioLogado.idUsuario == task.responsavel.idUsuario ?
+                        {usuarioLogado.idUsuario == fkResponsavel ?
                             <Button sx={{ flex: 1 }} variant="contained" color="primary" onClick={handlePutTask}>
                                 <SendIcon />
                             </Button>

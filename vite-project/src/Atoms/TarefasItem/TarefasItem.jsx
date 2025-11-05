@@ -30,11 +30,11 @@ const TarefasItem = ({ tarefa, toogleModal }) => {
   const dtFim = new Date(tarefa.dtFim);
 
   return (
-    <TarefaBody inclui={tarefa.responsavel.idUsuario == usuarioLogado.idUsuario} finalizado={tarefa.progresso == 100}>
+    <TarefaBody inclui={tarefa?.responsavel?.idUsuario == usuarioLogado.idUsuario} finalizado={tarefa.progresso == 100}>
       <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
         <Stack sx={{ flexDirection: 'row', gap: '10px', justifyContent: 'center', alignItems: 'center' }}>
-          <Tooltip title={tarefa.responsavel.nome} placement="top">
-            <Stack sx={{ width: '25px', height: '25px', backgroundColor: 'white', color: 'black', borderRadius: '100%', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>{getNome(tarefa.responsavel.nome)}</Stack>
+          <Tooltip title={tarefa?.responsavel?.nome} placement="top">
+            <Stack sx={{ width: '25px', height: '25px', backgroundColor: 'white', color: 'black', borderRadius: '100%', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>{getNome(tarefa?.responsavel?.nome)}</Stack>
           </Tooltip>
           <span style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', 'margin': 0, maxWidth: '200px' }}>{tarefa.titulo}</span>
         </Stack>
