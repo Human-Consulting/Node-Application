@@ -9,6 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import SelectUsuarios from "../../Modais/SelectUsuarios/SelectUsuarios.jsx";
+import dayjs from "dayjs";
 
 const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, sizeUsuarios, pagesUsuarios, atualizarUsuarios, idSprint, dtInicioSprint, dtFimSprint }) => {
     const [titulo, setTitulo] = useState(task?.titulo || "");
@@ -27,10 +28,8 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         const novosErros = {};
 
         if (!titulo.trim()) novosErros.titulo = "Título é obrigatório";
-        // if (!descricao.trim()) novosErros.descricao = "Descrição é obrigatória";
         if (!dtInicio.trim()) novosErros.dtInicio = "Data de início é obrigatória";
         if (!dtFim.trim()) novosErros.dtFim = "Data de finalização é obrigatória";
-        // if (!fkResponsavel || fkResponsavel == '#') novosErros.fkResponsavel = "Responsável é obrigatório";
 
         if (dtInicio && dtFim) {
             const inicio = new Date(dtInicio);
@@ -43,11 +42,11 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
             }
 
             if (inicio < inicioSprint) {
-                novosErros.dtInicio = `Data de início deve ser após o início da sprint (${dtInicioSprint})`;
+                novosErros.dtInicio = `Data de início deve ser após o início da sprint (${dayjs(dtInicioSprint).format("DD/MM/YYYY")})`;
             }
 
             if (fim > fimSprint) {
-                novosErros.dtFim = `Data de finalização deve ser antes do fim da sprint (${dtFimSprint})`;
+                novosErros.dtFim = `Data de finalização deve ser antes do fim da sprint (${dayjs(dtFimSprint).format("DD/MM/YYYY")})`;
             }
         }
 
@@ -280,6 +279,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                                         onChange={() => handleToggleCheckbox(cb.idCheckpoint)}
                                         icon={<CheckCircleOutlinedIcon />}
                                         checkedIcon={<CheckCircleIcon />}
+                                        disabled={usuarioLogado.idUsuario != fkResponsavel}
                                     />
                                     <TextField
                                         placeholder="Novo checkpoint"
@@ -288,6 +288,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                                         variant="standard"
                                         multiline
                                         maxRows={3}
+                                        disabled={(usuarioLogado.idUsuario != fkResponsavel && usuarioLogado.permissao == 'FUNC')}
                                         sx={{
                                             flex: 1,
                                             input: { color: '#FFF' },
@@ -306,19 +307,23 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                                                 '&::-webkit-scrollbar-thumb:hover': {
                                                     background: '#aaa',
                                                 },
-                                            }
+                                            },
+                                            "& .MuiInputBase-input.Mui-disabled": {
+                                                WebkitTextFillColor: "#999"
+                                            },
                                         }}
                                     />
                                 </Stack>
-                                <IconButton onClick={() => setCheckpoints(checkpoints.filter(c => c.idCheckpoint !== cb.idCheckpoint))} color="error">
+
+                                {(usuarioLogado.idUsuario == fkResponsavel || usuarioLogado.permissao != 'FUNC') && (<IconButton onClick={() => setCheckpoints(checkpoints.filter(c => c.idCheckpoint !== cb.idCheckpoint))} color="error">
                                     <DeleteIcon />
-                                </IconButton>
+                                </IconButton>)}
                             </Box>
                         ))}
 
-                        <IconButton onClick={handleAddCheckbox} color="primary">
+                        {(usuarioLogado.idUsuario == fkResponsavel || usuarioLogado.permissao != 'FUNC') && (<IconButton onClick={handleAddCheckbox} color="primary">
                             <AddIcon />
-                        </IconButton>
+                        </IconButton>)}
                     </Stack>
 
                     <TextField

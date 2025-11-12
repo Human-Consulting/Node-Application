@@ -5,7 +5,7 @@ import { Box, Button, TextField, Typography, Stack, MenuItem, Grow, Select } fro
 import { inputStyle } from "./Forms.styles.jsx";
 import SendIcon from '@mui/icons-material/Send';
 
-const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsuarios, editarSenhaUsuario }) => {
+const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, editarSenhaUsuario }) => {
 
     const { idEmpresa, nomeEmpresa } = useParams();
 
@@ -14,7 +14,6 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
     const [cargo, setCargo] = useState(usuario?.cargo || '');
     const [area, setArea] = useState(usuario?.area || '');
     const [permissao, setPermissao] = useState(usuario?.permissao || "#");
-    console.log(usuario);
 
     const [erros, setErros] = useState({});
 
@@ -50,26 +49,17 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
             toogleModal();
         }
     }
-
-    // const mostrarPermissaoSelect = (
-    //     (usuario == null && usuarioLogado.permissao != 'FUNC') ||
-    //     (usuario != null && (
-    //         usuarioLogado.permissao.includes('DIRETOR') ||
-    //         usuarioLogado.permissao.includes('CONSULTOR') ||
-    //         (usuarioLogado.permissao === 'GESTOR' && ['GESTOR', 'FUNC'].includes(usuario.permissao))
-    //     ))
-    // )// && usuario?.permissao !== 'DIRETOR';
     const mostrarPermissaoSelect = (
-        // Se está criando um novo usuário (usuario == null)
         (usuario == null && usuarioLogado.permissao !== 'FUNC') ||
 
-        // Se está editando um usuário existente
         (usuario != null && (() => {
             const perm = usuarioLogado.permissao;
             const target = usuario.permissao;
 
+            if (usuarioLogado.idUsuario != usuario.idUsuario) return true;
+
             if (perm.includes('DIRETOR'))
-                return !target.includes('DIRETOR'); // diretor não pode mexer em outro diretor
+                return !target.includes('DIRETOR');
 
             if (perm.includes('CONSULTOR_DIRETOR'))
                 return ['GESTOR', 'CONSULTOR', 'FUNC'].includes(target);
@@ -218,29 +208,45 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, qtdUsu
                             <MenuItem key="#" value="#">
                                 Selecione a permissão
                             </MenuItem>
-                            {usuarioLogado.permissao.includes('CONSULTOR') && (
-                                [
-                                    !diretor && ([
-                                        <MenuItem key="CONSULTOR_DIRETOR" value="CONSULTOR_DIRETOR">Diretor</MenuItem>
-                                    ]),
-                                        <MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>
-                                ]
-                            )}
-                            {qtdUsuarios > 0 && diretor ? (
-                                [
-                                    <MenuItem key="GESTOR" value="GESTOR">Gestor</MenuItem>,
-                                    <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
-                                ]
-                            ) : !diretor ? (
-                                [
-                                    // <MenuItem key="DIRETOR" value="DIRETOR">DiretorOi</MenuItem>,
-                                    <MenuItem key="GESTOR" value="GESTOR">Gestor</MenuItem>,
-                                    <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
-                                ]
-                            ) : (
-                                <MenuItem key="DIRETOR" value="DIRETOR">Diretoroi</MenuItem>
-                            )
-                            }
+                            
+                            {(() => {
+                                const isEmpresas = nomeEmpresa === 'Empresas';
+                                const isConsultor = usuarioLogado.permissao.includes('CONSULTOR');
+
+                                if (isEmpresas) {
+                                    if (!diretor) {
+                                        return (
+                                            <MenuItem key="CONSULTOR_DIRETOR" value="CONSULTOR_DIRETOR">
+                                                Consultor Diretor
+                                            </MenuItem>
+                                        );
+                                    } else {
+                                        return (
+                                            <>
+                                            {isConsultor && (<MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>)}
+                                                <MenuItem key="GESTOR" value="GESTOR">Gestor</MenuItem>
+                                                <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
+                                            </>
+                                        );
+                                    }
+                                } else {
+                                    if (!diretor) {
+                                        return (
+                                            <MenuItem key="DIRETOR" value="DIRETOR">
+                                                Diretor
+                                            </MenuItem>
+                                        );
+                                    } else {
+                                        return (
+                                            <>
+                                                {isConsultor && (<MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>)}
+                                                <MenuItem key="GESTOR" value="GESTOR">Gestor</MenuItem>
+                                                <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
+                                            </>
+                                        );
+                                    }
+                                }
+                            })()}
                         </Select>
                     )}
                 </>

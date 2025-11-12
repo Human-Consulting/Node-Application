@@ -48,7 +48,6 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
     toogleLateralBar();
     telaAtual();
     setListaFiltrada(nomeEmpresa == "Empresas" && empresas.length > 0 ? empresas : projetos);
-    console.log(projetos);
   }, [projetos, empresas, idEmpresa, nomeEmpresa, pagesEmpresas, pagesProjetos]);
 
   useEffect(() => {
@@ -145,7 +144,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
                 }
               }
             }} />
-          {usuarioLogado?.permissao?.includes('CONSULTOR') &
+          {usuarioLogado.permissao.includes('CONSULTOR') ?
             nomeEmpresa == "Empresas" ?
             <Button onClick={() => toogleModal(null, 'empresa')}
               variant="contained">
@@ -156,6 +155,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
               variant="contained">
               CRIAR PROJETO
             </Button>
+            : null
           }
           <Tooltip title="Tarefas abertas em seu nome.">
             <Badge onClick={handleBadgeClickTarefa}
@@ -200,9 +200,10 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
               Nenhum projeto encontrado!
             </Stack>
           )}
-          {usuarioLogado?.permissao?.includes('CONSULTOR') ?
+          {/* {usuarioLogado?.permissao?.includes('CONSULTOR') ?
             <ProjectsCard toogleModal={toogleModal} ></ProjectsCard>
-            : null}
+            : null} */} 
+            {/* //? Deixar com ou só o botão no */}
         </CardsList>
 
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ marginTop: '2rem' }}>
@@ -211,8 +212,8 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
             page={page + 1}
             onChange={(e, value) => setPage(value - 1)}
             color="primary"
-            siblingCount={1}
-            boundaryCount={1}
+            siblingCount={5}
+            boundaryCount={5}
             sx={{ "& .MuiPaginationItem-root": { color: "#fff" } }}
           />
         </Stack>

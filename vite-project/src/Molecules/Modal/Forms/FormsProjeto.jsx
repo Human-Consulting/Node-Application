@@ -20,6 +20,7 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, fkEmpresa }) =>
     const [responsavel, setResponsavel] = useState(projeto?.responsavel || {});
     const [fkResponsavel, setFkResponsavel] = useState(projeto?.responsavel?.idUsuario || '#');
     const [urlImagem, setUrlImagem] = useState('');
+    const [fileName, setFileName] = useState('');
 
     const buscarUsuarios = async (page = 0, size = 4) => {
         const usuariosRetornados = await getUsuariosResponsaveis(Number(fkEmpresa), page, size);
@@ -156,63 +157,25 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, fkEmpresa }) =>
                 error={!!erros.descricao}
                 helperText={erros.descricao}
             />
-            <TextField
-                label="Orçamento"
-                type="number"
-                disabled={validarPermissaoConsultor()}
-                value={orcamento}
-                onChange={(e) => {
-                    setOrcamento(e.target.value)
-                    removerErro("orcamento")
-                }}
-                fullWidth
-                variant="outlined"
-                InputLabelProps={{ style: inputStyle.label }}
-                InputProps={{ style: inputStyle.input }}
-                sx={inputStyle.sx}
-                error={!!erros.orcamento}
-                helperText={erros.orcamento}
-            />
-
-
-            {/* <Select
-                select
-                label="Responsável"
-                value={fkResponsavel}
-                disabled={validarPermissaoFunc()}
-                onChange={(e) => {
-                    setResponsavel(e.target.value)
-                    removerErro("fkResponsavel")
-                }}
-                fullWidth
-                variant="outlined"
-                InputLabelProps={{ style: inputStyle.label }}
-                InputProps={{ style: inputStyle.input }}
-                sx={{
-                    ...inputStyle.sx,
-                    color: '#FFF',
-                }}
-                MenuProps={{
-                    TransitionComponent: Grow,
-                    PaperProps: {
-                        sx: {
-                            backgroundColor: '#22272B',
-                            color: '#fff',
-                            borderRadius: 2,
-                            mt: 1,
-                            maxHeight: 200,
-                        }
-                    }
-                }}
-                error={!!erros.fkResponsavel}
-            >
-                <MenuItem value="#">Selecione o responsável</MenuItem>
-                {usuarios.map((usuario) => (
-                    <MenuItem key={usuario.idUsuario} value={usuario.idUsuario}>
-                        {usuario.nome}
-                    </MenuItem>
-                ))}
-            </Select> */}
+            {usuarioLogado.permissao.includes('CONSULTOR') && (
+                <TextField
+                    label="Orçamento"
+                    type="number"
+                    disabled={validarPermissaoConsultor()}
+                    value={orcamento}
+                    onChange={(e) => {
+                        setOrcamento(e.target.value)
+                        removerErro("orcamento")
+                    }}
+                    fullWidth
+                    variant="outlined"
+                    InputLabelProps={{ style: inputStyle.label }}
+                    InputProps={{ style: inputStyle.input }}
+                    sx={inputStyle.sx}
+                    error={!!erros.orcamento}
+                    helperText={erros.orcamento}
+                />
+            )}
             <SelectUsuarios
                 usuarios={usuarios}
                 sizeUsuarios={sizeUsuarios}
@@ -227,25 +190,27 @@ const FormsProjeto = ({ projeto, toogleModal, atualizarProjetos, fkEmpresa }) =>
                 disabled={usuarioLogado.permissao === 'FUNC'}
                 error={!!erros.fkResponsavel}
             />
-
-            <Button
-                variant="contained"
-                component="label"
-                fullWidth
-                sx={{ ...inputStyle.sx, py: 1.5 }}
-            >
-                {projeto == null ? 'Selecionar' : 'Modificar'} Imagem
-                <AttachFileIcon />
-                <input
-                    type="file"
-                    hidden
-                    onChange={(e) => {
-                        handleFileUpload(e.target.files[0])
-                        removerErro("hidde")
-                    }}
-                />
-            </Button>
-
+            {usuarioLogado.permissao != 'FUNC' && (
+                <Button
+                    variant="contained"
+                    component="label"
+                    fullWidth
+                    sx={{ ...inputStyle.sx, py: 1.5 }}
+                >
+                    {projeto == null ? 'Selecionar' : 'Modificar'} Imagem
+                    <AttachFileIcon />
+                    <input
+                        type="file"
+                        hidden
+                        onChange={(e) => {
+                            handleFileUpload(e.target.files[0]);
+                            setFileName(e.target.files[0].name);
+                            // removerErro("hidde")
+                        }}
+                    />
+                    {fileName && (fileName)}
+                </Button>
+            )}
             <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
                 {projeto == null ? (
                     <Button variant="contained" color="primary" onClick={handlePostProjeto} endIcon={<SendIcon />} sx={{ flex: 1 }}>

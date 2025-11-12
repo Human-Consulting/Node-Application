@@ -3,6 +3,7 @@ import { Box, Stack, Tooltip } from '@mui/material'
 import { Block, Check, CalendarMonth, MoreVert } from '@mui/icons-material';
 import { getNome, getTempoRestante } from '../../Utils/getInfos';
 import { useWarningValidator } from '../../Utils/useWarning';
+import dayjs from 'dayjs';
 
 const TarefasItem = ({ tarefa, toogleModal }) => {
 
@@ -27,7 +28,7 @@ const TarefasItem = ({ tarefa, toogleModal }) => {
     toogleModal(task);
   }
 
-  const dtFim = new Date(tarefa.dtFim);
+  // const dtFim = new Date(tarefa.dtFim);
 
   return (
     <TarefaBody inclui={tarefa?.responsavel?.idUsuario == usuarioLogado.idUsuario} finalizado={tarefa.progresso == 100}>
@@ -65,7 +66,7 @@ const TarefasItem = ({ tarefa, toogleModal }) => {
           <span>{Math.floor(tarefa.progresso)}%</span>
         </Stack>
         {tarefa.progresso < 100 &&
-          <Tooltip title={"Prazo: " + new Date(dtFim.getTime() - 3 * 60 * 60 * 1000).toLocaleDateString("pt-BR")} placement="bottom">
+          <Tooltip title={`Prazo: ${dayjs(tarefa.dtFim).format("DD/MM/YYYY")}`} placement="bottom">
             <Stack sx={{ flexDirection: 'row', justifyContent: 'end', alignItems: 'center', gap: 0.25, width: '30%' }}>
               <CalendarMonth sx={{ fontSize: 16 }} />{tempoRestante}
             </Stack>

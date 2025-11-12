@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router'
 import { useEffect, useState } from 'react';
 import { CalendarMonth, CheckCircle, HourglassEmpty, Block, AllInclusive, MoreVert, EmojiPeople, Search, NorthEast, Close } from '@mui/icons-material';
 import { getNome, getTempoRestante } from '../../Utils/getInfos';
+import dayjs from 'dayjs';
 
 const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizarSprints }) => {
 
@@ -263,7 +264,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
             <Stack sx={{ flexDirection: 'row', gap: '15px', }}>
               {Math.floor(sprint.progresso)}% de {sprint.tarefas.length}
               {sprint.progresso < 100 &&
-                <Tooltip title={"Prazo: " + sprint.dtFim} placement="top">
+                <Tooltip title={`Prazo: ${dayjs(sprint.dtFim).format("DD/MM/YYYY")}`} placement="top">
                   <Stack sx={{ gap: '2px', alignItems: 'center', flexDirection: 'row' }}> <CalendarMonth sx={{ fontSize: '16px' }} />{getTempoRestante(sprint.dtFim)}</Stack>
                 </Tooltip>}
             </Stack>

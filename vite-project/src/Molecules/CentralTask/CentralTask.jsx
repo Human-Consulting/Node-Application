@@ -63,7 +63,6 @@ const CentralTask = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, 
   const toogleModal = (entidade, post, id) => {
     setAcao(post);
     setEntidade(entidade);
-    console.log(entidade);
     setShowModal(!showModal);
     setId(id);
   };
@@ -89,7 +88,6 @@ const CentralTask = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, 
 
   useEffect(() => {
   if (sprint) {
-    console.log("Sprint mudou:", sprint);
     setTarefas(sprint.tarefas || []);
   }
 }, [sprint]);
@@ -124,7 +122,7 @@ const CentralTask = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, 
       <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue", zIndex: 2 }}>
         <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} /> {tituloProjeto} - {tituloSprint} - Backlog
         <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
-          <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenModalPostTask}>Criar tarefa</Button>
+          {usuarioLogado.permissao != 'FUNC' && (<Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenModalPostTask}>Criar tarefa</Button>)}
           <Tooltip title="Tarefas abertas em seu nome.">
             <Badge onClick={handleBadgeClickTarefa}
               sx={{

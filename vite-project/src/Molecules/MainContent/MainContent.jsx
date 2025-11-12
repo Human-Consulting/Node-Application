@@ -20,7 +20,7 @@ const MainContent = () => {
 
   const [showLateralBar, setShowLateralBar] = useState(true);
   const [diminuirLateralBar, setDiminuirLateralBar] = useState(false);
-  
+
   const [projetos, setProjetos] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [empresas, setEmpresas] = useState([]);
@@ -63,52 +63,54 @@ const MainContent = () => {
   }
 
   const atualizarProjetos = async (page = 0, nome = null) => {
-    const projetosRetornados = await getProjetos(Number(idEmpresa), page, 2, nome);
+    const projetosRetornados = await getProjetos(Number(idEmpresa), page, 6, nome);
     setEmpresas([]);
     setProjetos(projetosRetornados?.content || []);
     setSizeProjetos(projetosRetornados?.pageSize || 10);
     setTotalPagesProjetos(projetosRetornados?.totalPages || 1);
-    atualizarLaterais({idEmpresa});
   };
 
   const atualizarEmpresas = async (page = 0, nome = null) => {
-    console.log("Atualizando empresssasa")
-    const empresasRetornadas = await getEmpresas(page, 10, nome);
+    const empresasRetornadas = await getEmpresas(page, 6, nome);
     setProjetos([]);
     setEmpresas(empresasRetornadas?.content || []);
     setSizeEmpresas(empresasRetornadas?.pageSize || 10);
     setTotalPagesEmpresas(empresasRetornadas?.totalPages || 1);
-    atualizarLaterais({ idEmpresa: null });
   };
 
-
-  const buscarUsuarios = async (page = 0, size = 4, nome = null) => {
-    const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, size, nome);
+  const buscarUsuarios = async (page = 0) => {
+    const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, 4);
     setUsuarios(usuariosRetornados?.content || []);
     setSizeUsuarios(usuariosRetornados?.pageSize || 10);
     setTotalPagesUsuarios(usuariosRetornados?.totalPages || 1);
-    setLoading(false);
-  };
+  }
 
   const atualizarLaterais = async ({ idEmpresa = null, page = 0, nome = null, impedidos = null, concluidos = null,
   }) => {
     const entidade = nomeEmpresa === 'Empresas' ? 'empresas' : 'projetos';
-    const kpiRetornadas = await getKpis(entidade, idEmpresa);
-    setKpis(kpiRetornadas);
-    const menuRapidoRetornados = await getMenuRapido(entidade, idEmpresa, page, 10, nome, impedidos, concluidos);
+    const menuRapidoRetornados = await getMenuRapido(entidade, idEmpresa, page, 5, nome, impedidos, concluidos);
     setMenuRapido(menuRapidoRetornados);
   };
 
+  const atualizarLateraisKpis = async ({ idEmpresa = null }) => {
+    const entidade = nomeEmpresa === 'Empresas' ? 'empresas' : 'projetos';
+    const kpiRetornadas = await getKpis(entidade, idEmpresa);
+    setKpis(kpiRetornadas);
+  };
+
+  const carregarDados = async () => {
+    setLoading(true);
+    if (nomeEmpresa == "Empresas") await atualizarEmpresas();
+    else await atualizarProjetos();
+    await atualizarLaterais({ entidade: nomeEmpresa === "Empresas" ? 'empresas' : 'projetos', idEmpresa: idEmpresa });
+    await atualizarLateraisKpis({ idEmpresa: idEmpresa });
+    await buscarUsuarios();
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const carregarDados = async () => {
-      setLoading(true);
-      if (nomeEmpresa == "Empresas") await atualizarEmpresas();
-      else await atualizarProjetos();
-      atualizarLaterais({ entidade: nomeEmpresa === "Empresas" ? 'empresas' : 'projetos', idEmpresa: idEmpresa });
-      await buscarUsuarios();
-    };
     carregarDados();
-  }, [idEmpresa, nomeEmpresa])
+  }, [nomeEmpresa])
 
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
 
@@ -120,13 +122,13 @@ const MainContent = () => {
       <Routes>
         <Route path="/" element={<PrincipalContainer telaAtual={() => setTelaAtual("Home")} toogleLateralBar={ShowLateralBar} atualizarProjetos={atualizarProjetos} atualizarEmpresas={atualizarEmpresas} projetos={projetos} pagesProjetos={totalPagesProjetos} empresas={empresas} pagesEmpresas={totalPagesEmpresas} usuarios={usuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} />} />
 
-        <Route path="/Roadmap/:tituloProjeto/:idProjeto" element={<Task telaAtual={() => setTelaAtual("Roadmap")} toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} />} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto" element={<Task telaAtual={() => setTelaAtual("Roadmap")} toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarLaterais} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} />} />
 
-        <Route path="/Roadmap/:tituloProjeto/:idProjeto/Backlog/:tituloSprint/:idSprint/:index" element={<CentralTask toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarProjetos} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} />} />
+        <Route path="/Roadmap/:tituloProjeto/:idProjeto/Backlog/:tituloSprint/:idSprint/:index" element={<CentralTask toogleLateralBar={hideLateralBar} atualizarProjetos={atualizarLaterais} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} />} />
 
-        <Route path="/Usuarios" element={<Usuarios telaAtual={() => setTelaAtual("Usuarios")} toogleLateralBar={hideLateralBar} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} color1={color1} color2={color2} color3={color3} animate={animate} />} />
+        <Route path="/Usuarios" element={<Usuarios telaAtual={() => setTelaAtual("Usuarios")} toogleLateralBar={hideLateralBar} color1={color1} color2={color2} color3={color3} animate={animate} />} />
 
-        <Route path="/Dash" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} usuarios={usuarios} />} />
+        <Route path="/Dash" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} usuarios={usuarios} kpis={kpis} />} />
 
         <Route path="/Dash/:tituloProjeto/:idProjeto" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} usuarios={usuarios} />} />
 

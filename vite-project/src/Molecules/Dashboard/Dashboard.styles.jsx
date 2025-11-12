@@ -1,16 +1,22 @@
-import { Box} from '@mui/material';
+import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const ContainerBack = styled(Box)({
-    width: 'calc(100% - 2rem)',
-    // background: "#1D1D1D",
-    // background: "#1D1D1D",
+    width: '100%',
+    // background: "#101010",
     borderRadius: '5px',
     position: 'relative',
     overflowY: 'hidden',
     display: 'flex',
-    // paddingInline: '1.5rem',
     padding: '1.5rem',
+});
+
+export const ChartLateral = styled(Box)({
+    height: '50%',
+    background: '#101010',
+    borderRadius: '20px',
+    padding: '1rem',
+    overflow: 'hidden'
 });
 
 export const Title = styled('p')({
@@ -31,7 +37,7 @@ export const DashContainer = styled(Box)({
     height: '100%',
     display: 'flex',
     justifyContent: 'space-between',
-    gap: '3rem',
+    gap: '1rem',
 });
 
 export const TextDefault = styled('p')({
@@ -47,9 +53,20 @@ export const TextDefaultKpi = styled('p')({
 });
 
 export const DashKpi = styled(Box)({
-    height: 'calc(20% + 1rem)',
-    display: 'grid',
-    gridTemplateColumns: '50% 50%',
-    gridTemplateRows: '50% 50%',
+    height: '30%',
+    display: 'flex',
     gap: '1rem',
+    flex: 1
 });
+
+export const Infos = styled(Box)({
+    background: '#101010',
+    padding: '0rem 1rem',
+    borderRadius: '20px',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row'
+})

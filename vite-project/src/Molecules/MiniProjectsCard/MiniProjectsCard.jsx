@@ -13,10 +13,11 @@ function MiniProjectsCard({ entidade, tipo }) {
     if (nomeEmpresa == 'Empresas') navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
     else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.nome || entidade.titulo}/${Number(entidade.idProjeto)}`);
   }
+  const nomeResponsavel = entidade?.responsavel?.nome || "Sem responsável";
 
   return (
     <>
-      {entidade != null ?
+      {entidade ?
         <BoxBody onClick={handleOpenProject} finalizado={entidade.progresso == 100}>
           <HeaderCard
             sx={{
@@ -24,13 +25,10 @@ function MiniProjectsCard({ entidade, tipo }) {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
-            }}
-          />
+            }} />
           <BodyCard>
-            <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Title>{entidade.titulo || entidade.nome}</Title>
-            </Stack>
-            <Subtitle>{entidade.nomeResponsavel || entidade.nomeDiretor || "Sem responsável"}</Subtitle>
+            <Title>{entidade.titulo || entidade.nome}</Title>
+            <Subtitle>{nomeResponsavel || "Sem responsável"}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
                 <Progress sx={{ width: `${entidade.progresso}%` }} />
@@ -38,8 +36,7 @@ function MiniProjectsCard({ entidade, tipo }) {
               <Subtitle>{entidade.progresso}%</Subtitle>
             </Stack>
           </BodyCard>
-          <StatusCircle //sx={{ border: `3px solid ${statusColor}` }}
-          >
+          <StatusCircle>
             {useWarningValidator(entidade)}
           </StatusCircle>
 

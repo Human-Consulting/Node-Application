@@ -1,8 +1,6 @@
 import Chart from 'react-apexcharts';
 
-const MinimalBarChart = ({ areas }) => {
-  const valores = areas?.map(a => a?.valor || 0) ?? [];
-  const categorias = areas?.map(a => a?.nome || '') ?? [];
+const MinimalBarChart = ({ valores, categorias }) => {
 
   const options = {
     chart: {
@@ -55,7 +53,6 @@ const MinimalBarChart = ({ areas }) => {
         }
       }
     },
-    colors: ['#4dabf5', '#00E396', '#ffca28', '#ef5350'],
     colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560'],
   };
 
@@ -67,15 +64,13 @@ const MinimalBarChart = ({ areas }) => {
   ];
 
   return (
-    <div
-      style={{
-        // background: 'linear-gradient(to right, #1F1F1F, #0f1125)',
-        borderRadius: '1rem',
-        // background: '#22272B'
-      }}
-    >
-      <Chart options={options} series={series} type="bar" height={300} width="100%" />
-    </div>
+    <Chart
+      options={options}
+      series={series}
+      type="bar"
+      height="85%"
+      width="100%"
+    />
   );
 };
 

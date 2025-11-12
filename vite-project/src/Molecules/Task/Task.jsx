@@ -26,6 +26,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
   const [sprintsList, setSprintsList] = useState([]);
   const [dtInicio, setDtInicio] = useState(null);
   const [dtFim, setDtFim] = useState(null);
+  const [dtLastSprint, setDtLastSprint] = useState([]);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -55,6 +56,8 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
     setLoading(true);
     const sprints = await getSprints(idProjeto);
     setSprintsList(sprints);
+    console.log(sprints[sprints.length - 1]);
+    setDtLastSprint(sprints[sprints.length - 1].dtFim);
     setLoading(false);
   };
 
@@ -87,33 +90,33 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
     <>
       <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={0} />
       <TaskBody>
-          <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue" }}>
-            <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{tituloProjeto} - Roadmap
-            <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
-              <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenDash}>Ir para Dashboard</Button>
-              <Tooltip title="Tarefas abertas em seu nome.">
-                <Badge onClick={handleBadgeClickTarefa}
-                  sx={{
-                    '& .MuiBadge-badge': {
-                      fontSize: '1.25rem',
-                      height: '26px',
-                      width: '26px',
-                      cursor: 'pointer'
-                    }
-                  }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
-                  <CalendarMonth sx={{ fontSize: 32, cursor: 'pointer' }} />
-                </Badge>
-              </Tooltip>
-              <Tooltip title="Editar cor de fundo.">
-                <ColorLens onClick={handleBadgeClickCores}
-                  sx={{
-                    height: '40px',
-                    width: '40px',
+        <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue" }}>
+          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{tituloProjeto} - Roadmap
+          <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
+            <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenDash}>Ir para Dashboard</Button>
+            <Tooltip title="Tarefas abertas em seu nome.">
+              <Badge onClick={handleBadgeClickTarefa}
+                sx={{
+                  '& .MuiBadge-badge': {
+                    fontSize: '1.25rem',
+                    height: '26px',
+                    width: '26px',
                     cursor: 'pointer'
-                  }} />
-              </Tooltip>
-            </Stack>
-          </Typography>
+                  }
+                }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
+                <CalendarMonth sx={{ fontSize: 32, cursor: 'pointer' }} />
+              </Badge>
+            </Tooltip>
+            <Tooltip title="Editar cor de fundo.">
+              <ColorLens onClick={handleBadgeClickCores}
+                sx={{
+                  height: '40px',
+                  width: '40px',
+                  cursor: 'pointer'
+                }} />
+            </Tooltip>
+          </Stack>
+        </Typography>
         <SprintBody>
 
           {sprintsList.length > 0 && sprintsList.map((sprint, index) => (
@@ -127,7 +130,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
 
       <Modal showModal={showModal} fechar={toogleModal} acao={acao == "task" ? "aumentar" : null} entidade={entidade}
         form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={pagesUsuarios} atualizarUsuarios={atualizarUsuarios} idSprint={id} dtInicioSprint={dtInicio} dtFimSprint={dtFim} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
-          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} acao={null} />}
+          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} acao={null} dtLastSprint={dtLastSprint} />}
       >
       </Modal>
       <ModalTarefas
