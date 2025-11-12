@@ -47,7 +47,7 @@ function ProjectsCard({ item, toogleModal }) {
               }}
             />
             <Subtitle>{responsavelCard}</Subtitle>
-            <Subtitle><b>Orçamento:</b> R${item.orcamento}</Subtitle>
+            <Subtitle><b>Orçamento:</b> {item.orcamento ? `R$${item.orcamento}` : 'N/A'}</Subtitle>
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
                 <Progress sx={{ width: `${item.progresso}%` }} />
@@ -55,8 +55,7 @@ function ProjectsCard({ item, toogleModal }) {
               <Subtitle>{item.progresso}%</Subtitle>
             </Stack>
           </BodyCard>
-          <StatusCircle
-          >
+          <StatusCircle>
             {useWarningValidator(item)}
           </StatusCircle>
         </BoxBody>

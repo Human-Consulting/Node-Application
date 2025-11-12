@@ -1,12 +1,10 @@
 import { Stack, Typography, Button, Tooltip, Badge } from '@mui/material'
-import { DashKpi, ContainerBack, DashContainer, KpiContainer, TextDefault, TextDefaultKpi } from './Dashboard.styles'
-import LineChart from './LineChart/LineChart'
-import MinimalBarChart from './BarChart/BarChart'
-import AreaData from '../../Atoms/AreaData/AreaData'
+import { DashKpi, ContainerBack, DashContainer, KpiContainer, TextDefaultKpi, TextDefault, ChartLateral, Infos } from './Dashboard.styles'
+import LineChart from './LineChart/InvestimentoChart'
 import RadialChart from './RadialChart'
 import { useEffect, useState } from 'react'
 import { getEmpresaAtual } from '../../Utils/cruds/CrudsEmpresa'
-import { getProjetoAtual } from '../../Utils/cruds/CrudsProjeto'
+import { getDashboard, getBurndown } from '../../Utils/cruds/CrudsProjeto'
 import { useNavigate, useParams } from 'react-router'
 import { ArrowCircleLeftOutlined, CalendarMonth, ColorLens } from '@mui/icons-material';
 import Modal from '../Modal/Modal'
@@ -15,8 +13,10 @@ import ModalCores from '../Modais/ModalCores/ModalCores';
 import FormsInvestimento from '../Modal/Forms/FormsInvestimento'
 import Shader from '../Shader/Shader'
 import { Load } from '../../Utils/Load'
+import GraficoTarefas from './GraficoTarefas/GraficoTarefas'
+import GraficoBurndown from './GráficoBurndown/GraficoBurndown'
 
-const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setColor1, setColor2, setColor3, animate, setAnimate, telaAtual, usuarios }) => {
+const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setColor1, setColor2, setColor3, animate, setAnimate, telaAtual, usuarios, kpis }) => {
 
   const { idEmpresa, nomeEmpresa, tituloProjeto, idProjeto } = useParams();
 
@@ -49,6 +49,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
   const openPopoverCores = Boolean(anchorCores);
 
   useEffect(() => {
+    // idProjeto ? toogleLateralBar() : null;
     toogleLateralBar();
     telaAtual();
     atualizarEntidade();
@@ -63,12 +64,21 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
   }
 
   const [entidade, setEntidade] = useState({});
+  const [burndown, setBurndown] = useState({});
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
   const atualizarEntidade = async () => {
-    const entidadeData = idProjeto ? await getProjetoAtual(idProjeto) : await getEmpresaAtual(idEmpresa);
+    let entidadeData;
+    let burndownData;
+    if (idProjeto) {
+      entidadeData = await getDashboard(idProjeto)
+      burndownData = await getBurndown(idProjeto);
+    } else {
+      entidadeData = await getEmpresaAtual(idEmpresa);
+    }
     setEntidade(entidadeData);
+    setBurndown(burndownData);
     setLoading(false);
   }
 
@@ -76,8 +86,6 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
     setShowModal(!showModal);
     investimento != null ? setInvestimento(investimento) : setInvestimento(null);
   };
-
-  const totalTarefas = entidade.areas?.length > 0 ? entidade.areas.reduce((total, area) => total + area.valor, 0) : 0;
 
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
 
@@ -118,51 +126,39 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
             : null}</Typography> : <Stack sx={{ marginTop: '1.5rem' }} />}
 
         <DashContainer>
-          <Stack sx={{ justifyContent: 'space-between', gap: '3rem', flex: 1 }}>
+          <Stack sx={{ justifyContent: 'space-between', gap: '1rem', flex: 1 }}>
             <DashKpi>
-              <Stack sx={{ bgcolor: '#101010', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
-                <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                  <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Total de {entidade?.idEmpresa ? "Projetos:" : "Sprints:"}</TextDefaultKpi>
-                  <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.totalItens}</TextDefaultKpi>
-                </Stack>
+              <Stack sx={{ gap: '1rem', width: '50%' }}>
+                <Infos>
+                  <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                    <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Total de {entidade?.idEmpresa ? "Projetos:" : "Sprints:"}</TextDefaultKpi>
+                    <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.totalItens}</TextDefaultKpi>
+                  </Stack>
+                </Infos>
+
+                <Infos>
+                  <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                    <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>{idProjeto ? "Responsável:" : "Diretor:"}</TextDefaultKpi>
+                    <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade?.responsavel?.nome || "Sem responsável"}</TextDefaultKpi>
+                  </Stack>
+                </Infos>
               </Stack>
 
-              <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '100%', height: '220%', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                
+              <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', flex: 1, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
                 {entidade.comImpedimento && <RadialChart comImpedimento={entidade.comImpedimento} progresso={100}></RadialChart>}
                 <RadialChart comImpedimento={null} progresso={entidade.progresso}></RadialChart>
               </Stack>
 
-              <Stack sx={{ bgcolor: '#101010', padding: '0rem 1rem', borderRadius: '20px', width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
-                <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                  <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>{idProjeto ? "Responsável:" : "Diretor:"}</TextDefaultKpi>
-                  <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.nomeResponsavel}</TextDefaultKpi>
-                </Stack>
-              </Stack>
             </DashKpi>
+
             <LineChart orcamento={entidade.orcamento} financeiros={entidade.financeiroResponseDtos} toogleModal={toogleModal} atualizarEntidade={atualizarEntidade}></LineChart>
           </Stack>
 
-          <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', width: '40%', height: 'calc(100%)', padding: '1rem', justifyContent: 'space-between', gap: '1rem' }}>
+          <Stack sx={{ width: '40%', gap: '1rem', justifyContent: 'space-between' }}>
 
-            <Stack sx={{ flex: 1, justifyContent: 'space-between' }}>
-              <Stack>
-                <TextDefault sx={{ color: '#eeeeee' }}>Tarefas por Área</TextDefault>
-                <MinimalBarChart areas={entidade.areas} sx={{ flex: 1 }}></MinimalBarChart>
-              </Stack>
+            <GraficoTarefas entidade={entidade} usuarios={entidade.usuarios} />
 
-              <TextDefault sx={{ color: '#eeeeee' }}>Tarefas por Usuário</TextDefault>
-
-              <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }} >
-                {usuarios?.length ? (
-                  usuarios.slice(0, 3).map((usuario, index) => (
-                    <AreaData key={index} usuario={usuario} total={totalTarefas} />
-                  ))
-                ) : (
-                  null
-                )}
-              </Stack>
-            </Stack>
+            <GraficoBurndown dados={burndown} kpis={kpis} />
 
           </Stack>
         </DashContainer>

@@ -1,7 +1,8 @@
+import { Pagination, Stack } from "@mui/material";
 import Linha from "./Linha/Linha";
 import "./Tabela.css"
 
-const Tabela = ({ usuarios, toogleModal, atualizarUsuarios }) => {
+const Tabela = ({ usuarios, toogleModal, atualizarUsuarios, totalPages, page, setPage  }) => {
 
     return (
         <div className="table-container">
@@ -33,6 +34,15 @@ const Tabela = ({ usuarios, toogleModal, atualizarUsuarios }) => {
                         ))}
                     </tbody>
                 </table>
+                <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} sx={{ mt: 2 }}>
+                    <Pagination
+                        count={totalPages}
+                        page={page + 1}
+                        onChange={(e, value) => setPage(value - 1)}
+                        color="primary"
+                        sx={{ "& .MuiPaginationItem-root": { color: "#fff" } }}
+                    />
+                </Stack>
             </div>
         </div>
     )

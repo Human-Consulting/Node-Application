@@ -2,8 +2,6 @@ import { styled } from "@mui/material";
 
 export const BoxBody = styled('div')(({ inclui, finalizado }) => ({
     width: '100%',
-    minWidth: '250px',
-    maxWidth: '400px',
     height: '250px',
     minHeight: '225px',
     background: '#1D1D1D',
@@ -14,10 +12,9 @@ export const BoxBody = styled('div')(({ inclui, finalizado }) => ({
     position: 'relative',
     marginTop: '1rem',
     cursor: 'pointer',
-    border: `solid ${inclui ? 'white' : 'transparent'} 2px`,
+    border: `solid ${inclui ? 'white' : 'transparent'} ${inclui && !finalizado ? "2px" : 0}`,
     opacity: finalizado ? 0.25 : 1,
     transition: "opacity 0.3s ease"
-
 }));
 
 export const StatusCircle = styled('div')({
@@ -25,15 +22,12 @@ export const StatusCircle = styled('div')({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '100px',
-    height: '42px',
-    width: '42px',
     position: 'absolute',
-    right: '-34px',
-    top: '-14px',
-    right: '0',
-    top: '0',
+    right: '5px',
+    top: '5px',
     zIndex: 10
-})
+});
+
 export const Title = styled('p')({
     fontWeight: 500,
     fontSize: '16px',
@@ -42,7 +36,8 @@ export const Title = styled('p')({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden'
-})
+});
+
 export const Subtitle = styled('p')({
     fontWeight: 300,
     fontSize: '14px',
@@ -51,7 +46,7 @@ export const Subtitle = styled('p')({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden'
-})
+});
 
 export const HeaderCard = styled('div')({
     height: '50%',
@@ -61,18 +56,18 @@ export const HeaderCard = styled('div')({
     borderRadius: '10px 10px 0px 0px',
     overflow: 'hidden',
     backgroundSize: 'cover'
-})
+});
 
 export const BodyCard = styled('div')({
     height: '60%',
-    width: '100%',
     zIndex: '30',
     padding: '0.5rem',
     borderRadius: '10px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-})
+});
+
 export const ProgressBar = styled('div')({
     height: '10px',
     width: '70%',
@@ -82,13 +77,12 @@ export const ProgressBar = styled('div')({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'start'
-
-})
+});
 
 export const Progress = styled('div')({
     height: '10px',
     backgroundColor: '#36518c',
     borderRadius: '2px',
-})
+});
 
 

@@ -9,7 +9,7 @@ const SelectUsuarios = ({ usuarios = [], sizeUsuarios = 10, pagesUsuarios = 0, a
 
   useEffect(() => {
     const fetch = async () => {
-      const data = await atualizarUsuarios(page, pageSize);
+      const data = await atualizarUsuarios(page);
       if (data?.totalPages) setTotalPages(data.totalPages);
     };
     fetch();

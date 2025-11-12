@@ -1,18 +1,17 @@
-import {styled } from "@mui/material";
+import { styled } from "@mui/material";
 
 export const BoxBody = styled('div')(({ finalizado }) => ({
-    width: '200px',
-    height: '175px',
+    width: '100%',
+    height: '100%',
     background: '#1d1d1d',
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
     borderRadius: '10px',
-    flexShrink: 0,
     position: 'relative',
     cursor: 'pointer',
     opacity: finalizado ? 0.25 : 1,
-  transition: "opacity 0.3s ease"
+    transition: "opacity 0.3s ease"
 }));
 
 export const StatusCircle = styled('div')({
@@ -20,55 +19,52 @@ export const StatusCircle = styled('div')({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '100px',
-    height: '32px',
-    width: '32px',
     position: 'absolute',
-    right: '-22px',
-    top: '-14px',
-    right: '0',
-    top: '0',
-    zIndex: 6
+    right: '5px',
+    top: '5px',
+    zIndex: 10
+});
 
-})
 export const Title = styled('p')({
     fontWeight: 500,
     fontSize: '14px',
     color: '#fff',
+    width: '70%',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
+});
 
-})
 export const Subtitle = styled('p')({
     fontWeight: 300,
     fontSize: '12px',
     color: '#fff',
+    width: 'auto',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
+});
 
-})
 export const HeaderCard = styled('div')({
     height: '50%',
     width: '100%',
     backgroundColor: '#1d1d1d',
-    zIndex: '5',
-    position: 'absolute',
-    top: '0%',
-    right: '0%',
+    zIndex: '6',
     borderRadius: '10px 10px 0px 0px',
     overflow: 'hidden',
     backgroundSize: 'cover'
-})
+});
 
 export const BodyCard = styled('div')({
-    height: '50%',
-    backgroundColor: '#1d1d1d',
+    height: '60%',
     zIndex: '30',
-    position: 'absolute',
-    top: '60%',
-    right: '0',
-    left: '0',
     padding: '0.5rem',
     borderRadius: '10px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.5rem'
-})
+    justifyContent: 'space-between'
+});
+
 export const ProgressBar = styled('div')({
     height: '10px',
     width: '70%',
@@ -78,11 +74,10 @@ export const ProgressBar = styled('div')({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'start'
-})
+});
 
 export const Progress = styled('div')({
     height: '10px',
     backgroundColor: '#36518c',
     borderRadius: '2px',
-})
-      
+});

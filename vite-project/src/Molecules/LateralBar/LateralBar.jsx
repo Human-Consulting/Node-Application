@@ -135,18 +135,14 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                     }
 
                 </Item>
-                {nomeEmpresa != 'Empresas' ?
-                    <>
-                        <Item telaAtual={telaAtual} item="Dash" diminuido={diminuirLateralBar} onClick={handleOpenDash}>
-                            <Insights />
-                            {diminuirLateralBar ? null :
-                                <Title>
-                                    Dashboard Geral
-                                </Title>
-                            }
-                        </Item>
-                    </>
-                    : null}
+                <Item telaAtual={telaAtual} item="Dash" diminuido={diminuirLateralBar} onClick={handleOpenDash}>
+                    <Insights />
+                    {diminuirLateralBar ? null :
+                        <Title>
+                            Dashboard Geral
+                        </Title>
+                    }
+                </Item>
                 <Item telaAtual={telaAtual} item="Usuarios" diminuido={diminuirLateralBar} onClick={handleOpenUsuarios}>
                     <Group />
                     {diminuirLateralBar ? null :
@@ -158,10 +154,11 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
 
             </DivisorOne>
             <DivisorTwo>
-                <Item diminuido={diminuirLateralBar} sx={{ height: 'fit-content', padding: diminuirLateralBar ? '1rem' : '1rem 0 1rem 0' }} onClick={toggleMenuRapido}>
+                <Item diminuido={diminuirLateralBar} //onClick={toggleMenuRapido}
+                >
                     <Widgets />
                     {!diminuirLateralBar && (<Title style={{ flex: 1 }}>Menu Rápido</Title>)}
-                    {menuRapidoAberto ? <ChevronLeft sx={{ transform: 'rotate(90deg)' }} /> : <ChevronLeft sx={{ transform: 'rotate(-90deg)' }} />}
+                    {/* {menuRapidoAberto ? <ChevronLeft sx={{ transform: 'rotate(90deg)' }} /> : <ChevronLeft sx={{ transform: 'rotate(-90deg)' }} />} */}
                 </Item>
 
                 {menuRapidoAberto ? (
@@ -237,47 +234,48 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                         </Stack>
                     </>
                 ) :
-                    <Stack sx={{ display: 'flex', flex: 1, gap: '1.5rem', marginInline: '-5px', alignItems: diminuirLateralBar ? 'center' : 'start' }}>
-                        <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Stack sx={{ padding: '5px', border: 'solid #FFF 2px', borderRadius: '50%' }}>
-                                <HourglassEmpty sx={{ fontSize: '24px' }} />
-                            </Stack>
-                            {diminuirLateralBar ? null : "Ativos:"} {noneList}
-                        </Typography>
+                    // <Stack sx={{ display: 'flex', flex: 1, gap: '1.5rem', marginInline: '-5px', alignItems: diminuirLateralBar ? 'center' : 'start' }}>
+                    //     <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    //         <Stack sx={{ padding: '5px', border: 'solid #FFF 2px', borderRadius: '50%' }}>
+                    //             <HourglassEmpty sx={{ fontSize: '24px' }} />
+                    //         </Stack>
+                    //         {diminuirLateralBar ? null : "Ativos:"} {noneList}
+                    //     </Typography>
 
-                        <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Stack sx={{ padding: '5px', border: 'solid #2e7d32 2px', borderRadius: '50%' }}>
-                                <CheckCircle sx={{ fontSize: '24px' }} />
-                            </Stack>
-                            {diminuirLateralBar ? null : "Concluídos:"} {finalizadosList}
-                        </Typography>
+                    //     <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    //         <Stack sx={{ padding: '5px', border: 'solid #2e7d32 2px', borderRadius: '50%' }}>
+                    //             <CheckCircle sx={{ fontSize: '24px' }} />
+                    //         </Stack>
+                    //         {diminuirLateralBar ? null : "Concluídos:"} {finalizadosList}
+                    //     </Typography>
 
-                        <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Stack sx={{ padding: '5px', border: 'solid #D32F2F 2px', borderRadius: '50%' }}>
-                                <Block sx={{ fontSize: '24px' }} />
-                            </Stack>
-                            {diminuirLateralBar ? null : "Com Impedimento:"} {caosList}
-                        </Typography>
-                    </Stack>
+                    //     <Typography sx={{ color: '#fff', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    //         <Stack sx={{ padding: '5px', border: 'solid #D32F2F 2px', borderRadius: '50%' }}>
+                    //             <Block sx={{ fontSize: '24px' }} />
+                    //         </Stack>
+                    //         {diminuirLateralBar ? null : "Com Impedimento:"} {caosList}
+                    //     </Typography>
+                    // </Stack>
+                    null
                 }
 
             </DivisorTwo>
-            
+
             <Popover
-                    open={Boolean(anchorSearch)}
-                    anchorEl={anchorSearch}
-                    onClose={handleCloseSearch}
-                    anchorOrigin={{
-                      vertical: 'center',
-                      horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                      vertical: 'center',
-                      horizontal: 'right',
-                    }}
-                  >
-                    <Box sx={{ bgcolor: '#22272B', color: 'white', p: 1, borderRadius: 2 }}>
-                      <TextField
+                open={Boolean(anchorSearch)}
+                anchorEl={anchorSearch}
+                onClose={handleCloseSearch}
+                anchorOrigin={{
+                    vertical: 'center',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'center',
+                    horizontal: 'right',
+                }}
+            >
+                <Box sx={{ bgcolor: '#22272B', color: 'white', p: 1, borderRadius: 2 }}>
+                    <TextField
                         autoFocus
                         placeholder={`Buscar ${nomeEmpresa == 'Empresas' ? 'empresa' : 'projeto'}...`}
                         variant="outlined"
@@ -285,16 +283,16 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                         value={buscaTitulo}
                         onChange={(e) => setBuscaTitulo(e.target.value)}
                         sx={{
-                          input: { color: 'white' },
-                          '& .MuiOutlinedInput-root': {
-                            '& fieldset': { borderColor: 'white' },
-                            '&:hover fieldset': { borderColor: '#ccc' },
-                            '&.Mui-focused fieldset': { borderColor: '#1976d2' }
-                          }
+                            input: { color: 'white' },
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': { borderColor: 'white' },
+                                '&:hover fieldset': { borderColor: '#ccc' },
+                                '&.Mui-focused fieldset': { borderColor: '#1976d2' }
+                            }
                         }}
-                      />
-                    </Box>
-                  </Popover>
+                    />
+                </Box>
+            </Popover>
         </LateralNavBar>
     )
 }

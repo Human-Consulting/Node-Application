@@ -3,9 +3,9 @@ import { styled } from '@mui/system';
 
 export const PrincipalContainerStyled = styled(Box)({
     flex: 1,
-    backgroundColor: '#0D0D0D',
+    // backgroundColor: '#0D0D0D',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
 });
 
 export const HeaderContent = styled(Box)({
@@ -22,7 +22,7 @@ export const MidleCarrousel = styled(Box)({
     overflowX: 'hidden',
     overflowY: 'auto',
     height: '400px',
-    flex: 1,
+    height: '70%',
     padding: '1rem 1rem 2rem 1rem',
     scrollBehavior: 'smooth',
 

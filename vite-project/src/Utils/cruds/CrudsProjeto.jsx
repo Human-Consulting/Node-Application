@@ -52,9 +52,26 @@ export const getProjetos = async (idEmpresa, page, size, nome) => {
     }
 };
 
-export const getProjetoAtual = async (idProjeto) => {
+export const getDashboard = async (idProjeto) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/${idProjeto}`, {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/dashboard/${idProjeto}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error);
+        return [];
+    }
+};
+
+export const getBurndown = async (idProjeto) => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}/projetos/burndown/${idProjeto}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

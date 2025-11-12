@@ -4,12 +4,14 @@ import { Box, Button, TextField, Typography, Stack } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
+import dayjs from "dayjs";
 
-const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos, fkProjeto }) => {
+const FormsSprint = ({ sprint, toogleModal, atualizarSprints, atualizarProjetos, fkProjeto, dtLastSprint }) => {
+    const diaSeguinte = dayjs(dtLastSprint).add(1, 'day').format("YYYY-MM-DD");
 
     const [titulo, setTitulo] = useState(sprint?.titulo || "");
     const [descricao, setDescricao] = useState(sprint?.descricao || "");
-    const [dtInicio, setDtInicio] = useState(sprint?.dtInicio || "");
+    const [dtInicio, setDtInicio] = useState(sprint?.dtInicio || diaSeguinte);
     const [dtFim, setDtFim] = useState(sprint?.dtFim || "");
 
     const [erros, setErros] = useState({});

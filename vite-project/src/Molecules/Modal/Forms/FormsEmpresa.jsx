@@ -29,6 +29,7 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas }) => {
     const [cnpj, setCnpj] = useState(empresa?.cnpj ? formatarCNPJ(empresa?.cnpj) : "");
     const [nome, setNome] = useState(empresa?.nome || "");
     const [urlImagem, setUrlImagem] = useState('');
+    const [fileName, setFileName] = useState('');
 
     const [erros, setErros] = useState({});
 
@@ -199,8 +200,12 @@ const FormsEmpresa = ({ empresa, toogleModal, atualizarEmpresas }) => {
                 <input
                     type="file"
                     hidden
-                    onChange={(e) => handleFileUpload(e.target.files[0])}
+                    onChange={(e) => {
+                        handleFileUpload(e.target.files[0]);
+                        setFileName(e.target.files[0].name);
+                    }}
                 />
+                {fileName && (fileName)}
             </Button>
 
             <Stack direction="row" spacing={2} justifyContent="center" mt={2}>

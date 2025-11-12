@@ -1,23 +1,17 @@
-import { useRef } from 'react'
-import { KpiFinalizados, LateralNavBar, MiniCarrousel, SkipButton, Slide } from './LateralBarRight.styles'
+import { useRef, useState } from 'react'
+import { LateralNavBar, Section, Divisor, Title, Slide, SkipButton, KpiFinalizados } from './LateralBarRight.styles'
 import MiniProjectsCard from '../MiniProjectsCard/MiniProjectsCard'
 import { ArrowLeft, ArrowRight } from '@mui/icons-material';
-import { Title } from '../ProjectsCard/ProjectsCard.styles';
 import { Stack } from '@mui/material';
 import { TituloHeader } from '../PrincipalContainer/PrincipalContainer.styles';
-import { useParams } from 'react-router';
 
 const LateralBarRight = ({ showLateralBar, kpis }) => {
-  const { idEmpresa, nomeEmpresa } = useParams();
   if (!showLateralBar) return null;
 
-  let idx = 0
-  let idxTwo = 0
-  const carrousel = useRef(null)
-  const carrouselTwo = useRef(null)
-  // const caosList = projetos.length > 0 || empresas.length > 0 ? nomeEmpresa != 'Empresas' ? projetos.filter(item => item.comImpedimento == true) : empresas.filter(item => item.comImpedimento == true) : [];
-  // const noneList = projetos.length > 0 || empresas.length > 0 ? nomeEmpresa != 'Empresas' ? projetos.filter(item => item.progresso != 100) : empresas.filter(item => item.progresso != 100) : [];
-  // const finalizadosList = projetos.length > 0 || empresas.length > 0 ? nomeEmpresa != 'Empresas' ? projetos.filter(item => item.progresso == 100) : empresas.filter(item => item.progresso == 100) : [];
+  const [idx, setIdx] = useState(0);
+  const [idxTwo, setIdxTwo] = useState(0);
+  const carrousel = useRef(null);
+  const carrouselTwo = useRef(null);
 
   const caosList = kpis?.impedidos || [];
   const noneList = kpis?.totalAndamento || 0;
@@ -25,67 +19,103 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
 
   const handleRightSkip = () => {
     if (idx < caosList.length - 1) {
-      idx++;
-      carrousel.current.style.transform = `translateX(${-idx * 248}px)`;
+      const novo = idx + 1;
+      setIdx(novo);
+      carrousel.current.style.transform = `translateX(${-novo * (100 / caosList.length)}%)`;
     }
   };
 
   const handleLeftSkip = () => {
     if (idx > 0) {
-      idx--;
-      carrousel.current.style.transform = `translateX(${-idx * 248}px)`;
+      const novo = idx - 1;
+      setIdx(novo);
+      carrousel.current.style.transform = `translateX(${-novo * (100 / caosList.length)}%)`;
     }
   };
 
   const handleRightSkipTwo = () => {
     if (idxTwo < finalizadosList.length - 1) {
-      idxTwo++;
-      carrouselTwo.current.style.transform = `translateX(${-idxTwo * 248}px)`;
+      const novo = idxTwo + 1;
+      setIdxTwo(novo);
+      carrouselTwo.current.style.transform = `translateX(${-novo * (100 / finalizadosList.length)}%)`;
     }
   };
 
   const handleLeftSkipTwo = () => {
     if (idxTwo > 0) {
-      idxTwo--;
-      carrouselTwo.current.style.transform = `translateX(${-idxTwo * 248}px)`;
+      const novo = idxTwo - 1;
+      setIdxTwo(novo);
+      carrouselTwo.current.style.transform = `translateX(${-novo * (100 / finalizadosList.length)}%)`;
     }
   };
 
   return (
     <LateralNavBar>
-      <Stack>
-        <MiniCarrousel>
-          <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)', textAlign: 'center', width: '100%' }}>Com Impedimentos</Title>
-          {caosList.length > 1 ? <SkipButton lado={"esquerda"} onClick={handleLeftSkip} ><ArrowLeft sx={{ color: '#000' }} /></SkipButton> : null}
-          <Slide ref={carrousel}>
-            {caosList.length > 0 ? caosList.map(entidade => (
-              <MiniProjectsCard entidade={entidade} tipo={"impedimento"} />
-            )) : <MiniProjectsCard entidade={null} tipo={"impedimento"} />}
+      {/* IMPEDIDOS */}
+      <Section>
+        {caosList.length > 1 && idx > 0 && (
+          <SkipButton lado="esquerda" onClick={handleLeftSkip}>
+            <ArrowLeft sx={{ color: '#000' }} />
+          </SkipButton>
+        )}
+
+        <Divisor>
+          <Title>Impedidos</Title>
+          <Slide
+            ref={carrousel}
+            style={{ width: `${caosList.length * 100}%` }}>
+            {caosList.length > 0
+              ? caosList.map((entidade, i) => (
+                  <MiniProjectsCard key={i} entidade={entidade} tipo="impedimento" />
+                ))
+              : <MiniProjectsCard entidade={null} tipo="impedimento" />}
           </Slide>
-          {caosList.length > 1 ? <SkipButton lado={"direita"} onClick={handleRightSkip}><ArrowRight sx={{ color: '#000' }} /></SkipButton> : null}
-        </MiniCarrousel>
-      </Stack>
+        </Divisor>
 
-      <Stack sx={{ gap: '8px' }}>
-        <Title sx={{ width: '100%', textAlign: 'center' }}>Em Andamento</Title>
-        <KpiFinalizados><TituloHeader sx={{ color: '#FF0707', height: '72px' }}>{noneList}</TituloHeader></KpiFinalizados>
-      </Stack>
+        {caosList.length > 1 && idx < caosList.length - 1 && (
+          <SkipButton lado="direita" onClick={handleRightSkip}>
+            <ArrowRight sx={{ color: '#000' }} />
+          </SkipButton>
+        )}
+      </Section>
 
-      <Stack>
-        <MiniCarrousel>
-          <Title sx={{ position: 'absolute', top: '28px', left: '50%', transform: 'translate(-50%)', width: '100%', textAlign: 'center' }}>Finalizados</Title>
-          {finalizadosList.length > 1 ? <SkipButton lado={"esquerda"} onClick={handleLeftSkipTwo}><ArrowLeft sx={{ color: '#000' }} /></SkipButton> : null}
-          <Slide ref={carrouselTwo}>
-            {finalizadosList.length > 0 ? finalizadosList.map(entidade => (
-              <MiniProjectsCard entidade={entidade} tipo={"finalizado"} />
-            )) : <MiniProjectsCard entidade={null} tipo={"finalizado"} />}
+      {/* EM ANDAMENTO */}
+        <Stack sx={{ display: 'flex', justifyContent: 'center', gap: '8px', alignItems: 'center', marginBlock: '1rem', backgroundColor: '#121212', }}>
+          <Title sx={{ width: '100%', textAlign: 'center' }}>Em Andamento</Title>
+          <KpiFinalizados>
+            <TituloHeader sx={{ color: '#FF0707', height: '72px' }}>{noneList}</TituloHeader>
+          </KpiFinalizados>
+        </Stack>
+
+      {/* CONCLUÍDOS */}
+      <Section>
+        {finalizadosList.length > 1 && idxTwo > 0 && (
+          <SkipButton lado="esquerda" onClick={handleLeftSkipTwo}>
+            <ArrowLeft sx={{ color: '#000' }} />
+          </SkipButton>
+        )}
+
+        <Divisor>
+          <Title>Concluídos</Title>
+          <Slide
+            ref={carrouselTwo}
+            style={{ width: `${finalizadosList.length * 100}%` }}>
+            {finalizadosList.length > 0
+              ? finalizadosList.map((entidade, i) => (
+                  <MiniProjectsCard key={i} entidade={entidade} tipo="finalizado" />
+                ))
+              : <MiniProjectsCard entidade={null} tipo="finalizado" />}
           </Slide>
-          {finalizadosList.length > 1 ? <SkipButton lado={"direita"} onClick={handleRightSkipTwo}><ArrowRight sx={{ color: '#000' }} /></SkipButton> : null}
-        </MiniCarrousel>
-      </Stack>
+        </Divisor>
 
+        {finalizadosList.length > 1 && idxTwo < finalizadosList.length - 1 && (
+          <SkipButton lado="direita" onClick={handleRightSkipTwo}>
+            <ArrowRight sx={{ color: '#000' }} />
+          </SkipButton>
+        )}
+      </Section>
     </LateralNavBar>
-  )
-}
+  );
+};
 
-export default LateralBarRight
+export default LateralBarRight;

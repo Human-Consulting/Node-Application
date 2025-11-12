@@ -55,7 +55,6 @@ export const getUsuarios = async (idEmpresa, page, size, nome) => {
 export const getUsuariosResponsaveis = async (idEmpresa, page, size) => {
     try {
         const url = `/usuarios/buscarResponsaveisPorEmpresa/${idEmpresa}?page=${page}&size=${size}`;
-        console.log(url);
 
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}${url}`, {
             method: 'GET',

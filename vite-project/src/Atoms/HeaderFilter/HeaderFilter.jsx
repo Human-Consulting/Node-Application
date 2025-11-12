@@ -12,8 +12,6 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
   const [anchorSearch, setAnchorSearch] = useState(null);
   const [onSearch, setOnSearch] = useState(false);
 
-  // const usuariosProjeto = usuarios.filter(projeto => projeto.idProjeto == idProjeto).usuarios;
-
   const statusOptions = [
     { value: 'TODOS', icon: <AllInclusive />, label: 'Todos' },
     { value: 'IMPEDIDOS', icon: <Block />, label: 'Impedidos' }
@@ -48,12 +46,16 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
 
   const handleCloseSearch = () => {
     setAnchorSearch(null);
-    // setBuscaTitulo("");
   };
 
   const filterByUsuario = (usuario) => {
-    setUsuarioFiltrado(usuario.nome);
-    setTarefasFiltradas(tarefaData.filter(t => t.responsavel.idUsuario === usuario.idUsuario));
+    if (usuario == "#") {
+      setUsuarioFiltrado("?");
+      setTarefasFiltradas(todasTarefas.filter(t => t?.responsavel === null));
+    } else {
+      setUsuarioFiltrado(usuario.nome);
+      setTarefasFiltradas(todasTarefas.filter(t => t?.responsavel?.idUsuario === usuario.idUsuario));
+    }
     handleCloseUserFilter();
   };
 
@@ -164,6 +166,13 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
         }}
       >
         <Box sx={{ bgcolor: '#22272B', color: 'white', p: 1, borderRadius: 2 }}>
+          <MenuItem
+            key={"#"}
+            onClick={() => filterByUsuario("#")}
+            sx={{ color: '#fff' }}
+          >
+            {"Não atribuídas"}
+          </MenuItem>
           {usuarios.map(user => (
             <MenuItem
               key={user.idUsuario}
@@ -174,6 +183,7 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
             </MenuItem>
           ))}
         </Box>
+
       </Popover>
       <Popover
         open={Boolean(anchorSearch)}

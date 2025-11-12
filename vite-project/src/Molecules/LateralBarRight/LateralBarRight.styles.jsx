@@ -2,57 +2,60 @@ import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const LateralNavBar = styled(Box)({
-    width: '300px',
-    minWidth: '300px',
-    maxWidth: '350px',
-    background: '#0d0d0d',
+    width: '20%',
+    minWidth: '20%',
+    backgroundColor: '#0d0d0d',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     flexDirection: 'column',
-    zIndex: 5,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '1rem',
+    gap: '1rem'
 });
 
-export const MiniCarrousel = styled('div')({
-    width: '250px',
-    height: '300px',
+export const Section = styled(Box)({
     display: 'flex',
     flexDirection: 'row',
-    gap: '3rem',
-    alignItems: 'center',
-    justifyContent: 'start',
-    position: 'relative',
-    flexShrink: '0',
-    scrollbarColor: 'hidden',
-    overflowX:'hidden',
+    justifyContent: 'center',
+    alignItens: 'center',
+    flex: 1,
+    width: '100%',
+    backgroundColor: '#121212',
+    position: 'relative'
+});
+
+export const Divisor = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItens: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    borderRadius: '10px',
+    width: '80%',
+})
+
+export const Title = styled('p')({
+    fontWeight: 500,
+    fontSize: '16px',
+    color: '#fff',
+    textAlign: 'center'
 });
 
 export const Slide = styled('div')({
-    width: '100%',
     display: 'flex',
-    gap: '3rem',
-    paddingLeft: '1.5rem',
-    flexShrink: '0',
-    scrollbarColor: 'hidden',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    justifyContent: 'start',
+    height: '100%',
     transition: 'transform 0.5s ease-in-out',
     transform: 'translateX(0)',
-
-});
-export const KpiFinalizados = styled('div')({
-    width: '200px',
-    height: '75px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#d4d4d4',
-    borderRadius: '10px',
-    
-
+    scrollSnapType: 'x mandatory',
+    // gap: '1rem',
 });
 
 export const SkipButton = styled('button')(({ lado }) => ({
-    width: '35px',
-    height: '35px',
+    width: '25px',
+    height: '25px',
     padding: '0',
     backgroundColor: '#1D1D1D',
     border: 'solid #DDD 2px',
@@ -61,12 +64,22 @@ export const SkipButton = styled('button')(({ lado }) => ({
     justifyContent: 'center',
     borderRadius: '100px',
     position: 'absolute',
-    top: '45%',
-    left: lado == 'esquerda' ? '3%' : 'auto',
-    right: lado == 'direita' ? '3%' : 'auto',
-    zIndex:  '100',
+    top: '50%',
+    left: lado == 'esquerda' ? '0' : 'auto',
+    right: lado == 'direita' ? '0' : 'auto',
+    zIndex: '100',
     cursor: 'pointer',
     '&:focus': {
-        outline: 'none' 
+        outline: 'none'
     }
 }));
+
+export const KpiFinalizados = styled('div')({
+    width: '200px',
+    height: '75px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#d4d4d4',
+    borderRadius: '10px',
+});

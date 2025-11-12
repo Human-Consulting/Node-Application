@@ -135,12 +135,12 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
   ];
 
   return (
-    <div className="App" style={{ paddingInline: '1rem', flex: 1, background: '#0d0d0d', width: 'calc(100% + 1rem)', borderRadius: '20px', justifyContent: 'space-evenly', display: 'flex', flexDirection: 'column' }}>
+    <div className="App" style={{ padding: '1rem', height: '70%', background: '#101010', width: '100%', borderRadius: '20px', justifyContent: 'space-between', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2>Investimentos</h2>
         {idProjeto == null ? null : <MoreVertIcon sx={{ cursor: 'pointer' }} onClick={handleBadgeClick} />}
       </div>
-      <Chart options={options} series={series} type="area" height={250} />
+      <Chart options={options} series={series} type="area" height={'85%'} />
       <ModalInvestimento
         investimentos={financeiros || []}
         open={openPopover}
