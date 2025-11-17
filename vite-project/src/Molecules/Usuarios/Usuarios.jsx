@@ -29,7 +29,7 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
   const [onSearch, setOnSearch] = useState(false);
 
   const clearSearch = async () => {
-    await atualizarUsuarios();
+    await atualizarUsuarios(0, null);
     setOnSearch(false);
     setBuscaTitulo("");
   }
@@ -58,7 +58,7 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
 
   const atualizarUsuarios = async (page = 0, nome = null) => {
     try {
-      const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, 6, nome);
+      const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, 6, nome, false);
 
       setUsuarios(usuariosRetornados?.content || []);
       setUsuariosFiltrados(usuariosRetornados?.content || []);
@@ -74,7 +74,7 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
       setLoading(true);
       toogleLateralBar();
       telaAtual();
-      const usuariosEncontrados = await atualizarUsuarios(page);
+      const usuariosEncontrados = await atualizarUsuarios();
       setLoading(false);
     }
     atualizar();

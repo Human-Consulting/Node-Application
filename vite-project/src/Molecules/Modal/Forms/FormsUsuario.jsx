@@ -100,7 +100,6 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, editar
         });
     };
 
-
     return (
         <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
             <Typography variant="h5" textAlign="center" mb={2}>
@@ -208,42 +207,38 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, editar
                             <MenuItem key="#" value="#">
                                 Selecione a permissão
                             </MenuItem>
-                            
+
                             {(() => {
                                 const isEmpresas = nomeEmpresa === 'Empresas';
                                 const isConsultor = usuarioLogado.permissao.includes('CONSULTOR');
 
                                 if (isEmpresas) {
-                                    if (!diretor) {
+                                    if (!diretor || (diretor && usuario?.permissao.includes("DIRETOR"))) {
                                         return (
                                             <MenuItem key="CONSULTOR_DIRETOR" value="CONSULTOR_DIRETOR">
                                                 Consultor Diretor
                                             </MenuItem>
                                         );
                                     } else {
-                                        return (
-                                            <>
-                                            {isConsultor && (<MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>)}
-                                                <MenuItem key="GESTOR" value="GESTOR">Gestor</MenuItem>
-                                                <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
-                                            </>
-                                        );
+                                        return ([
+                                            isConsultor && <MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>,
+                                            <MenuItem key="GESTOR" value="GESTOR">Gestor</MenuItem>,
+                                            <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
+                                        ]);
                                     }
                                 } else {
-                                    if (!diretor) {
+                                    if (!diretor || (diretor && usuario?.permissao.includes("DIRETOR"))) {
                                         return (
                                             <MenuItem key="DIRETOR" value="DIRETOR">
                                                 Diretor
                                             </MenuItem>
                                         );
                                     } else {
-                                        return (
-                                            <>
-                                                {isConsultor && (<MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>)}
-                                                <MenuItem key="GESTOR" value="GESTOR">Gestor</MenuItem>
-                                                <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
-                                            </>
-                                        );
+                                        return ([
+                                            isConsultor && <MenuItem key="CONSULTOR" value="CONSULTOR">Consultor</MenuItem>,
+                                            <MenuItem key="GESTOR" value="GESTOR">Gestor</MenuItem>,
+                                            <MenuItem key="FUNC" value="FUNC">Team Member</MenuItem>
+                                        ]);
                                     }
                                 }
                             })()}

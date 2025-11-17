@@ -97,7 +97,6 @@ const ModalTarefas = ({ tarefas = [], open, anchorEl, onClose }) => {
                 }
             }}
         >
-            {/* CALENDÁRIO */}
             <Box sx={{ p: 2, borderRight: "1px solid #222", width: "45%", display: "flex", flexDirection: "column" }}>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
                     <IconButton onClick={() => handleMesChange(-1)}><ArrowBackIos sx={{ color: "#fff", fontSize: 16 }} /></IconButton>
@@ -148,7 +147,6 @@ const ModalTarefas = ({ tarefas = [], open, anchorEl, onClose }) => {
                 </Grid>
             </Box>
 
-            {/* LISTA DE TAREFAS */}
             <List sx={{
                 flex: 1,
                 overflowY: "auto",

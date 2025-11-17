@@ -6,8 +6,6 @@ import MinimalBarChart from '../BarChart/BarChart';
 const GraficoTarefas = ({ entidade, usuarios }) => {
   const [filtro, setFiltro] = useState('Área');
 
-  console.log(usuarios);
-
   const dados =
     filtro === 'Área'
       ? {

@@ -1,9 +1,9 @@
 import Chart from 'react-apexcharts';
 
 const PizzaChart = ({ kpis }) => {
-  const caosTotal = kpis?.impedidos.length || 0;
+  const caosTotal = kpis?.impedidos?.length || 0;
   const noneTotal = kpis?.totalAndamento || 0;
-  const finalizadosTotal = kpis?.finalizadas.length || 0;
+  const finalizadosTotal = kpis?.finalizadas?.length || 0;
   const qtdTotal = caosTotal + noneTotal + finalizadosTotal;
 
   const series = [finalizadosTotal, noneTotal, caosTotal];

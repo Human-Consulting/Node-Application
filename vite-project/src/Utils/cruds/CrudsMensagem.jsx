@@ -17,7 +17,7 @@ export const postMensagem = async (newMensagem) => {
 
         const data = await res.json();
 
-        showSwal(res.status, res.statusText);
+        // showSwal(res.status, res.statusText);
         return res.ok ? data : false;
     } catch (error) {
         console.error(error);

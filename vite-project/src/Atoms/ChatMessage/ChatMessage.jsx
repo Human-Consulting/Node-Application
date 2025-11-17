@@ -1,5 +1,6 @@
-import { Avatar, Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { MessageBody, MessageText } from "./Chat.styles";
+import { getNome } from "../../Utils/getInfos";
 
 const ChatMessage = ({ date, message, userName, informativo, isOwnMessage }) => {
 
@@ -30,18 +31,104 @@ const ChatMessage = ({ date, message, userName, informativo, isOwnMessage }) => 
   }
 
   return (
-    <Stack sx={{ width: '100%', alignItems: informativo ? 'center' : isOwnMessage ? 'flex-end' : 'flex-start', mb: 2, zIndex: 10 }}>
-      {!isOwnMessage && (<p style={{ fontSize: '14px', color: '#d4d4d4', marginBottom: '4px', userSelect: 'none', marginInline: '1rem' }}>
-        {userName}
-      </p>)}
-      <MessageBody isOwnMessage={isOwnMessage}>
-        <MessageText>{message}</MessageText>
-      </MessageBody>
-      {!informativo && <p style={{ fontSize: '14px', color: '#d4d4d4', marginTop: '4px', userSelect: 'none', marginInline: '1rem' }}>
-        {formatarDataMensagem()}
-      </p>}
+    <Stack
+      sx={{
+        width: '100%',
+        justifyContent: informativo
+          ? 'center'
+          : isOwnMessage
+            ? 'flex-end'
+            : 'flex-start',
+        mb: 2,
+        zIndex: 10,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        paddingInline: '1rem'
+      }}
+    >
+      {informativo ? (
+        <MessageBody isOwnMessage={false}>
+          <MessageText>{message}</MessageText>
+        </MessageBody>
+      ) : (
+        <Stack
+          sx={{
+            alignItems: isOwnMessage ? 'flex-end' : 'flex-start',
+            maxWidth: '80%',
+          }}
+        >
+          <Stack
+            direction="row"
+            spacing={1}
+            marginLeft={6}
+            sx={{
+              justifyContent: isOwnMessage ? 'flex-end' : 'flex-start',
+              width: '100%',
+              mb: 0.5,
+
+            }}
+          >
+            {!isOwnMessage && (
+              <Typography
+                sx={{
+                  fontSize: '11px',
+                  color: '#d4d4d4',
+                  fontWeight: 500,
+                  userSelect: 'none',
+                }}
+              >
+                {userName}
+              </Typography>
+            )}
+
+            <Typography
+              sx={{
+                fontSize: '11px',
+                color: '#a0a0a0',
+                userSelect: 'none',
+              }}
+            >
+              {formatarDataMensagem()}
+            </Typography>
+          </Stack>
+
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'flex-end',
+              justifyContent: isOwnMessage ? 'flex-end' : 'flex-start',
+            }}
+          >
+            {!isOwnMessage && (
+              <Stack
+                sx={{
+                  minWidth: '40px',
+                  height: '40px',
+                  backgroundColor: '#FFF',
+                  color: '#000',
+                  // backgroundColor: '#1d1d1d',
+                  // color: '#fff',
+                  borderRadius: '50%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  fontWeight: 'bold',
+                  fontSize: '14px',
+                }}
+              >
+                {getNome(userName)}
+              </Stack>
+            )}
+
+            <MessageBody isOwnMessage={isOwnMessage}>
+              <MessageText>{message}</MessageText>
+            </MessageBody>
+          </Stack>
+        </Stack>
+      )}
     </Stack>
   );
+
 };
 
 export default ChatMessage;

@@ -174,8 +174,7 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                                     label={<Search sx={{ fontSize: '16px' }} />} onClick={handleOpenSearch} />
                             </ChipZone>
                         )}
-
-                        <CardZone sx={{ marginInline: diminuirLateralBar ? '-15px' : 0 }}>
+                        <CardZone>
                             {menuLista.length > 0 && menuLista.map(entidade => (
                                 <ProjectsTypes key={entidade.idProjeto || entidade.idEmpresa} entidade={entidade} diminuirLateralBar={diminuirLateralBar} telaAtual={telaAtual} />
                             ))}

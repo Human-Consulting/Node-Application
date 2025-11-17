@@ -4,7 +4,6 @@ import { styled } from '@mui/system';
 export const TextInput = styled('input')({
   width: '75%',
   height: '50px',
-  padding: '1rem'
 });
 
 export const ContainerGeral = styled(Box)({
@@ -13,33 +12,6 @@ export const ContainerGeral = styled(Box)({
   display: 'flex',
   fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
 });
-
-export const LateralMessage = styled(Box)({
-  width: '20%',
-  width: '25%',
-  height: '100%',
-  background: '#0d0d0d',
-  display: 'flex',
-  flexDirection: 'column',
-  borderRight: '1px solid #2e2e2e',
-  boxShadow: '2px 0 8px rgba(0,0,0,0.3)',
-});
-
-export const ContactItem = styled(Box)(({ active }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem',
-  padding: '0.6rem 1rem',
-  margin: '0.3rem 0.8rem',
-  borderRadius: '10px',
-  cursor: 'pointer',
-  border: active ? '1px solid #3f5a88' : '1px solid transparent',
-  transition: 'all 0.2s ease',
-  '&:hover': {
-    backgroundColor: '#333',
-    border: '1px solid #3f5a88',
-  },
-}));
 
 export const ContactAvatar = styled('img')({
   width: '44px',
@@ -64,7 +36,7 @@ export const BackChat = styled(Box)({
 });
 
 export const Header = styled(Box)({
-  padding: '1rem 1rem',
+  padding: '0.5rem',
   borderBottom: '1px solid #333',
   background: "linear-gradient(180deg, #151515 0%, #0d0d0d 100%)",
   position: 'sticky',
@@ -77,11 +49,10 @@ export const Header = styled(Box)({
   marginBottom: '1rem'
 });
 
-export const ItemHeader = styled(Box)({
+export const HeaderContent = styled(Box)({
   display: 'flex',
-  flexDirection: 'row',
   alignItems: 'center',
-  gap: '0.75rem'
+  gap: '0.5rem'
 });
 
 export const MessageWrapper = styled(Box)(({ sent }) => ({
@@ -105,7 +76,7 @@ export const MessageSender = styled('span')({
 });
 
 export const MessageBox = styled(Box)(({ sent }) => ({
-  padding: '12px 16px',
+  // padding: '12px 16px',
   borderRadius: '16px',
   backgroundColor: sent ? '#28a745' : '#2a2a2a',
   color: sent ? '#f0f0f0' : '#ddd',
@@ -137,30 +108,45 @@ export const MessageAvatar = styled('img')({
 
 export const ChatInputContainer = styled(Box)({
   display: 'flex',
-  background: "linear-gradient(180deg, #151515 0%, #0d0d0d 100%)",
+  background: "#1d1d1d",
+  background: "#1d1d1d",
   zIndex: 10,
-  borderTop: '1px solid #333',
+  margin: '1rem',
+  borderRadius: '10px',
+  border: '4px solid transparent',
+
+  '&:focus-within': {
+    borderBottom: '4px solid #1A4D7A',
+  },
 });
 
 export const ChatInput = styled(InputBase)({
+  padding: '0.75rem',
   flex: 1,
-  padding: '12px 16px',
   fontSize: '1rem',
   color: '#eee',
   '& .MuiInputBase-input::placeholder': {
     color: '#FFF',
   }
 });
+
+export const SendButton = styled(Button)({
+  backgroundColor: 'transparent',
+  borderRadius: 0,
+  '&:hover': {
+    backgroundColor: '#1A4D7A',
+  },
+});
+
 export const Scroll = styled(Box)({
   width: '100%',
-  height: '90%',
+  flex: 1,
   display: 'flex',
   flexDirection: 'column',
   overflowY: 'scroll',
-  paddingRight: '1rem',
   zIndex: 10,
   '&::-webkit-scrollbar': {
-    width: '8px',
+    width: '4px',
   },
   '&::-webkit-scrollbar-track': {
     background: 'transparent',
@@ -172,17 +158,4 @@ export const Scroll = styled(Box)({
   '&::-webkit-scrollbar-thumb:hover': {
     background: '#aaa',
   },
-
 });
-export const SendButton = styled(Button)({
-  padding: '12px 24px',
-  backgroundColor: 'transparent',
-  '&:hover': {
-    backgroundColor: '#1A4D7A',
-  },
-  '&:active': {
-    backgroundColor: '#1e6c2f',
-  },
-});
-
-

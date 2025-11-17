@@ -14,9 +14,6 @@ p {
 }
 
 body {
-  /* display: flex; */
-  /* align-items: center; */
-  /* justify-content: center; */
   height: 10px;
   background-color: #000;
   ::-webkit-scrollbar {

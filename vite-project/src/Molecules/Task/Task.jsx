@@ -56,7 +56,6 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
     setLoading(true);
     const sprints = await getSprints(idProjeto);
     setSprintsList(sprints);
-    console.log(sprints[sprints.length - 1]);
     setDtLastSprint(sprints[sprints.length - 1].dtFim);
     setLoading(false);
   };

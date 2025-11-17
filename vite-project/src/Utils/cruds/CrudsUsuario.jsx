@@ -24,12 +24,12 @@ export const postUsuario = async (newUsuario) => {
     }
 };
 
-export const getUsuarios = async (idEmpresa, page, size, nome) => {
+export const getUsuarios = async (idEmpresa, page, size, nome, comConsultores) => {
     try {
         const url = nome != null
-            ? `/usuarios/buscarPorEmpresa/${idEmpresa}?page=${page}&size=${size}&nome=${nome}`
-            : `/usuarios/buscarPorEmpresa/${idEmpresa}?page=${page}&size=${size}`;
-
+            ? `/usuarios/buscarPorEmpresa/${idEmpresa}?page=${page}&size=${size}&nome=${nome}&comConsultores=${comConsultores}`
+            : `/usuarios/buscarPorEmpresa/${idEmpresa}?page=${page}&size=${size}&comConsultores=${comConsultores}`;
+            
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}${url}`, {
             method: 'GET',
             headers: {

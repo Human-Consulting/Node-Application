@@ -34,14 +34,6 @@ const AreaData = ({ usuario, total }) => {
         <TextDefault>{usuario.cargo}</TextDefault>
         <Number>{usuario.qtdTarefas} {usuario.qtdTarefas == 1 ? "tarefa" : "tarefas"}</Number>
         </Stack>
-      {/* <Stack sx={{ flexDirection: 'row', alignItems: 'center', gap: 1 }}>
-        <ProgressBar>
-          <Progress sx={{ width: `${(valor * 100) / total}%` }} />
-        </ProgressBar>
-        <TextDefault>
-          {percentual}%
-        </TextDefault>
-      </Stack> */}
     </AreaDataBox>
   )
 }

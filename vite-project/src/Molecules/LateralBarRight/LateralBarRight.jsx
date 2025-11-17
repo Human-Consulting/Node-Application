@@ -51,7 +51,6 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
 
   return (
     <LateralNavBar>
-      {/* IMPEDIDOS */}
       <Section>
         {caosList.length > 1 && idx > 0 && (
           <SkipButton lado="esquerda" onClick={handleLeftSkip}>
@@ -79,7 +78,6 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
         )}
       </Section>
 
-      {/* EM ANDAMENTO */}
         <Stack sx={{ display: 'flex', justifyContent: 'center', gap: '8px', alignItems: 'center', marginBlock: '1rem', backgroundColor: '#121212', }}>
           <Title sx={{ width: '100%', textAlign: 'center' }}>Em Andamento</Title>
           <KpiFinalizados>
@@ -87,7 +85,6 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
           </KpiFinalizados>
         </Stack>
 
-      {/* CONCLUÍDOS */}
       <Section>
         {finalizadosList.length > 1 && idxTwo > 0 && (
           <SkipButton lado="esquerda" onClick={handleLeftSkipTwo}>

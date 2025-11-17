@@ -118,6 +118,10 @@ const FormsSala = ({ sala, toogleModal, usuarios, atualizarSalas }) => {
         return (aCheck === bCheck) ? 0 : aCheck ? -1 : 1;
     });
 
+    const podeEditarSala = () => {
+        if (sala == null || (sala?.fkEmpresa != null && sala?.fkProjeto != null)) return true;
+    }
+
     return (
         <Stack direction="column" mb={2} >
             <Typography variant="h5" textAlign="center" mb={2}>
@@ -126,36 +130,40 @@ const FormsSala = ({ sala, toogleModal, usuarios, atualizarSalas }) => {
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 }} >
                 <Box component="form" onSubmit={(e) => e.preventDefault()} sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center', justifyContent: 'center' }} >
 
-                    <TextField
-                        label="Nome"
-                        value={nome}
-                        onChange={(e) => {
-                            removerErro(nome)
-                            setNome(e.target.value)
-                        }}
-                        fullWidth
-                        variant="outlined"
-                        InputLabelProps={{ style: inputStyle.label }}
-                        InputProps={{ style: inputStyle.input }}
-                        sx={inputStyle.sx}
-                        error={!!erros.nome}
-                        helperText={erros.nome}
-                    />
+                    {podeEditarSala() && (
+                        <>
+                            <TextField
+                                label="Nome"
+                                value={nome}
+                                onChange={(e) => {
+                                    removerErro(nome)
+                                    setNome(e.target.value)
+                                }}
+                                fullWidth
+                                variant="outlined"
+                                InputLabelProps={{ style: inputStyle.label }}
+                                InputProps={{ style: inputStyle.input }}
+                                sx={inputStyle.sx}
+                                error={!!erros.nome}
+                                helperText={erros.nome}
+                            />
 
-                    <Button
-                        variant="contained"
-                        component="label"
-                        fullWidth
-                        sx={{ ...inputStyle.sx, py: 1.5 }}
-                    >
-                        {sala == null ? 'Selecionar' : 'Modificar'} Imagem
-                        <AttachFile />
-                        <input
-                            type="file"
-                            hidden
-                            onChange={(e) => handleFileUpload(e.target.files[0])}
-                        />
-                    </Button>
+                            <Button
+                                variant="contained"
+                                component="label"
+                                fullWidth
+                                sx={{ ...inputStyle.sx, py: 1.5 }}
+                            >
+                                {sala == null ? 'Selecionar' : 'Modificar'} Imagem
+                                <AttachFile />
+                                <input
+                                    type="file"
+                                    hidden
+                                    onChange={(e) => handleFileUpload(e.target.files[0])}
+                                />
+                            </Button>
+                        </>
+                    )}
                 </Box>
 
                 <Box component="form" onSubmit={(e) => e.preventDefault()} sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center', justifyContent: 'center' }} >

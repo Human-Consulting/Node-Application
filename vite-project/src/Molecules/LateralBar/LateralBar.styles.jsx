@@ -31,7 +31,8 @@ export const DivisorTwo = styled(Box)(({
     gap: '0.5rem',
     flexGrow: 1,
     minHeight: 0,
-    paddingBottom: '0.5rem'
+    paddingBottom: '0.5rem',
+    paddingInline: '0.5rem',
 }));
 
 export const ChipZone = styled(Box)({
@@ -42,13 +43,11 @@ export const ChipZone = styled(Box)({
 
 export const CardZone = styled(Box)(({
     overflowY: 'auto',
-    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
-    paddingInline: '0.5rem',
     '&::-webkit-scrollbar': {
-        width: '8px',
+        width: '4px',
     },
     '&::-webkit-scrollbar-track': {
         background: 'transparent',
