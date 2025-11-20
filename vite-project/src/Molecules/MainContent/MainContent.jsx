@@ -79,10 +79,13 @@ const MainContent = () => {
   };
 
   const buscarUsuarios = async (page = 0, nome = null) => {
+    if (page == null) page = 0;
+    if (nome == null) nome = null;
     const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, 4, nome, false);
     setUsuarios(usuariosRetornados?.content || []);
     setSizeUsuarios(usuariosRetornados?.pageSize || 10);
     setTotalPagesUsuarios(usuariosRetornados?.totalPages || 1);
+    console.log(usuariosRetornados);
   }
 
   const atualizarLaterais = async ({ idEmpresa = null, page = 0, nome = null, impedidos = null, concluidos = null,
@@ -104,7 +107,7 @@ const MainContent = () => {
     else await atualizarProjetos();
     await atualizarLaterais({ entidade: nomeEmpresa === "Empresas" ? 'empresas' : 'projetos', idEmpresa: idEmpresa });
     await atualizarLateraisKpis({ idEmpresa: idEmpresa });
-    await buscarUsuarios(null, 0, null);
+    await buscarUsuarios(0, null);
     setLoading(false);
   };
 

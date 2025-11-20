@@ -18,6 +18,7 @@ export const ModalContent = styled(Box)({
     position: 'absolute',
     width: '450px',
     backgroundColor: '#000',
+    // backgroundColor: '#22272B',
     borderRadius: 8,
     paddingInline: 20,
     paddingBlock: '1rem',

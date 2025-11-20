@@ -69,7 +69,8 @@ const ModalAdicionarUsuarios = ({ open, onClose, sala, onConfirm }) => {
     };
 
     const confirmar = () => {
-        onConfirm(selecionados);
+        const objetosSelecionados = usuariosCache.filter(u => selecionados.includes(u.idUsuario));
+        onConfirm(objetosSelecionados);
         setSelecionados([]);
         onClose();
     };
@@ -134,8 +135,8 @@ const ModalAdicionarUsuarios = ({ open, onClose, sala, onConfirm }) => {
                             </Box>
 
                             <Checkbox
-                                checked={selecionados.includes(u.idUsuario)}
-                                disabled={participantesOriginais.includes(u.idUsuario)}
+                                checked={selecionados.includes(u.idUsuario) || u.idUsuario == usuarioLogado.idUsuario}
+                                disabled={participantesOriginais.includes(u.idUsuario) || u.idUsuario == usuarioLogado.idUsuario}
                                 onChange={() => toggleUsuario(u.idUsuario)}
                             />
                         </Stack>

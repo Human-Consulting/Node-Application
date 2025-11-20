@@ -116,6 +116,7 @@ const CentralTask = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, 
 
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
 
+  console.log(usuarios);
   return (
     <Stack sx={{ width: '100%', height: '100%', padding: '1.5rem', gap: '1rem' }}>
       <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={0} />

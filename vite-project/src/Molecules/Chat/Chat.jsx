@@ -17,14 +17,15 @@ import ModalChatAdicionar from "../Modais/ModalChat/ModalChatAdicionar.jsx";
 
 
 const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, usuarios }) => {
-  const [selectedChatId, setSelectedChatId] = useState(1);
+  const [selectedChatId, setSelectedChatId] = useState(null);
   const [salas, setSalas] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [sala, setSala] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [popoverAnchor, setPopoverAnchor] = useState(null);
+  const [popoverAdicionarAnchor, setPopoverAdicionarAnchor] = useState(null);
+  const [popoverEditarAnchor, setPopoverEditarAnchor] = useState(null);
   const [selectedSala, setSelectedSala] = useState(null);
 
   const [gruposAbertos, setGruposAbertos] = useState({});
@@ -91,7 +92,9 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
     setSalas(
       salas
         .map((sala) => ({
-          ...sala, mensagens: sala.mensagens
+          ...sala,
+          // mensagens: sala.mensagens
+          mensagens: [...sala.mensagens]
         }))
         .sort((a, b) => {
           const ultimoA = a.mensagens[a.mensagens.length - 1];
@@ -270,10 +273,9 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
               '&:hover': {
                 backgroundColor: '#888',
               },
-              // }} onClick={() => toogleModal(null)} />
             }} onClick={(e) => {
               setSelectedSala(null);
-              setPopoverAnchor(e.currentTarget);
+              setPopoverAdicionarAnchor(e.currentTarget);
             }} />
 
           </ItemHeader>
@@ -403,12 +405,13 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
             {/* <MoreVert onClick={() => toogleModal(selectedChat)} sx={{ cursor: 'pointer' }} /> */}
             <MoreVert onClick={(e) => {
               setSelectedSala(selectedChat);
-              setPopoverAnchor(e.currentTarget)
+              setPopoverEditarAnchor(e.currentTarget)
             }} sx={{ cursor: 'pointer' }} />
           </Header>
 
           <Scroll ref={scrollRef}>
             {selectedChat?.mensagens.map((mensagem, index) => {
+              console.log("🪲", selectedChat);
               const sender = getSenderInfo(selectedChat, mensagem.idUsuario);
               const msgAtualData = new Date(mensagem.horario).toDateString();
               const msgAnteriorData =
@@ -487,17 +490,17 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
       </BackChat>
 
       <ModalChatAdicionar
-        open={Boolean(popoverAnchor)}
-        anchorEl={popoverAnchor}
-        onClose={() => setPopoverAnchor(null)}
+        open={Boolean(popoverAdicionarAnchor)}
+        anchorEl={popoverAdicionarAnchor}
+        onClose={() => setPopoverAdicionarAnchor(null)}
         sala={selectedSala}
         atualizarSalas={fetchChats}
       />
-      
+
       <ModalChatEditar
-        open={Boolean(popoverAnchor)}
-        anchorEl={popoverAnchor}
-        onClose={() => setPopoverAnchor(null)}
+        open={Boolean(popoverEditarAnchor)}
+        anchorEl={popoverEditarAnchor}
+        onClose={() => setPopoverEditarAnchor(null)}
         sala={selectedSala}
         atualizarSalas={fetchChats}
       />

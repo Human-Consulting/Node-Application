@@ -247,7 +247,7 @@ const FormsUsuario = ({ diretor, usuario, toogleModal, atualizarUsuarios, editar
                 </>
             )}
 
-            <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+            <Stack width="100%" direction="row" spacing={2} justifyContent="center" mt={2} backgroundColor="#1a1e22">
                 {usuario == null ? (
                     <Button
                         variant="contained"
