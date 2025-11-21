@@ -9,7 +9,7 @@ import CentralTask from './Molecules/CentralTask/CentralTask.jsx'
 import Usuarios from './Molecules/Usuarios/Usuarios.jsx'
 import Dashboard from './Molecules/Dashboard/Dashboard.jsx'
 import LoginContainer from './Molecules/LoginContainer/LoginContainer.jsx'
-import Chat from './Molecules/Chat/Chat.jsx'
+// import Chat from './Molecules/Chat/Chat.jsx'
 // import { WebSocketProvider } from './Utils/SocketIO/WebSocketProvider.jsx'
 
 const router = createBrowserRouter([
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "Chat", 
-        element: <Chat />,
+        // element: <Chat />,
       },
       {
         path: "Roadmap/:descricaoProjeto/:idProjeto",
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <LoginContainer/>
+    element: <App/>
   }
 ]);
 

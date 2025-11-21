@@ -91,94 +91,88 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
     <PrincipalContainerStyled>
       <HeaderContent>
         <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={1} />
-        <Stack sx={{ flexDirection: 'row', width: '100%', gap: '1rem', position: 'relative', zIndex: '6', alignItems: 'center' }}>
-          <Avatar
-            sx={{
-              width: 56,
-              height: 56,
-              fontWeight: "bold",
-              fontSize: "0.9rem",
-              color: "white",
-              backgroundColor: "#1D1D1D",
-              cursor: "pointer",
-              position: "relative",
-              backgroundPosition: "center",
-              transition: "0.52s ease",
-              "&:hover": {
-                backgroundImage: `url(data:image/png;base64,${empresas[0]?.urlImagem || projetos[0]?.urlImagemEmpresa})`,
-                backgroundSize: "cover",
-                color: "transparent",
-              },
-            }}
-          >
-            {getNome(usuarioLogado.nome)}
-          </Avatar>
+        <Stack
+  sx={{
+    flexDirection: 'row',
+    width: '100%',
+    gap: '1rem',
+    position: 'relative',
+    zIndex: '6',
+    alignItems: 'center'
+  }}
+>
+  <Avatar
+    sx={(theme) => ({
+      width: 56,
+      height: 56,
+      fontWeight: "bold",
+      fontSize: "0.9rem",
+      color: theme.palette.text.primary,
+      backgroundColor: theme.palette.background.paper,
+      cursor: "pointer",
+      position: "relative",
+      backgroundPosition: "center",
+      transition: "0.52s ease",
+      "&:hover": {
+        backgroundImage: `url(data:image/png;base64,${empresas[0]?.urlImagem || projetos[0]?.urlImagemEmpresa})`,
+        backgroundSize: "cover",
+        color: "transparent",
+      },
+    })}
+  >
+    {getNome(usuarioLogado.nome)}
+  </Avatar>
 
-          <TextField
-            onChange={(e) => filtrar(e.target.value)}
-            label=
-            {nomeEmpresa == "Empresas" ?
-              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search /> Pesquisar por uma empresa...</Stack>
-              :
-              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}><Search /> Pesquisar um projeto da <Stack style={{ color: '#90caf9' }}>{nomeEmpresa}</Stack></Stack>
-            }
+  <TextField
+    onChange={(e) => filtrar(e.target.value)}
+    label={nomeEmpresa == "Empresas" ?
+      <Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search /> Pesquisar por uma empresa...</Stack>
+      :
+      <Stack sx={{ flexDirection: 'row', gap: 0.5 }}>
+        <Search /> Pesquisar um projeto da
+        <Stack style={{ color: '#90caf9' }}>{nomeEmpresa}</Stack>
+      </Stack>
+    }
+    size="small"
+    sx={(theme) => ({
+      flex: 1,
+      borderRadius: '10px',
+      backgroundColor: theme.palette.background.paper
+    })}
+    autoComplete="off"
+    InputLabelProps={{
+      sx: (theme) => ({
+        color: theme.palette.text.secondary,
+        '&.Mui-focused': {
+          color: theme.palette.text.primary,
+        },
+      }),
+    }}
+    InputProps={{
+      sx: (theme) => ({
+        color: theme.palette.text.primary,
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          borderColor: theme.palette.primary.main,
+        },
+      }),
+    }}
+  />
 
-            size="small"
-            sx={{ flex: 1, borderRadius: '10px', backgroundColor: '#1D1D1D' }}
-            autoComplete="off"
-            InputLabelProps={{
-              sx: {
-                color: "white",
-                '&.Mui-focused': {
-                  color: 'white',
-                }
-              }
-            }}
-            InputProps={{
-              sx: {
-                color: "white",
-                '& .MuiOutlinedInput-notchedOutline': {
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#fff'
-                }
-              }
-            }} />
-          {usuarioLogado.permissao.includes('CONSULTOR') ?
-            nomeEmpresa == "Empresas" ?
-            <Button onClick={() => toogleModal(null, 'empresa')}
-              variant="contained">
-              CRIAR EMPRESA
-            </Button>
-            :
-            <Button onClick={() => toogleModal(null, 'projeto')}
-              variant="contained">
-              CRIAR PROJETO
-            </Button>
-            : null
-          }
-          <Tooltip title="Tarefas abertas em seu nome.">
-            <Badge onClick={handleBadgeClickTarefa}
-              sx={{
-                '& .MuiBadge-badge': {
-                  fontSize: '1.25rem',
-                  height: '26px',
-                  width: '26px',
-                  cursor: 'pointer'
-                }
-              }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
-              <CalendarMonth sx={{ fontSize: 32, cursor: 'pointer' }} />
-            </Badge>
-          </Tooltip>
-          <Tooltip title="Editar cor de fundo.">
-            <ColorLens onClick={handleBadgeClickCores}
-              sx={{
-                height: '40px',
-                width: '40px',
-                cursor: 'pointer'
-              }} />
-          </Tooltip>
-        </Stack>
+  <Pagination
+    count={totalPages}
+    page={page + 1}
+    onChange={(e, value) => setPage(value - 1)}
+    color="primary"
+    siblingCount={5}
+    boundaryCount={5}
+    sx={(theme) => ({
+      "& .MuiPaginationItem-root": {
+        color: theme.palette.text.primary,
+      },
+    })}
+  />
+</Stack>
+
         <TituloHeader>{nomeEmpresa != "Empresas" && usuarioLogado?.permissao?.includes('CONSULTOR') ?
           <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenEmpresas} /> : null}
           {nomeEmpresa == "Empresas" ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}

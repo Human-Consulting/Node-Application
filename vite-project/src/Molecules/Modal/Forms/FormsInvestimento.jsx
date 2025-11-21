@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { postInvestimento, putInvestimento } from '../../../Utils/cruds/CrudsInvestimento.jsx';
-import { Box, Button, TextField, Typography, Stack } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import SendIcon from '@mui/icons-material/Send';
 import { useParams } from "react-router";
@@ -16,14 +16,20 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const handlePostInvestimento = async () => {
-        const newInvestimento = { descricao, valor, dtInvestimento, fkProjeto: idProjeto, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
+        const newInvestimento = { 
+            descricao, 
+            valor, 
+            dtInvestimento, 
+            fkProjeto: idProjeto, 
+            idEditor: usuarioLogado.idUsuario, 
+            permissaoEditor: usuarioLogado.permissao 
+        };
         toogleModal();
         await postInvestimento(newInvestimento, toogleModal);
         atualizarEntidade();
     };
 
     const handlePutInvestimento = async () => {
-
         const modifiedInvestimento = {
             idEditor: usuarioLogado.idUsuario,
             permissaoEditor: usuarioLogado.permissao,
@@ -39,7 +45,14 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
 
     return (
         <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
-            <Typography variant="h5" textAlign="center" mb={2}>
+            <Typography 
+                variant="h5" 
+                textAlign="center" 
+                mb={2}
+                sx={(theme) => ({
+                    color: theme.palette.custom.textPrimary
+                })}
+            >
                 {investimento == null ? "Adicionar Investimento" : `Visualizar Investimento`}
             </Typography>
 
@@ -52,8 +65,15 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
                 InputProps={{ style: inputStyle.input }}
-                sx={inputStyle.sx}
+                sx={(theme) => ({
+                    ...inputStyle.sx,
+                    '& .MuiOutlinedInput-root': {
+                        backgroundColor: theme.palette.custom.inputBackground,
+                        color: theme.palette.custom.textPrimary
+                    }
+                })}
             />
+
             <TextField
                 label="Valor"
                 type="number"
@@ -63,8 +83,15 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label }}
                 InputProps={{ style: inputStyle.input }}
-                sx={inputStyle.sx}
+                sx={(theme) => ({
+                    ...inputStyle.sx,
+                    '& .MuiOutlinedInput-root': {
+                        backgroundColor: theme.palette.custom.inputBackground,
+                        color: theme.palette.custom.textPrimary
+                    }
+                })}
             />
+
             <TextField
                 label="Data do Investimento"
                 type="date"
@@ -75,15 +102,45 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
                 variant="outlined"
                 InputLabelProps={{ style: inputStyle.label, shrink: true }}
                 InputProps={{ style: inputStyle.input }}
-                sx={inputStyle.sx}
+                sx={(theme) => ({
+                    ...inputStyle.sx,
+                    '& .MuiOutlinedInput-root': {
+                        backgroundColor: theme.palette.custom.inputBackground,
+                        color: theme.palette.custom.textPrimary
+                    }
+                })}
             />
 
             {investimento == null ? (
-                <Button variant="contained" color="primary" endIcon={<SendIcon />} onClick={handlePostInvestimento}>
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    endIcon={<SendIcon />} 
+                    onClick={handlePostInvestimento}
+                    sx={(theme) => ({
+                        backgroundColor: theme.palette.custom.button,
+                        color: theme.palette.custom.buttonText,
+                        '&:hover': {
+                            backgroundColor: theme.palette.custom.buttonHover
+                        }
+                    })}
+                >
                     Adicionar
                 </Button>
             ) : (
-                <Button sx={{ flex: 1 }} variant="contained" color="primary" endIcon={<SendIcon />} onClick={handlePutInvestimento}>
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    endIcon={<SendIcon />} 
+                    onClick={handlePutInvestimento}
+                    sx={(theme) => ({
+                        backgroundColor: theme.palette.custom.button,
+                        color: theme.palette.custom.buttonText,
+                        '&:hover': {
+                            backgroundColor: theme.palette.custom.buttonHover
+                        }
+                    })}
+                >
                     Salvar Alterações
                 </Button>
             )}
@@ -91,4 +148,4 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
     )
 }
 
-export default FormsInvestimento
+export default FormsInvestimento;

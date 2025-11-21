@@ -16,7 +16,11 @@ import { Load } from '../../Utils/Load'
 import GraficoTarefas from './GraficoTarefas/GraficoTarefas'
 import GraficoBurndown from './GráficoBurndown/GraficoBurndown'
 
+import { useTheme } from "@mui/material/styles";  // <-- ADICIONADO
+
 const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setColor1, setColor2, setColor3, animate, setAnimate, telaAtual, usuarios, kpis }) => {
+
+  const theme = useTheme(); // <-- ADICIONADO
 
   const { idEmpresa, nomeEmpresa, tituloProjeto, idProjeto } = useParams();
 
@@ -49,7 +53,6 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
   const openPopoverCores = Boolean(anchorCores);
 
   useEffect(() => {
-    // idProjeto ? toogleLateralBar() : null;
     toogleLateralBar();
     telaAtual();
     atualizarEntidade();
@@ -90,7 +93,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
 
   return (
-    <ContainerBack>
+    <ContainerBack style={{ background: theme.palette.background.default }}>  {/* <-- TEMA APLICADO */}
       {showTitle ?
         <>
           <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={5} />
@@ -98,7 +101,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
         : null}
       <KpiContainer>
         {showTitle ? <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue", zIndex: 2 }}>
-          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ?
+          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1, color: theme.palette.custom.textPrimary }} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ?
             <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
               <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button>
               <Tooltip title="Tarefas abertas em seu nome.">
@@ -127,16 +130,17 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
 
         <DashContainer>
           <Stack sx={{ justifyContent: 'space-between', gap: '1rem', flex: 1 }}>
-            <DashKpi>
+
+            <DashKpi sx={{ background: theme.palette.custom.sidebar }}>  {/* <-- TEMA */}
               <Stack sx={{ gap: '1rem', width: '50%' }}>
-                <Infos>
+                <Infos sx={{ background: theme.palette.background.paper }}>  {/* <-- TEMA */}
                   <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                     <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>Total de {entidade?.idEmpresa ? "Projetos:" : "Sprints:"}</TextDefaultKpi>
                     <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade.totalItens}</TextDefaultKpi>
                   </Stack>
                 </Infos>
 
-                <Infos>
+                <Infos sx={{ background: theme.palette.background.paper }}>  {/* <-- TEMA */}
                   <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                     <TextDefaultKpi sx={{ fontWeight: '300', fontSize: '20px' }}>{idProjeto ? "Responsável:" : "Diretor:"}</TextDefaultKpi>
                     <TextDefaultKpi sx={{ fontSize: '18px' }}>{entidade?.responsavel?.nome || "Sem responsável"}</TextDefaultKpi>
@@ -144,7 +148,14 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
                 </Infos>
               </Stack>
 
-              <Stack sx={{ bgcolor: '#101010', borderRadius: '20px', flex: 1, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
+              <Stack sx={{ 
+                background: theme.palette.background.paper,   // <-- AQUI TAMBÉM
+                borderRadius: '20px',
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                alignItems: 'center'
+              }}>
                 {entidade.comImpedimento && <RadialChart comImpedimento={entidade.comImpedimento} progresso={100}></RadialChart>}
                 <RadialChart comImpedimento={null} progresso={entidade.progresso}></RadialChart>
               </Stack>
@@ -163,6 +174,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
           </Stack>
         </DashContainer>
       </KpiContainer>
+
       <Modal showModal={showModal} fechar={toogleModal}
         form={<FormsInvestimento toogleModal={toogleModal} investimento={investimento} atualizarEntidade={atualizarEntidade} />}
       ></Modal>
@@ -186,7 +198,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
         anchorEl={anchorCores}
         onClose={handlePopoverCloseCores}
       />
-    </ContainerBack >
+    </ContainerBack>
   )
 }
 
