@@ -22,7 +22,7 @@ export const ChartLateral = styled(Box)(({ theme }) => ({
 export const Title = styled('p')(({ theme }) => ({
     fontWeight: 700,
     fontSize: '32px',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
 }));
 
 export const KpiContainer = styled(Box)(({ theme }) => ({
@@ -31,7 +31,7 @@ export const KpiContainer = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     zIndex: 100,
     justifyContent: 'space-between',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
 }));
 
 export const DashContainer = styled(Box)(({ theme }) => ({
@@ -39,19 +39,19 @@ export const DashContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     justifyContent: 'space-between',
     gap: '1rem',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
 }));
 
 export const TextDefault = styled('p')(({ theme }) => ({
     fontSize: '24px',
     fontWeight: 600,
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
 }));
 
 export const TextDefaultKpi = styled('p')(({ theme }) => ({
     fontSize: '24px',
     fontWeight: 600,
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
 }));
 
 export const DashKpi = styled(Box)(({ theme }) => ({

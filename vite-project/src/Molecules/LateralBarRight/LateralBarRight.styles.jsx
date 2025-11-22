@@ -38,7 +38,7 @@ export const Divisor = styled(Box)(({ theme }) => ({
 export const Title = styled('p')(({ theme }) => ({
     fontWeight: 500,
     fontSize: '16px',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
     textAlign: 'center'
 }));
 

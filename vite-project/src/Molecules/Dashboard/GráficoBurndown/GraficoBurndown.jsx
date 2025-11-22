@@ -1,4 +1,4 @@
-import { Box, Grow, MenuItem, Select, Stack, Typography } from '@mui/material';
+import { Box, Grow, MenuItem, Select, Stack, Typography, useTheme } from '@mui/material';
 import { TextDefault, ChartLateral } from '../Dashboard.styles';
 import { inputStyle } from '../../Modal/Forms/Forms.styles';
 import BurndownChart from '../LineChart/BurndownChart';
@@ -11,6 +11,8 @@ const GraficoBurndown = ({ dados, kpis }) => {
   const { idProjeto } = useParams();
   const sprints = dados?.sprints || [];
   const [idSprint, setIdSprint] = useState(null);
+    const theme = useTheme(); // <-- ADICIONADO
+  
 
   const caosTotal = kpis?.impedidos?.length || 0;
   const noneTotal = kpis?.totalAndamento || 0;
@@ -41,7 +43,7 @@ const GraficoBurndown = ({ dados, kpis }) => {
             gap={'1rem'}
           >
             <TextDefault 
-              sx={(theme) => ({ color: theme.palette.custom.textPrimary })}
+              sx={(theme) => ({ color: theme.palette.iconPrimary })}
             >
               Burndown
             </TextDefault>
@@ -56,7 +58,7 @@ const GraficoBurndown = ({ dados, kpis }) => {
                 background: 'transparent',
                 borderBottom: `2px solid ${theme.palette.custom.primary}`,
                 borderRadius: 0,
-                color: theme.palette.custom.textPrimary,
+                color: theme.palette.iconPrimary,
                 '& .MuiSelect-select': {
                   py: 0.5,
                   px: 1.5,
@@ -72,8 +74,8 @@ const GraficoBurndown = ({ dados, kpis }) => {
                 PaperProps: {
                   sx: (theme) => ({
                     border: `solid ${theme.palette.custom.border} 2px`,
-                    backgroundColor: theme.palette.custom.backgroundSecondary,
-                    color: theme.palette.custom.textPrimary,
+                    backgroundColor: S,
+                    color: theme.palette.iconPrimary,
                     borderRadius: 2,
                     maxHeight: 450,
                   }),
@@ -96,7 +98,7 @@ const GraficoBurndown = ({ dados, kpis }) => {
                     <Box>
                       <Typography 
                         sx={(theme) => ({
-                          color: theme.palette.custom.textPrimary,
+                          color: theme.palette.iconPrimary,
                           fontWeight: "bold"
                         })}
                       >
@@ -127,7 +129,7 @@ const GraficoBurndown = ({ dados, kpis }) => {
         <>
           <Stack direction="row" alignItems="center" justifyContent="start" gap={'1rem'}>
             <TextDefault 
-              sx={(theme) => ({ color: theme.palette.custom.textPrimary })}
+              sx={(theme) => ({ color: theme.palette.iconPrimary })}
             >
               Estatísticas dos Projetos
             </TextDefault>

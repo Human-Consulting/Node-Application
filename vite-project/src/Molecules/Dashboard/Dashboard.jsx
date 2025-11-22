@@ -100,8 +100,8 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
         </>
         : null}
       <KpiContainer>
-        {showTitle ? <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue", zIndex: 2 }}>
-          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1, color: theme.palette.custom.textPrimary }} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ?
+        {showTitle ? <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue", zIndex: 2,  color: theme.palette.iconPrimary  }}>
+          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1}} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ?
             <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
               <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button>
               <Tooltip title="Tarefas abertas em seu nome.">
@@ -149,7 +149,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
               </Stack>
 
               <Stack sx={{ 
-                background: theme.palette.background.paper,   // <-- AQUI TAMBÉM
+                background: theme.palette.background.paper,
                 borderRadius: '20px',
                 flex: 1,
                 flexDirection: 'row',
@@ -165,7 +165,8 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
             <LineChart orcamento={entidade.orcamento} financeiros={entidade.financeiroResponseDtos} toogleModal={toogleModal} atualizarEntidade={atualizarEntidade}></LineChart>
           </Stack>
 
-          <Stack sx={{ width: '40%', gap: '1rem', justifyContent: 'space-between' }}>
+          <Stack sx={{ width: '40%', gap: '1rem', justifyContent: 'space-between',  background: theme.palette.background.paper,
+                borderRadius: '20px',}}>
 
             <GraficoTarefas entidade={entidade} usuarios={entidade.usuarios} />
 

@@ -88,7 +88,7 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                 </Tooltip>
 
                 {!diminuirLateralBar && (
-                    <Typography variant="h6" sx={{ fontFamily: "Bebas Neue", color: theme.palette.text.primary }}>
+                    <Typography variant="h6" sx={{ fontFamily: "Bebas Neue", color: theme.palette.iconPrimary }}>
                         Human Consulting
                     </Typography>
                 )}
@@ -151,7 +151,7 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                                 <Chip
                                     sx={{
                                         backgroundColor: filtroConcluido ? theme.palette.primary.main : theme.palette.background.paper,
-                                        color: theme.palette.text.primary,
+                                        color: theme.palette.iconPrimary,
                                         fontSize: '12px'
                                     }}
                                     label="Concluídos"
@@ -161,7 +161,7 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                                 <Chip
                                     sx={{
                                         backgroundColor: filtroImpedimento ? theme.palette.error.main : theme.palette.background.paper,
-                                        color: theme.palette.text.primary,
+                                        color: theme.palette.iconPrimary,
                                         fontSize: '12px'
                                     }}
                                     label={`Impedidos ${caosList > 0 ? `(${caosList})` : ''}`}
@@ -171,7 +171,7 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                                 <Chip
                                     sx={{
                                         backgroundColor: theme.palette.background.paper,
-                                        color: theme.palette.text.primary
+                                        color: theme.palette.iconPrimary
                                     }}
                                     label={<Search sx={{ fontSize: 16, color: theme.palette.iconPrimary }} />}
                                     onClick={handleOpenSearch}
@@ -200,7 +200,7 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                                     <Box
                                         sx={{
                                             fontSize: '0.75rem',
-                                            color: theme.palette.text.primary,
+                                            color: theme.palette.iconPrimary,
                                             backgroundColor: theme.palette.primary.main,
                                             borderRadius: '50%',
                                             width: '22px',
@@ -245,7 +245,7 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                 anchorOrigin={{ vertical: 'center', horizontal: 'left' }}
                 transformOrigin={{ vertical: 'center', horizontal: 'right' }}
             >
-                <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.text.primary, p: 1, borderRadius: 2 }}>
+                <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.iconPrimary, p: 1, borderRadius: 2 }}>
                     <TextField
                         autoFocus
                         placeholder={`Buscar ${nomeEmpresa === 'Empresas' ? 'empresa' : 'projeto'}...`}
@@ -254,9 +254,9 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                         value={buscaTitulo}
                         onChange={(e) => setBuscaTitulo(e.target.value)}
                         sx={{
-                            input: { color: theme.palette.text.primary },
+                            input: { color: theme.palette.iconPrimary },
                             '& .MuiOutlinedInput-root': {
-                                '& fieldset': { borderColor: theme.palette.text.primary },
+                                '& fieldset': { borderColor: theme.palette.iconPrimary },
                                 '&:hover fieldset': { borderColor: theme.palette.text.secondary },
                                 '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main }
                             }

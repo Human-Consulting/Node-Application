@@ -16,7 +16,7 @@ export const HeaderContent = styled(Box)(({ theme }) => ({
     gap: '0.5rem',
     padding: '1rem',
     justifyContent: 'space-between',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
 }));
 
 export const MidleCarrousel = styled(Box)(({ theme }) => ({
@@ -53,7 +53,7 @@ export const InputSearch = styled('input')(({ theme }) => ({
     paddingLeft: '8px',
     border: 'none',
     borderRadius: '5px',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
     backgroundColor: theme.palette.custom.sidebarItem,
     outline: 'none',
 
@@ -66,7 +66,7 @@ export const ButtonFilter = styled('button')(({ theme }) => ({
     width: '100px',
     height: '42px',
     backgroundColor: theme.palette.custom.sidebarItem,
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
     padding: '2px',
     display: 'flex',
     alignItems: 'center',
@@ -88,5 +88,5 @@ export const TituloHeader = styled('h1')(({ theme }) => ({
     fontFamily: "Bebas Neue",
     fontWeight: 400,
     fontSize: '70px',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
 }));

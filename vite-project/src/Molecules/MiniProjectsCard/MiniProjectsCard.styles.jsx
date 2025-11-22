@@ -29,7 +29,7 @@ export const StatusCircle = styled('div')(({ theme }) => ({
 export const Title = styled('p')(({ theme }) => ({
     fontWeight: 500,
     fontSize: '14px',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
     width: '70%',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',

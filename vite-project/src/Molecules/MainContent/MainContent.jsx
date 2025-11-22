@@ -112,7 +112,7 @@ const MainContent = () => {
     carregarDados();
   }, [nomeEmpresa])
 
-  // if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
+  if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
 
   return (
     <BoxAltertive>

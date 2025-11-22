@@ -13,6 +13,8 @@ export const lightTheme = createTheme({
       paper: "#eeeeee",
     },
 
+    iconPrimary: "#000",
+
     custom: {
       sidebar: "#d4d4d4",
       sidebarItem: "#e0e0e0",
@@ -32,6 +34,9 @@ export const darkTheme = createTheme({
     primary: {
       main: "#90caf9",
     },
+
+    iconPrimary: "#ffff",
+
 
     background: {
       default: "#1d1d1d",

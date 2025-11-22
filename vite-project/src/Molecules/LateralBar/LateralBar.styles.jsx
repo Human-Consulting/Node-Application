@@ -15,7 +15,7 @@ export const Header = styled(Box)(({ theme }) => ({
     alignItems: 'center',
     gap: '1rem',
     padding: '1rem',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
 }));
 
 export const DivisorOne = styled(Box)(({ theme }) => ({
@@ -23,7 +23,7 @@ export const DivisorOne = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     gap: '0.5rem',
     marginBottom: '0.5rem',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
 }));
 
 export const DivisorTwo = styled(Box)(({ theme }) => ({
@@ -93,5 +93,5 @@ export const Item = styled(Box)(({ theme, telaAtual, item, diminuido }) => ({
 export const Title = styled('p')(({ theme }) => ({
     fontWeight: 600,
     fontSize: '13px',
-    color: theme.palette.custom.textPrimary,
+    color: theme.palette.iconPrimary,
 }));

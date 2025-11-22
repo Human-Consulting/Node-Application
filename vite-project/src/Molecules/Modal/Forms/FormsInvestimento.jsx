@@ -50,7 +50,7 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
                 textAlign="center" 
                 mb={2}
                 sx={(theme) => ({
-                    color: theme.palette.custom.textPrimary
+                    color: theme.palette.iconPrimary
                 })}
             >
                 {investimento == null ? "Adicionar Investimento" : `Visualizar Investimento`}
@@ -69,7 +69,7 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
                     ...inputStyle.sx,
                     '& .MuiOutlinedInput-root': {
                         backgroundColor: theme.palette.custom.inputBackground,
-                        color: theme.palette.custom.textPrimary
+                        color: theme.palette.iconPrimary
                     }
                 })}
             />
@@ -87,7 +87,7 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
                     ...inputStyle.sx,
                     '& .MuiOutlinedInput-root': {
                         backgroundColor: theme.palette.custom.inputBackground,
-                        color: theme.palette.custom.textPrimary
+                        color: theme.palette.iconPrimary
                     }
                 })}
             />
@@ -106,7 +106,7 @@ const FormsInvestimento = ({ investimento, toogleModal, atualizarEntidade }) => 
                     ...inputStyle.sx,
                     '& .MuiOutlinedInput-root': {
                         backgroundColor: theme.palette.custom.inputBackground,
-                        color: theme.palette.custom.textPrimary
+                        color: theme.palette.iconPrimary
                     }
                 })}
             />

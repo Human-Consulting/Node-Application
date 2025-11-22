@@ -3,15 +3,18 @@ import FormsUsuario from "../Modal/Forms/FormsUsuario";
 import Modal from "../Modal/Modal";
 import Tabela from "../Tabela/Tabela";
 import { UsuariosBody } from './Usuarios.styles'
-import { Box, Typography, Button, TextField, Stack, Pagination } from '@mui/material';
+import { Box, Typography, Button, TextField, Stack } from '@mui/material';
 import { ArrowCircleLeftOutlined, Close, Search, SearchOff } from '@mui/icons-material'
 import { useNavigate, useParams } from "react-router";
 import FormsEditarSenhaUsuario from "../Modal/Forms/FormsEditarSenhaUsuario";
 import Shader from "../Shader/Shader";
 import { Load } from "../../Utils/Load";
 import { getUsuarios } from "../../Utils/cruds/CrudsUsuario";
+import { useTheme } from "@mui/material/styles";
 
 const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual }) => {
+
+  const theme = useTheme();
 
   const navigate = useNavigate();
   const { idEmpresa, nomeEmpresa } = useParams();
@@ -38,7 +41,7 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
-  if (!usuarioLogado.permissao.includes("CONSULTOR") && nomeEmpresa == 'Empresas') navigate(-1);
+  if (!usuarioLogado.permissao.includes("CONSULTOR") && nomeEmpresa === 'Empresas') navigate(-1);
 
   const handleOpenProject = async () => {
     navigate(`/Home/${nomeEmpresa}/${idEmpresa}`)
@@ -47,10 +50,7 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
   useEffect(() => {
     if (buscaTitulo.trim() !== "") {
       setOnSearch(true);
-      const textoLower = buscaTitulo.toLowerCase();
-      atualizarUsuarios(0, textoLower);
-      // setUsuariosFiltrados(usuariosFiltrados?.content || []);
-      // setTotalPages(usuariosFiltrados?.totalPages || 0);
+      atualizarUsuarios(0, buscaTitulo.toLowerCase());
     } else {
       clearSearch();
     }
@@ -59,13 +59,12 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
   const atualizarUsuarios = async (page = 0, nome = null) => {
     try {
       const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, 6, nome, false);
-
       setUsuarios(usuariosRetornados?.content || []);
       setUsuariosFiltrados(usuariosRetornados?.content || []);
       setTotalPages(usuariosRetornados?.totalPages || 1);
     } catch (error) {
       console.error("Erro ao atualizar usuários:", error);
-      return { content: [], totalPages: 1, pageSize: 10 };
+      return { content: [], totalPages: 1 };
     }
   };
 
@@ -74,11 +73,12 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
       setLoading(true);
       toogleLateralBar();
       telaAtual();
-      const usuariosEncontrados = await atualizarUsuarios();
+      await atualizarUsuarios();
       setLoading(false);
     }
     atualizar();
   }, [page]);
+
 
   const toogleModal = (usuario) => {
     editarUsuario && setEditarUsuario(false);
@@ -93,74 +93,150 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
 
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
 
+
   return (
-    <UsuariosBody style={{ position: 'relative', zIndex: 0 }}>
+    <UsuariosBody style={{ background: theme.palette.background.default, color: theme.palette.iconPrimary }}>
 
       <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={-1} />
-      <Typography variant="h3" mt={3} mb={2} sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue" }}><ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idEmpresa == 1 ? "Human Consulting" : nomeEmpresa} - Gerenciamento de Usuários</Typography>
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, borderBottom: 'solid white 1px', gap: '1rem' }}>
+      <Typography
+        variant="h3"
+        mt={3}
+        mb={2}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          fontFamily: "Bebas Neue",
+          color: theme.palette.iconPrimary
+        }}
+      >
+        <ArrowCircleLeftOutlined
+          sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1, color: theme.palette.iconPrimary }}
+          onClick={handleOpenProject}
+        />
+        {idEmpresa == 1 ? "Human Consulting" : nomeEmpresa} - Gerenciamento de Usuários
+      </Typography>
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 3,
+          gap: '1rem',
+          borderBottom: `1px solid ${theme.palette.iconPrimary}`
+        }}
+      >
         <TextField
           value={buscaTitulo}
           onChange={(e) => setBuscaTitulo(e.target.value)}
-          label={<Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search /> Buscar usuário...</Stack>}
-          sx={{ flex: 1 }}
-          size="large"
-          autoComplete="off"
-          InputLabelProps={{
-            sx: {
-              color: "white",
-              '&.Mui-focused': {
-                color: 'white',
-              }
-            }
-          }}
-          InputProps={{
-            sx: {
-              color: "white",
-              '& .MuiOutlinedInput-notchedOutline': {
+          label={
+            <Stack sx={{ flexDirection: 'row', gap: 0.5, color: theme.palette.iconPrimary }}>
+              <Search /> Buscar usuário...
+            </Stack>
+          }
+          sx={{
+            flex: 1,
+            '& .MuiOutlinedInput-root': {
+              color: theme.palette.iconPrimary,
+              '& fieldset': {
+                borderColor: theme.palette.iconPrimary
               },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#fff'
+              '&:hover fieldset': {
+                borderColor: theme.palette.primary.main
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: theme.palette.primary.main
               }
+            },
+            '& .MuiInputLabel-root': {
+              color: theme.palette.iconPrimary
+            },
+            '& .MuiInputLabel-root.Mui-focused': {
+              color: theme.palette.iconPrimary
             }
           }}
+          autoComplete="off"
         />
+
         <Close
           onClick={clearSearch}
           sx={{
-            color: '#FFF',
+            color: theme.palette.iconPrimary,
             cursor: 'pointer',
             transition: '0.3s',
-            border: '1px solid transparent',
+            border: `1px solid transparent`,
             borderRadius: '4px',
-            display: `${onSearch ? 'unset' : 'none'}`,
+            display: onSearch ? 'unset' : 'none',
             '&:hover': {
-              border: '1px solid #f0f0f0'
+              border: `1px solid ${theme.palette.iconPrimary}`
             }
           }}
         />
-        {usuarioLogado.permissao == "FUNC" ? null : <Button onClick={() => toogleModal(null)} variant="contained" color="primary">Adicionar Usuário</Button>}
+
+        {usuarioLogado.permissao === "FUNC" ? null :
+          <Button variant="contained" color="primary">
+            Adicionar Usuário
+          </Button>
+        }
       </Box>
-      {usuariosFiltrados.length > 0 ?
-        <>
-          <Tabela usuarios={usuariosFiltrados} toogleModal={toogleModal} atualizarUsuarios={atualizarUsuarios} totalPages={totalPages} page={page} setPage={setPage} />
-        </>
-        :
+
+
+      {usuariosFiltrados.length > 0 ? (
+        <Tabela
+          usuarios={usuariosFiltrados}
+          toogleModal={toogleModal}
+          atualizarUsuarios={atualizarUsuarios}
+          totalPages={totalPages}
+          page={page}
+          setPage={setPage}
+        />
+      ) : (
         <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '50%', gap: 2 }}>
-          <Stack sx={{ alignItems: 'center' }}>
-            <SearchOff sx={{ fontSize: '5rem' }} />
+          <Stack sx={{ alignItems: 'center', color: theme.palette.iconPrimary }}>
+            <SearchOff sx={{ fontSize: '5rem', color: theme.palette.iconPrimary }} />
             Nenhum usuário encontrado!
           </Stack>
-          {usuarioLogado.permissao == "FUNC" ? null : <Button onClick={() => toogleModal(null)} variant="contained" color="primary">Adicionar Usuário</Button>}
+
+          {usuarioLogado.permissao === "FUNC" ? null :
+            <Button variant="contained" color="primary">
+              Adicionar Usuário
+            </Button>
+          }
         </Stack>
-      }
-      <Modal showModal={showModal} fechar={toogleModal} editarSenhaUsuario={toogleEditarSenhaUsuario} editarUsuario={editarUsuario}
-        form={editarUsuario ? <FormsEditarSenhaUsuario idUsuario={idUsuarioEditar} atualizarUsuarios={atualizarUsuarios} editarSenhaUsuario={toogleEditarSenhaUsuario} /> : <FormsUsuario diretor={usuariosFiltrados.length > 0 && (
-          usuariosFiltrados.some(usuario => usuario.permissao.includes('DIRETOR')))} usuario={usuario} toogleModal={toogleModal} atualizarUsuarios={atualizarUsuarios} fkEmpresa={idEmpresa} qtdUsuarios={usuarios.length} editarSenhaUsuario={toogleEditarSenhaUsuario} />}
-      >
-      </Modal>
-    </UsuariosBody >
+      )}
+
+      <Modal
+        showModal={showModal}
+        fechar={toogleModal}
+        editarSenhaUsuario={toogleEditarSenhaUsuario}
+        editarUsuario={editarUsuario}
+        form={
+          editarUsuario
+            ? (
+              <FormsEditarSenhaUsuario
+                idUsuario={idUsuarioEditar}
+                atualizarUsuarios={atualizarUsuarios}
+                editarSenhaUsuario={toogleEditarSenhaUsuario}
+              />
+            )
+            : (
+              <FormsUsuario
+                diretor={
+                  usuariosFiltrados.length > 0 &&
+                  usuariosFiltrados.some(usuario => usuario.permissao.includes('DIRETOR'))
+                }
+                usuario={usuario}
+                toogleModal={toogleModal}
+                atualizarUsuarios={atualizarUsuarios}
+                fkEmpresa={idEmpresa}
+                qtdUsuarios={usuarios.length}
+                editarSenhaUsuario={toogleEditarSenhaUsuario}
+              />
+            )
+        }
+      />
+    </UsuariosBody>
   )
 }
 
