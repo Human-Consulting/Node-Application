@@ -10,11 +10,11 @@ import { ArrowCircleLeftOutlined, CalendarMonth, ColorLens } from '@mui/icons-ma
 import Modal from '../Modal/Modal'
 import ModalTarefas from '../Modais/ModalTarefas/ModalTarefas';
 import ModalCores from '../Modais/ModalCores/ModalCores';
-import FormsInvestimento from '../Modal/Forms/FormsInvestimento'
 import Shader from '../Shader/Shader'
 import { Load } from '../../Utils/Load'
 import GraficoTarefas from './GraficoTarefas/GraficoTarefas'
 import GraficoBurndown from './GráficoBurndown/GraficoBurndown'
+import ModalInvestimento from '../Mudal2/ModalInvestimento'
 
 const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setColor1, setColor2, setColor3, animate, setAnimate, telaAtual, usuarios, kpis }) => {
 
@@ -25,6 +25,8 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
   const [investimento, setInvestimento] = useState(null);
 
   const navigate = useNavigate();
+
+  const [popoverInvestimentoAnchor, setPopoverInvestimentoAnchor] = useState(false);
 
   const [anchorTarefa, setAnchorTarefa] = useState(null);
   const [anchorCores, setAnchorCores] = useState(null);
@@ -49,7 +51,6 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
   const openPopoverCores = Boolean(anchorCores);
 
   useEffect(() => {
-    // idProjeto ? toogleLateralBar() : null;
     toogleLateralBar();
     telaAtual();
     atualizarEntidade();
@@ -83,7 +84,8 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
   }
 
   const toogleModal = (investimento) => {
-    setShowModal(!showModal);
+    // setShowModal(!showModal);
+    setPopoverInvestimentoAnchor(!popoverInvestimentoAnchor);
     investimento != null ? setInvestimento(investimento) : setInvestimento(null);
   };
 
@@ -163,9 +165,16 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
           </Stack>
         </DashContainer>
       </KpiContainer>
-      <Modal showModal={showModal} fechar={toogleModal}
-        form={<FormsInvestimento toogleModal={toogleModal} investimento={investimento} atualizarEntidade={atualizarEntidade} />}
-      ></Modal>
+
+      <ModalInvestimento
+        open={Boolean(popoverInvestimentoAnchor)}
+        anchorEl={popoverInvestimentoAnchor}
+        onClose={() => setPopoverInvestimentoAnchor(null)}
+        toogleModal={toogleModal}
+        investimento={investimento}
+        atualizarEntidade={atualizarEntidade}
+      >
+      </ModalInvestimento>
 
       <ModalTarefas
         tarefas={usuarioLogado.tarefasVinculadas}

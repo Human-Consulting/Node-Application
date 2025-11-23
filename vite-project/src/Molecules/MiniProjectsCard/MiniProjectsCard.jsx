@@ -1,5 +1,5 @@
 import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './MiniProjectsCard.styles'
-import { Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { useNavigate, useParams } from 'react-router';
 import { useWarningValidator } from '../../Utils/useWarning';
 
@@ -14,7 +14,7 @@ function MiniProjectsCard({ entidade, tipo }) {
     else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.nome || entidade.titulo}/${Number(entidade.idProjeto)}`);
   }
   const nomeResponsavel = entidade?.responsavel?.nome || "Sem responsável";
-
+  console.log(entidade);
   return (
     <>
       {entidade ?
@@ -41,20 +41,14 @@ function MiniProjectsCard({ entidade, tipo }) {
           </StatusCircle>
 
         </BoxBody>
-        : tipo == "impedimento" ?
-          <BoxBody>
-            <BodyCard sx={{ top: '25%', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-              <Title>{nomeEmpresa == 'Empresas' ? "Empresas" : "Projetos"} voando 🚀</Title>
-            </BodyCard>
-
-          </BoxBody>
+        : tipo === "impedimento" ?
+          <Box sx={{ border: 'solid blue 1px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Title>{nomeEmpresa == 'Empresas' ? "Empresas" : "Projetos"} voando 🚀</Title>
+          </Box>
           :
-          <BoxBody>
-            <BodyCard sx={{ top: '25%', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-              <Title>{nomeEmpresa == 'Empresas' ? "Empresas" : "Projeto"} em andamento.</Title>
-            </BodyCard>
-
-          </BoxBody>
+          <Box sx={{ border: 'solid blue 1px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Title>{nomeEmpresa == 'Empresas' ? "Empresas" : "Projeto"} em andamento.</Title>
+          </Box>
       }
     </>
   )

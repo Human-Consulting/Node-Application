@@ -1,5 +1,5 @@
 import { Chip, Stack, Tooltip, Typography, Pagination, IconButton, Box, Popover, TextField } from '@mui/material'
-import { CardZone, ChipZone, DivisorOne, DivisorTwo, Header, Item, LateralNavBar, Title } from './LateralBar.styles'
+import { CardZone, ChipElement, ChipZone, DivisorOne, DivisorTwo, Header, Item, LateralNavBar, Title } from './LateralBar.styles'
 import { Home, Insights, Chat, Group, Widgets, ChevronRight, ChevronLeft, Logout, HourglassEmpty, CheckCircle, Block, Search } from '@mui/icons-material';
 import ProjectsTypes from '../../Atoms/ProjectsTypes';
 import { useNavigate, useParams } from 'react-router';
@@ -158,20 +158,15 @@ const LateralBar = ({ menuRapido, kpis, atualizarLaterais, diminuirLateralBar, t
                 >
                     <Widgets />
                     {!diminuirLateralBar && (<Title style={{ flex: 1 }}>Menu Rápido</Title>)}
-                    {/* {menuRapidoAberto ? <ChevronLeft sx={{ transform: 'rotate(90deg)' }} /> : <ChevronLeft sx={{ transform: 'rotate(-90deg)' }} />} */}
                 </Item>
 
                 {menuRapidoAberto ? (
                     <>
                         {!diminuirLateralBar && (
                             <ChipZone>
-                                <Chip sx={{ backgroundColor: filtroConcluido ? '#1976d2' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
-                                    label="Concluídos" onClick={() => handleClick('concluido')} />
-
-                                <Chip sx={{ backgroundColor: filtroImpedimento ? '#D32F2F' : '#1D1D1D', color: '#fff', fontSize: '12px' }}
-                                    label={`Impedidos ${caosList > 0 ? `(${caosList})` : ''}`} onClick={() => handleClick('impedido')} />
-                                <Chip sx={{ backgroundColor: '#1D1D1D', color: '#fff' }}
-                                    label={<Search sx={{ fontSize: '16px' }} />} onClick={handleOpenSearch} />
+                                <ChipElement filtro={filtroConcluido} cor="#1976d2" label="Concluídos" onClick={() => handleClick('concluido')}/>
+                                <ChipElement filtro={filtroImpedimento} cor="#D32F2F" label={`Impedidos ${caosList > 0 ? `(${caosList})` : ''}`} onClick={() => handleClick('impedido')}/>
+                                <ChipElement label={<Search sx={{ fontSize: '16px' }} />} onClick={handleOpenSearch}/>
                             </ChipZone>
                         )}
                         <CardZone>

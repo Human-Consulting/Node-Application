@@ -4,7 +4,7 @@ export const BoxBody = styled('div')(({ inclui, finalizado }) => ({
     width: '100%',
     height: '250px',
     minHeight: '225px',
-    background: '#1D1D1D',
+    background: '#1A1E22',
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
@@ -51,7 +51,7 @@ export const Subtitle = styled('p')({
 export const HeaderCard = styled('div')({
     height: '50%',
     width: '100%',
-    backgroundColor: '#1d1d1d',
+    backgroundColor: '#1A1E22',
     zIndex: '6',
     borderRadius: '10px 10px 0px 0px',
     overflow: 'hidden',

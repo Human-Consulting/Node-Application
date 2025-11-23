@@ -3,6 +3,7 @@ import { Box, Button, TextField, Stack } from '@mui/material';
 import { inputStyle } from "./Forms.styles.jsx";
 import { Send } from '@mui/icons-material';
 import { getIdUsuario, enviarCodigo } from "../../../Utils/Cruds/CrudsUsuario.jsx";
+import { Actions } from "../../Mudal2/Modal.style.jsx";
 
 const FormsEmail = ({ setCodigo, setEmail, setId, setCodigoValidade, setIsValidTempo }) => {
 
@@ -57,36 +58,38 @@ const FormsEmail = ({ setCodigo, setEmail, setId, setCodigoValidade, setIsValidT
 
 
     return (
-        <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2}>
-            <TextField
-                label="Email para envio do código"
-                value={email}
-                onChange={(e) => {
-                    removerErro("email")
-                    setEmailSend(e.target.value)
-                }}
-                fullWidth
-                variant="outlined"
-                autoComplete="off"
-                InputLabelProps={{ style: inputStyle.label }}
-                InputProps={{ style: inputStyle.input }}
-                sx={inputStyle.sx}
-                error={!!erros.email}
-                helperText={erros.email}
-            />
+        <>
+            <Stack sx={{ padding: 2 }}>
+                <TextField
+                    label="Email para envio do código"
+                    value={email}
+                    onChange={(e) => {
+                        removerErro("email")
+                        setEmailSend(e.target.value)
+                    }}
+                    fullWidth
+                    variant="outlined"
+                    autoComplete="off"
+                    InputLabelProps={{ style: inputStyle.label }}
+                    InputProps={{ style: inputStyle.input }}
+                    sx={inputStyle.sx}
+                    error={!!erros.email}
+                    helperText={erros.email}
+                />
+            </Stack>
 
-            <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+            <Actions>
                 <Button
                     variant="contained"
                     color="primary"
                     onClick={handleEnvioEmail}
                     endIcon={<Send />}
-                    sx={{ flex: 1 }}
+                // sx={{ flex: 1 }}
                 >
                     Enviar Código
                 </Button>
-            </Stack>
-        </Box >
+            </Actions>
+        </>
     )
 }
 

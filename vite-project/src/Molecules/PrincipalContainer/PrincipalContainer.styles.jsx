@@ -3,7 +3,7 @@ import { styled } from '@mui/system';
 
 export const PrincipalContainerStyled = styled(Box)({
     flex: 1,
-    // backgroundColor: '#0D0D0D',
+    backgroundColor: '#0D0D0D',
     display: 'flex',
     flexDirection: 'column',
 });

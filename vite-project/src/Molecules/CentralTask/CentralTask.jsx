@@ -9,12 +9,12 @@ import HeaderFilter from '../../Atoms/HeaderFilter/HeaderFilter';
 import TarefasItem from '../../Atoms/TarefasItem/TarefasItem';
 import { Stack, Typography, Button, Tooltip, Badge } from '@mui/material';
 import Modal from '../Modal/Modal';
-import FormsTask from '../Modal/Forms/FormsTask';
-import FormsSprint from '../Modal/Forms/FormsSprint';
 import Shader from '../Shader/Shader';
 import { Load } from '../../Utils/Load';
 import ModalTarefas from '../Modais/ModalTarefas/ModalTarefas';
 import ModalCores from '../Modais/ModalCores/ModalCores';
+import ModalTarefa from '../Mudal2/ModalTarefa';
+import ModalSprint from '../Mudal2/ModalSprint';
 
 const CentralTask = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, atualizarUsuarios, atualizarProjetos, color1, color2, color3, setColor1, setColor2, setColor3, animate, setAnimate }) => {
   const { idProjeto, idEmpresa, nomeEmpresa, tituloProjeto, tituloSprint, idSprint } = useParams();
@@ -37,6 +37,8 @@ const CentralTask = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, 
   const [loading, setLoading] = useState(true);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
+  const [popoverSprintTarefaAnchor, setPopoverSprintTarefaAnchor] = useState(false);
 
   const [anchorTarefa, setAnchorTarefa] = useState(null);
   const [anchorCores, setAnchorCores] = useState(null);
@@ -63,7 +65,8 @@ const CentralTask = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, 
   const toogleModal = (entidade, post, id) => {
     setAcao(post);
     setEntidade(entidade);
-    setShowModal(!showModal);
+    // setShowModal(!showModal);
+    setPopoverSprintTarefaAnchor(!popoverSprintTarefaAnchor);
     setId(id);
   };
 
@@ -87,10 +90,10 @@ const CentralTask = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, 
   };
 
   useEffect(() => {
-  if (sprint) {
-    setTarefas(sprint.tarefas || []);
-  }
-}, [sprint]);
+    if (sprint) {
+      setTarefas(sprint.tarefas || []);
+    }
+  }, [sprint]);
 
   useEffect(() => {
     atualizarSprint();
@@ -224,11 +227,35 @@ const CentralTask = ({ toogleLateralBar, usuarios, sizeUsuarios, pagesUsuarios, 
           </BodyTarefa>
         </DoneContainer>
       </BackCentral>
-      <Modal showModal={showModal} fechar={toogleModal} acao={acao == "task" ? "aumentar" : null} entidade={entidade}
-        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={pagesUsuarios} atualizarUsuarios={atualizarUsuarios} idSprint={id} dtInicioSprint={sprint?.dtInicio} dtFimSprint={sprint?.dtFim} atualizarSprints={atualizarSprint} atualizarProjetos={atualizarProjetos} />
-          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprint} atualizarProjetos={atualizarProjetos} acao={null} />}
-      >
-      </Modal>
+      
+      {acao == 'task' ?
+        <ModalTarefa
+          open={Boolean(popoverSprintTarefaAnchor)}
+          anchorEl={popoverSprintTarefaAnchor}
+          onClose={() => setPopoverSprintTarefaAnchor(null)}
+          task={entidade}
+          toogleModal={toogleModal}
+          usuarios={usuarios}
+          sizeUsuarios={sizeUsuarios}
+          pagesUsuarios={pagesUsuarios}
+          atualizarUsuarios={atualizarUsuarios}
+          idSprint={id}
+          dtInicioSprint={sprint?.dtInicio}
+          dtFimSprint={sprint?.dtFim}
+          atualizarSprints={atualizarSprint}
+          atualizarProjetos={atualizarProjetos}
+        />
+        :
+        <ModalSprint
+          open={Boolean(popoverSprintTarefaAnchor)}
+          anchorEl={popoverSprintTarefaAnchor}
+          onClose={() => setPopoverSprintTarefaAnchor(null)}
+          sprint={entidade}
+          toogleModal={toogleModal}
+          fkProjeto={idProjeto}
+          atualizarSprints={atualizarSprint}
+          atualizarProjetos={atualizarProjetos} />
+      }
 
       <ModalTarefas
         tarefas={usuarioLogado.tarefasVinculadas}

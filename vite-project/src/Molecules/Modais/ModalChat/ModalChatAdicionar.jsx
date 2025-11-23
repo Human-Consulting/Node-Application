@@ -1,10 +1,11 @@
-import { Dialog, DialogContent, DialogActions, Stack, Typography, TextField, Button, Avatar, Box } from "@mui/material";
+import { Dialog, DialogActions, Stack, Typography, TextField, Button, Avatar, Box } from "@mui/material";
 import ModalAdicionarUsuarios from "../ModalAdicionarUsuarios/ModalAdicionarUsuarios";
-import { putSala, postSala } from "../../../Utils/cruds/CrudsSala";
+import { postSala } from "../../../Utils/cruds/CrudsSala";
 import { inputStyle } from "../../Modal/Forms/Forms.styles";
-import { Add, Close, PersonAdd } from "@mui/icons-material";
+import { Close, PersonAdd } from "@mui/icons-material";
 import { useState } from "react";
 import { useWarningValidator } from "../../../Utils/useWarning";
+import { Content } from "../../Mudal2/Modal.style";
 
 const ModalChatAdicionar = ({ open, onClose, fkEmpresa, fkProjeto, atualizarSalas }) => {
 
@@ -92,14 +93,12 @@ const ModalChatAdicionar = ({ open, onClose, fkEmpresa, fkProjeto, atualizarSala
             <Dialog open={open && !modalUsuariosAberto}
                 onClose={handleOnClose}
                 fullWidth maxWidth="xs">
-                <DialogContent sx={{ background: "#22272B" }}>
-                    <Box display="flex" justifyContent={useWarningValidator(null) !== null ? "space-between" : "flex-end"} alignItems="center">
-                        {useWarningValidator(null)}
+                <Content>
+                    <Box display="flex" justifyContent="flex-end" alignItems="center">
                         <Close onClick={handleOnClose} size="small" style={{ cursor: "pointer" }} />
                     </Box>
                     <Stack gap={3}>
-
-                        <Typography color="#fff" fontWeight="bold" fontSize={18}>
+                        <Typography width="100%" textAlign="center" color="#fff" fontWeight="bold" fontSize={18}>
                             Criar nova sala
                         </Typography>
 
@@ -125,7 +124,7 @@ const ModalChatAdicionar = ({ open, onClose, fkEmpresa, fkProjeto, atualizarSala
                             // InputProps={{ sx: { color: "#fff" } }}
                             InputLabelProps={{ style: inputStyle.label }}
                             InputProps={{ style: inputStyle.input }}
-                            sx={{ borderRadius: '10px', background: '#1A1E22' }}
+                            sx={ inputStyle.sx }
                         />
 
                         {/* PARTICIPANTES */}
@@ -173,7 +172,7 @@ const ModalChatAdicionar = ({ open, onClose, fkEmpresa, fkProjeto, atualizarSala
                             </Stack>
                         </Stack>
                     </Stack>
-                </DialogContent>
+                </Content>
 
                 <DialogActions sx={{ background: "#1a1e22" }}>
                     <Button variant="contained" sx={{ bgcolor: "#1976d2" }} onClick={criarSala}>

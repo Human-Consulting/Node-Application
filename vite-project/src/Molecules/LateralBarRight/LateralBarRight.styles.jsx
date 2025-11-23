@@ -20,7 +20,6 @@ export const Section = styled(Box)({
     alignItens: 'center',
     flex: 1,
     width: '100%',
-    backgroundColor: '#121212',
     position: 'relative'
 });
 

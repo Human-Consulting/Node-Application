@@ -2,9 +2,11 @@ export const inputStyle = {
     label: { color: '#fff' },
     input: { color: '#fff' },
     sx: {
-        marginBottom: 1,
         backgroundColor: '#22272B',
-        borderRadius: 1,
+        borderRadius: '10px',
+        background: '#1A1E22',
+        // background: '#1D1D1D',
+
         "& .MuiInputBase-input.Mui-disabled": {
             WebkitTextFillColor: "#999"
         },

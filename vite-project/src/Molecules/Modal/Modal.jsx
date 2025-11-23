@@ -1,14 +1,12 @@
 import { useRef } from "react";
-import { Box, Zoom, Stepper, Step, StepLabel } from "@mui/material";
-import { Close, Check, Block } from "@mui/icons-material";
-
-import { Backdrop, ModalContent, DragHandle } from "./Modal.styles";
-import { useWarningValidator } from "../../Utils/useWarning";
+import { Box, Stepper, Step, StepLabel, Dialog, Stack } from "@mui/material";
+import { Close } from "@mui/icons-material";
+import { Content } from "../Mudal2/Modal.style";
 
 const etapas = ["Enviar Código", "Validar Código", "Nova Senha"];
 
-const Modal = ({ showModal, fechar, form, acao, entidade, etapaAtual }) => {
-  if (!showModal) return null;
+const Modal = ({ open, onClose, form, etapaAtual }) => {
+  if (!open) return null;
 
   const modalRef = useRef(null);
 
@@ -32,16 +30,13 @@ const Modal = ({ showModal, fechar, form, acao, entidade, etapaAtual }) => {
   };
 
   return (
-    <Zoom in={showModal}>
-      <Backdrop>
-        <ModalContent ref={modalRef} sx={{ width: `${acao === "aumentar" ? "950px" : acao === "aumentar1" ? "600px" : "450px"}` }}>
-          <DragHandle onMouseDown={handleDragStart} />
-          <Box display="flex" justifyContent={useWarningValidator(entidade || null) !== null ? "space-between" : "flex-end"} alignItems="center">
-            {useWarningValidator(entidade)}
-            <Close onClick={fechar} size="small" style={{ cursor: "pointer" }} />
+    <>
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
+        <Content sx={{ padding: 0 }}>
+          <Box display="flex" justifyContent="flex-end" alignItems="center" padding={2}>
+            <Close onClick={onClose} size="small" style={{ cursor: "pointer" }} />
           </Box>
-
-          {entidade == 'esqueciASenha' && (
+          <Stack gap={3}>
 
             <Box my={4}>
               <Stepper activeStep={etapaAtual} alternativeLabel>
@@ -62,12 +57,11 @@ const Modal = ({ showModal, fechar, form, acao, entidade, etapaAtual }) => {
                 ))}
               </Stepper>
             </Box>
-          )}
-
-          {form}
-        </ModalContent>
-      </Backdrop>
-    </Zoom>
+            {form}
+          </Stack>
+        </Content>
+      </Dialog>
+    </>
   );
 };
 
