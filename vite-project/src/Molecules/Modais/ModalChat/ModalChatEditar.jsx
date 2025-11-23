@@ -1,4 +1,4 @@
-import { Popover, Box, Button, TextField, Stack, Typography } from "@mui/material";
+import { Popover, Box, Button, TextField, Stack, Typography, Dialog } from "@mui/material";
 import { Send, Logout, ImageNotSupported, Edit } from '@mui/icons-material';
 import { useRef, useState } from "react";
 import { postSala, putSala } from "../../../Utils/cruds/CrudsSala.jsx";
@@ -64,18 +64,6 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
         });
     };
 
-    const criarSala = async () => {
-        if (validarCampos()) return;
-        await postSala({
-            nome,
-            urlImagem,
-            participantes: participantes.map(u => u.idUsuario),
-            idEditor: usuarioLogado.idUsuario
-        });
-        atualizarSalas();
-        onClose();
-    };
-
     const editarSala = async () => {
         if (validarCampos()) return;
         await putSala({
@@ -90,13 +78,13 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
         onClose();
     };
 
-    const removerUsuario = async (idUsuario, nome) => {
+    const removerUsuario = async (idUsuario, nomeUsuario) => {
         onClose();
         const mesmoUsuario = usuarioLogado.idUsuario == idUsuario;
         const confirm = await Swal.fire({
             text: mesmoUsuario
                 ? "Ao sair da sala, você perde o acesso a ela."
-                : `Remover ${nome} da sala?`,
+                : `Remover ${nomeUsuario} da sala?`,
             icon: "warning",
             showCancelButton: true,
             backdrop: false,
@@ -125,12 +113,13 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
             fkProjeto: sala.fkProjeto,
             fkEmpresa: sala.fkEmpresa
         }, sala.idSala);
-
         atualizarSalas();
     };
 
 
-    const adicionarUsuarios = async (ids) => {
+    const adicionarUsuarios = async (usuarios) => {
+        const ids = usuarios
+            .map(u => u.idUsuario);
         const novos = ids.filter(id => !participantes.some(p => p.idUsuario === id));
         setParticipantes(prev => [
             ...prev,
@@ -152,28 +141,217 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
 
     const podeEditarSala = () => sala == null || (sala?.fkEmpresa == null && sala?.fkProjeto == null);
 
+    // return (
+    //     <>
+    //         <Popover
+    //             open={open}
+    //             anchorEl={anchorEl}
+    //             onClose={() => {
+    //                 setUrlImagem(sala?.urlImagem ?? "");
+    //                 setNome(sala?.nome || "");
+    //                 onClose();
+    //             }}
+    //             anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+    //             transformOrigin={{ vertical: "top", horizontal: "left" }}
+    //             PaperProps={{
+    //                 sx: {
+    //                     background: "#111",
+    //                     borderRadius: "12px",
+    //                     padding: "0",
+    //                     width: 400,
+    //                     color: "white",
+    //                     display: "flex",
+    //                     minHeight: 260,
+    //                     maxHeight: 500
+    //                 }
+    //             }}
+    //         >
+    //             {/* MENU LATERAL */}
+    //             <Stack
+    //                 sx={{
+    //                     width: 140,
+    //                     borderRight: "1px solid #333",
+    //                     p: 1,
+    //                     justifyContent: 'space-between'
+    //                 }}
+    //             >
+    //                 <Stack sx={{ gap: 1 }}>
+    //                     <Button
+    //                         variant={aba === "visao" ? "contained" : "text"}
+    //                         onClick={() => setAba("visao")}
+    //                         sx={{ justifyContent: "start", fontSize: '12px' }}
+    //                     >
+    //                         Visão Geral
+    //                     </Button>
+
+    //                     <Button
+    //                         variant={aba === "membros" ? "contained" : "text"}
+    //                         onClick={() => setAba("membros")}
+    //                         sx={{ justifyContent: "start", fontSize: '12px' }}
+    //                     >
+    //                         Membros
+    //                     </Button>
+    //                 </Stack>
+
+    //                 {editado && (
+    //                     <Button
+    //                         variant="outlined"
+    //                         onClick={() => editarSala()}
+    //                         sx={{ justifyContent: "start", fontSize: '12px' }}
+    //                     >
+    //                         Salvar
+    //                     </Button>
+    //                 )}
+    //             </Stack>
+
+    //             {/* CONTEÚDO DA ABA ATUAL */}
+    //             <Box sx={{ flexGrow: 1, p: 2 }}>
+    //                 {aba === "visao" ? (
+    //                     <Stack gap={2} alignItems="center">
+
+    // <Box
+    //     onClick={() => podeEditarSala() && handleEditarImagem()}
+    //     sx={{
+    //         width: 100,
+    //         height: 100,
+    //         borderRadius: "50%",
+    //         overflow: "hidden",
+    //         position: "relative",
+    //         cursor: podeEditarSala() ? "pointer" : "default",
+    //         ...(podeEditarSala() && {
+    //             "&:hover .blurImg": { filter: "blur(1px) brightness(0.8)" },
+    //             "&:hover .editIcon": { opacity: 1 }
+    //         })
+    //     }}
+    // >
+    //     {urlImagem ? (
+    //         // Se já escolheu nova imagem, exibimos ela
+    //         <Box
+    //             component="img"
+    //             src={`data:image/png;base64,${urlImagem}`}
+    //             alt="Imagem da sala"
+    //             className="blurImg"
+    //             sx={{ width: "100%", height: "100%", objectFit: "cover", transition: "0.3s" }}
+    //         />
+    //     ) : sala?.urlImagem ? (
+    //         // Se tem imagem antiga e não escolheu nova
+    //         <Box
+    //             component="img"
+    //             src={`data:image/png;base64,${sala.urlImagem}`}
+    //             alt="Imagem da sala"
+    //             className="blurImg"
+    //             sx={{ width: "100%", height: "100%", objectFit: "cover", transition: "0.3s" }}
+    //         />
+    //     ) : (
+    //         // Ícone de sem foto
+    //         <ImageNotSupported
+    //             className="blurImg"
+    //             sx={{ fontSize: 80, color: "#999", width: "100%", height: "100%", transition: "0.3s" }}
+    //         />
+    //     )}
+
+    //     <Edit
+    //         className="editIcon"
+    //         sx={{
+    //             position: "absolute",
+    //             top: "50%",
+    //             left: "50%",
+    //             transform: "translate(-50%, -50%)",
+    //             fontSize: 32,
+    //             color: "#fff",
+    //             opacity: 0,
+    //             transition: "0.3s"
+    //         }}
+    //         onClick={handleEditarImagem}
+    //     />
+
+    //     <input
+    //         type="file"
+    //         ref={fileInputRef}
+    //         hidden
+    //         accept="image/*"
+    //         onChange={(e) => handleFileUpload(e.target.files[0])}
+    //     />
+    // </Box>
+
+    // <TextField
+    //     label="Nome"
+    //     value={nome}
+    //     onChange={(e) => {
+    //         removerErro(nome);
+    //         setNome(e.target.value);
+    //         setEditado((sala?.nome != e.target.value) || (sala?.urlImagem != urlImagem));
+    //     }}
+    //     fullWidth
+    //     variant="outlined"
+    //     InputLabelProps={{ style: inputStyle.label }}
+    //     InputProps={{ style: inputStyle.input }}
+    //     sx={inputStyle.sx}
+    //     error={!!erros.nome}
+    //     helperText={erros.nome}
+    //     disabled={!podeEditarSala()}
+    // />
+
+    // <Typography fontSize={14} sx={{ opacity: 0.8 }}>
+    //     {sala?.participants.length} participantes
+    // </Typography>
+    // <Button
+    //     variant="contained"
+    //     color="error"
+    //     endIcon={<Logout />}
+    //     sx={{ fontSize: '12px' }}
+    // // onClick={sairSala}
+    // >
+    //     Sair da sala
+    // </Button>
+    //                     </Stack>
+
+    //                 ) : (
+    //                     <Stack gap={2}>
+    //                         <ListaUsuariosSala
+    //                             usuarios={sala?.participants}
+    //                             onRemover={removerUsuario}
+    //                             onAbrirAdicionar={() => setOpenAdd(true)}
+    //                         />
+
+    //                         {erros.participantes && (
+    //                             <Typography color="error" fontSize={12}>{erros.participantes}</Typography>
+    //                         )}
+    //                     </Stack>
+    //                 )}
+    //             </Box>
+    //         </Popover>
+
+    //         {/* MODAL ADICIONAR USUÁRIOS */}
+    //         <ModalAdicionarUsuarios
+    //             open={openAdd}
+    //             onClose={() => setOpenAdd(false)}
+    //             onConfirm={adicionarUsuarios}
+    //             sala={sala}
+    //         />
+    //     </>
+    // );
     return (
         <>
-            <Popover
+            <Dialog
                 open={open}
-                anchorEl={anchorEl}
                 onClose={() => {
                     setUrlImagem(sala?.urlImagem ?? "");
                     setNome(sala?.nome || "");
                     onClose();
                 }}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                transformOrigin={{ vertical: "top", horizontal: "left" }}
+                fullWidth
+                maxWidth="sm"
                 PaperProps={{
                     sx: {
-                        background: "#111",
+                        background: "#22272B",
                         borderRadius: "12px",
-                        padding: "0",
-                        width: 400,
+                        overflow: "hidden",
                         color: "white",
-                        display: "flex",
                         minHeight: 260,
-                        maxHeight: 500
+                        maxHeight: 500,
+                        display: "flex",
+                        flexDirection: "row"
                     }
                 }}
             >
@@ -182,15 +360,16 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                     sx={{
                         width: 140,
                         borderRight: "1px solid #333",
+                        background: "#1a1e22",
                         p: 1,
-                        justifyContent: 'space-between'
+                        justifyContent: "space-between"
                     }}
                 >
                     <Stack sx={{ gap: 1 }}>
                         <Button
                             variant={aba === "visao" ? "contained" : "text"}
                             onClick={() => setAba("visao")}
-                            sx={{ justifyContent: "start", fontSize: '12px' }}
+                            sx={{ justifyContent: "start", fontSize: "12px", color: "#fff" }}
                         >
                             Visão Geral
                         </Button>
@@ -198,7 +377,7 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                         <Button
                             variant={aba === "membros" ? "contained" : "text"}
                             onClick={() => setAba("membros")}
-                            sx={{ justifyContent: "start", fontSize: '12px' }}
+                            sx={{ justifyContent: "start", fontSize: "12px", color: "#fff" }}
                         >
                             Membros
                         </Button>
@@ -208,7 +387,7 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                         <Button
                             variant="outlined"
                             onClick={() => editarSala()}
-                            sx={{ justifyContent: "start", fontSize: '12px' }}
+                            sx={{ justifyContent: "start", fontSize: "12px", color: "#fff", borderColor: "#1976d2" }}
                         >
                             Salvar
                         </Button>
@@ -216,10 +395,10 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                 </Stack>
 
                 {/* CONTEÚDO DA ABA ATUAL */}
-                <Box sx={{ flexGrow: 1, p: 2 }}>
+                <Box sx={{ flexGrow: 1, p: 2, overflowY: "auto" }}>
                     {aba === "visao" ? (
                         <Stack gap={2} alignItems="center">
-
+                            {/* TODO O CONTEÚDO DA ABA VISÃO GERAL EXATAMENTE COMO ESTÁ */}
                             <Box
                                 onClick={() => podeEditarSala() && handleEditarImagem()}
                                 sx={{
@@ -306,17 +485,6 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                             <Typography fontSize={14} sx={{ opacity: 0.8 }}>
                                 {sala?.participants.length} participantes
                             </Typography>
-
-                            {podeEditarSala() && sala == null && (
-                                <Button
-                                    variant="contained"
-                                    endIcon={<Send />}
-                                    onClick={criarSala}
-                                    sx={{ bgcolor: "#0057ff", mt: 2 }}
-                                >
-                                    Criar Sala
-                                </Button>
-                            )}
                             <Button
                                 variant="contained"
                                 color="error"
@@ -327,7 +495,6 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                                 Sair da sala
                             </Button>
                         </Stack>
-
                     ) : (
                         <Stack gap={2}>
                             <ListaUsuariosSala
@@ -335,14 +502,13 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                                 onRemover={removerUsuario}
                                 onAbrirAdicionar={() => setOpenAdd(true)}
                             />
-
                             {erros.participantes && (
                                 <Typography color="error" fontSize={12}>{erros.participantes}</Typography>
                             )}
                         </Stack>
                     )}
                 </Box>
-            </Popover>
+            </Dialog>
 
             {/* MODAL ADICIONAR USUÁRIOS */}
             <ModalAdicionarUsuarios
