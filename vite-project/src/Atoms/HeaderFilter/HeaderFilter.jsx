@@ -82,27 +82,48 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
         renderValue={(selected) => {
           let retorno = null;
           const option = statusOptions.find(opt => opt.value === selected);
-          usuarioFiltrado == null ? retorno = <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>{option?.icon}</Box>
-            : retorno =
-            <Tooltip title={usuarioFiltrado} placement="top">
-              <Stack sx={{ width: '25px', height: '25px', backgroundColor: 'white', color: 'black', borderRadius: '100%', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold' }}>{getNome(usuarioFiltrado)}</Stack>
-            </Tooltip>;
+
+          usuarioFiltrado == null
+            ? retorno = (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {option?.icon}
+              </Box>
+            )
+            : retorno = (
+              <Tooltip title={usuarioFiltrado} placement="top">
+                <Stack
+                  sx={{
+                    width: '25px',
+                    height: '25px',
+                    backgroundColor: '#FFF',
+                    color: 'black',
+                    borderRadius: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {getNome(usuarioFiltrado)}
+                </Stack>
+              </Tooltip>
+            );
           return retorno;
         }}
         sx={{
           position: 'absolute',
           left: '10px',
           width: 'fit-content',
-          border: 'none'
-
+          border: 'none',
+          color: '#FFF'
         }}
         MenuProps={{
           TransitionComponent: Grow,
           PaperProps: {
             sx: {
-              backgroundColor: '#22272B',
+              backgroundColor: '#1A1A1A',
               color: '#fff',
               borderRadius: 2,
+              border: '1px solid #2A2A2A',
               mt: 1,
               maxHeight: 200,
             }
@@ -110,21 +131,27 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
         }}
       >
         {statusOptions.map((opt) => (
-          <MenuItem key={opt.value} value={opt.value}>
+          <MenuItem key={opt.value} value={opt.value} sx={{ color: '#FFF' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {opt.icon}
               {opt.label}
             </Box>
           </MenuItem>
         ))}
-        <MenuItem value="USUARIO" onClick={handleOpenUserFilter}>
+        <MenuItem
+          value="USUARIO"
+          onClick={handleOpenUserFilter}
+          sx={{ color: '#FFF' }}
+        >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <EmojiPeople />
             Usuário
           </Box>
         </MenuItem>
       </Select>
+
       {titulo}
+
       <Search
         onClick={handleOpenSearch}
         sx={{
@@ -136,10 +163,11 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
           border: '1px solid transparent',
           borderRadius: '4px',
           '&:hover': {
-            border: '1px solid #f0f0f0'
+            border: '1px solid #3A3A3A'
           }
         }}
       />
+
       <Close
         onClick={clearSearch}
         sx={{
@@ -152,10 +180,12 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
           borderRadius: '4px',
           display: `${onSearch ? 'unset' : 'none'}`,
           '&:hover': {
-            border: '1px solid #f0f0f0'
+            border: '1px solid #3A3A3A'
           }
         }}
       />
+
+      {/* POPOVER USUÁRIOS */}
       <Popover
         open={Boolean(anchorUser)}
         anchorEl={anchorUser}
@@ -165,7 +195,13 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
           horizontal: 'center',
         }}
       >
-        <Box sx={{ bgcolor: '#22272B', color: 'white', p: 1, borderRadius: 2 }}>
+        <Box sx={{
+          bgcolor: '#1A1A1A',
+          color: 'white',
+          p: 1,
+          borderRadius: 2,
+          border: '1px solid #2A2A2A'
+        }}>
           <MenuItem
             key={"#"}
             onClick={() => filterByUsuario("#")}
@@ -173,6 +209,7 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
           >
             {"Não atribuídas"}
           </MenuItem>
+
           {usuarios.map(user => (
             <MenuItem
               key={user.idUsuario}
@@ -183,8 +220,9 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
             </MenuItem>
           ))}
         </Box>
-
       </Popover>
+
+      {/* POPUP BUSCA */}
       <Popover
         open={Boolean(anchorSearch)}
         anchorEl={anchorSearch}
@@ -198,7 +236,13 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
           horizontal: 'right',
         }}
       >
-        <Box sx={{ bgcolor: '#22272B', color: 'white', p: 1, borderRadius: 2 }}>
+        <Box sx={{
+          bgcolor: '#1A1A1A',
+          color: 'white',
+          p: 1,
+          borderRadius: 2,
+          border: '1px solid #2A2A2A'
+        }}>
           <TextField
             autoFocus
             placeholder="Buscar tarefa..."
@@ -207,16 +251,17 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
             value={buscaTitulo}
             onChange={(e) => setBuscaTitulo(e.target.value)}
             sx={{
-              input: { color: 'white' },
+              input: { color: '#FFF' },
               '& .MuiOutlinedInput-root': {
-                '& fieldset': { borderColor: 'white' },
-                '&:hover fieldset': { borderColor: '#ccc' },
-                '&.Mui-focused fieldset': { borderColor: '#1976d2' }
+                '& fieldset': { borderColor: '#3A3A3A' },
+                '&:hover fieldset': { borderColor: '#B3B3B3' },
+                '&.Mui-focused fieldset': { borderColor: '#36518C' }
               }
             }}
           />
         </Box>
       </Popover>
+
     </NavTask>
   );
 };
