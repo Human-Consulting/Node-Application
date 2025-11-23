@@ -11,9 +11,9 @@ const GraficoBurndown = ({ dados, kpis }) => {
   const { idProjeto } = useParams();
   const sprints = dados?.sprints || [];
   const [idSprint, setIdSprint] = useState(null);
-  const caosTotal = kpis?.impedidos.length || 0;
+  const caosTotal = kpis?.impedidos?.length || 0;
   const noneTotal = kpis?.totalAndamento || 0;
-  const finalizadosTotal = kpis?.finalizadas.length || 0;
+  const finalizadosTotal = kpis?.finalizadas?.length || 0;
   const qtdTotal = caosTotal + noneTotal + finalizadosTotal;
 
   useEffect(() => {
@@ -22,11 +22,11 @@ const GraficoBurndown = ({ dados, kpis }) => {
 
       const sprintAtual = sprints.find(sprint => {
         hoje.isAfter(dayjs(sprint.burndown[0].dia)) &&
-          hoje.isBefore(dayjs(sprint.burndown[sprint.burndown.length - 1].dia))
-      });
+          hoje.isBefore(dayjs(sprint?.burndown[sprint?.burndown.length - 1].dia))
+      }) || null;
 
       if (sprintAtual) setIdSprint(sprintAtual.idSprint)
-      else setIdSprint(sprints[sprints.length - 1].idSprint);
+      else setIdSprint(sprints[sprints.length - 1].idSprint || null);
     }
   }, [sprints]);
 

@@ -20,7 +20,7 @@
     "@mui/x-date-pickers": "^8.1.0",
     "@react-spring/three": "^9.7.5",
     "@react-three/fiber": "^9.1.0",
-    "@stomp/stompjs": "^7.1.1",
+    "@stomp/stompjs": "^7.2.1",
     "apexcharts": "^4.5.0",
     "axios": "^1.8.3",
     "babel-node": "^0.0.1-security",
@@ -39,6 +39,7 @@
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
     "sweetalert2": "^11.18.0",
     "three": "^0.174.0"
   },

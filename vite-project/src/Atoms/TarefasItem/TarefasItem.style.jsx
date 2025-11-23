@@ -10,7 +10,7 @@ export const TarefaBody = styled(Box)(({ inclui, finalizado }) => ({
     justifyContent: 'center',
     background: '#22272B',
     borderRadius: '10px',
-    border: `solid ${inclui ? '#FFF' : "transparent"} 3px`,// tempoRestante.includes("-") && tarefa.progresso < 100 ? "#f44336" : 
+    border: `solid ${inclui ? '#FFF' : "transparent"} 3px`,
     opacity: finalizado ? 0.25 : 1,
     transition: "opacity 0.3s ease"
 }));

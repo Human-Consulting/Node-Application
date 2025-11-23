@@ -11,7 +11,7 @@ export const ProjectsTypesBox = styled(Box)(({ diminuido, idAtual, idItem, final
   cursor: 'pointer',
   padding: '0.5rem',
   borderRadius: '10px',
-  backgroundColor: '#111',
+  backgroundColor: '#1A1E22',
   border: idAtual == idItem && idAtual != null ? 'solid #084B8A 2px' : null,
   transition: 'background 0.2s',
   '&:hover': {

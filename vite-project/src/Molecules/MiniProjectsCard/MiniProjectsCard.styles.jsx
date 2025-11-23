@@ -4,6 +4,7 @@ export const BoxBody = styled('div')(({ finalizado }) => ({
     width: '100%',
     height: '100%',
     background: '#1d1d1d',
+    background: '#1A1E22',
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
@@ -46,7 +47,7 @@ export const Subtitle = styled('p')({
 });
 
 export const HeaderCard = styled('div')({
-    height: '50%',
+    height: '60%',
     width: '100%',
     backgroundColor: '#1d1d1d',
     zIndex: '6',
@@ -56,13 +57,14 @@ export const HeaderCard = styled('div')({
 });
 
 export const BodyCard = styled('div')({
+    minHeight: '40%',
     height: '60%',
     zIndex: '30',
     padding: '0.5rem',
     borderRadius: '10px',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
 });
 
 export const ProgressBar = styled('div')({

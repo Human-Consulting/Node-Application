@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import FormsUsuario from "../Modal/Forms/FormsUsuario";
 import Modal from "../Modal/Modal";
 import Tabela from "../Tabela/Tabela";
 import { UsuariosBody } from './Usuarios.styles'
 import { Box, Typography, Button, TextField, Stack, Pagination } from '@mui/material';
 import { ArrowCircleLeftOutlined, Close, Search, SearchOff } from '@mui/icons-material'
 import { useNavigate, useParams } from "react-router";
-import FormsEditarSenhaUsuario from "../Modal/Forms/FormsEditarSenhaUsuario";
 import Shader from "../Shader/Shader";
 import { Load } from "../../Utils/Load";
 import { getUsuarios } from "../../Utils/cruds/CrudsUsuario";
+import ModalUsuario from "../Mudal2/ModalUsuario";
+import ModalEditarSenhaUsuario from "../Mudal2/ModalEditarSenhaUsuario";
 
 const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual }) => {
 
@@ -28,8 +28,10 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
   const [buscaTitulo, setBuscaTitulo] = useState("");
   const [onSearch, setOnSearch] = useState(false);
 
+  const [popoverUsuarioAnchor, setPopoverUsuarioAnchor] = useState(false);
+
   const clearSearch = async () => {
-    await atualizarUsuarios();
+    await atualizarUsuarios(0, null);
     setOnSearch(false);
     setBuscaTitulo("");
   }
@@ -49,8 +51,6 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
       setOnSearch(true);
       const textoLower = buscaTitulo.toLowerCase();
       atualizarUsuarios(0, textoLower);
-      // setUsuariosFiltrados(usuariosFiltrados?.content || []);
-      // setTotalPages(usuariosFiltrados?.totalPages || 0);
     } else {
       clearSearch();
     }
@@ -58,7 +58,7 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
 
   const atualizarUsuarios = async (page = 0, nome = null) => {
     try {
-      const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, 6, nome);
+      const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, 6, nome, false);
 
       setUsuarios(usuariosRetornados?.content || []);
       setUsuariosFiltrados(usuariosRetornados?.content || []);
@@ -74,7 +74,7 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
       setLoading(true);
       toogleLateralBar();
       telaAtual();
-      const usuariosEncontrados = await atualizarUsuarios(page);
+      await atualizarUsuarios();
       setLoading(false);
     }
     atualizar();
@@ -84,11 +84,11 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
     editarUsuario && setEditarUsuario(false);
     setUsuario(usuario);
     setShowModal(!showModal);
+    setPopoverUsuarioAnchor(!popoverUsuarioAnchor);
   };
 
   const toogleEditarSenhaUsuario = (id) => {
     setEditarUsuario(!editarUsuario);
-    setIdUsuarioEditar(id || null);
   }
 
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
@@ -155,11 +155,31 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
           {usuarioLogado.permissao == "FUNC" ? null : <Button onClick={() => toogleModal(null)} variant="contained" color="primary">Adicionar Usuário</Button>}
         </Stack>
       }
-      <Modal showModal={showModal} fechar={toogleModal} editarSenhaUsuario={toogleEditarSenhaUsuario} editarUsuario={editarUsuario}
-        form={editarUsuario ? <FormsEditarSenhaUsuario idUsuario={idUsuarioEditar} atualizarUsuarios={atualizarUsuarios} editarSenhaUsuario={toogleEditarSenhaUsuario} /> : <FormsUsuario diretor={usuariosFiltrados.length > 0 && (
-          usuariosFiltrados.some(usuario => usuario.permissao.includes('DIRETOR')))} usuario={usuario} toogleModal={toogleModal} atualizarUsuarios={atualizarUsuarios} fkEmpresa={idEmpresa} qtdUsuarios={usuarios.length} editarSenhaUsuario={toogleEditarSenhaUsuario} />}
-      >
-      </Modal>
+      {editarUsuario ?
+        <ModalEditarSenhaUsuario
+          open={Boolean(popoverUsuarioAnchor)}
+          anchorEl={popoverUsuarioAnchor}
+          onClose={toogleEditarSenhaUsuario}
+          idUsuario={idUsuarioEditar}
+          atualizarUsuarios={atualizarUsuarios}
+          editarSenhaUsuario={toogleEditarSenhaUsuario}
+        />
+        :
+        <ModalUsuario
+          open={Boolean(popoverUsuarioAnchor)}
+          anchorEl={popoverUsuarioAnchor}
+          onClose={() => setPopoverUsuarioAnchor(null)}
+          diretor={usuariosFiltrados.length > 0 && (usuariosFiltrados.some(usuario => usuario.permissao.includes('DIRETOR')))}
+          usuario={usuario}
+          toogleModal={toogleModal}
+          atualizarUsuarios={atualizarUsuarios}
+          fkEmpresa={idEmpresa}
+          qtdUsuarios={usuarios.length}
+          editarSenhaUsuario={toogleEditarSenhaUsuario}
+        />
+      }
+
+
     </UsuariosBody >
   )
 }

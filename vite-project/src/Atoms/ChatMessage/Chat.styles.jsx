@@ -4,24 +4,21 @@ import { styled } from '@mui/system';
 
 export const MessageBody = styled(Box)(({ isOwnMessage }) => ({
   display: 'flex',
-  flexDirection: isOwnMessage ? 'row-reverse' : 'row',
-  alignItems: 'flex-start',
-  backgroundColor: '#ffffff',
-  // backgroundColor: isOwnMessage ? '#084B8A' : '#2C2F33',
-  backgroundColor: isOwnMessage ? '#1A4D7A' : '#2C2F33',
-  borderRadius: '10px',
-  padding: '10px',
-  maxWidth: '80%',
+  flexDirection: 'column',
+  backgroundColor: isOwnMessage ? '#1B4F72' : '#2C2F33',
+  borderRadius: '8px',
+  padding: '8px 12px',
+  maxWidth: '100%',
   wordBreak: 'break-word',
-  marginInline: '1rem'
+  color: '#FFF',
+  alignSelf: isOwnMessage ? 'flex-end' : 'flex-start',
+  boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
 }));
 
 export const MessageText = styled('p')({
   margin: 0,
-  padding: '0 10px',
-  fontSize: '16px',
-  color: '#000',
-  color: '#FFF',
+  fontSize: '15px',
+  lineHeight: 1.4,
   wordBreak: 'break-word',
   whiteSpace: 'pre-wrap',
 });

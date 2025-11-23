@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Chip } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const LateralNavBar = styled(Box)(({ diminuido }) => ({
@@ -25,13 +25,13 @@ export const DivisorOne = styled(Box)({
 });
 
 export const DivisorTwo = styled(Box)(({
-    backgroundColor: '#0d0d0d',
+    backgroundColor: "#0d0d0d",
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
     flexGrow: 1,
     minHeight: 0,
-    paddingBottom: '0.5rem'
+    paddingBottom: '0.5rem',
 }));
 
 export const ChipZone = styled(Box)({
@@ -42,13 +42,12 @@ export const ChipZone = styled(Box)({
 
 export const CardZone = styled(Box)(({
     overflowY: 'auto',
-    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
     paddingInline: '0.5rem',
     '&::-webkit-scrollbar': {
-        width: '8px',
+        width: '4px',
     },
     '&::-webkit-scrollbar-track': {
         background: 'transparent',
@@ -71,11 +70,11 @@ export const Item = styled(Box)(({ telaAtual, item, diminuido }) => ({
     alignItems: 'center',
     justifyContent: diminuido ? 'center' : 'start',
     borderRadius: '10px',
-    backgroundColor: '#0d0d0d',
+    backgroundColor: "#0d0d0d",
     transition: 'background 0.2s',
     border: telaAtual === item && telaAtual != null ? 'solid #084B8A 2px' : null,
     '&:hover': {
-        backgroundColor: '#1a1a1a',
+        backgroundColor: "#1a1a1a",
     },
 }));
 
@@ -84,3 +83,9 @@ export const Title = styled('p')({
     fontSize: '13px',
     color: '#fff',
 });
+
+export const ChipElement = styled(Chip)(({filtro, cor}) => ({
+    backgroundColor: filtro ? cor : '#1A1E22',
+    color: '#fff',
+    fontSize: '12px'
+}))

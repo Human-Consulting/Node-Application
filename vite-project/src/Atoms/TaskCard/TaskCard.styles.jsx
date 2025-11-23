@@ -5,6 +5,7 @@ export const TaskCardBody = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     background: "#101010",
+    background: "#0d0d0d",
     borderRadius: '10px',
     flexShrink: 0,
     scrollSnapAlign: 'center',

@@ -78,24 +78,27 @@ const MainContent = () => {
     setTotalPagesEmpresas(empresasRetornadas?.totalPages || 1);
   };
 
-  const buscarUsuarios = async (page = 0) => {
-    const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, 4);
+  const buscarUsuarios = async (page = 0, nome = null) => {
+    if (page == null) page = 0;
+    if (nome == null) nome = null;
+    const usuariosRetornados = await getUsuarios(Number(idEmpresa), page, 4, nome, false);
     setUsuarios(usuariosRetornados?.content || []);
     setSizeUsuarios(usuariosRetornados?.pageSize || 10);
     setTotalPagesUsuarios(usuariosRetornados?.totalPages || 1);
+    console.log(usuariosRetornados);
   }
 
   const atualizarLaterais = async ({ idEmpresa = null, page = 0, nome = null, impedidos = null, concluidos = null,
   }) => {
     const entidade = nomeEmpresa === 'Empresas' ? 'empresas' : 'projetos';
     const menuRapidoRetornados = await getMenuRapido(entidade, idEmpresa, page, 5, nome, impedidos, concluidos);
-    setMenuRapido(menuRapidoRetornados);
+    setMenuRapido(menuRapidoRetornados || []);
   };
 
   const atualizarLateraisKpis = async ({ idEmpresa = null }) => {
     const entidade = nomeEmpresa === 'Empresas' ? 'empresas' : 'projetos';
     const kpiRetornadas = await getKpis(entidade, idEmpresa);
-    setKpis(kpiRetornadas);
+    setKpis(kpiRetornadas || []);
   };
 
   const carregarDados = async () => {
@@ -104,7 +107,7 @@ const MainContent = () => {
     else await atualizarProjetos();
     await atualizarLaterais({ entidade: nomeEmpresa === "Empresas" ? 'empresas' : 'projetos', idEmpresa: idEmpresa });
     await atualizarLateraisKpis({ idEmpresa: idEmpresa });
-    await buscarUsuarios();
+    await buscarUsuarios(0, null);
     setLoading(false);
   };
 
@@ -132,7 +135,7 @@ const MainContent = () => {
 
         <Route path="/Dash/:tituloProjeto/:idProjeto" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} usuarios={usuarios} />} />
 
-        <Route path="/Chat" element={<Chat telaAtual={() => setTelaAtual("Chat")} toogleLateralBar={hideLateralBar} color1={color1} color2={color2} color3={color3} animate={animate} usuarios={usuarios} />} />
+        <Route path="/Chat" element={<Chat telaAtual={() => setTelaAtual("Chat")} toogleLateralBar={hideLateralBar} color1={color1} color2={color2} color3={color3} animate={animate} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} />} />
       </Routes>
 
       <LateralBarRight showLateralBar={showLateralBar} kpis={kpis} />
