@@ -1,30 +1,35 @@
 import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 
-export const BackCentral = styled(Box)({
+export const BackCentral = styled(Box)(({ theme }) => ({
     width: '100%',
     height: '100%',
     display: 'flex',
     gap: '1rem',
     overflow: 'hidden',
     zIndex: 0,
-    background: 'transparent',
-});
+    background: 'transparent', // mantém exatamente como estava
+}));
 
-export const DoneContainer = styled(Box)({
+export const DoneContainer = styled(Box)(({ theme }) => ({
     padding: '0.5rem',
     borderRadius: '12px',
     flex: 1,
     height: "fit-content",
     maxHeight: '100%',
-    background: "#0F0F0F",
+
+    // Antes: "#0F0F0F"
+    background: theme.palette.background.paper,
+
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
-    color: '#eee',        // <<< FONT COLOR PADRÃO
-});
 
-export const BodyTarefa = styled(Box)({
+    // Antes: "#eee"
+    color: theme.palette.custom.textPrimary,
+}));
+
+export const BodyTarefa = styled(Box)(({ theme }) => ({
     height: '100%',
     overflowY: 'auto',
     maxHeight: '800px',
@@ -34,7 +39,9 @@ export const BodyTarefa = styled(Box)({
     flexDirection: 'column',
     alignItems: 'center',
     scrollBehavior: 'smooth',
-    color: '#eee',        // <<< FONT COLOR PADRÃO
+
+    // Antes: "#eee"
+    color: theme.palette.custom.textPrimary,
 
     '&::-webkit-scrollbar': {
         width: '6px',
@@ -43,10 +50,12 @@ export const BodyTarefa = styled(Box)({
         background: 'transparent',
     },
     '&::-webkit-scrollbar-thumb': {
-        background: '#444',
+        // Antes: "#444"
+        background: theme.palette.custom.scrollbar,
         borderRadius: '6px',
     },
     '&::-webkit-scrollbar-thumb:hover': {
-        background: '#666',
+        // Antes: "#666"
+        background: theme.palette.custom.scrollbarHover,
     },
-});
+}));
