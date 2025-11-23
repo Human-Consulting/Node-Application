@@ -5,47 +5,48 @@ export const BackCentral = styled(Box)({
     width: '100%',
     height: '100%',
     display: 'flex',
-    overflow: 'hidden',
     gap: '1rem',
     overflow: 'hidden',
     zIndex: 0,
+    background: 'transparent',
 });
 
 export const DoneContainer = styled(Box)({
     padding: '0.5rem',
-    borderRadius: '10px',
+    borderRadius: '12px',
     flex: 1,
     height: "fit-content",
     maxHeight: '100%',
-    background: "#101010",
+    background: "#0F0F0F",
     display: 'flex',
-    overflow: 'hidden',
     flexDirection: 'column',
+    overflow: 'hidden',
+    color: '#eee',        // <<< FONT COLOR PADRÃO
 });
 
 export const BodyTarefa = styled(Box)({
     height: '100%',
     overflowY: 'auto',
     maxHeight: '800px',
-    padding: '0.5rem',
     padding: '1rem',
     gap: '2rem',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     scrollBehavior: 'smooth',
+    color: '#eee',        // <<< FONT COLOR PADRÃO
 
     '&::-webkit-scrollbar': {
-        width: '4px',
+        width: '6px',
     },
     '&::-webkit-scrollbar-track': {
         background: 'transparent',
     },
     '&::-webkit-scrollbar-thumb': {
-        background: '#888',
-        borderRadius: '4px',
+        background: '#444',
+        borderRadius: '6px',
     },
     '&::-webkit-scrollbar-thumb:hover': {
-        background: '#aaa',
+        background: '#666',
     },
 });

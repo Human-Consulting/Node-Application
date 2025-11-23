@@ -3,7 +3,7 @@ import ProjectsCard from '../ProjectsCard/ProjectsCard'
 import { useEffect, useState } from 'react';
 import ModalTarefas from '../Modais/ModalTarefas/ModalTarefas.jsx'
 import { useNavigate, useParams } from 'react-router';
-import { Stack, TextField, Button, Badge, Avatar, Tooltip, Pagination } from '@mui/material'
+import { Stack, TextField, Button, Badge, Avatar, Tooltip, Pagination, useTheme } from '@mui/material'
 import { ArrowCircleLeftOutlined, Construction, ColorLens, Search, CalendarMonth } from '@mui/icons-material';
 import ModalCores from '../Modais/ModalCores/ModalCores.jsx';
 import Shader from '../Shader/Shader.jsx';
@@ -14,6 +14,8 @@ import ModalProjeto from '../Mudal2/ModalProjeto.jsx';
 const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setColor3, animate, setAnimate, toogleLateralBar, atualizarProjetos, atualizarEmpresas, projetos, pagesProjetos, empresas, pagesEmpresas, usuarios, telaAtual }) => {
 
   const navigate = useNavigate();
+
+  const theme = useTheme();
 
   const { nomeEmpresa, idEmpresa } = useParams();
 
@@ -102,8 +104,8 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
               height: 56,
               fontWeight: "bold",
               fontSize: "0.9rem",
-              color: "white",
-              backgroundColor: "#1A1E22",
+              color: theme.palette.text.primary,
+              backgroundColor: theme.palette.background.paper,
               cursor: "pointer",
               position: "relative",
               backgroundPosition: "center",
@@ -120,13 +122,14 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
 
           <TextField
             onChange={(e) => filtrar(e.target.value)}
-            label=
-            {nomeEmpresa == "Empresas" ?
+            label={nomeEmpresa == "Empresas" ?
               <Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search /> Pesquisar por uma empresa...</Stack>
               :
-              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}><Search /> Pesquisar um projeto da <Stack style={{ color: '#90caf9' }}>{nomeEmpresa}</Stack></Stack>
+              <Stack sx={{ flexDirection: 'row', gap: 0.5 }}>
+                <Search /> Pesquisar um projeto da
+                <Stack style={{ color: '#90caf9' }}>{nomeEmpresa}</Stack>
+              </Stack>
             }
-
             size="small"
             sx={{ flex: 1, borderRadius: '10px', backgroundColor: '#1A1E22' }}
             autoComplete="off"
@@ -183,6 +186,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
               }} />
           </Tooltip>
         </Stack>
+
         <TituloHeader>{nomeEmpresa != "Empresas" && usuarioLogado?.permissao?.includes('CONSULTOR') ?
           <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenEmpresas} /> : null}
           {nomeEmpresa == "Empresas" ? "MINHAS EMPRESAS" : "MEUS PROJETOS"}
@@ -192,11 +196,11 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
         {listaFiltrada?.length > 0 ?
           <CardsList>
             {listaFiltrada.map(item => (
-            <ProjectsCard
-              key={item.id}
-              item={item}
-              toogleModal={toogleModal}
-            />
+              <ProjectsCard
+                key={item.id}
+                item={item}
+                toogleModal={toogleModal}
+              />
             ))}
             {/* {usuarioLogado?.permissao?.includes('CONSULTOR') ?
               <ProjectsCard toogleModal={toogleModal} ></ProjectsCard>
@@ -223,29 +227,30 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
         </Stack>
       </MidleCarrousel>
 
-      {acao == 'empresa' ?
-        <ModalEmpresa
-          open={Boolean(popoverProjetoEmpresaAnchor)}
-          anchorEl={popoverProjetoEmpresaAnchor}
-          onClose={() => setPopoverProjetoEmpresaAnchor(null)}
-          empresa={empresa}
-          toogleModal={toogleModal}
-          atualizarEmpresas={atualizarEmpresas}
-        >
-        </ModalEmpresa>
+      {
+        acao == 'empresa' ?
+          <ModalEmpresa
+            open={Boolean(popoverProjetoEmpresaAnchor)}
+            anchorEl={popoverProjetoEmpresaAnchor}
+            onClose={() => setPopoverProjetoEmpresaAnchor(null)}
+            empresa={empresa}
+            toogleModal={toogleModal}
+            atualizarEmpresas={atualizarEmpresas}
+          >
+          </ModalEmpresa>
 
-        :
+          :
 
-        <ModalProjeto
-          open={Boolean(popoverProjetoEmpresaAnchor)}
-          anchorEl={popoverProjetoEmpresaAnchor}
-          onClose={() => setPopoverProjetoEmpresaAnchor(null)}
-          projeto={projeto}
-          toogleModal={toogleModal}
-          atualizarProjetos={atualizarProjetos}
-          fkEmpresa={idEmpresa}
-        >
-        </ModalProjeto>
+          <ModalProjeto
+            open={Boolean(popoverProjetoEmpresaAnchor)}
+            anchorEl={popoverProjetoEmpresaAnchor}
+            onClose={() => setPopoverProjetoEmpresaAnchor(null)}
+            projeto={projeto}
+            toogleModal={toogleModal}
+            atualizarProjetos={atualizarProjetos}
+            fkEmpresa={idEmpresa}
+          >
+          </ModalProjeto>
       }
 
       <ModalTarefas
@@ -267,7 +272,7 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
         anchorEl={anchorCores}
         onClose={handlePopoverCloseCores}
       />
-    </PrincipalContainerStyled>
+    </PrincipalContainerStyled >
 
   )
 }

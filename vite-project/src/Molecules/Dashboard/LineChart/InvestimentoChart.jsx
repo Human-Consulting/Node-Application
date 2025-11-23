@@ -3,33 +3,26 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import ModalInvestimento from '../../Modais/ModalInvestimento/ModalInvestimento';
 import { useParams } from 'react-router';
+import { useTheme } from '@mui/material/styles';
 
 const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) => {
-
-  
+  const theme = useTheme();
   const { idProjeto } = useParams();
-  
   const [anchorEl, setAnchorEl] = useState(null);
-  
-  const handleBadgeClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-  
+
+  const handleBadgeClick = (event) => setAnchorEl(event.currentTarget);
+  const handlePopoverClose = () => setAnchorEl(null);
+
   const openPopover = Boolean(anchorEl);
-  
+
   const mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-  
   const totaisPorMes = Array(12).fill(0);
-  
-  
+
+
   financeiros?.forEach(financeiro => {
     const data = new Date(financeiro.dtInvestimento);
     const mes = !isNaN(data.getTime()) ? data.getUTCMonth() : null;
-    
+
     if (mes !== null) {
       totaisPorMes[mes] += financeiro.valor || 0;
     }
@@ -45,6 +38,7 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
 
   const resultadoFinal = [];
   let acumulado = 0;
+
   for (let i = 0; i <= ultimoMesComDados; i++) {
     acumulado += totaisPorMes[i];
     resultadoFinal.push({
@@ -55,72 +49,66 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
 
   const orcamentos = resultadoFinal.map(() => orcamento);
 
+  // ★ Cores do gráfico 100% pelo theme
   const options = {
     chart: {
       id: 'multi-line',
-      toolbar: { show: false }
+      toolbar: { show: false },
+      background: 'transparent',
     },
-    colors: ['#4dabf5', '#ff1744'],
-    colors: ['#008FFB', '#ff1744'],
+
+    colors: [
+      theme.palette.primary.main,     // investimento
+      theme.palette.error.main        // orçamento
+    ],
+
     dataLabels: { enabled: false },
+
     stroke: {
       curve: 'smooth',
-      curve: 'straight',
-      width: [2, 1],
-      dashArray: [0, 0]
+      width: 3
     },
+
     fill: {
-      type: ['gradient', 'solid'],
-      opacity: [0, 0],
+      type: 'gradient',
       gradient: {
-        shade: 'light',
-        shade: 'dark',
-        type: 'vertical',
-        type: 'horizontal',
-        shadeIntensity: 0.5,
-        gradientToColors: undefined,
-        inverseColors: false,
-        opacityFrom: 0.8,
-        opacityTo: 0.4,
+        shadeIntensity: 0.7,
+        opacityFrom: 0.4,
+        opacityTo: 0.05,
         stops: [0, 90, 100]
       }
     },
-    grid: {
-      show: false,
-    },
+
+    grid: { show: false },
+
     xaxis: {
+      categories: resultadoFinal.map(item => item.mes),
       labels: {
         style: {
-          colors: '#FFF',
+          colors: theme.palette.text.secondary,
           fontSize: '12px'
         }
       },
-      categories: resultadoFinal.map(item => item.mes),
       axisBorder: { show: false },
       axisTicks: { show: false }
     },
+
     yaxis: {
       labels: {
         style: {
-          colors: '#FFF',
+          colors: theme.palette.text.secondary,
           fontSize: '12px'
         }
       }
     },
+
     tooltip: {
       shared: false,
       intersect: false,
-      theme: 'dark',
+      theme: theme.palette.mode === 'dark' ? 'dark' : 'light'
     },
-    legend: {
-      fontSize: '16px',
-      labels: {
-        colors: '#FFF',
-      }
-    },
-    legend: {
-      show: false
-    },
+
+    legend: { show: false }
   };
 
   const series = [
@@ -135,12 +123,31 @@ const LineChart = ({ orcamento, financeiros, toogleModal, atualizarEntidade }) =
   ];
 
   return (
-    <div className="App" style={{ padding: '1rem', height: '70%', background: '#101010', width: '100%', borderRadius: '20px', justifyContent: 'space-between', display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        padding: '1rem',
+        height: '70%',
+        background: theme.palette.background.paper,
+        width: '100%',
+        borderRadius: '20px',
+        justifyContent: 'space-between',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Investimentos</h2>
-        {idProjeto == null ? null : <MoreVertIcon sx={{ cursor: 'pointer' }} onClick={handleBadgeClick} />}
+        <h2 style={{ color: theme.palette.text.primary }}>Investimentos</h2>
+
+        {idProjeto == null ? null : (
+          <MoreVertIcon
+            sx={{ cursor: 'pointer', color: theme.palette.text.primary }}
+            onClick={handleBadgeClick}
+          />
+        )}
       </div>
+
       <Chart options={options} series={series} type="area" height={'85%'} />
+
       <ModalInvestimento
         investimentos={financeiros || []}
         open={openPopover}

@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 
-export const BoxBody = styled('div')(({ inclui, finalizado }) => ({
+export const BoxBody = styled('div')(({ inclui, finalizado, theme }) => ({
     width: '100%',
     height: '250px',
     minHeight: '225px',

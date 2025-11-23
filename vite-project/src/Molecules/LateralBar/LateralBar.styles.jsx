@@ -1,31 +1,33 @@
 import { Box, Chip } from '@mui/material';
 import { styled } from '@mui/system';
 
-export const LateralNavBar = styled(Box)(({ diminuido }) => ({
+export const LateralNavBar = styled(Box)(({ theme, diminuido }) => ({
     width: diminuido ? '8%' : '20%',
     minWidth: diminuido ? '8%' : '20%',
-    backgroundColor: '#000000',
+    backgroundColor: theme.palette.custom.sidebar,
     display: 'flex',
     flexDirection: 'column',
 }));
 
-export const Header = styled(Box)({
+export const Header = styled(Box)(({ theme }) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: '1rem',
     padding: '1rem',
-});
+    color: theme.palette.iconPrimary,
+}));
 
-export const DivisorOne = styled(Box)({
+export const DivisorOne = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
     marginBottom: '0.5rem',
-});
+    color: theme.palette.iconPrimary,
+}));
 
-export const DivisorTwo = styled(Box)(({
-    backgroundColor: "#0d0d0d",
+export const DivisorTwo = styled(Box)(({ theme }) => ({
+    backgroundColor: theme.palette.custom.sidebarItem,
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
@@ -34,13 +36,14 @@ export const DivisorTwo = styled(Box)(({
     paddingBottom: '0.5rem',
 }));
 
-export const ChipZone = styled(Box)({
+export const ChipZone = styled(Box)(({ theme }) => ({
     display: 'flex',
     justifyContent: 'space-between',
-    paddingInline: '0.5rem'
-});
+    paddingInline: '0.5rem',
+    color: theme.palette.custom.textSecondary,
+}));
 
-export const CardZone = styled(Box)(({
+export const CardZone = styled(Box)(({ theme }) => ({
     overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
@@ -53,38 +56,45 @@ export const CardZone = styled(Box)(({
         background: 'transparent',
     },
     '&::-webkit-scrollbar-thumb': {
-        background: '#888',
+        background: theme.palette.custom.scrollbar,
         borderRadius: '4px',
     },
     '&::-webkit-scrollbar-thumb:hover': {
-        background: '#aaa',
+        background: theme.palette.custom.scrollbarHover,
     },
 }));
 
-export const Item = styled(Box)(({ telaAtual, item, diminuido }) => ({
+export const Item = styled(Box)(({ theme, telaAtual, item, diminuido }) => ({
     display: 'flex',
     cursor: 'pointer',
-    padding: diminuido ? '1rem' : '0.5rem 0 0.5rem 0',
     padding: diminuido ? '0.8rem' : '0.6rem 1rem',
     gap: '0.75rem',
     alignItems: 'center',
     justifyContent: diminuido ? 'center' : 'start',
     borderRadius: '10px',
-    backgroundColor: "#0d0d0d",
+    backgroundColor: theme.palette.custom.sidebarItem,
     transition: 'background 0.2s',
-    border: telaAtual === item && telaAtual != null ? 'solid #084B8A 2px' : null,
+    border:
+        telaAtual === item && telaAtual != null
+            ? `solid ${theme.palette.custom.sidebarBorderSelected} 2px`
+            : 'none',
     '&:hover': {
-        backgroundColor: "#1a1a1a",
+        backgroundColor: theme.palette.custom.sidebarItemHover,
     },
+
+    '& svg': {
+        color: 'unset !important',  // <- devolve o controle ao MUI
+    }
 }));
 
-export const Title = styled('p')({
+
+export const Title = styled('p')(({ theme }) => ({
     fontWeight: 600,
     fontSize: '13px',
-    color: '#fff',
-});
+    color: theme.palette.iconPrimary,
+}));
 
-export const ChipElement = styled(Chip)(({filtro, cor}) => ({
+export const ChipElement = styled(Chip)(({ filtro, cor }) => ({
     backgroundColor: filtro ? cor : '#1A1E22',
     color: '#fff',
     fontSize: '12px'
