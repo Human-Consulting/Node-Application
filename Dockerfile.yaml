@@ -1,0 +1,26 @@
+# Etapa de build / instalação
+FROM node:20-alpine AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci --omit=dev
+
+COPY . .
+
+RUN npm run build
+
+# Etapa de runtime (leve)
+FROM node:20-alpine AS runtime
+
+WORKDIR /app
+
+# Copia os módulos instalados + código da etapa build
+COPY --from=build /app ./
+
+# Expõe a porta padrão da app
+EXPOSE 3000
+
+# Executa a app — ajuste o script se não for "start"
+CMD ["npm", "start"]
