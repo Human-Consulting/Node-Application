@@ -29,7 +29,7 @@ export const getUsuarios = async (idEmpresa, page, size, nome, comConsultores) =
         const url = nome != null
             ? `/usuarios/buscarPorEmpresa/${idEmpresa}?page=${page}&size=${size}&nome=${nome}&comConsultores=${comConsultores}`
             : `/usuarios/buscarPorEmpresa/${idEmpresa}?page=${page}&size=${size}&comConsultores=${comConsultores}`;
-            
+            console.log(url);
         const res = await fetch(`${import.meta.env.VITE_ENDERECO_API}${url}`, {
             method: 'GET',
             headers: {

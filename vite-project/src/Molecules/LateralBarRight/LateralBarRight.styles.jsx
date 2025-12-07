@@ -50,7 +50,7 @@ export const Slide = styled('div')(() => ({
     transition: 'transform 0.5s ease-in-out',
     transform: 'translateX(0)',
     scrollSnapType: 'x mandatory',
-}));
+});
 
 export const SkipButton = styled('button')(({ theme, lado }) => ({
     width: '25px',
