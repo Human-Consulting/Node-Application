@@ -87,7 +87,6 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
           gap: '8px',
           alignItems: 'center',
           marginBlock: '1rem',
-          backgroundColor: theme.palette.background.paper, // 👈 TEMA
         }}
       >
         <Title sx={{ width: '100%', textAlign: 'center' }}>Em Andamento</Title>

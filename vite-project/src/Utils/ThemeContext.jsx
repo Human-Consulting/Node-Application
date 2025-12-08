@@ -1,18 +1,21 @@
-// ThemeContext.jsx
-import { createContext, useState } from "react";
-import { lightTheme, darkTheme } from "../Utils/Theme";
+import { createContext, useState, useMemo } from "react";
+import { getTheme } from "../Utils/Theme";
 
 export const ThemeContext = createContext();
 
-// eslint-disable-next-line react/prop-types
 export function ThemeProviderCustom({ children }) {
   const [isDark, setIsDark] = useState(false);
+
+  const theme = useMemo(
+    () => getTheme(isDark ? "dark" : "light"),
+    [isDark]
+  );
 
   return (
     <ThemeContext.Provider
       value={{
         isDark,
-        theme: isDark ? darkTheme : lightTheme,
+        theme,
         toggle: () => setIsDark((p) => !p),
       }}
     >

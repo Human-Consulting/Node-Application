@@ -183,7 +183,7 @@ const CentralTask = ({
 
         <DoneContainer>
           <HeaderFilter
-            titulo="Em Desenvolvimento"
+            titulo="Desenvolvendo"
             todasTarefas={tarefasEmDev}
             tarefaData={tarefasEmDevFiltradas}
             setTarefasFiltradas={setTarefasEmDevFiltradas}

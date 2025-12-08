@@ -4,7 +4,7 @@ export const TaskCardBody = styled(Box)(({ theme }) => ({
     width: '35%',
     display: 'flex',
     flexDirection: 'column',
-    background: theme.palette.background.card,      // antes: #101010
+    background: theme.palette.background.cardBg,      // antes: #101010
     borderRadius: '10px',
     flexShrink: 0,
     scrollSnapAlign: 'center',

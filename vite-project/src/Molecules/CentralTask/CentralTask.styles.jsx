@@ -19,7 +19,7 @@ export const DoneContainer = styled(Box)(({ theme }) => ({
     maxHeight: '100%',
 
     // Antes: "#0F0F0F"
-    background: theme.palette.background.paper,
+    background: theme.palette.background.cardBg,
 
     display: 'flex',
     flexDirection: 'column',

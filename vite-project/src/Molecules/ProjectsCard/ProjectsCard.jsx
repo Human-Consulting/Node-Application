@@ -1,5 +1,5 @@
 import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './ProjectsCard.styles';
-import { Stack, Button } from '@mui/material';
+import { Stack, Button, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Block, Check, MoreVert } from '@mui/icons-material';
 import { useWarningValidator } from '../../Utils/useWarning';
@@ -47,7 +47,13 @@ function ProjectsCard({ item, toogleModal }) {
               }}
             />
             <Subtitle>{responsavelCard}</Subtitle>
-            <Subtitle><b>Orçamento:</b> {item.orcamento ? `R$${item.orcamento}` : 'N/A'}</Subtitle>
+           <Subtitle>
+  <Typography component="span" fontWeight={700}>
+    Orçamento:
+  </Typography>{" "}
+  {item.orcamento ? `R$${item.orcamento}` : 'N/A'}
+</Subtitle>
+
             <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <ProgressBar>
                 <Progress sx={{ width: `${item.progresso}%` }} />

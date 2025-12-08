@@ -6,7 +6,7 @@ import ModalTarefas from '../Modais/ModalTarefas/ModalTarefas.jsx'
 import FormsProjeto from '../Modal/Forms/FormsProjeto.jsx';
 import FormsEmpresa from '../Modal/Forms/FormsEmpresa.jsx';
 import { useNavigate, useParams } from 'react-router';
-import { Stack, TextField, Button, Badge, Avatar, Tooltip, Pagination } from '@mui/material'
+import { Stack, TextField, Button, Badge, Avatar, Tooltip, Pagination, useTheme } from '@mui/material'
 import { ArrowCircleLeftOutlined, Construction, ColorLens, Search, CalendarMonth } from '@mui/icons-material';
 import ModalCores from '../Modais/ModalCores/ModalCores.jsx';
 import Shader from '../Shader/Shader.jsx';
@@ -23,6 +23,8 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
   const [empresa, setEmpresa] = useState('');
   const [acao, setAcao] = useState('');
   const [listaFiltrada, setListaFiltrada] = useState([]);
+  const theme = useTheme();
+
 
   const [totalPages, setTotalPages] = useState((nomeEmpresa == 'Empresas' ? pagesEmpresas : pagesProjetos) || 0);
 
@@ -126,12 +128,16 @@ const PrincipalContainer = ({ color1, setColor1, color2, setColor2, color3, setC
   <TextField
     onChange={(e) => filtrar(e.target.value)}
     label={nomeEmpresa == "Empresas" ?
-      <Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search /> Pesquisar por uma empresa...</Stack>
+      <Stack sx={{ flexDirection: 'row', gap: 0.5, color: theme.palette.text.primary  }}> <Search /> Pesquisar por uma empresa...</Stack>
       :
-      <Stack sx={{ flexDirection: 'row', gap: 0.5 }}>
-        <Search /> Pesquisar um projeto da
-        <Stack style={{ color: '#90caf9' }}>{nomeEmpresa}</Stack>
-      </Stack>
+    <Stack sx={{ flexDirection: 'row', gap: 0.5, color: theme.palette.text.primary }}>
+  <Search />
+  Pesquisar um projeto da
+  <Stack sx={{ color: theme.palette.primary.main, fontWeight: 600 }}>
+    {nomeEmpresa}
+  </Stack>
+</Stack>
+
     }
     size="small"
     sx={(theme) => ({

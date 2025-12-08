@@ -1,5 +1,5 @@
 import { Block, AllInclusive, CheckCircle, HourglassEmpty, EmojiPeople, Search, Close } from '@mui/icons-material';
-import { Box, Grow, MenuItem, Select, Stack, Popover, TextField, Tooltip } from '@mui/material';
+import { Box, Grow, MenuItem, Select, Stack, Popover, TextField, Tooltip, Typography } from '@mui/material';
 import { NavTask } from './HeaderFilter.styles';
 import { useEffect, useState } from 'react';
 import { getNome } from '../../Utils/getInfos';
@@ -136,8 +136,9 @@ const HeaderFilter = ({ todasTarefas, tarefaData, titulo, setTarefasFiltradas, u
           </Box>
         </MenuItem>
       </Select>
-
+<Typography>
       {titulo}
+      </Typography>
 
       <Search
         onClick={handleOpenSearch}

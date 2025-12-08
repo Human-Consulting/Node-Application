@@ -4,7 +4,7 @@ import { styled } from '@mui/system';
 export const LateralNavBar = styled(Box)(({ theme }) => ({
     width: '20%',
     minWidth: '20%',
-    backgroundColor: theme.palette.custom.sidebarItem,
+    backgroundColor: theme.palette.custom.sidebar,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -50,7 +50,7 @@ export const Slide = styled('div')(() => ({
     transition: 'transform 0.5s ease-in-out',
     transform: 'translateX(0)',
     scrollSnapType: 'x mandatory',
-});
+}));
 
 export const SkipButton = styled('button')(({ theme, lado }) => ({
     width: '25px',

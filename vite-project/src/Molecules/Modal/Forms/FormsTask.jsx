@@ -1,41 +1,51 @@
 import { useState } from "react";
 import { postTask, putTask, deleteTask, putImpedimento } from '../../../Utils/cruds/CrudsTask.jsx';
-import { Stack, Button, TextField, Select, MenuItem, Typography, Box, Grow, FormLabel } from '@mui/material';
+import {
+  Stack, Button, TextField, Typography, Box,
+  FormLabel, Checkbox, IconButton
+} from '@mui/material';
+import { useTheme } from "@mui/material/styles";
 import { inputStyle } from "./Forms.styles.jsx";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
-import { Checkbox, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import SelectUsuarios from "../../Modais/SelectUsuarios/SelectUsuarios.jsx";
 import dayjs from "dayjs";
 
-const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usuarios, sizeUsuarios, pagesUsuarios, atualizarUsuarios, idSprint, dtInicioSprint, dtFimSprint }) => {
-    const [titulo, setTitulo] = useState(task?.titulo || "");
-    const [descricao, setDescricao] = useState(task?.descricao || "");
-    const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
-    const [dtFim, setDtFim] = useState(task?.dtFim || "");
-    const [responsavel, setResponsavel] = useState(task?.responsavel || {});
-    const [fkResponsavel, setFkResponsavel] = useState(task?.responsavel?.idUsuario || '#');
-    const [comentario, setComentario] = useState(task?.comentario || "");
-    const [comImpedimento, setComImpedimento] = useState(task?.comImpedimento);
-    const [checkpoints, setCheckpoints] = useState(task?.checkpoints || []);
+const FormsTask = ({
+  task, toogleModal, atualizarSprints, atualizarProjetos,
+  usuarios, sizeUsuarios, pagesUsuarios, atualizarUsuarios,
+  idSprint, dtInicioSprint, dtFimSprint
+}) => {
 
-    const [erros, setErros] = useState({});
+  const theme = useTheme(); // ✅ TEMA AQUI
 
-    const validarCampos = () => {
-        const novosErros = {};
+  const [titulo, setTitulo] = useState(task?.titulo || "");
+  const [descricao, setDescricao] = useState(task?.descricao || "");
+  const [dtInicio, setDtInicio] = useState(task?.dtInicio || "");
+  const [dtFim, setDtFim] = useState(task?.dtFim || "");
+  const [responsavel, setResponsavel] = useState(task?.responsavel || {});
+  const [fkResponsavel, setFkResponsavel] = useState(task?.responsavel?.idUsuario || '#');
+  const [comentario, setComentario] = useState(task?.comentario || "");
+  const [comImpedimento, setComImpedimento] = useState(task?.comImpedimento);
+  const [checkpoints, setCheckpoints] = useState(task?.checkpoints || []);
 
-        if (!titulo.trim()) novosErros.titulo = "Título é obrigatório";
-        if (!dtInicio.trim()) novosErros.dtInicio = "Data de início é obrigatória";
-        if (!dtFim.trim()) novosErros.dtFim = "Data de finalização é obrigatória";
+  const [erros, setErros] = useState({});
 
-        if (dtInicio && dtFim) {
-            const inicio = new Date(dtInicio);
-            const fim = new Date(dtFim);
-            const inicioSprint = new Date(dtInicioSprint);
-            const fimSprint = new Date(dtFimSprint);
+  const validarCampos = () => {
+    const novosErros = {};
+
+    if (!titulo.trim()) novosErros.titulo = "Título é obrigatório";
+    if (!dtInicio.trim()) novosErros.dtInicio = "Data de início é obrigatória";
+    if (!dtFim.trim()) novosErros.dtFim = "Data de finalização é obrigatória";
+
+    if (dtInicio && dtFim) {
+      const inicio = new Date(dtInicio);
+      const fim = new Date(dtFim);
+      const inicioSprint = new Date(dtInicioSprint);
+      const fimSprint = new Date(dtFimSprint);
 
             if (inicio > fim) {
                 novosErros.dtFim = "Data de finalização deve ser depois da data de início";
@@ -47,13 +57,13 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
 
             if (fim > fimSprint) {
                 novosErros.dtFim = `Data de finalização deve ser antes do fim da sprint (${dayjs(dtFimSprint).format("DD/MM/YYYY")})`;
-            }
+    }
         }
 
 
-        setErros(novosErros);
-        return Object.keys(novosErros).length === 0;
-    };
+    setErros(novosErros);
+    return Object.keys(novosErros).length === 0;
+  };
 
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
@@ -154,15 +164,15 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
         });
     };
 
-    return (
+  return (
         <Stack direction="column" mb={2} >
-            <Typography variant="h5" textAlign="center" mb={2}>
-                {task == null ? "Adicionar Tarefa" : `Visualizar Tarefa`}
-            </Typography>
+      <Typography variant="h5" textAlign="center" mb={2}>
+        {task == null ? "Adicionar Tarefa" : `Visualizar Tarefa`}
+      </Typography>
             <Stack direction="row" justifyContent="space-between" mb={2} gap='50px' >
                 <Box component="form" onSubmit={(e) => e.preventDefault()} display="flex" flexDirection="column" gap={2} flex='1'>
 
-                    <TextField
+            <TextField
                         label="Título"
                         type="text"
                         disabled={usuarioLogado.permissao === 'FUNC'}
@@ -171,8 +181,8 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                             removerErro("titulo")
                             setTitulo(e.target.value)
                         }}
-                        fullWidth
-                        variant="outlined"
+              fullWidth
+              variant="outlined"
                         InputLabelProps={{ style: inputStyle.label }}
                         InputProps={{ style: inputStyle.input }}
                         sx={inputStyle.sx}
@@ -197,21 +207,21 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         sx={inputStyle.sx}
                         error={!!erros.descricao}
                         helperText={erros.descricao}
-                    />
+            />
 
                     <Stack sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
 
-                        <TextField
+              <TextField
                             label="Data de Início"
-                            type="date"
+                type="date"
                             disabled={usuarioLogado.permissao === 'FUNC'}
                             value={dtInicio}
                             onChange={(e) => {
                                 removerErro("dtInicio")
                                 setDtInicio(e.target.value)
                             }}
-                            fullWidth
-                            variant="outlined"
+                fullWidth
+                variant="outlined"
                             InputLabelProps={{ style: inputStyle.label, shrink: true }}
                             InputProps={{ style: inputStyle.input }}
                             sx={inputStyle.sx}
@@ -235,8 +245,8 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                             sx={inputStyle.sx}
                             error={!!erros.dtFim}
                             helperText={erros.dtFim}
-                        />
-                    </Stack>
+              />
+          </Stack>
                     <SelectUsuarios
                         usuarios={usuarios}
                         sizeUsuarios={sizeUsuarios}
@@ -251,7 +261,7 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         disabled={usuarioLogado.permissao === 'FUNC'}
                         error={!!erros.fkResponsavel}
                     />
-                </Box>
+        </Box>
                 <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="start" gap={2} flex='1' maxHeight="100%" >
 
                     <Stack display="flex" flexDirection="column" alignItems="start" overflow={'auto'} width="100%" gap={2} height="16rem" maxHeight="16rem" paddingRight='5px' sx={{
@@ -270,26 +280,26 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         },
                     }}>
 
-                        <FormLabel sx={{ color: '#ccc', mb: 1 }}>Checkpoints</FormLabel>
-                        {checkpoints.map(cb => (
-                            <Box key={cb.idCheckpoint} display="flex" backgroundColor="#22272B" gap={1} width="100%">
+                        <FormLabel sx={{ color: theme.palette.text.primary, mb: 1 }}>Checkpoints</FormLabel>
+          {checkpoints.map(cb => (
+                            <Box key={cb.idCheckpoint} display="flex" sx={{ backgroundColor: theme.palette.background.cardBg}} gap={1} width="100%">
                                 <Stack direction="row" alignItems="center" flex='1'>
-                                    <Checkbox
-                                        checked={cb.finalizado}
+              <Checkbox
+                checked={cb.finalizado}
                                         onChange={() => handleToggleCheckbox(cb.idCheckpoint)}
-                                        icon={<CheckCircleOutlinedIcon />}
-                                        checkedIcon={<CheckCircleIcon />}
+                icon={<CheckCircleOutlinedIcon />}
+                checkedIcon={<CheckCircleIcon />}
                                         disabled={usuarioLogado.idUsuario != fkResponsavel}
-                                    />
-                                    <TextField
+              />
+              <TextField
                                         placeholder="Novo checkpoint"
-                                        value={cb.descricao}
+                value={cb.descricao}
                                         onChange={(e) => handleLabelChange(cb.idCheckpoint, e.target.value)}
-                                        variant="standard"
-                                        multiline
+                variant="standard"
+                multiline
                                         maxRows={3}
                                         disabled={(usuarioLogado.idUsuario != fkResponsavel && usuarioLogado.permissao == 'FUNC')}
-                                        sx={{
+                sx={{
                                             flex: 1,
                                             input: { color: '#FFF' },
                                             textarea: {
@@ -311,41 +321,41 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                                             "& .MuiInputBase-input.Mui-disabled": {
                                                 WebkitTextFillColor: "#999"
                                             },
-                                        }}
-                                    />
+                }}
+              />
                                 </Stack>
 
                                 {(usuarioLogado.idUsuario == fkResponsavel || usuarioLogado.permissao != 'FUNC') && (<IconButton onClick={() => setCheckpoints(checkpoints.filter(c => c.idCheckpoint !== cb.idCheckpoint))} color="error">
                                     <DeleteIcon />
                                 </IconButton>)}
-                            </Box>
-                        ))}
+            </Box>
+          ))}
 
                         {(usuarioLogado.idUsuario == fkResponsavel || usuarioLogado.permissao != 'FUNC') && (<IconButton onClick={handleAddCheckbox} color="primary">
-                            <AddIcon />
+            <AddIcon />
                         </IconButton>)}
                     </Stack>
 
-                    <TextField
-                        label="Comentário"
-                        multiline
+          <TextField
+            label="Comentário"
+            multiline
                         disabled={task && usuarioLogado.idUsuario !== fkResponsavel}
                         rows={4.5}
-                        value={comentario}
-                        onChange={(e) => setComentario(e.target.value)}
-                        fullWidth
+            value={comentario}
+            onChange={(e) => setComentario(e.target.value)}
+            fullWidth
                         variant="outlined"
                         InputLabelProps={{ style: inputStyle.label }}
                         InputProps={{ style: inputStyle.input }}
                         sx={{ ...inputStyle.sx, height: "calc((3.5rem * 2) + 1.5rem)" }}
-                    />
-                </Box>
+          />
+        </Box>
 
-            </Stack>
+      </Stack>
             {task == null ?
                 <Button variant="contained" color="primary" endIcon={<SendIcon />} onClick={handlePostTask}>
                     Enviar
-                </Button>
+      </Button>
                 :
                 <>
                     <Stack direction="row" spacing={2} justifyContent="center">
@@ -374,8 +384,8 @@ const FormsTask = ({ task, toogleModal, atualizarSprints, atualizarProjetos, usu
                         }
                     </Stack>
                 </>}
-        </Stack>
-    );
+    </Stack>
+  );
 };
 
 export default FormsTask;
