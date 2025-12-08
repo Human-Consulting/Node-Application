@@ -21,9 +21,9 @@ jobs:
       - name: Instalar dependências
         run: |
           cd vite-project
-          npm install
+          npm install --force
 
       - name: Build do projeto
         run: |
           cd vite-project
-          npm run build
+          npm run build --force
