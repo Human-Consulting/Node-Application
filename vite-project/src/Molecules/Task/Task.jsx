@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TaskBody, SprintBody } from './Task.styles';
 import TaskCard from '../../Atoms/TaskCard/TaskCard';
+import Modal from '../Modal/Modal';
 import { getSprints } from '../../Utils/cruds/CrudsSprint';
 import { useNavigate, useParams } from 'react-router';
 import { Stack, Typography, Button, Tooltip, Badge } from '@mui/material';
@@ -12,11 +13,28 @@ import ModalCores from '../Modais/ModalCores/ModalCores';
 import ModalSprint from '../Mudal2/ModalSprint';
 import ModalTarefa from '../Mudal2/ModalTarefa';
 
-const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pagesUsuarios, atualizarUsuarios, color1, color2, color3, setColor1, setColor2, setColor3, animate, setAnimate, telaAtual }) => {
+const Task = ({
+  toogleLateralBar,
+  atualizarProjetos,
+  usuarios,
+  sizeUsuarios,
+  pagesUsuarios,
+  atualizarUsuarios,
+  color1,
+  color2,
+  color3,
+  setColor1,
+  setColor2,
+  setColor3,
+  animate,
+  setAnimate,
+  telaAtual
+}) => {
 
   const { idProjeto, idEmpresa, nomeEmpresa, tituloProjeto } = useParams();
   const navigate = useNavigate();
 
+  const [showModal, setShowModal] = useState(false);
   const [entidade, setEntidade] = useState(null);
   const [id, setId] = useState(null);
   const [acao, setAcao] = useState('');
@@ -33,21 +51,11 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
   const [anchorTarefa, setAnchorTarefa] = useState(null);
   const [anchorCores, setAnchorCores] = useState(null);
 
-  const handleBadgeClickTarefa = (event) => {
-    setAnchorTarefa(event.currentTarget);
-  };
+  const handleBadgeClickTarefa = (event) => setAnchorTarefa(event.currentTarget);
+  const handleBadgeClickCores = (event) => setAnchorCores(event.currentTarget);
 
-  const handleBadgeClickCores = (event) => {
-    setAnchorCores(event.currentTarget);
-  };
-
-  const handlePopoverCloseTarefa = () => {
-    setAnchorTarefa(null);
-  };
-
-  const handlePopoverCloseCores = () => {
-    setAnchorCores(null);
-  };
+  const handlePopoverCloseTarefa = () => setAnchorTarefa(null);
+  const handlePopoverCloseCores = () => setAnchorCores(null);
 
   const openPopoverTarefas = Boolean(anchorTarefa);
   const openPopoverCores = Boolean(anchorCores);
@@ -56,17 +64,17 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
     setLoading(true);
     const sprints = await getSprints(idProjeto);
     setSprintsList(sprints);
-    // setDtLastSprint(sprints[sprints.length - 1].dtFim);
+    setDtLastSprint(sprints[sprints.length - 1].dtFim);
     setLoading(false);
   };
 
-  const handleOpenProject = async () => {
-    navigate(`/Home/${nomeEmpresa}/${idEmpresa}`)
-  }
+  const handleOpenProject = () => {
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}`);
+  };
 
-  const handleOpenDash = async () => {
-    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Dash/${tituloProjeto}/${Number(idProjeto)}`)
-  }
+  const handleOpenDash = () => {
+    navigate(`/Home/${nomeEmpresa}/${idEmpresa}/Dash/${tituloProjeto}/${Number(idProjeto)}`);
+  };
 
   useEffect(() => {
     atualizarSprints();
@@ -152,34 +160,75 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
               <Badge
                 onClick={handleBadgeClickTarefa}
                 sx={{
+                  color: '#eee',
                   '& .MuiBadge-badge': {
                     fontSize: '1.25rem',
                     height: '26px',
                     width: '26px',
                     cursor: 'pointer'
                   }
-                }} badgeContent={usuarioLogado.qtdTarefas} color={usuarioLogado.comImpedimento ? "error" : "primary"}>
-                <CalendarMonth sx={{ fontSize: 32, cursor: 'pointer' }} />
+                }}
+                badgeContent={usuarioLogado.qtdTarefas}
+                color={usuarioLogado.comImpedimento ? "error" : "primary"}
+              >
+                <CalendarMonth
+                  sx={{
+                    fontSize: 32,
+                    cursor: 'pointer',
+                    color: '#ddd',
+                    '&:hover': { color: '#fff' }
+                  }}
+                />
               </Badge>
             </Tooltip>
-            <Tooltip title="Editar cor de fundo.">
-              <ColorLens onClick={handleBadgeClickCores}
+
+            <Tooltip
+              title="Editar cor de fundo."
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: '#333',
+                    color: '#eee',
+                    fontSize: '0.9rem'
+                  }
+                }
+              }}
+            >
+              <ColorLens
+                onClick={handleBadgeClickCores}
                 sx={{
                   height: '40px',
                   width: '40px',
-                  cursor: 'pointer'
-                }} />
+                  cursor: 'pointer',
+                  color: '#ddd',
+                  '&:hover': { color: '#fff' }
+                }}
+              />
             </Tooltip>
+
           </Stack>
         </Typography>
+
         <SprintBody>
 
-          {sprintsList.length > 0 && sprintsList.map((sprint, index) => (
-            <TaskCard toogleTaskModal={toogleModal} sprint={sprint} index={index + 1} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} idEmpresa={idEmpresa} />
-          ))}
-          {usuarioLogado.permissao != 'FUNC' ?
+          {sprintsList.length > 0 &&
+            sprintsList.map((sprint, index) => (
+              <TaskCard
+                key={sprint.idSprint}
+                toogleTaskModal={toogleModal}
+                sprint={sprint}
+                index={index + 1}
+                atualizarSprints={atualizarSprints}
+                atualizarProjetos={atualizarProjetos}
+                idEmpresa={idEmpresa}
+              />
+            ))
+          }
+
+          {usuarioLogado.permissao !== 'FUNC' && (
             <TaskCard toogleTaskModal={toogleModal} />
-            : null}
+          )}
+
         </SprintBody>
       </TaskBody>
 
@@ -219,6 +268,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
         anchorEl={anchorTarefa}
         onClose={handlePopoverCloseTarefa}
       />
+
       <ModalCores
         color1={color1}
         setColor1={setColor1}
@@ -233,7 +283,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
         onClose={handlePopoverCloseCores}
       />
     </>
-  )
-}
+  );
+};
 
-export default Task
+export default Task;

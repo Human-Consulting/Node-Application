@@ -113,7 +113,6 @@ const ModalTarefas = ({ tarefas = [], open, anchorEl, onClose }) => {
         }
       }}
     >
-      {/* ✅ CALENDÁRIO (FIXO) */}
       <Box sx={{ p: 2, borderRight: "1px solid #222", width: "45%" }}>
         <Box display="flex" justifyContent="space-between">
           <IconButton onClick={() => handleMesChange(-1)}>
@@ -155,7 +154,6 @@ const ModalTarefas = ({ tarefas = [], open, anchorEl, onClose }) => {
         </Grid>
       </Box>
 
-      {/* ✅ LISTA COM TEMA */}
       <List sx={{ flex: 1, p: 1 }}>
         {tarefasFiltradas.length > 0 ? (
           tarefasFiltradas.map((tarefa, index) => (

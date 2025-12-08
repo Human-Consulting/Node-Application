@@ -40,10 +40,13 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
   }
 
   const [page, setPage] = useState(0);
+const usuarioLogado = JSON.parse(localStorage.getItem('usuario')) || {};
 
-  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
-  if (!usuarioLogado.permissao.includes("CONSULTOR") && nomeEmpresa === 'Empresas') navigate(-1);
+if (!usuarioLogado?.permissao?.includes("CONSULTOR") && nomeEmpresa === 'Empresas') {
+  navigate(-1);
+}
+
 
   const handleOpenProject = async () => {
     navigate(`/Home/${nomeEmpresa}/${idEmpresa}`)

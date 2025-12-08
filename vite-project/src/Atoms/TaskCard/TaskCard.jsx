@@ -1,5 +1,5 @@
 import { BodyTarefa, NavTask, TaskCardBody } from './TaskCard.styles'
-import { Button, Select, Stack, MenuItem, Grow, Box, Tooltip, Popover, TextField, useTheme } from '@mui/material'
+import { Button, Select, Stack, MenuItem, Grow, Box, Tooltip, Popover, TextField } from '@mui/material'
 import TarefasItem from '../TarefasItem/TarefasItem'
 import { useNavigate, useParams } from 'react-router'
 import { useEffect, useState } from 'react';
@@ -12,8 +12,6 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   const { nomeEmpresa, idEmpresa, descricaoProjeto, idProjeto } = useParams();
   const navigate = useNavigate();
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
-  const theme = useTheme();
-
 
   const [tarefasFiltradas, setTarefasFiltradas] = useState([]);
   const [usuarioFiltrado, setUsuarioFiltrado] = useState(null);
@@ -291,36 +289,17 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
               </Button>
             }
 
-            <Stack
-  sx={{
-    flexDirection: 'row',
-    gap: '15px',
-    color: theme.palette.text.primary, // ✅ FORÇA O TEXTO NO TEMA
-    alignItems: 'center',
-  }}
->
-  {Math.floor(sprint.progresso)}% de {sprint.tarefas.length}
-
-  {sprint.progresso < 100 && (
-    <Tooltip
-      title={`Prazo: ${dayjs(sprint.dtFim).format("DD/MM/YYYY")}`}
-      placement="top"
-    >
-      <Stack
-        sx={{
-          gap: '2px',
-          alignItems: 'center',
-          flexDirection: 'row',
-          color: theme.palette.text.primary, // ✅ GARANTE NO TOOLTIP TAMBÉM
-        }}
-      >
-        <CalendarMonth sx={{ fontSize: '16px', color: 'inherit' }} /> {/* ✅ herda do tema */}
-        {getTempoRestante(sprint.dtFim)}
-      </Stack>
-    </Tooltip>
-  )}
-</Stack>
-
+            <Stack sx={{ flexDirection: 'row', gap: '15px' }}>
+              {Math.floor(sprint.progresso)}% de {sprint.tarefas.length}
+              {sprint.progresso < 100 &&
+                <Tooltip title={`Prazo: ${dayjs(sprint.dtFim).format("DD/MM/YYYY")}`} placement="top">
+                  <Stack sx={{ gap: '2px', alignItems: 'center', flexDirection: 'row' }}>
+                    <CalendarMonth sx={{ fontSize: '16px' }} />
+                    {getTempoRestante(sprint.dtFim)}
+                  </Stack>
+                </Tooltip>
+              }
+            </Stack>
           </Stack>
         </>
         :

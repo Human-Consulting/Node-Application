@@ -6,34 +6,16 @@ import {
   TextField, 
   Typography 
 } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { postSprint, putSprint, deleteSprint } from '../../Utils/cruds/CrudsSprint.jsx';
 import { Close, Delete, Send } from "@mui/icons-material";
 import { useWarningValidator } from "../../Utils/useWarning.jsx";
 import { inputStyle } from "../Modal/Forms/Forms.styles.jsx";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Content, Actions } from "./Modal.style.jsx";
 import dayjs from "dayjs";
-
-// ✅ TEMA APLICADO EM TUDO
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: { main: "#5DA9FF" },
-    error: { main: "#FF5C5C" },
-    background: {
-      default: "#0F1419",
-      paper: "#151A1E",
-    },
-    text: {
-      primary: "#ffffff",
-      secondary: "#9CA3AF",
-    },
-  },
-  shape: {
-    borderRadius: 10,
-  },
-});
+import { ThemeContext } from "../../Utils/themeContext.jsx";
+import { getTheme } from "../../Utils/Theme.jsx";
 
 const ModalSprint = ({ 
   open, 
@@ -45,6 +27,10 @@ const ModalSprint = ({
   atualizarProjetos, 
   dtLastSprint 
 }) => {
+
+  // ⭐ TEMA DINÂMICO DO CONTEXTO
+  const { mode } = useContext(ThemeContext);
+  const theme = getTheme(mode);
 
   const diaSeguinte = dayjs(dtLastSprint).add(1, "day").format("YYYY-MM-DD");
 
@@ -103,8 +89,8 @@ const ModalSprint = ({
     };
 
     const response = await deleteSprint(sprint.idSprint, bodyDelete);
-    toogleModal();
 
+    toogleModal();
     if (response) {
       await atualizarSprints();
       await atualizarProjetos();
@@ -140,7 +126,7 @@ const ModalSprint = ({
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs" sx={{ zIndex: 150 }}>
         <Content>
           <Box
@@ -203,8 +189,8 @@ const ModalSprint = ({
                 }}
                 disabled={usuarioLogado.permissao === "FUNC"}
                 fullWidth
-                sx={inputStyle.sx}
                 InputLabelProps={{ shrink: true }}
+                sx={inputStyle.sx}
                 error={!!erros.dtInicio}
                 helperText={erros.dtInicio}
               />
@@ -219,8 +205,8 @@ const ModalSprint = ({
                 }}
                 disabled={usuarioLogado.permissao === "FUNC"}
                 fullWidth
-                sx={inputStyle.sx}
                 InputLabelProps={{ shrink: true }}
+                sx={inputStyle.sx}
                 error={!!erros.dtFim}
                 helperText={erros.dtFim}
               />
