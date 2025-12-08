@@ -1,8 +1,9 @@
-import { Dialog, DialogContent, DialogActions, Stack, Typography, Pagination, TextField, Button, Checkbox, Box } from "@mui/material";
+import { Dialog, Stack, Typography, Pagination, TextField, Button, Checkbox, Box } from "@mui/material";
 import { getUsuarios } from "../../../Utils/cruds/CrudsUsuario";
 import { Close, Search } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { Content, Actions } from "../../Mudal2/Modal.style";
 
 const ModalAdicionarUsuarios = ({ open, onClose, sala, onConfirm }) => {
     const [novosUsuarios, setNovosUsuarios] = useState([]);
@@ -81,7 +82,7 @@ const ModalAdicionarUsuarios = ({ open, onClose, sala, onConfirm }) => {
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-            <DialogContent sx={{ background: "#22272B" }}>
+            <Content>
                 <Stack gap={2}>
 
                     {/* CAMPO DE BUSCA */}
@@ -149,14 +150,14 @@ const ModalAdicionarUsuarios = ({ open, onClose, sala, onConfirm }) => {
                         sx={{ "& .MuiPaginationItem-root": { color: "#fff" } }}
                     />
                 </Stack>
-            </DialogContent>
+            </Content>
 
-            <DialogActions sx={{ background: "#1a1e22" }}>
+            <Actions sx={{ background: "#1a1e22" }}>
                 <Button onClick={onClose} sx={{ color: "#aaa" }}>Cancelar</Button>
                 <Button onClick={confirmar} variant="contained" sx={{ bgcolor: "#1976d2" }}>
                     Confirmar
                 </Button>
-            </DialogActions>
+            </Actions>
         </Dialog>
     );
 };

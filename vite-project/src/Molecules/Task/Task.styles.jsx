@@ -11,7 +11,7 @@ export const TaskBody = styled(Box)(({ theme }) => ({
   zIndex: 2,
   gap: '1rem',
   color: theme.palette.text.primary,
-  background: theme.palette.background.default,
+  // background: theme.palette.background.default,
 
   '&::-webkit-scrollbar': {
     height: '7px',
@@ -37,5 +37,5 @@ export const SprintBody = styled(Box)(({ theme }) => ({
   gap: '5rem',
   height: '90%',
   color: theme.palette.text.primary,
-  background: theme.palette.background.default,
+  // background: theme.palette.background.default,
 }));

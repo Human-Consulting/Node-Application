@@ -19,6 +19,8 @@ export default function LoginContainer() {
   const [id, setId] = useState(null);
   const [codigoValidade, setCodigoValidade] = useState(null);
 
+  const [popoverSenhaAnchor, setPopoverSenhaAnchor] = useState(null);
+
   const etapaAtual = !email ? 0 : !isValid ? 1 : 2;
 
   const toggleModal = () => {
@@ -28,7 +30,8 @@ export default function LoginContainer() {
       setIsValid(false);
       setId(null);
     }
-    setShowModal(!showModal);
+    // setShowModal(!showModal);
+    setPopoverSenhaAnchor(!popoverSenhaAnchor);
   };
 
   return (
@@ -75,9 +78,9 @@ export default function LoginContainer() {
       <ContainerBoard toggleModal={toggleModal} />
 
       <Modal
-        showModal={showModal}
-        fechar={toggleModal}
-        entidade={"esqueciASenha"}
+        open={Boolean(popoverSenhaAnchor)}
+        anchorEl={popoverSenhaAnchor}
+        onClose={() => setPopoverSenhaAnchor(null)}
         form={
           isValid
             ? <FormsEsqueciASenha id={id} toggleModal={toggleModal} />

@@ -394,7 +394,6 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                     )}
                 </Stack>
 
-                {/* CONTEÚDO DA ABA ATUAL */}
                 <Box sx={{ flexGrow: 1, p: 2, overflowY: "auto" }}>
                     {aba === "visao" ? (
                         <Stack gap={2} alignItems="center">
@@ -424,7 +423,6 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                                         sx={{ width: "100%", height: "100%", objectFit: "cover", transition: "0.3s" }}
                                     />
                                 ) : sala?.urlImagem ? (
-                                    // Se tem imagem antiga e não escolheu nova
                                     <Box
                                         component="img"
                                         src={`data:image/png;base64,${sala.urlImagem}`}
@@ -433,7 +431,6 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                                         sx={{ width: "100%", height: "100%", objectFit: "cover", transition: "0.3s" }}
                                     />
                                 ) : (
-                                    // Ícone de sem foto
                                     <ImageNotSupported
                                         className="blurImg"
                                         sx={{ fontSize: 80, color: "#999", width: "100%", height: "100%", transition: "0.3s" }}
@@ -510,7 +507,6 @@ const ModalChatEditar = ({ open, anchorEl, onClose, sala, atualizarSalas }) => {
                 </Box>
             </Dialog>
 
-            {/* MODAL ADICIONAR USUÁRIOS */}
             <ModalAdicionarUsuarios
                 open={openAdd}
                 onClose={() => setOpenAdd(false)}

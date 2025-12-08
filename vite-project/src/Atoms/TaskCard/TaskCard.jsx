@@ -127,7 +127,7 @@ const TaskCard = ({ toogleTaskModal, sprint, index, atualizarProjetos, atualizar
   ];
 
   return (
-    <TaskCardBody sx={{ position: 'relative' }}>
+    <TaskCardBody>
       {sprint ?
         <>
           <NavTask>

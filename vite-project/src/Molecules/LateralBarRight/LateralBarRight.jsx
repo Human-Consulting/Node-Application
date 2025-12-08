@@ -4,11 +4,14 @@ import MiniProjectsCard from '../MiniProjectsCard/MiniProjectsCard'
 import { ArrowLeft, ArrowRight } from '@mui/icons-material';
 import { Stack, useTheme } from '@mui/material';
 import { TituloHeader } from '../PrincipalContainer/PrincipalContainer.styles';
+import { useParams } from 'react-router';
 
 const LateralBarRight = ({ showLateralBar, kpis }) => {
   const theme = useTheme(); // 👈 AQUI PEGAMOS O TEMA
 
   if (!showLateralBar) return null;
+
+  const { nomeEmpresa } = useParams();
 
   const [idx, setIdx] = useState(0);
   const [idxTwo, setIdxTwo] = useState(0);
@@ -62,15 +65,20 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
 
         <Divisor>
           <Title>Impedidos</Title>
-          <Slide
-            ref={carrousel}
-            style={{ width: `${caosList.length * 100}%` }}>
-            {caosList.length > 0
-              ? caosList.map((entidade, i) => (
-                  <MiniProjectsCard key={i} entidade={entidade} tipo="impedimento" />
-                ))
-              : <MiniProjectsCard entidade={null} tipo="impedimento" />}
-          </Slide>
+          {caosList.length > 0
+            ?
+            <Slide
+              ref={carrousel}
+              style={{ width: `${caosList.length * 100}%` }}>
+              {caosList.map((entidade, i) => (
+                <MiniProjectsCard key={i} entidade={entidade} tipo="impedimento" />
+              ))}
+            </Slide>
+            :
+            <Stack sx={{ height: '80%', justifyContent: 'center', alignItems: 'center', border: 'solid 4px #1A1E22', borderRadius: '10px' }}>
+              <Title>{nomeEmpresa == 'Empresas' ? "Empresas" : "Projetos"} voando 🚀</Title>
+            </Stack>
+          }
         </Divisor>
 
         {caosList.length > 1 && idx < caosList.length - 1 && (
@@ -111,16 +119,20 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
 
         <Divisor>
           <Title>Concluídos</Title>
-          <Slide
-            ref={carrouselTwo}
-            style={{ width: `${finalizadosList.length * 100}%` }}
-          >
-            {finalizadosList.length > 0
-              ? finalizadosList.map((entidade, i) => (
-                  <MiniProjectsCard key={i} entidade={entidade} tipo="finalizado" />
-                ))
-              : <MiniProjectsCard entidade={null} tipo="finalizado" />}
-          </Slide>
+          {finalizadosList.length > 0
+            ?
+            <Slide
+              ref={carrouselTwo}
+              style={{ width: `${finalizadosList.length * 100}%` }}>
+              {finalizadosList.map((entidade, i) => (
+                <MiniProjectsCard key={i} entidade={entidade} tipo="finalizado" />
+              ))}
+            </Slide>
+            :
+            <Stack sx={{ height: '80%', justifyContent: 'center', alignItems: 'center', border: 'solid 4px #1A1E22', borderRadius: '10px' }}>
+              <Title>{nomeEmpresa == 'Empresas' ? "Empresas" : "Projeto"} em andamento.</Title>
+            </Stack>
+          }
         </Divisor>
 
         {finalizadosList.length > 1 && idxTwo < finalizadosList.length - 1 && (

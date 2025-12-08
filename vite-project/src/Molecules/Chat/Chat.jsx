@@ -8,7 +8,6 @@ import { connect } from "../../Utils/WebSocketConnection";
 import { getSalas } from "../../Utils/cruds/CrudsSala";
 import { useNavigate, useParams } from "react-router";
 import { useState, useEffect, useRef } from "react";
-import FormsSala from "../Modal/Forms/FormsSala";
 import { Load } from '../../Utils/Load.jsx';
 import Shader from "../Shader/Shader";
 import Modal from "../Modal/Modal";
@@ -402,7 +401,6 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
                 {selectedChat.nome}
               </Typography>
             </HeaderContent>
-            {/* <MoreVert onClick={() => toogleModal(selectedChat)} sx={{ cursor: 'pointer' }} /> */}
             <MoreVert onClick={(e) => {
               setSelectedSala(selectedChat);
               setPopoverEditarAnchor(e.currentTarget)
@@ -423,7 +421,6 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
 
               return (
                 <div key={mensagem.idMensagem}>
-                  {/* Quebra de dia */}
                   {mudouDeDia && (
                     <ChatMessage
                       informativo={true}
@@ -431,7 +428,6 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
                     />
                   )}
 
-                  {/* Mensagem normal */}
                   <ChatMessage
                     userName={sender?.nome}
                     date={mensagem?.horario}

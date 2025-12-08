@@ -1,17 +1,15 @@
 import { useRef } from "react";
-import { Box, Zoom, Stepper, Step, StepLabel, useTheme } from "@mui/material";
-import { Close, Check, Block } from "@mui/icons-material";
-
-import { Backdrop, ModalContent, DragHandle } from "./Modal.styles";
-import { useWarningValidator } from "../../Utils/useWarning";
+import { Box, Stepper, Step, StepLabel, Dialog, Stack, useTheme } from "@mui/material";
+import { Close } from "@mui/icons-material";
+import { Content } from "../Mudal2/Modal.style";
 
 const etapas = ["Enviar Código", "Validar Código", "Nova Senha"];
 
-const Modal = ({ showModal, fechar, form, acao, entidade, etapaAtual }) => {
-  if (!showModal) return null;
+const Modal = ({ open, onClose, form, etapaAtual }) => {
+  if (!open) return null;
 
   const modalRef = useRef(null);
-  const theme = useTheme(); // ✅ TEMA APLICADO AQUI
+  const theme = useTheme(); // ✅ TEMA APLICADO CORRETAMENTE
 
   const handleDragStart = (e) => {
     const modalElement = modalRef.current;
@@ -33,72 +31,62 @@ const Modal = ({ showModal, fechar, form, acao, entidade, etapaAtual }) => {
   };
 
   return (
-    <Zoom in={showModal}>
-      <Backdrop>
-        <ModalContent
-          ref={modalRef}
-          sx={{
-            width: `${acao === "aumentar" ? "950px" : acao === "aumentar1" ? "600px" : "450px"}`,
-            backgroundColor: theme.palette.background.paper // ✅ antes implícito
-          }}
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
+      <Content
+        ref={modalRef}
+        sx={{
+          padding: 0,
+          backgroundColor: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+        }}
+        onMouseDown={handleDragStart}
+      >
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          alignItems="center"
+          padding={2}
         >
-          <DragHandle
-            onMouseDown={handleDragStart}
+          <Close
+            onClick={onClose}
+            size="small"
             sx={{
-              backgroundColor: theme.palette.divider // ✅ tema
+              cursor: "pointer",
+              color: theme.palette.text.primary,
             }}
           />
+        </Box>
 
-          <Box
-            display="flex"
-            justifyContent={
-              useWarningValidator(entidade || null) !== null
-                ? "space-between"
-                : "flex-end"
-            }
-            alignItems="center"
-          >
-            {useWarningValidator(entidade)}
-
-            <Close
-              onClick={fechar}
-              size="small"
-              style={{ cursor: "pointer" }}
-              sx={{
-                color: theme.palette.text.primary // ✅ tema no ícone
-              }}
-            />
+        <Stack gap={3}>
+          <Box my={4}>
+            <Stepper activeStep={etapaAtual} alternativeLabel>
+              {etapas.map((label, index) => (
+                <Step key={label}>
+                  <StepLabel
+                    sx={{
+                      color: theme.palette.text.secondary,
+                      "& .MuiStepLabel-label": {
+                        color: theme.palette.text.secondary,
+                      },
+                      ...(index === etapaAtual && {
+                        "& .MuiStepLabel-label": {
+                          color: theme.palette.primary.main,
+                          fontWeight: "bold",
+                        },
+                      }),
+                    }}
+                  >
+                    {label}
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
           </Box>
 
-          {entidade == 'esqueciASenha' && (
-            <Box my={4}>
-              <Stepper activeStep={etapaAtual} alternativeLabel>
-                {etapas.map((label, index) => (
-                  <Step key={label}>
-                    <StepLabel
-                      sx={{
-                        color: theme.palette.text.secondary, // ✅ tema padrão
-                        ...(index === etapaAtual && {
-                          color: theme.palette.primary.main,
-                          '& .MuiStepLabel-label': {
-                            color: theme.palette.primary.main,
-                            fontWeight: 'bold'
-                          }
-                        })
-                      }}
-                    >
-                      {label}
-                    </StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-            </Box>
-          )}
-
           {form}
-        </ModalContent>
-      </Backdrop>
-    </Zoom>
+        </Stack>
+      </Content>
+    </Dialog>
   );
 };
 

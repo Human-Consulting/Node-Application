@@ -1,24 +1,22 @@
 import { useEffect, useState } from 'react';
 import { TaskBody, SprintBody } from './Task.styles';
 import TaskCard from '../../Atoms/TaskCard/TaskCard';
-import Modal from '../Modal/Modal';
-import FormsTask from '../Modal/Forms/FormsTask';
 import { getSprints } from '../../Utils/cruds/CrudsSprint';
 import { useNavigate, useParams } from 'react-router';
-import FormsSprint from '../Modal/Forms/FormsSprint';
 import { Stack, Typography, Button, Tooltip, Badge } from '@mui/material';
 import { ArrowCircleLeftOutlined, CalendarMonth, ColorLens } from '@mui/icons-material';
 import Shader from '../Shader/Shader';
 import { Load } from '../../Utils/Load';
 import ModalTarefas from '../Modais/ModalTarefas/ModalTarefas';
 import ModalCores from '../Modais/ModalCores/ModalCores';
+import ModalSprint from '../Mudal2/ModalSprint';
+import ModalTarefa from '../Mudal2/ModalTarefa';
 
 const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pagesUsuarios, atualizarUsuarios, color1, color2, color3, setColor1, setColor2, setColor3, animate, setAnimate, telaAtual }) => {
 
   const { idProjeto, idEmpresa, nomeEmpresa, tituloProjeto } = useParams();
   const navigate = useNavigate();
 
-  const [showModal, setShowModal] = useState(false);
   const [entidade, setEntidade] = useState(null);
   const [id, setId] = useState(null);
   const [acao, setAcao] = useState('');
@@ -29,6 +27,8 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
   const [dtLastSprint, setDtLastSprint] = useState([]);
 
   const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+
+  const [popoverSprintTarefaAnchor, setPopoverSprintTarefaAnchor] = useState(false);
 
   const [anchorTarefa, setAnchorTarefa] = useState(null);
   const [anchorCores, setAnchorCores] = useState(null);
@@ -77,10 +77,11 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
   const toogleModal = (entidade, post, id, dtInicio, dtFim) => {
     setAcao(post);
     setEntidade(entidade);
-    setShowModal(!showModal);
     setId(id);
     setDtInicio(dtInicio);
     setDtFim(dtFim);
+    // setShowModal(!showModal);
+    setPopoverSprintTarefaAnchor(!popoverSprintTarefaAnchor);
   };
 
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
@@ -89,12 +90,67 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
     <>
       <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={0} />
       <TaskBody>
-        <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue" }}>
-          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{tituloProjeto} - Roadmap
-          <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
-            <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenDash}>Ir para Dashboard</Button>
-            <Tooltip title="Tarefas abertas em seu nome.">
-              <Badge onClick={handleBadgeClickTarefa}
+        <Typography
+          variant="h3"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            fontFamily: "Bebas Neue",
+            // color: '#eee'
+          }}
+        >
+          <ArrowCircleLeftOutlined
+            sx={{
+              cursor: 'pointer',
+              fontSize: '45px',
+              marginRight: 1,
+              color: '#ccc',
+              '&:hover': { color: '#fff' }
+            }}
+            onClick={handleOpenProject}
+          />
+
+          {tituloProjeto} - Roadmap
+
+          <Stack
+            sx={{
+              position: 'fixed',
+              right: '2%',
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 1.5,
+              alignItems: 'center'
+            }}
+          >
+
+            <Button
+              variant='contained'
+              sx={{
+                cursor: 'pointer',
+                background: '#1976d2',
+                color: '#fff',
+                fontWeight: 'bold',
+                '&:hover': { background: '#1565c0' }
+              }}
+              onClick={handleOpenDash}
+            >
+              Ir para Dashboard
+            </Button>
+
+            <Tooltip
+              title="Tarefas abertas em seu nome."
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: '#333',
+                    color: '#eee',
+                    fontSize: '0.9rem'
+                  }
+                }
+              }}
+            >
+              <Badge
+                onClick={handleBadgeClickTarefa}
                 sx={{
                   '& .MuiBadge-badge': {
                     fontSize: '1.25rem',
@@ -127,11 +183,36 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
         </SprintBody>
       </TaskBody>
 
-      <Modal showModal={showModal} fechar={toogleModal} acao={acao == "task" ? "aumentar" : null} entidade={entidade}
-        form={acao == 'task' ? <FormsTask task={entidade} toogleModal={toogleModal} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={pagesUsuarios} atualizarUsuarios={atualizarUsuarios} idSprint={id} dtInicioSprint={dtInicio} dtFimSprint={dtFim} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} />
-          : <FormsSprint sprint={entidade} toogleModal={toogleModal} fkProjeto={idProjeto} atualizarSprints={atualizarSprints} atualizarProjetos={atualizarProjetos} acao={null} dtLastSprint={dtLastSprint} />}
-      >
-      </Modal>
+      {acao == 'task' ?
+        <ModalTarefa
+          open={Boolean(popoverSprintTarefaAnchor)}
+          anchorEl={popoverSprintTarefaAnchor}
+          onClose={() => setPopoverSprintTarefaAnchor(null)}
+          task={entidade}
+          toogleModal={toogleModal}
+          usuarios={usuarios}
+          sizeUsuarios={sizeUsuarios}
+          pagesUsuarios={pagesUsuarios}
+          atualizarUsuarios={atualizarUsuarios}
+          idSprint={id}
+          dtInicioSprint={dtInicio}
+          dtFimSprint={dtFim}
+          atualizarSprints={atualizarSprints}
+          atualizarProjetos={atualizarProjetos}
+        />
+        :
+        <ModalSprint
+          open={Boolean(popoverSprintTarefaAnchor)}
+          anchorEl={popoverSprintTarefaAnchor}
+          onClose={() => setPopoverSprintTarefaAnchor(null)}
+          sprint={entidade}
+          toogleModal={toogleModal}
+          fkProjeto={idProjeto}
+          atualizarSprints={atualizarSprints}
+          atualizarProjetos={atualizarProjetos}
+          dtLastSprint={dtLastSprint} />
+      }
+
       <ModalTarefas
         tarefas={usuarioLogado.tarefasVinculadas}
         open={openPopoverTarefas}

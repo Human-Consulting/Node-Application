@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import FormsUsuario from "../Modal/Forms/FormsUsuario";
 import Modal from "../Modal/Modal";
 import Tabela from "../Tabela/Tabela";
 import { UsuariosBody } from './Usuarios.styles'
 import { Box, Typography, Button, TextField, Stack } from '@mui/material';
 import { ArrowCircleLeftOutlined, Close, Search, SearchOff } from '@mui/icons-material'
 import { useNavigate, useParams } from "react-router";
-import FormsEditarSenhaUsuario from "../Modal/Forms/FormsEditarSenhaUsuario";
 import Shader from "../Shader/Shader";
 import { Load } from "../../Utils/Load";
 import { getUsuarios } from "../../Utils/cruds/CrudsUsuario";
+import ModalUsuario from "../Mudal2/ModalUsuario";
+import ModalEditarSenhaUsuario from "../Mudal2/ModalEditarSenhaUsuario";
 import { useTheme } from "@mui/material/styles";
 
 const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual }) => {
@@ -31,6 +31,8 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
   const [buscaTitulo, setBuscaTitulo] = useState("");
   const [onSearch, setOnSearch] = useState(false);
 
+  const [popoverUsuarioAnchor, setPopoverUsuarioAnchor] = useState(false);
+
   const clearSearch = async () => {
     await atualizarUsuarios(0, null);
     setOnSearch(false);
@@ -50,7 +52,8 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
   useEffect(() => {
     if (buscaTitulo.trim() !== "") {
       setOnSearch(true);
-      atualizarUsuarios(0, buscaTitulo.toLowerCase());
+      const textoLower = buscaTitulo.toLowerCase();
+      atualizarUsuarios(0, textoLower);
     } else {
       clearSearch();
     }
@@ -84,11 +87,11 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
     editarUsuario && setEditarUsuario(false);
     setUsuario(usuario);
     setShowModal(!showModal);
+    setPopoverUsuarioAnchor(!popoverUsuarioAnchor);
   };
 
   const toogleEditarSenhaUsuario = (id) => {
     setEditarUsuario(!editarUsuario);
-    setIdUsuarioEditar(id || null);
   }
 
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
@@ -205,38 +208,31 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
           }
         </Stack>
       )}
+      {editarUsuario ?
+        <ModalEditarSenhaUsuario
+          open={Boolean(popoverUsuarioAnchor)}
+          anchorEl={popoverUsuarioAnchor}
+          onClose={toogleEditarSenhaUsuario}
+          idUsuario={idUsuarioEditar}
+          atualizarUsuarios={atualizarUsuarios}
+          editarSenhaUsuario={toogleEditarSenhaUsuario}
+        />
+        :
+        <ModalUsuario
+          open={Boolean(popoverUsuarioAnchor)}
+          anchorEl={popoverUsuarioAnchor}
+          onClose={() => setPopoverUsuarioAnchor(null)}
+          diretor={usuariosFiltrados.length > 0 && (usuariosFiltrados.some(usuario => usuario.permissao.includes('DIRETOR')))}
+          usuario={usuario}
+          toogleModal={toogleModal}
+          atualizarUsuarios={atualizarUsuarios}
+          fkEmpresa={idEmpresa}
+          qtdUsuarios={usuarios.length}
+          editarSenhaUsuario={toogleEditarSenhaUsuario}
+        />
+      }
 
-      <Modal
-        showModal={showModal}
-        fechar={toogleModal}
-        editarSenhaUsuario={toogleEditarSenhaUsuario}
-        editarUsuario={editarUsuario}
-        form={
-          editarUsuario
-            ? (
-              <FormsEditarSenhaUsuario
-                idUsuario={idUsuarioEditar}
-                atualizarUsuarios={atualizarUsuarios}
-                editarSenhaUsuario={toogleEditarSenhaUsuario}
-              />
-            )
-            : (
-              <FormsUsuario
-                diretor={
-                  usuariosFiltrados.length > 0 &&
-                  usuariosFiltrados.some(usuario => usuario.permissao.includes('DIRETOR'))
-                }
-                usuario={usuario}
-                toogleModal={toogleModal}
-                atualizarUsuarios={atualizarUsuarios}
-                fkEmpresa={idEmpresa}
-                qtdUsuarios={usuarios.length}
-                editarSenhaUsuario={toogleEditarSenhaUsuario}
-              />
-            )
-        }
-      />
-    </UsuariosBody>
+    </UsuariosBody >
   )
 }
 

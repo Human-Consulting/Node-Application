@@ -10,11 +10,11 @@ import { ArrowCircleLeftOutlined, CalendarMonth, ColorLens } from '@mui/icons-ma
 import Modal from '../Modal/Modal'
 import ModalTarefas from '../Modais/ModalTarefas/ModalTarefas';
 import ModalCores from '../Modais/ModalCores/ModalCores';
-import FormsInvestimento from '../Modal/Forms/FormsInvestimento'
 import Shader from '../Shader/Shader'
 import { Load } from '../../Utils/Load'
 import GraficoTarefas from './GraficoTarefas/GraficoTarefas'
 import GraficoBurndown from './GráficoBurndown/GraficoBurndown'
+import ModalInvestimento from '../Mudal2/ModalInvestimento'
 
 import { useTheme } from "@mui/material/styles";  // <-- ADICIONADO
 
@@ -29,6 +29,8 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
   const [investimento, setInvestimento] = useState(null);
 
   const navigate = useNavigate();
+
+  const [popoverInvestimentoAnchor, setPopoverInvestimentoAnchor] = useState(false);
 
   const [anchorTarefa, setAnchorTarefa] = useState(null);
   const [anchorCores, setAnchorCores] = useState(null);
@@ -86,7 +88,8 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
   }
 
   const toogleModal = (investimento) => {
-    setShowModal(!showModal);
+    // setShowModal(!showModal);
+    setPopoverInvestimentoAnchor(!popoverInvestimentoAnchor);
     investimento != null ? setInvestimento(investimento) : setInvestimento(null);
   };
 
@@ -100,8 +103,8 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
         </>
         : null}
       <KpiContainer>
-        {showTitle ? <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue", zIndex: 2,  color: theme.palette.iconPrimary  }}>
-          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1}} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ?
+        {showTitle ? <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue", zIndex: 2, color: theme.palette.iconPrimary }}>
+          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{idProjeto ? tituloProjeto : nomeEmpresa} - Dashboard {idProjeto ?
             <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
               <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenRoadmap}>Ir para Roadmap</Button>
               <Tooltip title="Tarefas abertas em seu nome.">
@@ -148,7 +151,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
                 </Infos>
               </Stack>
 
-              <Stack sx={{ 
+              <Stack sx={{
                 background: theme.palette.background.paper,
                 borderRadius: '20px',
                 flex: 1,
@@ -165,8 +168,10 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
             <LineChart orcamento={entidade.orcamento} financeiros={entidade.financeiroResponseDtos} toogleModal={toogleModal} atualizarEntidade={atualizarEntidade}></LineChart>
           </Stack>
 
-          <Stack sx={{ width: '40%', gap: '1rem', justifyContent: 'space-between',  background: theme.palette.background.paper,
-                borderRadius: '20px',}}>
+          <Stack sx={{
+            width: '40%', gap: '1rem', justifyContent: 'space-between', background: theme.palette.background.paper,
+            borderRadius: '20px',
+          }}>
 
             <GraficoTarefas entidade={entidade} usuarios={entidade.usuarios} />
 
@@ -176,9 +181,15 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
         </DashContainer>
       </KpiContainer>
 
-      <Modal showModal={showModal} fechar={toogleModal}
-        form={<FormsInvestimento toogleModal={toogleModal} investimento={investimento} atualizarEntidade={atualizarEntidade} />}
-      ></Modal>
+      <ModalInvestimento
+        open={Boolean(popoverInvestimentoAnchor)}
+        anchorEl={popoverInvestimentoAnchor}
+        onClose={() => setPopoverInvestimentoAnchor(null)}
+        toogleModal={toogleModal}
+        investimento={investimento}
+        atualizarEntidade={atualizarEntidade}
+      >
+      </ModalInvestimento>
 
       <ModalTarefas
         tarefas={usuarioLogado.tarefasVinculadas}

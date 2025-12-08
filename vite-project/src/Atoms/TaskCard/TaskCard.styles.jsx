@@ -12,6 +12,7 @@ export const TaskCardBody = styled(Box)(({ theme }) => ({
     gap: '2rem',
     padding: '1rem',
     maxHeight: '100%',
+    position: 'relative',
     color: theme.palette.text.primary,              // garante textos corretos
 }));
 

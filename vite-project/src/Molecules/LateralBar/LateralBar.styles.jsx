@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Chip } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const LateralNavBar = styled(Box)(({ theme, diminuido }) => ({
@@ -34,7 +34,6 @@ export const DivisorTwo = styled(Box)(({ theme }) => ({
     flexGrow: 1,
     minHeight: 0,
     paddingBottom: '0.5rem',
-    paddingInline: '0.5rem',
 }));
 
 export const ChipZone = styled(Box)(({ theme }) => ({
@@ -49,7 +48,7 @@ export const CardZone = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
-
+    paddingInline: '0.5rem',
     '&::-webkit-scrollbar': {
         width: '4px',
     },
@@ -79,7 +78,6 @@ export const Item = styled(Box)(({ theme, telaAtual, item, diminuido }) => ({
         telaAtual === item && telaAtual != null
             ? `solid ${theme.palette.custom.sidebarBorderSelected} 2px`
             : 'none',
-
     '&:hover': {
         backgroundColor: theme.palette.custom.sidebarItemHover,
     },
@@ -95,3 +93,9 @@ export const Title = styled('p')(({ theme }) => ({
     fontSize: '13px',
     color: theme.palette.iconPrimary,
 }));
+
+export const ChipElement = styled(Chip)(({ filtro, cor }) => ({
+    backgroundColor: filtro ? cor : '#1A1E22',
+    color: '#fff',
+    fontSize: '12px'
+}))

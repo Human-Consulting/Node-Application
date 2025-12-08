@@ -9,6 +9,8 @@ const SelectUsuarios = ({ usuarios = [], sizeUsuarios = 10, pagesUsuarios = 0, a
   const [buscaTitulo, setBuscaTitulo] = useState("");
   const [onSearch, setOnSearch] = useState(false);
 
+  console.log(fkResponsavel);
+
   const clearSearch = async () => {
     await atualizarUsuarios();
     setOnSearch(false);
@@ -128,7 +130,6 @@ const SelectUsuarios = ({ usuarios = [], sizeUsuarios = 10, pagesUsuarios = 0, a
         </MenuItem>
       )}
 
-      {/* {totalPages > 1 && ( */}
       <Stack sx={{ justifyContent: "center" }}
         onMouseDown={(e) => e.stopPropagation()}
         onChange={(e) => e.stopPropagation()}
@@ -202,7 +203,6 @@ const SelectUsuarios = ({ usuarios = [], sizeUsuarios = 10, pagesUsuarios = 0, a
           />
         </Stack>
       </Stack>
-      {/* )} */}
     </Select>
   );
 };

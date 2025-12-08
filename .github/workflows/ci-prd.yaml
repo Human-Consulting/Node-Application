@@ -1,0 +1,29 @@
+name: workflow-ci-prod
+
+on:
+  push:
+    branches:
+      - homolog
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: |
+          cd vite-project
+          npm install --force
+
+      - name: Build do projeto
+        run: |
+          cd vite-project
+          npm run build --force
