@@ -74,8 +74,8 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
   useEffect(() => {
     const atualizar = async () => {
       setLoading(true);
-      toogleLateralBar();
-      telaAtual();
+    toogleLateralBar();
+    telaAtual();
       await atualizarUsuarios();
       setLoading(false);
     }
@@ -91,7 +91,7 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
   };
 
   const toogleEditarSenhaUsuario = (id) => {
-    setEditarUsuario(!editarUsuario);
+      setEditarUsuario(!editarUsuario);
   }
 
   if (loading) return <Load animate={animate} color1={color1} color2={color2} color3={color3} index={0} />;
@@ -178,7 +178,7 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
         />
 
         {usuarioLogado.permissao === "FUNC" ? null :
-          <Button variant="contained" color="primary">
+          <Button onClick={() => toogleModal(null)}  variant="contained" color="primary">
             Adicionar Usuário
           </Button>
         }
@@ -200,12 +200,7 @@ const Usuarios = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual
             <SearchOff sx={{ fontSize: '5rem', color: theme.palette.iconPrimary }} />
             Nenhum usuário encontrado!
           </Stack>
-
-          {usuarioLogado.permissao === "FUNC" ? null :
-            <Button variant="contained" color="primary">
-              Adicionar Usuário
-            </Button>
-          }
+          {usuarioLogado.permissao == "FUNC" ? null : <Button onClick={() => toogleModal(null)} variant="contained" color="primary">Adicionar Usuário</Button>}
         </Stack>
       )}
       {editarUsuario ?

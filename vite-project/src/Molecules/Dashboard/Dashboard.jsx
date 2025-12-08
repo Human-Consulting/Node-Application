@@ -134,7 +134,7 @@ const Dashboard = ({ toogleLateralBar, showTitle, color1, color2, color3, setCol
         <DashContainer>
           <Stack sx={{ justifyContent: 'space-between', gap: '1rem', flex: 1 }}>
 
-            <DashKpi sx={{ background: theme.palette.custom.sidebar }}>  {/* <-- TEMA */}
+            <DashKpi>  {/* <-- TEMA */}
               <Stack sx={{ gap: '1rem', width: '50%' }}>
                 <Infos sx={{ background: theme.palette.background.paper }}>  {/* <-- TEMA */}
                   <Stack sx={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>

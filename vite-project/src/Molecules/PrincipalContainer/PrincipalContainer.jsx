@@ -45,11 +45,15 @@ const PrincipalContainer = ({
 
   const [page, setPage] = useState(0);
 
-  const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuario')) || {};
 
-  if (!usuarioLogado?.permissao?.includes("CONSULTOR") && (nomeEmpresa !== usuarioLogado?.nomeEmpresa)) {
-    navigate(-1);
-  }
+if (
+  !usuarioLogado?.permissao?.includes?.("CONSULTOR") && 
+  nomeEmpresa !== usuarioLogado?.nomeEmpresa
+) {
+  navigate(-1);
+}
+
 
   const filtrar = async (texto) => {
     if (texto !== '') {
@@ -174,7 +178,7 @@ const PrincipalContainer = ({
             }}
           />
 
-          {usuarioLogado.permissao.includes('CONSULTOR') && (
+         {usuarioLogado?.permissao?.includes?.('CONSULTOR') && (
             nomeEmpresa === "Empresas" ?
               <Button onClick={() => toogleModal(null, 'empresa')} variant="contained">
                 CRIAR EMPRESA

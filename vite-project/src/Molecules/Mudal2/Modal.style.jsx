@@ -1,7 +1,6 @@
 import { styled, DialogContent, DialogActions } from "@mui/material";
 
 export const Content = styled(DialogContent)({
-    background: "#22272B",
     background: "#0D0D0D"
 })
 
