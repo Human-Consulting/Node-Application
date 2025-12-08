@@ -1,4 +1,4 @@
-name: workflow-ci-hom
+name: workflow-ci-prod
 
 on:
   push:
