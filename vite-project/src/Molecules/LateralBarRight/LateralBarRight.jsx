@@ -2,11 +2,13 @@ import { useRef, useState } from 'react'
 import { LateralNavBar, Section, Divisor, Title, Slide, SkipButton, KpiFinalizados } from './LateralBarRight.styles'
 import MiniProjectsCard from '../MiniProjectsCard/MiniProjectsCard'
 import { ArrowLeft, ArrowRight } from '@mui/icons-material';
-import { Stack } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 import { TituloHeader } from '../PrincipalContainer/PrincipalContainer.styles';
 import { useParams } from 'react-router';
 
 const LateralBarRight = ({ showLateralBar, kpis }) => {
+  const theme = useTheme(); // 👈 AQUI PEGAMOS O TEMA
+
   if (!showLateralBar) return null;
 
   const { nomeEmpresa } = useParams();
@@ -57,7 +59,7 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
       <Section>
         {caosList.length > 1 && idx > 0 && (
           <SkipButton lado="esquerda" onClick={handleLeftSkip}>
-            <ArrowLeft sx={{ color: '#000' }} />
+            <ArrowLeft sx={{ color: theme.palette.text.primary }} />
           </SkipButton>
         )}
 
@@ -81,22 +83,37 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
 
         {caosList.length > 1 && idx < caosList.length - 1 && (
           <SkipButton lado="direita" onClick={handleRightSkip}>
-            <ArrowRight sx={{ color: '#000' }} />
+            <ArrowRight sx={{ color: theme.palette.text.primary }} />
           </SkipButton>
         )}
       </Section>
 
-      <Stack sx={{ display: 'flex', justifyContent: 'center', gap: '8px', alignItems: 'center', marginBlock: '1rem' }}>
+      <Stack
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '8px',
+          alignItems: 'center',
+          marginBlock: '1rem',
+        }}
+      >
         <Title sx={{ width: '100%', textAlign: 'center' }}>Em Andamento</Title>
         <KpiFinalizados>
-          <TituloHeader sx={{ color: '#FF0707', height: '72px' }}>{noneList}</TituloHeader>
+          <TituloHeader
+            sx={{
+              color: theme.palette.error.main, // 👈 TEMA
+              height: '72px',
+            }}
+          >
+            {noneList}
+          </TituloHeader>
         </KpiFinalizados>
       </Stack>
 
       <Section>
         {finalizadosList.length > 1 && idxTwo > 0 && (
           <SkipButton lado="esquerda" onClick={handleLeftSkipTwo}>
-            <ArrowLeft sx={{ color: '#000' }} />
+            <ArrowLeft sx={{ color: theme.palette.text.primary }} />
           </SkipButton>
         )}
 
@@ -120,7 +137,7 @@ const LateralBarRight = ({ showLateralBar, kpis }) => {
 
         {finalizadosList.length > 1 && idxTwo < finalizadosList.length - 1 && (
           <SkipButton lado="direita" onClick={handleRightSkipTwo}>
-            <ArrowRight sx={{ color: '#000' }} />
+            <ArrowRight sx={{ color: theme.palette.text.primary }} />
           </SkipButton>
         )}
       </Section>

@@ -1,33 +1,38 @@
 import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 
-export const BackCentral = styled(Box)({
+export const BackCentral = styled(Box)(({ theme }) => ({
     width: '100%',
     height: '100%',
     display: 'flex',
-    overflow: 'hidden',
     gap: '1rem',
     overflow: 'hidden',
     zIndex: 0,
-});
+    background: 'transparent', // mantém exatamente como estava
+}));
 
-export const DoneContainer = styled(Box)({
+export const DoneContainer = styled(Box)(({ theme }) => ({
     padding: '0.5rem',
-    borderRadius: '10px',
+    borderRadius: '12px',
     flex: 1,
     height: "fit-content",
     maxHeight: '100%',
-    background: "#101010",
-    display: 'flex',
-    overflow: 'hidden',
-    flexDirection: 'column',
-});
 
-export const BodyTarefa = styled(Box)({
+    // Antes: "#0F0F0F"
+    background: theme.palette.background.cardBg,
+
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'hidden',
+
+    // Antes: "#eee"
+    color: theme.palette.custom.textPrimary,
+}));
+
+export const BodyTarefa = styled(Box)(({ theme }) => ({
     height: '100%',
     overflowY: 'auto',
     maxHeight: '800px',
-    padding: '0.5rem',
     padding: '1rem',
     gap: '2rem',
     display: 'flex',
@@ -35,17 +40,22 @@ export const BodyTarefa = styled(Box)({
     alignItems: 'center',
     scrollBehavior: 'smooth',
 
+    // Antes: "#eee"
+    color: theme.palette.custom.textPrimary,
+
     '&::-webkit-scrollbar': {
-        width: '4px',
+        width: '6px',
     },
     '&::-webkit-scrollbar-track': {
         background: 'transparent',
     },
     '&::-webkit-scrollbar-thumb': {
-        background: '#888',
-        borderRadius: '4px',
+        // Antes: "#444"
+        background: theme.palette.custom.scrollbar,
+        borderRadius: '6px',
     },
     '&::-webkit-scrollbar-thumb:hover': {
-        background: '#aaa',
+        // Antes: "#666"
+        background: theme.palette.custom.scrollbarHover,
     },
-});
+}));

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TaskBody, SprintBody } from './Task.styles';
 import TaskCard from '../../Atoms/TaskCard/TaskCard';
-import Modal from '../Modal/Modal';
 import { getSprints } from '../../Utils/cruds/CrudsSprint';
 import { useNavigate, useParams } from 'react-router';
 import { Stack, Typography, Button, Tooltip, Badge } from '@mui/material';
@@ -18,7 +17,6 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
   const { idProjeto, idEmpresa, nomeEmpresa, tituloProjeto } = useParams();
   const navigate = useNavigate();
 
-  const [showModal, setShowModal] = useState(false);
   const [entidade, setEntidade] = useState(null);
   const [id, setId] = useState(null);
   const [acao, setAcao] = useState('');
@@ -58,7 +56,7 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
     setLoading(true);
     const sprints = await getSprints(idProjeto);
     setSprintsList(sprints);
-    setDtLastSprint(sprints[sprints.length - 1].dtFim);
+    // setDtLastSprint(sprints[sprints.length - 1].dtFim);
     setLoading(false);
   };
 
@@ -92,12 +90,67 @@ const Task = ({ toogleLateralBar, atualizarProjetos, usuarios, sizeUsuarios, pag
     <>
       <Shader animate={animate} color1={color1} color2={color2} color3={color3} index={0} />
       <TaskBody>
-        <Typography variant="h3" sx={{ display: 'flex', alignItems: 'center', fontFamily: "Bebas Neue" }}>
-          <ArrowCircleLeftOutlined sx={{ cursor: 'pointer', fontSize: '45px', marginRight: 1 }} onClick={handleOpenProject} />{tituloProjeto} - Roadmap
-          <Stack sx={{ position: 'fixed', right: '2%', display: 'flex', flexDirection: 'row', gap: 1.5, alignItems: 'center' }}>
-            <Button variant='contained' sx={{ cursor: 'pointer' }} onClick={handleOpenDash}>Ir para Dashboard</Button>
-            <Tooltip title="Tarefas abertas em seu nome.">
-              <Badge onClick={handleBadgeClickTarefa}
+        <Typography
+          variant="h3"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            fontFamily: "Bebas Neue",
+            // color: '#eee'
+          }}
+        >
+          <ArrowCircleLeftOutlined
+            sx={{
+              cursor: 'pointer',
+              fontSize: '45px',
+              marginRight: 1,
+              color: '#ccc',
+              '&:hover': { color: '#fff' }
+            }}
+            onClick={handleOpenProject}
+          />
+
+          {tituloProjeto} - Roadmap
+
+          <Stack
+            sx={{
+              position: 'fixed',
+              right: '2%',
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 1.5,
+              alignItems: 'center'
+            }}
+          >
+
+            <Button
+              variant='contained'
+              sx={{
+                cursor: 'pointer',
+                background: '#1976d2',
+                color: '#fff',
+                fontWeight: 'bold',
+                '&:hover': { background: '#1565c0' }
+              }}
+              onClick={handleOpenDash}
+            >
+              Ir para Dashboard
+            </Button>
+
+            <Tooltip
+              title="Tarefas abertas em seu nome."
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: '#333',
+                    color: '#eee',
+                    fontSize: '0.9rem'
+                  }
+                }
+              }}
+            >
+              <Badge
+                onClick={handleBadgeClickTarefa}
                 sx={{
                   '& .MuiBadge-badge': {
                     fontSize: '1.25rem',

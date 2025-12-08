@@ -1,55 +1,99 @@
-import { BodyCard, BoxBody, HeaderCard, Progress, ProgressBar, StatusCircle, Subtitle, Title } from './MiniProjectsCard.styles'
-import { Box, Stack } from '@mui/material'
-import { useNavigate, useParams } from 'react-router';
-import { useWarningValidator } from '../../Utils/useWarning';
+import {
+  BodyCard,
+  BoxBody,
+  HeaderCard,
+  Progress,
+  ProgressBar,
+  StatusCircle,
+  Subtitle,
+  Title
+} from './MiniProjectsCard.styles'
+
+import { Stack, useTheme } from '@mui/material'
+import { useNavigate, useParams } from 'react-router'
+import { useWarningValidator } from '../../Utils/useWarning'
 
 function MiniProjectsCard({ entidade, tipo }) {
-
-  const { nomeEmpresa, idEmpresa } = useParams();
-
+  const { nomeEmpresa, idEmpresa } = useParams()
   const navigate = useNavigate()
+  const theme = useTheme() // ✅ pega o tema ativo
 
   const handleOpenProject = () => {
-    if (nomeEmpresa == 'Empresas') navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
-    else navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.nome || entidade.titulo}/${Number(entidade.idProjeto)}`);
+    if (nomeEmpresa == 'Empresas')
+      navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`)
+    else
+      navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.nome || entidade.titulo}/${Number(entidade.idProjeto)}`)
   }
-  const nomeResponsavel = entidade?.responsavel?.nome || "Sem responsável";
-  console.log(entidade);
+
+  const nomeResponsavel = entidade?.responsavel?.nome || "Sem responsável"
+
   return (
     <>
-      {entidade ?
+      {entidade ? (
         <BoxBody onClick={handleOpenProject} finalizado={entidade.progresso == 100}>
+          
           <HeaderCard
             sx={{
               backgroundImage: `url("data:image/png;base64,${entidade.urlImagem}")`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
-            }} />
+            }}
+          />
+
           <BodyCard>
             <Title>{entidade.titulo || entidade.nome}</Title>
-            <Subtitle>{nomeResponsavel || "Sem responsável"}</Subtitle>
-            <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Subtitle>{nomeResponsavel}</Subtitle>
+
+            <Stack
+              sx={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                color: theme.palette.text.secondary // ✅ aplicado ao tema
+              }}
+            >
               <ProgressBar>
                 <Progress sx={{ width: `${entidade.progresso}%` }} />
               </ProgressBar>
+
               <Subtitle>{entidade.progresso}%</Subtitle>
             </Stack>
           </BodyCard>
+
           <StatusCircle>
             {useWarningValidator(entidade)}
           </StatusCircle>
-
         </BoxBody>
-        : tipo === "impedimento" ?
-          <Box sx={{ border: 'solid blue 1px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      ) : tipo == "impedimento" ? (
+        <BoxBody>
+          <BodyCard
+            sx={{
+              top: '25%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center',
+              color: theme.palette.text.primary // ✅ reage ao tema
+            }}
+          >
             <Title>{nomeEmpresa == 'Empresas' ? "Empresas" : "Projetos"} voando 🚀</Title>
-          </Box>
-          :
-          <Box sx={{ border: 'solid blue 1px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          </BodyCard>
+        </BoxBody>
+      ) : (
+        <BoxBody>
+          <BodyCard
+            sx={{
+              top: '25%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center',
+              color: theme.palette.text.primary // ✅ reage ao tema
+            }}
+          >
             <Title>{nomeEmpresa == 'Empresas' ? "Empresas" : "Projeto"} em andamento.</Title>
-          </Box>
-      }
+          </BodyCard>
+        </BoxBody>
+      )}
     </>
   )
 }

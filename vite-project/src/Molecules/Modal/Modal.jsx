@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Box, Stepper, Step, StepLabel, Dialog, Stack } from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Dialog, Stack, useTheme } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { Content } from "../Mudal2/Modal.style";
 
@@ -9,6 +9,7 @@ const Modal = ({ open, onClose, form, etapaAtual }) => {
   if (!open) return null;
 
   const modalRef = useRef(null);
+  const theme = useTheme(); // ✅ TEMA APLICADO CORRETAMENTE
 
   const handleDragStart = (e) => {
     const modalElement = modalRef.current;
@@ -30,38 +31,62 @@ const Modal = ({ open, onClose, form, etapaAtual }) => {
   };
 
   return (
-    <>
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-        <Content sx={{ padding: 0 }}>
-          <Box display="flex" justifyContent="flex-end" alignItems="center" padding={2}>
-            <Close onClick={onClose} size="small" style={{ cursor: "pointer" }} />
-          </Box>
-          <Stack gap={3}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
+      <Content
+        ref={modalRef}
+        sx={{
+          padding: 0,
+          backgroundColor: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+        }}
+        onMouseDown={handleDragStart}
+      >
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          alignItems="center"
+          padding={2}
+        >
+          <Close
+            onClick={onClose}
+            size="small"
+            sx={{
+              cursor: "pointer",
+              color: theme.palette.text.primary,
+            }}
+          />
+        </Box>
 
-            <Box my={4}>
-              <Stepper activeStep={etapaAtual} alternativeLabel>
-                {etapas.map((label, index) => (
-                  <Step key={label}>
-                    <StepLabel
-                      sx={{
-                        ...(index === etapaAtual && {
-                          color: 'primary.main',
-                          '& .MuiStepLabel-label': {
-                            color: 'primary.main',
-                            fontWeight: 'bold'
-                          }
-                        })
-                      }}
-                    >{label}</StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-            </Box>
-            {form}
-          </Stack>
-        </Content>
-      </Dialog>
-    </>
+        <Stack gap={3}>
+          <Box my={4}>
+            <Stepper activeStep={etapaAtual} alternativeLabel>
+              {etapas.map((label, index) => (
+                <Step key={label}>
+                  <StepLabel
+                    sx={{
+                      color: theme.palette.text.secondary,
+                      "& .MuiStepLabel-label": {
+                        color: theme.palette.text.secondary,
+                      },
+                      ...(index === etapaAtual && {
+                        "& .MuiStepLabel-label": {
+                          color: theme.palette.primary.main,
+                          fontWeight: "bold",
+                        },
+                      }),
+                    }}
+                  >
+                    {label}
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Box>
+
+          {form}
+        </Stack>
+      </Content>
+    </Dialog>
   );
 };
 

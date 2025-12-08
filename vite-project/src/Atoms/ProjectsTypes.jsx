@@ -1,17 +1,20 @@
 import { ImageBox, ProjectsTypesBox, SubTitle, Title } from './ProjectTypes.styles';
-import { Stack } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 
 const ProjectsTypes = ({ entidade, diminuirLateralBar, telaAtual }) => {
   const { nomeEmpresa, idEmpresa, idProjeto } = useParams();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const handleOpenProject = () => {
     if (nomeEmpresa == 'Empresas') {
       navigate(`/Home/${entidade.nome}/${Number(entidade.idEmpresa)}`);
     } else {
-      navigate(`/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.titulo}/${Number(entidade.idProjeto)}`);
+      navigate(
+        `/Home/${nomeEmpresa}/${Number(idEmpresa)}/Roadmap/${entidade.titulo}/${Number(entidade.idProjeto)}`
+      );
     }
   };
 
@@ -24,11 +27,13 @@ const ProjectsTypes = ({ entidade, diminuirLateralBar, telaAtual }) => {
             height: 42,
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#1a1a1a',
+            backgroundColor: theme.palette.background.paper,
             borderRadius: '8px'
           }}
         >
-          <ImageNotSupportedIcon sx={{ fontSize: 24, color: '#999' }} />
+          <ImageNotSupportedIcon
+            sx={{ fontSize: 24, color: theme.palette.text.secondary }}
+          />
         </Stack>
       );
     }
@@ -37,12 +42,20 @@ const ProjectsTypes = ({ entidade, diminuirLateralBar, telaAtual }) => {
   };
 
   return (
-    <ProjectsTypesBox progresso={entidade.progresso == 100} diminuido={diminuirLateralBar} onClick={handleOpenProject} idAtual={idProjeto} idItem={entidade?.idProjeto}>
+    <ProjectsTypesBox
+      progresso={entidade.progresso == 100}
+      diminuido={diminuirLateralBar}
+      onClick={handleOpenProject}
+      idAtual={idProjeto}
+      idItem={entidade?.idProjeto}
+    >
       {renderImagem()}
+
       <Stack sx={{ justifyContent: 'space-between', maxWidth: '80%' }}>
         <Title diminuido={diminuirLateralBar}>
           {entidade.titulo || entidade.nome}
         </Title>
+
         {!diminuirLateralBar && (
           <SubTitle>
             {nomeEmpresa == 'Empresas'

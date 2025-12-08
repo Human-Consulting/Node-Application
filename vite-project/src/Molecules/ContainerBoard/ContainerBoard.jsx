@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Divider, Snackbar, Stack, InputAdornment, IconButton, Modal } from "@mui/material";
+import { Alert, Divider, Snackbar, Stack, InputAdornment, IconButton, Modal, Typography } from "@mui/material";
 import { ButtonMeu, LoginBack, LoginTitulo, InputMinha } from "./ContainerBoard.styles";
 import { useNavigate } from "react-router";
 import { handleSubmitLogin } from "../../Utils/UsePost";
@@ -31,7 +31,12 @@ const ContainerBoard = ({ toggleModal }) => {
 
       <Stack sx={{ gap: '0.5rem' }}>
         <LoginTitulo>
-          Tenha um <b>planejamento</b> inteligente
+          Tenha um{" "}
+<Typography component="span" fontWeight={700}>
+  planejamento
+</Typography>{" "}
+inteligente
+
         </LoginTitulo>
         <p>Seu projeto, nossa ajuda e seu resultado</p>
       </Stack>

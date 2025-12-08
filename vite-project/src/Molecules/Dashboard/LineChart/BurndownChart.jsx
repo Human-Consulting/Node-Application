@@ -1,7 +1,10 @@
 import dayjs from 'dayjs';
 import Chart from 'react-apexcharts';
+import { useTheme } from '@mui/material/styles';
 
 const BurndownChart = ({ dados, idSprint }) => {
+    const theme = useTheme();
+
     if (!dados || dados.length === 0) return null;
     const hoje = dayjs();
 
@@ -23,6 +26,10 @@ const BurndownChart = ({ dados, idSprint }) => {
 
     const dias = burndown.map(d => dayjs(d.dia).format("DD/MM"));
 
+    const labelColor = theme.palette.iconPrimary;
+    const gridColor = theme.palette.custom.border || "#444";
+    const tooltipTheme = theme.palette.mode === "dark" ? "dark" : "light";
+
     const options = {
         chart: {
             type: 'line',
@@ -35,29 +42,43 @@ const BurndownChart = ({ dados, idSprint }) => {
             width: 3,
         },
         grid: {
-            borderColor: '#333',
+            borderColor: gridColor,
         },
         legend: {
-            show: false,
+            show: true,
+            labels: {
+                colors: labelColor,
+            }
         },
         xaxis: {
             categories: dias,
             tickAmount: 6,
-            labels: { style: { colors: '#fff' } },
+            labels: { 
+                style: { 
+                    colors: labelColor,
+                    fontSize: '13px'
+                } 
+            },
         },
         yaxis: {
             min: 0,
             max: totalTarefas,
             tickAmount: 5,
             labels: {
-                style: { colors: '#fff' },
+                style: { 
+                    colors: labelColor,
+                    fontSize: '13px'
+                },
                 formatter: (val) => Math.round(val),
             },
         },
         tooltip: {
-            theme: 'dark',
+            theme: tooltipTheme,
+            style: {
+                fontSize: '14px',
+            },
             y: {
-                formatter: (val) => `${val.toFixed(0)} tarefas`,
+                formatter: val => `${val.toFixed(0)} tarefas`,
             },
         },
     };
@@ -66,13 +87,12 @@ const BurndownChart = ({ dados, idSprint }) => {
         {
             name: 'Ideal',
             data: ideal,
-            color: '#008FFB', //TODO Avaliar cores
+            color: theme.palette.primary.main,
         },
         {
             name: 'Real',
             data: concluidas.map(c => totalTarefas - c),
-            color: '#FF4560', //TODO Avaliar cores
-            color: '#00ff99', //TODO Avaliar cores
+            color: theme.palette.custom.primary || theme.palette.secondary.main,
         },
     ];
 
