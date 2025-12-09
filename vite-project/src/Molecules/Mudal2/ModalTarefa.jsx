@@ -288,8 +288,8 @@ const ModalTarefa = ({ open, onClose, task, toogleModal, atualizarSprints, atual
                                 </Typography>
 
                                 <Stack display="flex" flexDirection="column" alignItems="start" overflow={'auto'} width="100%" gap={2} height="16rem" maxHeight="16rem"
-                                    //backgroundColor="#1A1E22"
-                                    backgroundColor="#1D1D1D"
+                                    backgroundColor="#1A1E22"
+                                    // backgroundColor="#1D1D1D"
                                     borderRadius="10px"
                                     pl={1}
                                     pr={1}
@@ -312,7 +312,7 @@ const ModalTarefa = ({ open, onClose, task, toogleModal, atualizarSprints, atual
                                     }}>
 
                                     {checkpoints.map(cb => (
-                                        <Box key={cb.idCheckpoint} display="flex" borderRadius="10px" width="100%" backgroundColor="#2D2D2D">
+                                        <Box key={cb.idCheckpoint} display="flex" borderRadius="10px" width="100%" backgroundColor="#22272B">
                                             <Stack direction="row" alignItems="center" flex='1'>
                                                 <Checkbox
                                                     checked={cb.finalizado}

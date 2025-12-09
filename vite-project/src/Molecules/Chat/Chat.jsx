@@ -502,10 +502,10 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
       />
 
 
-      <Modal acao="aumentar1" showModal={showModal} fechar={toogleModal}
+      {/* <Modal acao="aumentar1" showModal={showModal} fechar={toogleModal}
         form={<FormsSala sala={sala} toogleModal={toogleModal} usuarios={usuarios} atualizarSalas={fetchChats} />}
       >
-      </Modal>
+      </Modal> */}
     </ContainerGeral>
   );
 };
