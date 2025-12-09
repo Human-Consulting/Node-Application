@@ -32,7 +32,7 @@ const ModalUsuario = ({ open, onClose, diretor, usuario, toogleModal, atualizarU
     const handlePostUsuario = async () => {
         if (!validarCampos()) return;
         setErros({});
-        const newUsuario = { nome, email, cargo, area: area.toUpperCase(), permissao, fkEmpresa: idEmpresa, idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
+        const newUsuario = { nome, email, cargo, area: area.toUpperCase(), permissao, fkEmpresa: Number(idEmpresa), idEditor: usuarioLogado.idUsuario, permissaoEditor: usuarioLogado.permissao };
         const response = await postUsuario(newUsuario);
         if (response) {
             atualizarUsuarios();
