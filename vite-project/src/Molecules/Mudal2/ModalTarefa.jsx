@@ -174,7 +174,7 @@ const ModalTarefa = ({ open, onClose, task, toogleModal, atualizarSprints, atual
                         <Close onClick={onClose} size="small" style={{ cursor: "pointer" }} />
                     </Box>
                     <Stack gap={3}>
-                        <Typography width="100%" textAlign="center" color="#fff" fontWeight="bold" fontSize={18}>
+                        <Typography width="100%" textAlign="center" fontWeight="bold" fontSize={18}>
                             {task == null ? "Criar Tarefa" : "Editar Tarefa"}
                         </Typography>
 
@@ -277,19 +277,14 @@ const ModalTarefa = ({ open, onClose, task, toogleModal, atualizarSprints, atual
                                         position: "absolute",
                                         top: "-10px",
                                         left: "10px",
-                                        // backgroundColor: "#22272B",
-                                        // backgroundColor: "#1D1D1D",
                                         padding: "0 4px",
                                         fontSize: "0.85rem",
-                                        color: "#fff"
                                     }}
                                 >
                                     Sub-tarefas
                                 </Typography>
 
                                 <Stack display="flex" flexDirection="column" alignItems="start" overflow={'auto'} width="100%" gap={2} height="16rem" maxHeight="16rem"
-                                    //backgroundColor="#1A1E22"
-                                    backgroundColor="#1D1D1D"
                                     borderRadius="10px"
                                     pl={1}
                                     pr={1}

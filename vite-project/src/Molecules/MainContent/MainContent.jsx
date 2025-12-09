@@ -11,7 +11,7 @@ import { getUsuarios } from '../../Utils/cruds/CrudsUsuario';
 import Usuarios from '../Usuarios/Usuarios';
 import Dashboard from '../Dashboard/Dashboard';
 import { getEmpresas } from '../../Utils/cruds/CrudsEmpresa';
-// import Chat from '../Chat/Chat';
+import Chat from '../Chat/Chat';
 import { Load } from '../../Utils/Load.jsx';
 import { getKpis, getMenuRapido } from '../../Utils/cruds/CrudsLateralBars.jsx';
 
@@ -135,7 +135,7 @@ const MainContent = () => {
 
         <Route path="/Dash/:tituloProjeto/:idProjeto" element={<Dashboard telaAtual={() => setTelaAtual("Dash")} toogleLateralBar={hideLateralBar} showTitle={true} color1={color1} setColor1={setColor1} color2={color2} setColor2={setColor2} color3={color3} setColor3={setColor3} animate={animate} setAnimate={setAnimate} usuarios={usuarios} />} />
 
-        {/* <Route path="/Chat" element={<Chat telaAtual={() => setTelaAtual("Chat")} toogleLateralBar={hideLateralBar} color1={color1} color2={color2} color3={color3} animate={animate} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} />} /> */}
+        <Route path="/Chat" element={<Chat telaAtual={() => setTelaAtual("Chat")} toogleLateralBar={hideLateralBar} color1={color1} color2={color2} color3={color3} animate={animate} usuarios={usuarios} sizeUsuarios={sizeUsuarios} pagesUsuarios={totalPagesUsuarios} atualizarUsuarios={buscarUsuarios} />} />
       </Routes>
 
       <LateralBarRight showLateralBar={showLateralBar} kpis={kpis} />

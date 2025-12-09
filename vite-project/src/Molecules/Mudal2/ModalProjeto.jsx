@@ -145,7 +145,7 @@ const ModalProjeto = ({ open, onClose, projeto, toogleModal, atualizarProjetos, 
                         <Close onClick={handleOnClose} size="small" style={{ cursor: "pointer" }} />
                     </Box>
                     <Stack gap={3}>
-                        <Typography width="100%" textAlign="center" color="#fff" fontWeight="bold" fontSize={18}>
+                        <Typography width="100%" textAlign="center"  fontWeight="bold" fontSize={18}>
                             {projeto == null ? "Criar Projeto" : "Editar Projeto"}
                         </Typography>
 

@@ -1,23 +1,21 @@
-import { Avatar, Box, Button, Stack, TextField, Typography } from "@mui/material"
+import { Avatar, Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { PersonAdd } from "@mui/icons-material";
 
-const FormsAdicionarSala = ({ participantes, setParticipantes, setModaUsuariosAberto }) => {
+const FormsAdicionarSala = ({ participantes, setParticipantes, setModalUsuariosAberto }) => {
     const [nome, setNome] = useState("");
     const [urlImagem, setUrlImagem] = useState(null);
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const validar = () => {
-        if (!nome.trim()) {
-            return false;
-        }
-        if (participantes.length === 0) {
-            return false;
-        }
+        if (!nome.trim()) return false;
+        if (participantes.length === 0) return false;
         return true;
     };
 
     const criarSala = async () => {
         if (!validar()) return;
-        console.log(participantes);
+
         const ids = participantes
             .filter(u => u.idUsuario !== usuarioLogado.idUsuario)
             .map(u => u.idUsuario);
@@ -44,7 +42,6 @@ const FormsAdicionarSala = ({ participantes, setParticipantes, setModaUsuariosAb
     };
 
     const aoSelecionarUsuarios = (usuarios) => {
-        // const selecionadosObjs = usuarios.filter(u => usuarios.includes(u.idUsuario));
         setParticipantes(usuarios);
         setModalUsuariosAberto(false);
     };
@@ -64,12 +61,16 @@ const FormsAdicionarSala = ({ participantes, setParticipantes, setModaUsuariosAb
         setNome("");
         setUrlImagem(null);
         onClose();
-    }
+    };
 
     return (
-        <Stack gap="3">
-
-            <Typography width="100%" textAlign="center" color="#fff" fontWeight="bold" fontSize={18}>
+        <Stack gap={3}>
+            <Typography
+                width="100%"
+                textAlign="center"
+                fontWeight="bold"
+                fontSize={18}
+            >
                 Criar nova sala
             </Typography>
 
@@ -89,49 +90,66 @@ const FormsAdicionarSala = ({ participantes, setParticipantes, setModaUsuariosAb
                 label="Nome da sala"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
-                // InputProps={{ sx: { color: "#fff" } }}
-                InputLabelProps={{ style: inputStyle.label }}
-                InputProps={{ style: inputStyle.input }}
-                sx={{ borderRadius: '10px', background: '#1A1E22' }}
+                InputLabelProps={{
+                    sx: (theme) => ({
+                        color: theme.palette.text.secondary,
+                    })
+                }}
+                InputProps={{
+                    sx: (theme) => ({
+                        color: theme.palette.text.primary,
+                    })
+                }}
+                sx={{
+                    borderRadius: '10px',
+                    backgroundColor: (theme) => theme.palette.background.paper
+                }}
             />
 
             <Stack>
-                <Typography color="#bbb" fontSize={14}>Participantes selecionados:</Typography>
+                <Typography color="text.secondary" fontSize={14}>
+                    Participantes selecionados:
+                </Typography>
+
                 <Stack direction="row" gap={1} flexWrap="wrap" mt={1}>
                     <Box
-                        sx={{
-                            background: "#1a1e22",
+                        sx={(theme) => ({
+                            backgroundColor: theme.palette.background.paper,
                             px: 1.5,
                             py: 0.5,
                             borderRadius: 2,
                             display: "flex",
                             alignItems: "center",
                             gap: 1
-                        }}
+                        })}
                     >
                         <Button
                             variant="text"
                             startIcon={<PersonAdd />}
                             onClick={() => setModalUsuariosAberto(true)}
-                            sx={{ color: "#FFF", justifyContent: 'start', fontSize: '14px' }}
+                            sx={{
+                                justifyContent: 'start',
+                                fontSize: '14px'
+                            }}
                         >
                             Adicionar
                         </Button>
                     </Box>
+
                     {participantes.map((usuario) => (
                         <Box
                             key={usuario.idUsuario}
-                            sx={{
-                                background: "#1a1e22",
+                            sx={(theme) => ({
+                                backgroundColor: theme.palette.background.paper,
                                 px: 1.5,
                                 py: 0.5,
                                 borderRadius: 2,
                                 display: "flex",
                                 alignItems: "center",
                                 gap: 1
-                            }}
+                            })}
                         >
-                            <Typography fontSize={12} color="#fff">
+                            <Typography fontSize={12}>
                                 {usuario.nome}
                             </Typography>
                         </Box>
@@ -139,7 +157,7 @@ const FormsAdicionarSala = ({ participantes, setParticipantes, setModaUsuariosAb
                 </Stack>
             </Stack>
         </Stack>
-    )
-}
+    );
+};
 
 export default FormsAdicionarSala;

@@ -4,10 +4,9 @@ import { getTheme } from "../Utils/Theme";
 export const ThemeContext = createContext();
 
 export function ThemeProviderCustom({ children }) {
-  // ✅ ESTADOS DO TEMA
   const [isDark, setIsDark] = useState(() => {
     const salvo = localStorage.getItem("theme-mode");
-    return salvo ? JSON.parse(salvo) : false;
+    return salvo ? JSON.parse(salvo) : true;
   });
 
   const [primaryColor, setPrimaryColor] = useState(() => {

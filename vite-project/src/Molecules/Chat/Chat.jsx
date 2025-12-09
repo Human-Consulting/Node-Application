@@ -13,6 +13,7 @@ import Shader from "../Shader/Shader";
 import Modal from "../Modal/Modal";
 import ModalChatEditar from "../Modais/ModalChat/ModalChatEditar.jsx";
 import ModalChatAdicionar from "../Modais/ModalChat/ModalChatAdicionar.jsx";
+import FormsAdicionarSala from "../Modal/Forms/FormsAdicionarSala.jsx";
 
 
 const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, usuarios }) => {
@@ -503,7 +504,7 @@ const Chat = ({ toogleLateralBar, color1, color2, color3, animate, telaAtual, us
 
 
       <Modal acao="aumentar1" showModal={showModal} fechar={toogleModal}
-        form={<FormsSala sala={sala} toogleModal={toogleModal} usuarios={usuarios} atualizarSalas={fetchChats} />}
+        form={<FormsAdicionarSala sala={sala} toogleModal={toogleModal} usuarios={usuarios} atualizarSalas={fetchChats} />}
       >
       </Modal>
     </ContainerGeral>

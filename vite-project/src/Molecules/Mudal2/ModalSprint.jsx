@@ -28,7 +28,6 @@ const ModalSprint = ({
   dtLastSprint 
 }) => {
 
-  // ⭐ TEMA DINÂMICO DO CONTEXTO
   const { mode } = useContext(ThemeContext);
   const theme = getTheme(mode);
 
@@ -60,6 +59,13 @@ const ModalSprint = ({
     return Object.keys(novosErros).length === 0;
   };
 
+  const removerErro = (campo) => {
+    setErros((prev) => {
+      const { [campo]: _, ...resto } = prev;
+      return resto;
+    });
+  };
+
   const handlePostSprint = async () => {
     if (!validarCampos()) return;
     setErros({});
@@ -89,8 +95,8 @@ const ModalSprint = ({
     };
 
     const response = await deleteSprint(sprint.idSprint, bodyDelete);
-
     toogleModal();
+
     if (response) {
       await atualizarSprints();
       await atualizarProjetos();
@@ -118,24 +124,37 @@ const ModalSprint = ({
     }
   };
 
-  const removerErro = (campo) => {
-    setErros((prev) => {
-      const { [campo]: _, ...resto } = prev;
-      return resto;
-    });
-  };
-
   return (
     <ThemeProvider theme={theme}>
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs" sx={{ zIndex: 150 }}>
-        <Content>
+      <Dialog 
+        open={open} 
+        onClose={onClose} 
+        fullWidth 
+        maxWidth="xs"
+        sx={{
+          zIndex: 150,
+          "& .MuiPaper-root": {
+            background: theme.palette.background.paper,
+            boxShadow: theme.shadows[5],
+            color: theme.palette.text.primary
+          }
+        }}
+      >
+        <Content sx={{ background: theme.palette.background.paper }}>
+
           <Box
             display="flex"
             justifyContent={useWarningValidator(sprint) ? "space-between" : "flex-end"}
             alignItems="center"
           >
             {useWarningValidator(sprint)}
-            <Close onClick={onClose} sx={{ cursor: "pointer", color: "text.primary" }} />
+            <Close 
+              onClick={onClose} 
+              sx={{ 
+                cursor: "pointer",
+                color: theme.palette.text.primary 
+              }} 
+            />
           </Box>
 
           <Stack gap={3}>
@@ -143,13 +162,13 @@ const ModalSprint = ({
               textAlign="center"
               fontWeight="bold"
               fontSize={18}
-              color="text.primary"
             >
               {sprint == null ? "Criar Sprint" : "Editar Sprint"}
             </Typography>
 
+            {/* TÍTULO */}
             <TextField
-              label="Título"
+              label={<Typography color={theme.palette.text.secondary}>Título</Typography>}
               value={titulo}
               onChange={(e) => {
                 removerErro("titulo");
@@ -157,13 +176,23 @@ const ModalSprint = ({
               }}
               disabled={usuarioLogado.permissao === "FUNC"}
               fullWidth
-              sx={inputStyle.sx}
+              sx={{ ...inputStyle.sx }}
+              InputProps={{
+                sx: {
+                  color: theme.palette.text.primary
+                }
+              }}
               error={!!erros.titulo}
-              helperText={erros.titulo}
+              helperText={
+                erros.titulo ? (
+                  <Typography color={theme.palette.error.main}>{erros.titulo}</Typography>
+                ) : ""
+              }
             />
 
+            {/* DESCRIÇÃO */}
             <TextField
-              label="Descrição"
+              label={<Typography color={theme.palette.text.secondary}>Descrição</Typography>}
               multiline
               rows={3}
               value={descricao}
@@ -173,14 +202,24 @@ const ModalSprint = ({
               }}
               disabled={usuarioLogado.permissao === "FUNC"}
               fullWidth
-              sx={inputStyle.sx}
+              sx={{ ...inputStyle.sx }}
+              InputProps={{
+                sx: {
+                  color: theme.palette.text.primary
+                }
+              }}
               error={!!erros.descricao}
-              helperText={erros.descricao}
+              helperText={
+                erros.descricao ? (
+                  <Typography color={theme.palette.error.main}>{erros.descricao}</Typography>
+                ) : ""
+              }
             />
 
+            {/* DATAS */}
             <Stack direction="row" gap={1}>
               <TextField
-                label="Data de Início"
+                label={<Typography color={theme.palette.text.secondary}>Data de Início</Typography>}
                 type="date"
                 value={dtInicio}
                 onChange={(e) => {
@@ -190,13 +229,22 @@ const ModalSprint = ({
                 disabled={usuarioLogado.permissao === "FUNC"}
                 fullWidth
                 InputLabelProps={{ shrink: true }}
-                sx={inputStyle.sx}
+                sx={{ ...inputStyle.sx }}
+                InputProps={{
+                  sx: {
+                    color: theme.palette.text.primary
+                  }
+                }}
                 error={!!erros.dtInicio}
-                helperText={erros.dtInicio}
+                helperText={
+                  erros.dtInicio ? (
+                    <Typography color={theme.palette.error.main}>{erros.dtInicio}</Typography>
+                  ) : ""
+                }
               />
 
               <TextField
-                label="Data Final"
+                label={<Typography color={theme.palette.text.secondary}>Data Final</Typography>}
                 type="date"
                 value={dtFim}
                 onChange={(e) => {
@@ -206,23 +254,33 @@ const ModalSprint = ({
                 disabled={usuarioLogado.permissao === "FUNC"}
                 fullWidth
                 InputLabelProps={{ shrink: true }}
-                sx={inputStyle.sx}
+                sx={{ ...inputStyle.sx }}
+                InputProps={{
+                  sx: {
+                    color: theme.palette.text.primary
+                  }
+                }}
                 error={!!erros.dtFim}
-                helperText={erros.dtFim}
+                helperText={
+                  erros.dtFim ? (
+                    <Typography color={theme.palette.error.main}>{erros.dtFim}</Typography>
+                  ) : ""
+                }
               />
             </Stack>
           </Stack>
         </Content>
 
-        <Actions>
+        <Actions sx={{ background: theme.palette.background.paper }}>
           {sprint == null ? (
             <Button variant="contained" onClick={handlePostSprint}>
-              Adicionar
+              <Typography>Adicionar</Typography>
             </Button>
           ) : usuarioLogado.permissao === "FUNC" ? null : (
             <>
               <Button variant="contained" color="error" onClick={handleDeleteSprint}>
                 <Delete />
+                <Typography ml={1}>Excluir</Typography>
               </Button>
 
               <Button
@@ -231,7 +289,7 @@ const ModalSprint = ({
                 endIcon={<Send />}
                 sx={{ flex: 1 }}
               >
-                Salvar Alterações
+                <Typography>Salvar Alterações</Typography>
               </Button>
             </>
           )}

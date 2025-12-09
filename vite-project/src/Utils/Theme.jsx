@@ -12,7 +12,6 @@ const colors = {
     icon: "#FFFFFF",
     border: "#2A2A2A",
 
-    // ✅ SIDEBAR ANTIGO
     sidebar: "#1d1d1d",
     sidebarItem: "#1a1a1a",
     sidebarItemHover: "#1a1a1a",
@@ -31,7 +30,6 @@ const colors = {
     icon: "#111111",
     border: "#CCCCCC",
 
-    // ✅ SIDEBAR ANTIGO
     sidebar: "#d4d4d4",
     sidebarItem: "#e0e0e0",
     sidebarItemHover: "#cfcfcf",
@@ -57,7 +55,7 @@ export const getTheme = (mode = "dark") => {
       background: {
         default: themeColors.background,
         paper: themeColors.paper,
-        cardBg: themeColors.cardBg, // ✅ mantém seu custom novo
+        cardBg: themeColors.cardBg,
       },
 
       text: {
@@ -68,7 +66,6 @@ export const getTheme = (mode = "dark") => {
       iconPrimary: themeColors.icon,
       borderPrimary: themeColors.border,
 
-      // ✅ SEU CUSTOM ANTIGO 100% RESTAURADO
       custom: {
         sidebar: themeColors.sidebar,
         sidebarItem: themeColors.sidebarItem,
@@ -92,136 +89,161 @@ export const getTheme = (mode = "dark") => {
     },
 
     components: {
-
-  // ✅ CHIP
-  MuiChip: {
-    styleOverrides: {
-      root: {
-        borderRadius: "8px",
-        backgroundColor: themeColors.paper,
-      },
-      label: {
-        color: themeColors.icon,
-        fontSize: "12px",
-        fontWeight: 400,
-      },
-    },
-  },
-
-  // ✅ INPUTS
-  MuiTextField: {
-    styleOverrides: {
-      root: {
-        input: {
-          color: themeColors.text,
-        },
-        "& .MuiOutlinedInput-notchedOutline": {
-          borderColor: themeColors.border,
-        },
-        "&:hover .MuiOutlinedInput-notchedOutline": {
-          borderColor: colors.primary,
-        },
-        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-          borderColor: colors.primary,
+      // CHIP
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            borderRadius: "8px",
+            backgroundColor: themeColors.paper,
+          },
+          label: {
+            color: themeColors.icon,
+            fontSize: "12px",
+            fontWeight: 400,
+          },
         },
       },
-    },
-  },
 
-  // ✅ BOTÕES
-    MuiButton: {
-  styleOverrides: {
-    contained: {
-      boxShadow: 'none',
-      backgroundColor: isDark ? colors.primary : '#7ED6A7',
-      color: isDark ? '#fff' : '#111',
-
-      '&:hover': {
-        backgroundColor: isDark ? '#2C3E75' : '#6BC49A',
-      },
-    },
-  },
-},
-
-  // ✅ PAGINAÇÃO
-  MuiPaginationItem: {
-    styleOverrides: {
-      root: {
-        color: themeColors.text,
-      },
-    },
-  },
-
-  // ✅ TOOLTIP
-  MuiTooltip: {
-    styleOverrides: {
-      tooltip: {
-        backgroundColor: themeColors.paper,
-        color: themeColors.text,
-        fontSize: "12px",
-      },
-    },
-  },
-
-  // ✅ ÍCONES PADRÃO (SvgIcon)
-  MuiSvgIcon: {
-    styleOverrides: {
-      root: {
-        color: themeColors.icon,
-      },
-    },
-  },
-
-  // ✅ ÍCONES DENTRO DE BOTÕES
-  MuiIconButton: {
-    styleOverrides: {
-      root: {
-        color: themeColors.icon, // 🔥 ESSENCIAL PRA CORRIGIR O LIGHT
-      },
-    },
-  },
-
-  // ✅ ÍCONES DO SIDEBAR / LISTAS
-  MuiListItemIcon: {
-    styleOverrides: {
-      root: {
-        color: themeColors.icon, // 🔥 ESSENCIAL PRA SIDEBAR
-        minWidth: "36px",
-      },
-    },
-  },
-
-  // ✅ ÍCONES EM INPUTS (search, password etc)
-  MuiInputAdornment: {
-    styleOverrides: {
-      root: {
-        color: themeColors.icon,
-      },
-    },
-  },
-
-  // ✅ SCROLLBAR GLOBAL
-  MuiCssBaseline: {
-    styleOverrides: {
-      body: {
-        scrollbarColor: `${themeColors.scrollbar} transparent`,
-        "&::-webkit-scrollbar": {
-          width: "6px",
-        },
-        "&::-webkit-scrollbar-track": {
-          background: "transparent",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          backgroundColor: themeColors.scrollbar,
-          borderRadius: "6px",
-        },
-        "&::-webkit-scrollbar-thumb:hover": {
-          backgroundColor: themeColors.scrollbarHover,
+      // INPUTS
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            input: {
+              color: themeColors.text,
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: themeColors.border,
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: colors.primary,
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: colors.primary,
+            },
+          },
         },
       },
-    },
-  },
-},
 
+      // BOTÕES
+      MuiButton: {
+        styleOverrides: {
+          contained: {
+            boxShadow: "none",
+            backgroundColor: isDark ? colors.primary : "#7ED6A7",
+            color: isDark ? "#fff" : "#111",
+            "&:hover": {
+              backgroundColor: isDark ? "#2C3E75" : "#6BC49A",
+            },
+            // Se tiver ícones dentro do botão, eles herdam a cor via `color: inherit`
+            "& .MuiSvgIcon-root": {
+              color: "inherit",
+            },
+          },
+        },
+      },
+
+      // PAGINAÇÃO
+      MuiPaginationItem: {
+        styleOverrides: {
+          root: {
+            color: themeColors.text,
+          },
+        },
+      },
+
+      // TOOLTIP
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            backgroundColor: themeColors.paper,
+            color: themeColors.text,
+            fontSize: "12px",
+          },
+        },
+      },
+
+      // ÍCONES PADRÃO (SvgIcon)
+      MuiSvgIcon: {
+        // defaultProps garante que o atributo `fill` do svg seja aplicado (útil para alguns ícones)
+        defaultProps: {
+          htmlColor: themeColors.icon,
+        },
+        styleOverrides: {
+          root: {
+            color: themeColors.icon, // cor via CSS (currentColor)
+            // fallback para caso fill não esteja respeitando color:
+            fill: themeColors.icon,
+            // garantia extra: se for usado dentro de algum componente com cor diferente, preferir currentColor
+            "&.MuiSvgIcon-root": {
+              fill: themeColors.icon,
+            },
+          },
+        },
+      },
+
+      // ÍCONES DENTRO DE BOTÕES
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            color: themeColors.icon,
+            // garante que SvgIcon internos herdem
+            "& .MuiSvgIcon-root": {
+              color: "inherit",
+              fill: "inherit",
+            },
+          },
+        },
+      },
+
+      // ÍCONES DO SIDEBAR / LISTAS
+      MuiListItemIcon: {
+        styleOverrides: {
+          root: {
+            color: themeColors.icon,
+            minWidth: "36px",
+            "& .MuiSvgIcon-root": {
+              color: "inherit",
+              fill: "inherit",
+            },
+          },
+        },
+      },
+
+      // ÍCONES EM INPUTS (search, password etc)
+      MuiInputAdornment: {
+        styleOverrides: {
+          root: {
+            color: themeColors.icon,
+            "& .MuiSvgIcon-root": {
+              color: "inherit",
+              fill: "inherit",
+            },
+          },
+        },
+      },
+
+      // SCROLLBAR GLOBAL + garantia extra para SVGs herdarem currentColor
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            scrollbarColor: `${themeColors.scrollbar} transparent`,
+            "&::-webkit-scrollbar": { width: "6px" },
+            "&::-webkit-scrollbar-track": { background: "transparent" },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: themeColors.scrollbar,
+              borderRadius: "6px",
+            },
+            "&::-webkit-scrollbar-thumb:hover": {
+              backgroundColor: themeColors.scrollbarHover,
+            },
+          },
+          // garantia extra: force svg to use currentColor when possível
+          "svg": {
+            // muitos ícones respeitam `fill: currentColor`
+            fill: "currentColor",
+          },
+        },
+      },
+    },
   });
 };

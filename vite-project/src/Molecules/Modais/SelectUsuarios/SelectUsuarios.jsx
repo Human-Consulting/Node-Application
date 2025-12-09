@@ -1,27 +1,48 @@
-import { useState, useEffect } from "react";
-import { Select, MenuItem, Typography, Box, Stack, Pagination, Grow, TextField } from "@mui/material";
+import { useState, useEffect, useContext } from "react";
+import {
+  Select,
+  MenuItem,
+  Typography,
+  Box,
+  Stack,
+  Pagination,
+  Grow,
+  TextField
+} from "@mui/material";
 import { inputStyle } from "../../Modal/Forms/Forms.styles.jsx";
 import { Close, Search } from "@mui/icons-material";
+import { ThemeContext } from "../../../Utils/themeContext.jsx";
+import { getTheme } from "../../../Utils/Theme.jsx";
 
-const SelectUsuarios = ({ usuarios = [], sizeUsuarios = 10, pagesUsuarios = 0, atualizarUsuarios, responsavel, fkResponsavel, onChange, disabled, error }) => {
+const SelectUsuarios = ({
+  usuarios = [],
+  sizeUsuarios = 10,
+  pagesUsuarios = 0,
+  atualizarUsuarios,
+  responsavel,
+  fkResponsavel,
+  onChange,
+  disabled,
+  error,
+}) => {
+  const { mode } = useContext(ThemeContext);
+  const theme = getTheme(mode);
+
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(pagesUsuarios || 0);
   const [buscaTitulo, setBuscaTitulo] = useState("");
   const [onSearch, setOnSearch] = useState(false);
 
-  console.log(fkResponsavel);
-
   const clearSearch = async () => {
     await atualizarUsuarios();
     setOnSearch(false);
     setBuscaTitulo("");
-  }
+  };
 
   useEffect(() => {
     if (buscaTitulo.trim() !== "") {
       setOnSearch(true);
-      const textoLower = buscaTitulo.toLowerCase();
-      atualizarUsuarios(0, textoLower);
+      atualizarUsuarios(0, buscaTitulo.toLowerCase());
     } else {
       clearSearch();
     }
@@ -35,32 +56,30 @@ const SelectUsuarios = ({ usuarios = [], sizeUsuarios = 10, pagesUsuarios = 0, a
     fetch();
   }, [page]);
 
-  const responsavelNaoEstaNaLista = fkResponsavel != '#' && !usuarios.find(
-    (usuario) => usuario.idUsuario == fkResponsavel
-  );
+  const responsavelNaoEstaNaLista =
+    fkResponsavel != "#" &&
+    !usuarios.find((usuario) => usuario.idUsuario == fkResponsavel);
 
   return (
     <Select
       value={fkResponsavel}
-      onChange={(e) => {
-        onChange(e);
-      }}
+      onChange={onChange}
       disabled={disabled}
       fullWidth
       displayEmpty
       sx={{
         ...inputStyle?.sx,
-        color: "#FFF",
+        color: theme.palette.text.primary,
+        background: theme.palette.background.paper,
       }}
       error={!!error}
       MenuProps={{
         TransitionComponent: Grow,
         PaperProps: {
           sx: {
-            border: 'solid #888 2px',
-            backgroundColor: "#000",
-            background: "#22272B",
-            color: "#fff",
+            border: `2px solid ${theme.palette.divider}`,
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
             borderRadius: 2,
             maxHeight: 450,
             display: "flex",
@@ -70,10 +89,15 @@ const SelectUsuarios = ({ usuarios = [], sizeUsuarios = 10, pagesUsuarios = 0, a
         },
       }}
     >
+
+      {/* ITEM PADRÃO */}
       <MenuItem value="#">
-        <Typography>Selecione o responsável</Typography>
+        <Typography color={theme.palette.text.secondary}>
+          Selecione o responsável
+        </Typography>
       </MenuItem>
 
+      {/* RESPONSÁVEL QUE NÃO ESTÁ NA LISTA */}
       {responsavelNaoEstaNaLista && (
         <MenuItem
           key={fkResponsavel}
@@ -81,70 +105,83 @@ const SelectUsuarios = ({ usuarios = [], sizeUsuarios = 10, pagesUsuarios = 0, a
           sx={{
             display: "flex",
             alignItems: "center",
-            background: "#22272B",
+            background: theme.palette.background.default,
             borderRadius: "10px",
             py: 1,
-            "&:hover": { background: "#181818" },
+            "&:hover": { background: theme.palette.action.hover },
           }}
         >
           <Box>
-            <Typography color="#fff" fontWeight="bold">
+            <Typography color={theme.palette.text.primary} fontWeight="bold">
               {responsavel?.nome}
             </Typography>
-            <Typography color="#ccc" fontSize={12}>
+            <Typography color={theme.palette.text.secondary} fontSize={12}>
               {responsavel?.cargo}
             </Typography>
           </Box>
         </MenuItem>
       )}
 
+      {/* LISTA DE USUÁRIOS */}
       {usuarios.length > 0 ? (
-        usuarios.map((usuario) => (
-          usuario.idUsuario == fkResponsavel && responsavelNaoEstaNaLista ? null :
-            <MenuItem
-              key={usuario.idUsuario}
-              value={usuario.idUsuario}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                background: "#22272B",
-                py: 1,
-                "&:hover": { background: "#101010" },
-              }}
-            >
-              <Box>
-                <Typography color="#fff" fontWeight="bold">
-                  {usuario.nome}
-                </Typography>
-                <Typography color="#ccc" fontSize={12}>
-                  {usuario.cargo}
-                </Typography>
-              </Box>
-            </MenuItem>
-        ))
+        usuarios.map((usuario) =>
+          usuario.idUsuario == fkResponsavel && responsavelNaoEstaNaLista
+            ? null
+            : (
+              <MenuItem
+                key={usuario.idUsuario}
+                value={usuario.idUsuario}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  background: theme.palette.background.default,
+                  py: 1,
+                  "&:hover": { background: theme.palette.action.hover },
+                }}
+              >
+                <Box>
+                  <Typography color={theme.palette.text.primary} fontWeight="bold">
+                    {usuario.nome}
+                  </Typography>
+                  <Typography color={theme.palette.text.secondary} fontSize={12}>
+                    {usuario.cargo}
+                  </Typography>
+                </Box>
+              </MenuItem>
+            )
+        )
       ) : (
         <MenuItem disabled>
-          <Typography color="#90caf9" sx={{ textAlign: "center", width: "100%" }}>
+          <Typography
+            color={theme.palette.primary.light}
+            sx={{ textAlign: "center", width: "100%" }}
+          >
             Nenhum usuário encontrado!
           </Typography>
         </MenuItem>
       )}
 
-      <Stack sx={{ justifyContent: "center" }}
+      {/* PAGINAÇÃO + SEARCH */}
+      <Stack
+        sx={{
+          justifyContent: "center",
+          background: theme.palette.background.paper,
+          p: 1,
+          borderTop: `1px solid ${theme.palette.divider}`
+        }}
         onMouseDown={(e) => e.stopPropagation()}
-        onChange={(e) => e.stopPropagation()}
-        onClick={(e) => e.stopPropagation()}>
+        onClick={(e) => e.stopPropagation()}
+      >
         <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
           spacing={2}
-          sx={{ width: "100%", mt: 1 }}
+          sx={{ width: "100%" }}
         >
           <Pagination
             count={totalPages}
             page={page + 1}
-            onMouseDown={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
             onChange={(e, value) => {
               e.stopPropagation();
@@ -152,53 +189,56 @@ const SelectUsuarios = ({ usuarios = [], sizeUsuarios = 10, pagesUsuarios = 0, a
             }}
             color="primary"
             sx={{
-              "& .MuiPaginationItem-root": { color: "#fff" },
+              "& .MuiPaginationItem-root": {
+                color: theme.palette.text.primary,
+              },
             }}
           />
+
+          {/* TEXTFIELD COM LABEL TIPOGRAFADA */}
           <TextField
             value={buscaTitulo}
-            onMouseDown={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => e.stopPropagation()}
-            onChange={(e) => {
-              e.stopPropagation();
-              setBuscaTitulo(e.target.value);
-            }}
-            label={<Stack sx={{ flexDirection: 'row', gap: 0.5 }}> <Search /> Buscar usuário...</Stack>}
+            onChange={(e) => setBuscaTitulo(e.target.value)}
+            label={
+              <Typography sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                <Search /> Buscar usuário...
+              </Typography>
+            }
             sx={{ flex: 1 }}
-            size="large"
             autoComplete="off"
             InputLabelProps={{
               sx: {
-                color: "white",
-                '&.Mui-focused': {
-                  color: 'white',
-                }
-              }
+                color: theme.palette.text.secondary,
+                "&.Mui-focused": {
+                  color: theme.palette.text.primary,
+                },
+              },
             }}
             InputProps={{
               sx: {
-                color: "white",
-                '& .MuiOutlinedInput-notchedOutline': {
+                color: theme.palette.text.primary,
+                "&.MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
                 },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#fff'
-                }
-              }
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+              },
             }}
           />
+
           <Close
             onClick={clearSearch}
             sx={{
-              color: '#FFF',
-              cursor: 'pointer',
-              transition: '0.3s',
-              border: '1px solid transparent',
-              borderRadius: '4px',
-              display: `${onSearch ? 'unset' : 'none'}`,
-              '&:hover': {
-                border: '1px solid #f0f0f0'
-              }
+              color: theme.palette.text.primary,
+              cursor: "pointer",
+              transition: "0.3s",
+              border: "1px solid transparent",
+              borderRadius: "4px",
+              display: onSearch ? "unset" : "none",
+              "&:hover": { border: `1px solid ${theme.palette.divider}` },
             }}
           />
         </Stack>
