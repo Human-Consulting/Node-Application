@@ -1,21 +1,17 @@
 import { Box, Button, InputBase } from '@mui/material';
 import { styled } from '@mui/system';
 
-export const TextInput = styled('input')(({ theme }) => ({
+export const TextInput = styled('input')({
   width: '75%',
   height: '50px',
-  color: theme.palette.text.primary,
-  background: theme.palette.background.paper,
-}));
+});
 
-export const ContainerGeral = styled(Box)(({ theme }) => ({
+export const ContainerGeral = styled(Box)({
   width: '100%',
   height: '100%',
   display: 'flex',
   fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-  background: theme.palette.background.default,
-  color: theme.palette.text.primary,
-}));
+});
 
 export const ContactAvatar = styled('img')({
   width: '44px',
@@ -26,25 +22,23 @@ export const ContactAvatar = styled('img')({
   boxShadow: '0 0 4px rgba(0,0,0,0.7)',
 });
 
-export const ContactName = styled('span')(({ theme }) => ({
+export const ContactName = styled('span')({
   fontSize: '1rem',
   userSelect: 'none',
-  color: theme.palette.text.primary,
-}));
+});
 
-export const BackChat = styled(Box)(({ theme }) => ({
+export const BackChat = styled(Box)({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
   overflowY: 'auto',
   scrollBehavior: 'smooth',
-  background: theme.palette.background.default,
-}));
+});
 
-export const Header = styled(Box)(({ theme }) => ({
+export const Header = styled(Box)({
   padding: '0.5rem',
-  borderBottom: `1px solid ${theme.palette.borderPrimary}`,
-  background: theme.palette.background.paper,
+  borderBottom: '1px solid #333',
+  background: "linear-gradient(180deg, #151515 0%, #0d0d0d 100%)",
   position: 'sticky',
   top: 0,
   zIndex: 20,
@@ -52,16 +46,16 @@ export const Header = styled(Box)(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  marginBottom: '1rem',
-}));
+  marginBottom: '1rem'
+});
 
 export const HeaderContent = styled(Box)({
   display: 'flex',
   alignItems: 'center',
-  gap: '0.5rem',
+  gap: '0.5rem'
 });
 
-export const MessageWrapper = styled(Box)(({ sent, theme }) => ({
+export const MessageWrapper = styled(Box)(({ sent }) => ({
   maxWidth: '70%',
   marginBottom: '14px',
   display: 'flex',
@@ -70,36 +64,38 @@ export const MessageWrapper = styled(Box)(({ sent, theme }) => ({
   lineHeight: 1.3,
   alignSelf: sent ? 'flex-end' : 'flex-start',
   textAlign: sent ? 'right' : 'left',
-  zIndex: 10,
-  color: theme.palette.text.primary,
+  zIndex: 10
 }));
 
-export const MessageSender = styled('span')(({ theme }) => ({
+export const MessageSender = styled('span')({
   fontWeight: 600,
   marginBottom: '4px',
-  color: theme.palette.text.secondary,
+  color: '#a1a1a1',
   userSelect: 'none',
-}));
+  zIndex: 10
+});
 
-export const MessageBox = styled(Box)(({ sent, theme }) => ({
+export const MessageBox = styled(Box)(({ sent }) => ({
+  // padding: '12px 16px',
   borderRadius: '16px',
-  backgroundColor: sent ? '#28a745' : theme.palette.background.cardBg,
-  color: sent ? '#f0f0f0' : theme.palette.text.primary,
+  backgroundColor: sent ? '#28a745' : '#2a2a2a',
+  color: sent ? '#f0f0f0' : '#ddd',
   boxShadow: '0 2px 6px rgb(0 0 0 / 0.25)',
   position: 'relative',
   wordBreak: 'break-word',
   display: 'flex',
   alignItems: 'center',
   gap: '10px',
-  padding: '12px 16px',
+  zIndex: 10
 }));
 
-export const MessageTime = styled('span')(({ theme }) => ({
+export const MessageTime = styled('span')({
   fontSize: '0.75rem',
-  color: theme.palette.text.secondary,
+  color: '#777',
   marginTop: '2px',
   userSelect: 'none',
-}));
+  zIndex: 10
+});
 
 export const MessageAvatar = styled('img')({
   width: '32px',
@@ -107,49 +103,48 @@ export const MessageAvatar = styled('img')({
   borderRadius: '50%',
   objectFit: 'cover',
   boxShadow: '0 0 6px rgba(0,0,0,0.6)',
+  zIndex: 10
 });
 
-export const ChatInputContainer = styled(Box)(({ theme }) => ({
+export const ChatInputContainer = styled(Box)({
   display: 'flex',
-  background: theme.palette.background.paper,
+  background: "#1d1d1d",
+  background: "#1d1d1d",
   zIndex: 10,
   margin: '1rem',
   borderRadius: '10px',
-  border: `4px solid transparent`,
+  border: '4px solid transparent',
 
   '&:focus-within': {
     borderBottom: '4px solid #1A4D7A',
   },
-}));
+});
 
-export const ChatInput = styled(InputBase)(({ theme }) => ({
+export const ChatInput = styled(InputBase)({
   padding: '0.75rem',
   flex: 1,
   fontSize: '1rem',
-  color: theme.palette.text.primary,
+  color: '#eee',
   '& .MuiInputBase-input::placeholder': {
-    color: theme.palette.text.secondary,
-  },
-}));
+    color: '#FFF',
+  }
+});
 
-export const SendButton = styled(Button)(({ theme }) => ({
+export const SendButton = styled(Button)({
   backgroundColor: 'transparent',
   borderRadius: 0,
-  color: theme.palette.text.primary,
-
   '&:hover': {
     backgroundColor: '#1A4D7A',
   },
-}));
+});
 
-export const Scroll = styled(Box)(({ theme }) => ({
+export const Scroll = styled(Box)({
   width: '100%',
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
   overflowY: 'scroll',
   zIndex: 10,
-
   '&::-webkit-scrollbar': {
     width: '4px',
   },
@@ -157,10 +152,10 @@ export const Scroll = styled(Box)(({ theme }) => ({
     background: 'transparent',
   },
   '&::-webkit-scrollbar-thumb': {
-    background: theme.palette.custom.scrollbar,
+    background: '#888',
     borderRadius: '4px',
   },
   '&::-webkit-scrollbar-thumb:hover': {
-    background: theme.palette.custom.scrollbarHover,
+    background: '#aaa',
   },
-}));
+});
