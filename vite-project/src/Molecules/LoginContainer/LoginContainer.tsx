@@ -3,30 +3,32 @@ import ContainerBoard from '../ContainerBoard/ContainerBoard'
 import { Container, LoginTitulo } from '../ContainerBoard/ContainerBoard.styles'
 import { ContainerFrase, IconeSample } from './LoginContainer.styles'
 import { Stack } from '@mui/material'
-import Modal from "../../Molecules/Modal/Modal.jsx";
-import FormsEmail from '../../Molecules/Modal/Forms/FormsEmail.jsx';
-import FormsEsqueciASenha from '../../Molecules/Modal/Forms/FormsEsqueciASenha.jsx';
-import FormsCodigo from '../../Molecules/Modal/Forms/FormsCodigo.jsx';
+import Modal from "../../Molecules/Modal/Modal";
+import FormsEmail from '../../Molecules/Modal/Forms/FormsEmail';
+import FormsEsqueciASenha from '../../Molecules/Modal/Forms/FormsEsqueciASenha';
+import FormsCodigo from '../../Molecules/Modal/Forms/FormsCodigo';
 import { useState } from "react";
 
 export default function LoginContainer() {
 
   const [showModal, setShowModal] = useState(false);
-  const [email, setEmail] = useState(null);
-  const [codigo, setCodigo] = useState(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [codigoEnviado, setCodigoEnviado] = useState(false);
+  const [codigoDigitado, setCodigoDigitado] = useState<string | null>(null);
   const [isValid, setIsValid] = useState(false);
   const [isValidTempo, setIsValidTempo] = useState(false);
-  const [id, setId] = useState(null);
-  const [codigoValidade, setCodigoValidade] = useState(null);
+  const [id, setId] = useState<number | string | null>(null);
+  const [codigoValidade, setCodigoValidade] = useState<number | null>(null);
 
-  const [popoverSenhaAnchor, setPopoverSenhaAnchor] = useState(null);
+  const [popoverSenhaAnchor, setPopoverSenhaAnchor] = useState<boolean | null>(null);
 
   const etapaAtual = !email ? 0 : !isValid ? 1 : 2;
 
   const toggleModal = () => {
     if (showModal) {
       setEmail(null);
-      setCodigo(null);
+      setCodigoEnviado(false);
+      setCodigoDigitado(null);
       setIsValid(false);
       setId(null);
     }
@@ -71,14 +73,13 @@ export default function LoginContainer() {
 
       <Modal
         open={Boolean(popoverSenhaAnchor)}
-        anchorEl={popoverSenhaAnchor}
         onClose={() => setPopoverSenhaAnchor(null)}
         form={
           isValid
-            ? <FormsEsqueciASenha id={id} toggleModal={toggleModal} />
-            : codigo
-              ? <FormsCodigo email={email} codigo={codigo} setCodigo={setCodigo} codigoValidade={codigoValidade} setCodigoValidade={setCodigoValidade} isValidTempo={isValidTempo} setIsValidTempo={setIsValidTempo} setIsValid={setIsValid} />
-              : <FormsEmail setEmail={setEmail} setCodigo={setCodigo} setId={setId} setIsValidTempo={setIsValidTempo} setCodigoValidade={setCodigoValidade} />
+            ? <FormsEsqueciASenha id={id} codigo={codigoDigitado} toggleModal={toggleModal} />
+            : codigoEnviado
+              ? <FormsCodigo email={email} setCodigoDigitado={setCodigoDigitado} codigoValidade={codigoValidade} setCodigoValidade={setCodigoValidade} isValidTempo={isValidTempo} setIsValidTempo={setIsValidTempo} setIsValid={setIsValid} />
+              : <FormsEmail setEmail={setEmail} setCodigoEnviado={setCodigoEnviado} setId={setId} setIsValidTempo={setIsValidTempo} setCodigoValidade={setCodigoValidade} />
         }
         etapaAtual={etapaAtual}
       />

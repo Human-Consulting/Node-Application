@@ -1,13 +1,19 @@
 import { useState } from "react";
-import { Alert, Divider, Snackbar, Stack, InputAdornment, IconButton, Modal } from "@mui/material";
+import { Alert, Divider, Snackbar, Stack, InputAdornment, IconButton } from "@mui/material";
 import { ButtonMeu, LoginBack, LoginTitulo, InputMinha } from "./ContainerBoard.styles";
 import { useNavigate } from "react-router";
 import { handleSubmitLogin } from "../../Utils/UsePost";
 import React from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useAuth } from "../../context/AuthContext";
 
-const ContainerBoard = ({ toggleModal }) => { 
+interface ContainerBoardProps {
+  toggleModal: () => void;
+}
+
+const ContainerBoard = ({ toggleModal }: ContainerBoardProps) => {
   const navigate = useNavigate();
+  const { setUsuario } = useAuth();
   const [responseMessage, setResponseMessage] = React.useState('');
   const [responseSucess, setResponseSucess] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -42,13 +48,13 @@ const ContainerBoard = ({ toggleModal }) => {
           <InputMinha
             sx={{
               input: {
-                color: 'white',
+                color: 'text.primary',
                 "&::placeholder": {
                   opacity: 1,
-                  color: 'white',
+                  color: 'text.primary',
                 },
               },
-              label: { color: 'white' },
+              label: { color: 'text.primary' },
             }}
             label="E-mail"
             value={emailLogin}
@@ -57,13 +63,13 @@ const ContainerBoard = ({ toggleModal }) => {
           <InputMinha
             sx={{
               input: {
-                color: 'white',
+                color: 'text.primary',
                 "&::placeholder": {
                   opacity: 1,
-                  color: 'white',
+                  color: 'text.primary',
                 },
               },
-              label: { color: 'white' },
+              label: { color: 'text.primary' },
             }}
             InputProps={{
               endAdornment: (
@@ -81,19 +87,34 @@ const ContainerBoard = ({ toggleModal }) => {
             type={showSenhaAtual ? "text" : "password"}
             value={senhaLogin}
             onChange={(e) => setSenhaLogin(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSubmitLogin(emailLogin, senhaLogin, navigate, setResponseMessage, setLoading)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSubmitLogin(emailLogin, senhaLogin, navigate, setResponseMessage, setLoading, setUsuario)}
           />
-          <ButtonMeu onClick={() => handleSubmitLogin(emailLogin, senhaLogin, navigate, setResponseMessage, setLoading)}>
+          <ButtonMeu onClick={() => handleSubmitLogin(emailLogin, senhaLogin, navigate, setResponseMessage, setLoading, setUsuario)}>
             {loading ? 'Carregando' : 'Confirmar'}
           </ButtonMeu>
         </Stack>
       </Stack>
 
       <Stack sx={{ gap: '0.5rem', alignItems: 'center' }}>
-        <Divider sx={{ color: '#fff', background: '#fff', width: '100%' }} />
+        <Divider sx={{ color: 'text.primary', background: 'text.primary', width: '100%' }} />
         <p style={{ fontSize: '16px' }}>
-          <b onClick={() => toggleModal()} style={{ cursor: 'pointer' }}>
-            Esqueci minha senha
+          <b>
+            <button
+              type="button"
+              onClick={() => toggleModal()}
+              style={{
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                margin: 0,
+                color: 'inherit',
+                font: 'inherit',
+                fontWeight: 'inherit',
+                cursor: 'pointer',
+              }}
+            >
+              Esqueci minha senha
+            </button>
           </b>
         </p>
       </Stack>

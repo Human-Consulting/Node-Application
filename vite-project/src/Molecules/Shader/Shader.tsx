@@ -1,7 +1,20 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { ShaderGradient, ShaderGradientCanvas } from 'shadergradient';
+import { useTheme } from '../../context/ThemeContext';
 
-const Shader = ({animate, color1, color2, color3, index}) => {
+interface ShaderProps {
+    index: number;
+    // The following props are accepted (and passed by several callers) but are
+    // not actually consumed here — the component reads live theme values from
+    // useTheme() instead. Declared so TSX excess-property checks don't fail.
+    animate?: boolean;
+    color1?: string;
+    color2?: string;
+    color3?: string;
+}
+
+const Shader = ({ index }: ShaderProps) => {
+    const { animate, color1, color2, color3 } = useTheme();
 
     const urlString = useMemo(() => {
         const params = new URLSearchParams({

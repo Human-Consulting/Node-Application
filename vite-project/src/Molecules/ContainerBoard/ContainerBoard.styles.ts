@@ -1,10 +1,11 @@
 import { Box, Button, TextField } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { styled } from '@mui/system';
 
-export const LoginBack = styled(Box)({
+export const LoginBack = styled(Box)(({ theme }) => ({
   width: '30vw',
   height: '95vh',
-  background: "#1d1d1dc8",
+  background: alpha(theme.palette.background.paper, 0.78),
   backdropFilter: 'blur(10px)',
   display: 'flex',
   flexDirection: 'column',
@@ -14,15 +15,15 @@ export const LoginBack = styled(Box)({
   zIndex: '30',
   paddingInline: '2rem',
   paddingBlock: '4rem',
-});
+}));
 
-export const LoginTitulo = styled('h2')({
+export const LoginTitulo = styled('h2')(({ theme }) => ({
   fontFamily: 'Oswald, sans-serif',
   fontWeight: 400,
   fontSize: '42px',
   lineHeight: '46px',
-  color: '#fff'
-});
+  color: theme.palette.text.primary
+}));
 
 export const Container = styled(Box)({
   left: 0,
@@ -35,14 +36,14 @@ export const Container = styled(Box)({
   padding: '1rem'
 });
 
-export const InputMinha = styled(TextField)({
+export const InputMinha = styled(TextField)(({ theme }) => ({
   '& label.Mui-focused': {
-    color: '#ffffff',
+    color: theme.palette.text.primary,
   },
   "&::placeholder": {
-    color: "gray"
+    color: theme.palette.text.secondary
   },
-  color: "white",
+  color: theme.palette.text.primary,
 
 
   '& .MuiOutlinedInput-root': {
@@ -56,7 +57,7 @@ export const InputMinha = styled(TextField)({
       borderColor: '#6F7E8C',
     },
   },
-});
+}));
 
 export const ButtonMeu = styled(Button)({
   background: '#1c8bcb',
